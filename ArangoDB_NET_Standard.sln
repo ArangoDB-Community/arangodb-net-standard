@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.852
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArangoDB_NET_Standard", "ArangoDB_NET_Standard\ArangoDB_NET_Standard.csproj", "{A46089A1-FF27-4C00-AAF4-134ACF6E8FB2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArangoDB_NET_Standard_Test", "ArangoDB_NET_Standard_Test\ArangoDB_NET_Standard_Test.csproj", "{70184444-F45A-4357-84BE-1AA5F6E8344E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A46089A1-FF27-4C00-AAF4-134ACF6E8FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46089A1-FF27-4C00-AAF4-134ACF6E8FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46089A1-FF27-4C00-AAF4-134ACF6E8FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46089A1-FF27-4C00-AAF4-134ACF6E8FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70184444-F45A-4357-84BE-1AA5F6E8344E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70184444-F45A-4357-84BE-1AA5F6E8344E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70184444-F45A-4357-84BE-1AA5F6E8344E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70184444-F45A-4357-84BE-1AA5F6E8344E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {372F4FE3-7226-4A25-920F-43E06A2DE205}
+	EndGlobalSection
+EndGlobal
