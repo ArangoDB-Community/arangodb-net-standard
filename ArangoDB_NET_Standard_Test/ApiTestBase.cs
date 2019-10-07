@@ -16,7 +16,7 @@ namespace ArangoDB_NET_Standard_Test
         protected HttpClient GetHttpClient(string dbName)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8529/_db/" + dbName +"/");
+            client.BaseAddress = new Uri("http://localhost:8529/_db/" + dbName + "/");
             client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue(
                     "Basic",
