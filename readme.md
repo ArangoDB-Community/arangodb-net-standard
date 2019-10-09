@@ -1,12 +1,10 @@
-# ArangoDB_NET_Standard
-
-The C#/.NET Standard API driver for ArangoDB.
+# arangodb-net-standard: The C#/.NET Standard API driver for ArangoDB.
 
 ## Project summary
 
-ArangoDB_NET_Standard is a consistent, comprehensive, minimal interface to enable .NET applications to use the complete range of features exposed by the ArangoDB REST API.
+arangodb-net-standard is a consistent, comprehensive, minimal interface to enable .NET applications to use the complete range of features exposed by the ArangoDB REST API.
 
-The ArangoDB_NET_Standard library does not aim to provide much in the way of abstraction on top of the individual REST API functions offered by ArangoDB but it does aim to provide comprehensive coverage of all of the available options for each of ArangoDB's REST API endpoints.
+The arangodb-net-standard library does not aim to provide much in the way of abstraction on top of the individual REST API functions offered by ArangoDB but it does aim to provide comprehensive coverage of all of the available options for each of ArangoDB's REST API endpoints.
 
 The driver is built using the standard [HttpClient](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=netstandard-2.0) interface for making HTTP requests, along with `Json.NET` for (de)serialisation to/from CLI types.
 
@@ -18,7 +16,7 @@ In addition the library provides:
 
 ## Usage
 
-The ArangoDB_NET_Standard client is split into individual classes for each REST API entity.  For example, `DocumentApiClient`, `CollectionApiClient`, etc.  
+The arangodb-net-standard client is split into individual classes for each REST API entity.  For example, `DocumentApiClient`, `CollectionApiClient`, etc.  
 
 Each API client class can be instantiated by passing an instance of `HttpClient`. For use in server applications it is recommended to use the same instance of `HttpClient` for all interactions with an ArangoDB server. In other contexts, you may wish to dispose the client after each operation or set of operations.
 
