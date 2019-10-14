@@ -3,6 +3,7 @@ using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.TransactionApi;
+using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.Transport.Http;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ArangoDBNetStandard
 {
     public class ArangoDBClient : IDisposable
     {
-        private HttpClient _client;
+        private IApiClientTransport _transport;
 
         public CursorApiClient Cursor { get; private set; }
 
@@ -27,18 +28,28 @@ namespace ArangoDBNetStandard
 
         public ArangoDBClient(HttpClient client)
         {
-            _client = client;
-            Cursor = new CursorApiClient(client);
-            Database = new DatabaseApiClient(client);
-            Document = new DocumentApiClient(client);
-            Collection = new CollectionApiClient(new HttpApiTransport(client));
-            Transaction = new TransactionApiClient(client);
+            _transport = new HttpApiTransport(client);
+            Cursor = new CursorApiClient(_transport);
+            Database = new DatabaseApiClient(_transport);
+            Document = new DocumentApiClient(_transport);
+            Collection = new CollectionApiClient(_transport);
+            Transaction = new TransactionApiClient(_transport);
             //Graph = new GraphApiClient(client);
+        }
+
+        public ArangoDBClient(IApiClientTransport transport)
+        {
+            _transport = transport;
+            Cursor = new CursorApiClient(_transport);
+            Database = new DatabaseApiClient(_transport);
+            Document = new DocumentApiClient(_transport);
+            Collection = new CollectionApiClient(_transport);
+            Transaction = new TransactionApiClient(_transport);
         }
 
         public void Dispose()
         {
-            _client.Dispose();
+            _transport.Dispose();
         }
     }
 }

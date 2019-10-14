@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArangoDBNetStandard.Transport;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -9,9 +10,9 @@ namespace ArangoDBNetStandard.DocumentApi
     public class DocumentApiClient: ApiClientBase
     {
         private readonly string _docApiPath = "_api/document";
-        private HttpClient _client;
+        private IApiClientTransport _client;
 
-        public DocumentApiClient(HttpClient client)
+        public DocumentApiClient(IApiClientTransport client)
         {
             _client = client;
         }

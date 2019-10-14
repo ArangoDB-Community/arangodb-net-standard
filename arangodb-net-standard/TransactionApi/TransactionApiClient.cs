@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArangoDBNetStandard.Transport;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -8,10 +9,10 @@ namespace ArangoDBNetStandard.TransactionApi
 {
     public class TransactionApiClient: ApiClientBase
     {
-        private HttpClient _client;
+        private IApiClientTransport _client;
         private readonly string _transactionApiPath = "_api/transaction";
 
-        public TransactionApiClient(HttpClient client)
+        public TransactionApiClient(IApiClientTransport client)
         {
             _client = client;
         }

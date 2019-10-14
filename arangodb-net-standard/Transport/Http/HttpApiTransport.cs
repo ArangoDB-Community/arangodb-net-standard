@@ -58,6 +58,31 @@ namespace ArangoDBNetStandard.Transport.Http
             return new HttpApiClientResponse(response);
         }
 
+        public async Task<IApiClientResponse> PutAsync(string requestUri, StringContent content)
+        {
+
+            var response = await _client.PutAsync(requestUri, content);
+            return new HttpApiClientResponse(response);
+        }
+
+        public async Task<IApiClientResponse> GetAsync(string requestUri)
+        {
+
+            var response = await _client.GetAsync(requestUri);
+            return new HttpApiClientResponse(response);
+        }
+
+        public async Task<IApiClientResponse> PatchAsync(string requestUri, StringContent content)
+        {
+            var method = new HttpMethod("PATCH");
+            var request = new HttpRequestMessage(method, requestUri)
+            {
+                Content = content
+            };
+            var response = await _client.SendAsync(request);
+            return new HttpApiClientResponse(response);
+        }
+
         public void Dispose()
         {
             _client.Dispose();

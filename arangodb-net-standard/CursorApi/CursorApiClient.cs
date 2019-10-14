@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ArangoDBNetStandard.Transport;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,13 +15,13 @@ namespace ArangoDBNetStandard.CursorApi
     public class CursorApiClient: ApiClientBase
     {
         private readonly string _cursorApiPath = "_api/cursor";
-        private HttpClient _client;
+        private IApiClientTransport _client;
 
         /// <summary>
         /// Create a new <see cref="CursorApi"/>.
         /// </summary>
         /// <param name="client">Set base path and appropriate auth headers on the passed in client.</param>
-        public CursorApiClient(HttpClient client)
+        public CursorApiClient(IApiClientTransport client)
         {
             _client = client;
         }

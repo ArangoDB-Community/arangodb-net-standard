@@ -1,5 +1,6 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.DatabaseApi;
+using ArangoDBNetStandard.Transport.Http;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -13,27 +14,24 @@ namespace ArangoDBNetStandardTest
 
         private List<HttpClient> _clients = new List<HttpClient>(); 
 
-        protected HttpClient GetHttpClient(string dbName)
+        protected HttpApiTransport GetHttpTransport(string dbName)
         {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8529/_db/" + dbName + "/");
-            client.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue(
-                    "Basic",
-                    Convert.ToBase64String(Encoding.ASCII.GetBytes("root:root")));
-            _clients.Add(client);
-            return client;
+            return new HttpApiTransport(
+                new Uri("http://localhost:8529/"),
+                dbName,
+                "root",
+                "root");
         }
 
         protected ArangoDBClient GetArangoDBClient(string dbName)
         {
-            var httpClient = GetHttpClient(dbName);
+            var httpClient = GetHttpTransport(dbName);
             return new ArangoDBClient(httpClient);
         }
 
         protected void DropDatabase(string dbName)
         {
-            using (var systemDbClient = GetHttpClient("_system"))
+            using (var systemDbClient = GetHttpTransport("_system"))
             {
                 var dbApiClient = new DatabaseApiClient(systemDbClient);
                 var response = dbApiClient.DeleteDatabaseAsync(dbName)
@@ -44,7 +42,7 @@ namespace ArangoDBNetStandardTest
         protected void CreateDatabase(string dbName)
         {
             // Create the test database
-            using (var systemDbClient = GetHttpClient("_system"))
+            using (var systemDbClient = GetHttpTransport("_system"))
             {
                 var dbApiClient = new DatabaseApiClient(systemDbClient);
                 try

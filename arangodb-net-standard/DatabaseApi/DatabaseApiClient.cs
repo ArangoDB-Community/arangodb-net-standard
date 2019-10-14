@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ArangoDBNetStandard.Transport;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace ArangoDBNetStandard.DatabaseApi
 {
     public class DatabaseApiClient: ApiClientBase
     {
-        private HttpClient _client;
+        private IApiClientTransport _client;
         private readonly string _databaseApiPath = "_api/database";
 
-        public DatabaseApiClient(HttpClient client)
+        public DatabaseApiClient(IApiClientTransport client)
         {
             _client = client;
         }
