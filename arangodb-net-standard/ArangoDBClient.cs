@@ -3,6 +3,7 @@ using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.TransactionApi;
+using ArangoDBNetStandard.Transport.Http;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -30,7 +31,7 @@ namespace ArangoDBNetStandard
             Cursor = new CursorApiClient(client);
             Database = new DatabaseApiClient(client);
             Document = new DocumentApiClient(client);
-            Collection = new CollectionApiClient(client);
+            Collection = new CollectionApiClient(new HttpApiTransport(client));
             Transaction = new TransactionApiClient(client);
             //Graph = new GraphApiClient(client);
         }
