@@ -1,17 +1,24 @@
-﻿using ArangoDBNetStandard.Transport;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+
+using ArangoDBNetStandard.Transport;
 
 namespace ArangoDBNetStandard.DocumentApi
 {
+    /// <summary>
+    /// Provides access to ArangoDB document API.
+    /// </summary>
     public class DocumentApiClient: ApiClientBase
     {
         private readonly string _docApiPath = "_api/document";
         private IApiClientTransport _client;
 
+        /// <summary>
+        /// Create an instance of <see cref="DocumentApiClient"/>.
+        /// </summary>
+        /// <param name="client"></param>
         public DocumentApiClient(IApiClientTransport client)
         {
             _client = client;
@@ -131,11 +138,24 @@ namespace ArangoDBNetStandard.DocumentApi
             }
         }
       
+        /// <summary>
+        /// Get an existing document.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <returns></returns>
         public async Task<DocumentResponse<T>> GetDocumentAsync<T>(string collectionName, string documentKey)
         {
             return await GetDocumentAsync<T>($"{collectionName}/{documentKey}");
         }
 
+        /// <summary>
+        /// Get an existing document based on its Document ID.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="documentId"></param>
+        /// <returns></returns>
         public async Task<DocumentResponse<T>> GetDocumentAsync<T>(string documentId)
         {
             if (documentId.Split('/').Length != 2)
@@ -154,11 +174,22 @@ namespace ArangoDBNetStandard.DocumentApi
             throw new ApiErrorException(error);
         }
 
+        /// <summary>
+        /// Delete a document.
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <returns></returns>
         public async Task<DeleteDocumentResponse> DeleteDocumentAsync(string collectionName, string documentKey)
         {
             return await DeleteDocumentAsync($"{collectionName}/{documentKey}");
         }
 
+        /// <summary>
+        /// Delete a document based on its document ID.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <returns></returns>
         public async Task<DeleteDocumentResponse> DeleteDocumentAsync(string documentId)
         {
             if (documentId.Split('/').Length != 2)

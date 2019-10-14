@@ -8,5 +8,6 @@ namespace ArangoDBNetStandard.DocumentApi
     /// <typeparam name="T"></typeparam>
     public class PostDocumentsResponse<T>: List<PostDocumentsDocumentResponse<T>>
     {
+
     }
 }

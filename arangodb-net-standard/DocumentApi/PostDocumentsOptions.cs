@@ -1,20 +1,38 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace ArangoDBNetStandard.DocumentApi
 {
+    /// <summary>
+    /// Options used when calling ArangoDB POST document endpoint.
+    /// </summary>
     public class PostDocumentsOptions
     {
         public bool? WaitForSync { get; set; }
 
+        /// <summary>
+        /// Whether to return a full copy of the new document.
+        /// </summary>
         public bool? ReturnNew { get; set; }
 
+        /// <summary>
+        /// Whether to return a full copy of the old document.
+        /// </summary>
         public bool? ReturnOld { get; set; }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
         public bool? Silent { get; set; }
 
+        /// <summary>
+        /// If a document already exists, whether to overwrite (replace) the document rather than respond with error.
+        /// </summary>
         public bool? Overwrite { get; set; }
 
+        /// <summary>
+        /// Get the set of options in a format suited to a URL query string.
+        /// </summary>
+        /// <returns></returns>
         public string ToQueryString()
         {
             List<string> query = new List<string>();
