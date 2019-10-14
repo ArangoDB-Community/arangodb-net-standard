@@ -20,9 +20,12 @@ namespace ArangoDBNetStandard
             {
                 var js = new JsonSerializer
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                     NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
                 };
+                if (useCamelCasePropertyNames)
+                {
+                    js.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                }
                 var searchResult = js.Deserialize<T>(jtr);
                 return searchResult;
             }
@@ -30,11 +33,15 @@ namespace ArangoDBNetStandard
 
         protected StringContent GetStringContent<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues)
         {
-            string json = JsonConvert.SerializeObject(item, new JsonSerializerSettings
+            var jsonSettings = new JsonSerializerSettings
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
-            });
+            };
+            if (useCamelCasePropertyNames)
+            {
+                jsonSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            }
+            string json = JsonConvert.SerializeObject(item, jsonSettings);
             return new StringContent(json);
         }
 
