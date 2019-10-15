@@ -7,7 +7,7 @@ namespace ArangoDBNetStandard.DocumentApi
     /// <summary>
     /// Base model for POST document responses.
     /// </summary>
-    public class PostDocumentResponseBase
+    public class DocumentBase
     {
         /// <summary>
         /// ArangoDB document key.

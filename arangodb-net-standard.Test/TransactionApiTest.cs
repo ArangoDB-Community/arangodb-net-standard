@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
+using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.TransactionApi;
 using Xunit;
 
@@ -37,7 +38,7 @@ namespace ArangoDBNetStandardTest
                      value = new[] { "world", "love" }
                 });
 
-            var result = await _adb.Transaction.PostTransactionAsync<List<PostDocumentResponse>>(new PostTransactionRequest
+            var result = await _adb.Transaction.PostTransactionAsync<List<DocumentBase>>(new PostTransactionRequest
             {
                 Action = @"
                     function (params) { 
@@ -63,8 +64,8 @@ namespace ArangoDBNetStandardTest
             var doc1 = await _adb.Document.GetDocumentAsync<dynamic>(result.Result[0]._id);
             var doc2 = await _adb.Document.GetDocumentAsync<dynamic>(result.Result[1]._id);
 
-            Assert.Equal("Hello, world", (string)doc1.Document.message);
-            Assert.Equal("Hello, love", (string)doc2.Document.message);
+            Assert.Equal("Hello, world", (string)doc1.message);
+            Assert.Equal("Hello, love", (string)doc2.message);
         }
 
         [Fact]

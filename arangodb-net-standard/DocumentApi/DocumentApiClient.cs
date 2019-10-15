@@ -114,13 +114,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// Replace a document.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="docId"></param>
+        /// <param name="documentId"></param>
         /// <param name="doc"></param>
         /// <param name="opts"></param>
         /// <returns></returns>
-        public async Task<PostDocumentResponse<T>> PutDocumentAsync<T>(string docId, T doc, PutDocumentsOptions opts = null)
+        public async Task<PostDocumentResponse<T>> PutDocumentAsync<T>(string documentId, T doc, PutDocumentsOptions opts = null)
         {
-            string uri = _docApiPath + "/" + docId;
+            ValidateDocumentId(documentId);
+            string uri = _docApiPath + "/" + documentId;
             if (opts != null)
             {
                 uri += "?" + opts.ToQueryString();
@@ -145,7 +146,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <returns></returns>
-        public async Task<DocumentResponse<T>> GetDocumentAsync<T>(string collectionName, string documentKey)
+        public async Task<T> GetDocumentAsync<T>(string collectionName, string documentKey)
         {
             return await GetDocumentAsync<T>($"{collectionName}/{documentKey}");
         }
@@ -156,19 +157,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
         /// <returns></returns>
-        public async Task<DocumentResponse<T>> GetDocumentAsync<T>(string documentId)
+        public async Task<T> GetDocumentAsync<T>(string documentId)
         {
-            if (documentId.Split('/').Length != 2)
-            {
-                throw new ArgumentException("A valid document ID has two parts, split by '/'. + " +
-                    "" + documentId + " is not a valid document ID. Maybe the document key was used by mistake?");
-            }
+            ValidateDocumentId(documentId);
             var response = await _client.GetAsync(_docApiPath + "/" + documentId);
             var stream = await response.Content.ReadAsStreamAsync();
             if (response.IsSuccessStatusCode)
             {
                 var document = DeserializeJsonFromStream<T>(stream);
-                return new DocumentResponse<T>(document);
+                return document;
             }
             var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
             throw new ApiErrorException(error);
@@ -192,11 +189,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public async Task<DeleteDocumentResponse> DeleteDocumentAsync(string documentId)
         {
-            if (documentId.Split('/').Length != 2)
-            {
-                throw new ArgumentException("A valid document ID has two parts, split by '/'. + " +
-                    "" + documentId + " is not a valid document ID. Maybe the document key was used by mistake?");
-            }
+            ValidateDocumentId(documentId);
             using (var response = await _client.DeleteAsync(_docApiPath + "/" + documentId))
             {
                 if (response.IsSuccessStatusCode)

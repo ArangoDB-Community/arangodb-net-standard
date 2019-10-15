@@ -10,7 +10,16 @@ namespace ArangoDBNetStandard
 {
     public abstract class ApiClientBase
     {
-        protected static T DeserializeJsonFromStream<T>(Stream stream, bool useCamelCasePropertyNames = false, bool ignoreNullValues = false)
+        protected void ValidateDocumentId(string documentId)
+        {
+            if (documentId.Split('/').Length != 2)
+            {
+                throw new ArgumentException("A valid document ID has two parts, split by '/'. + " +
+                    "" + documentId + " is not a valid document ID. Maybe the document key was used by mistake?");
+            }
+        }
+
+        protected T DeserializeJsonFromStream<T>(Stream stream, bool useCamelCasePropertyNames = false, bool ignoreNullValues = false)
         {
             if (stream == null || stream.CanRead == false)
                 return default(T);
