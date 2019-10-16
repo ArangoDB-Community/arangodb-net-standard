@@ -10,7 +10,7 @@ using Xunit;
 
 namespace ArangoDBNetStandardTest
 {
-    public class DocumentApiTest: ApiTestBase
+    public class DocumentApiTest : ApiTestBase
     {
         private DocumentApiClient _docClient;
         private ArangoDBClient _adb;
@@ -19,7 +19,7 @@ namespace ArangoDBNetStandardTest
         public DocumentApiTest()
         {
             CreateDatabase(_dbName);
-           
+
             _adb = GetArangoDBClient(_dbName);
             _docClient = _adb.Document;
             try
@@ -32,7 +32,7 @@ namespace ArangoDBNetStandardTest
                     .GetAwaiter()
                     .GetResult();
             }
-            catch(ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
+            catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
             {
                 // collection must exist already
                 Console.WriteLine(ex.Message);
@@ -42,7 +42,7 @@ namespace ArangoDBNetStandardTest
         [Fact]
         public async Task PostDocument_ShouldSucceed()
         {
-            Dictionary<string, object> document = new Dictionary<string, object>{ ["key"] = "value" };
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
             var response = await _docClient.PostDocumentAsync("TestCollection", document);
             Assert.False(string.IsNullOrWhiteSpace(response._id));
             Assert.False(string.IsNullOrWhiteSpace(response._key));
@@ -131,12 +131,64 @@ namespace ArangoDBNetStandardTest
             var response = await _docClient.PostDocumentAsync("TestCollection", doc1);
 
             var updateResponse = await _docClient.PutDocumentAsync(
-                response._id, 
+                response._id,
                 new { stuff = "new" });
 
             Assert.NotNull(response._rev);
             Assert.NotNull(updateResponse._rev);
             Assert.NotEqual(response._rev, updateResponse._rev);
+        }
+
+        [Fact]
+        public async Task PutDocument_ShouldSucceed_WhenNewDocumentIsReturned()
+        {
+            var doc1 = new { _key = "test", stuff = "test" };
+            var response = await _docClient.PostDocumentAsync("TestCollection", doc1);
+
+            var updateResponse = await _docClient.PutDocumentAsync(
+                response._id,
+                new { stuff = "new" },
+                new PutDocumentsOptions
+                {
+                    ReturnNew = true
+                });
+
+            Assert.NotNull(response._rev);
+            Assert.NotNull(updateResponse._rev);
+            Assert.NotEqual(response._rev, updateResponse._rev);
+
+            Assert.NotNull(updateResponse.New);
+        }
+
+        [Fact]
+        public async Task PutDocument_ShouldThrow_WhenConflictingWriteAttempted_WithIgnoreRevsOptionFalse()
+        {
+            var doc1 = new { _key = "test", stuff = "test" };
+            var response = await _docClient.PostDocumentAsync("TestCollection", doc1);
+
+            var updateResponse1 = await _docClient.PutDocumentAsync(
+                response._id,
+                new { stuff = "new" },
+                new PutDocumentsOptions
+                {
+                    ReturnNew = true
+                });
+
+            Assert.NotNull(response._rev);
+            Assert.NotNull(updateResponse1._rev);
+            Assert.NotEqual(response._rev, updateResponse1._rev);
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _docClient.PutDocumentAsync(
+                    response._id,
+                    // Use the initial rev value when updating, is out of sync
+                    new { stuff = "more", response._rev },
+                    new PutDocumentsOptions
+                    {
+                        IgnoreRevs = false
+                    }));
+
+            Assert.Equal(1200, ex.ApiError.ErrorNum); // 1200: ERROR_ARANGO_CONFLICT
         }
 
         [Fact]
@@ -162,6 +214,26 @@ namespace ArangoDBNetStandardTest
             Assert.NotNull(response[1]._rev);
             Assert.NotNull(updateResponse[1]._rev);
             Assert.NotEqual(response[1]._rev, updateResponse[1]._rev);
+        }
+
+        [Fact]
+        public async Task PutDocuments_ShouldNotThrowButReturnError_WhenDocumentIsNotFound()
+        {
+            var response = await _docClient.PostDocumentsAsync("TestCollection",
+                new[] {
+                    new { value = 1 },
+                    new { value = 2 }
+                });
+
+            var updateResponse = await _docClient.PutDocumentsAsync("TestCollection",
+                new[]
+                {
+                    new { _key = "nonsense", value = 3 },
+                    new { response[1]._key, value = 4 }
+                });
+
+            Assert.True(updateResponse[0].Error);
+            Assert.Equal(1202, updateResponse[0].ErrorNum);
         }
     }
 }
