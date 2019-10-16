@@ -8,19 +8,21 @@ using System.Text;
 
 namespace ArangoDBNetStandardTest
 {
-    public abstract class ApiTestBase: IDisposable
+    public abstract class ApiClientTestFixtureBase: IDisposable
     {
         private List<string> _databases = new List<string>();
 
-        private List<HttpClient> _clients = new List<HttpClient>(); 
+        private List<HttpApiTransport> _transports = new List<HttpApiTransport>(); 
 
         protected HttpApiTransport GetHttpTransport(string dbName)
         {
-            return new HttpApiTransport(
+            var transport = new HttpApiTransport(
                 new Uri("http://localhost:8529/"),
                 dbName,
                 "root",
                 "root");
+            _transports.Add(transport);
+            return transport;
         }
 
         protected ArangoDBClient GetArangoDBClient(string dbName)
@@ -64,7 +66,7 @@ namespace ArangoDBNetStandardTest
             }
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             foreach(var dbName in _databases)
             {
@@ -78,11 +80,11 @@ namespace ArangoDBNetStandardTest
                     continue;
                 }
             }
-            foreach(var client in _clients)
+            foreach(var transport in _transports)
             {
                 try
                 {
-                    client.Dispose();
+                    transport.Dispose();
                 }
                 catch (ObjectDisposedException)
                 {

@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using ArangoDBNetStandard;
+using ArangoDBNetStandard.CollectionApi;
+
+namespace ArangoDBNetStandardTest.DocumentApi
+{
+    public class DocumentApiClientTestFixture: ApiClientTestFixtureBase
+    {
+        public ArangoDBClient ArangoDBClient { get; private set; }
+
+        public string TestCollection { get; } = "TestCollection";
+
+        public DocumentApiClientTestFixture()
+        {
+            string dbName = nameof(DocumentApiClientTest);
+            CreateDatabase(dbName);
+
+            ArangoDBClient = GetArangoDBClient(dbName);
+
+            try
+            {
+                var response = ArangoDBClient.Collection.PostCollectionAsync(
+                    new PostCollectionOptions
+                    {
+                        Name = TestCollection
+                    })
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
+            {
+                // The collection must exist already, carry on...
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
+}

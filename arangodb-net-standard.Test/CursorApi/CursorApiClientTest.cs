@@ -9,11 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ArangoDBNetStandardTest
+namespace ArangoDBNetStandardTest.CursorApi
 {
-    public class CursorApiTest : ApiTestBase
+    public class CursorApiClientTest : IClassFixture<CursorApiClientTestFixture>
     {
-        private readonly string _dbName = nameof(CursorApiTest);
+        private readonly string _dbName = nameof(CursorApiClientTest);
         private CursorApiClient _cursorApi;
 
         public class MyModel
@@ -21,10 +21,9 @@ namespace ArangoDBNetStandardTest
             public string MyProperty { get; set; }
         }
 
-        public CursorApiTest()
+        public CursorApiClientTest(CursorApiClientTestFixture fixture)
         {
-            CreateDatabase(_dbName);
-            _cursorApi = GetArangoDBClient(_dbName).Cursor;
+            _cursorApi = fixture.ArangoDBClient.Cursor;
         }
         
         [Fact]

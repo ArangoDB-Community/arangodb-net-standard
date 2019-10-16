@@ -1,31 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
-using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.TransactionApi;
 using Xunit;
 
-namespace ArangoDBNetStandardTest
+namespace ArangoDBNetStandardTest.TransactionApi
 {
-    public class TransactionApiTest: ApiTestBase
+    public class TransactionApiClientTest: IClassFixture<TransactionApiClientTestFixture>
     {
-        private string _dbName = nameof(TransactionApiTest);
         private ArangoDBClient _adb;
 
-        public TransactionApiTest()
+        public TransactionApiClientTest(TransactionApiClientTestFixture fixture)
         {
-            CreateDatabase(_dbName);
-            _adb = GetArangoDBClient(_dbName);
-            Task.WaitAll(
-                _adb.Collection.PostCollectionAsync(new PostCollectionOptions
-                {
-                    Name = "TestCollection1"
-                }),
-                _adb.Collection.PostCollectionAsync(new PostCollectionOptions
-                {
-                    Name = "TestCollection2"
-                }));
+            _adb = fixture.ArangoDBClient;
+            _adb.Collection.PutCollectionTruncateAsync(fixture.TestCollection1).Wait();
+            _adb.Collection.PutCollectionTruncateAsync(fixture.TestCollection2).Wait();
         }
 
         [Fact]

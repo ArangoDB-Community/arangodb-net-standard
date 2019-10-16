@@ -43,5 +43,15 @@ namespace ArangoDBNetStandard.CollectionApi
             var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
             throw new ApiErrorException(error);
         }
+
+        public async Task PutCollectionTruncateAsync(string collectionName)
+        {
+            var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/truncate", null);
+            if (response.IsSuccessStatusCode)
+            {
+                return;
+            }
+            await HandleApiError(response);
+        }
     }
 }

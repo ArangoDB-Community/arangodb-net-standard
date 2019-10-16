@@ -8,9 +8,9 @@ using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.DocumentApi;
 using Xunit;
 
-namespace ArangoDBNetStandardTest
+namespace ArangoDBNetStandardTest.DocumentApi
 {
-    public class DocumentApiTest : ApiTestBase
+    public class DocumentApiClientTest : IClassFixture<DocumentApiClientTestFixture>
     {
         /// <summary>
         /// Class used for testing document API.
@@ -24,29 +24,16 @@ namespace ArangoDBNetStandardTest
 
         private DocumentApiClient _docClient;
         private ArangoDBClient _adb;
-        private readonly string _dbName = nameof(DocumentApiTest);
 
-        public DocumentApiTest()
+        public DocumentApiClientTest(DocumentApiClientTestFixture fixture)
         {
-            CreateDatabase(_dbName);
-
-            _adb = GetArangoDBClient(_dbName);
+            _adb = fixture.ArangoDBClient;
             _docClient = _adb.Document;
-            try
-            {
-                var response = _adb.Collection.PostCollectionAsync(
-                    new PostCollectionOptions
-                    {
-                        Name = "TestCollection"
-                    })
-                    .GetAwaiter()
-                    .GetResult();
-            }
-            catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
-            {
-                // collection must exist already
-                Console.WriteLine(ex.Message);
-            }
+
+            // Truncate TestCollection before each test
+            _adb.Collection.PutCollectionTruncateAsync(fixture.TestCollection)
+                .GetAwaiter()
+                .GetResult();
         }
 
         [Fact]

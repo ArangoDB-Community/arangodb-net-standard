@@ -1,15 +1,24 @@
-﻿using Newtonsoft.Json;
+﻿using ArangoDBNetStandard.Transport;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard
 {
     public abstract class ApiClientBase
     {
+        protected async Task HandleApiError(IApiClientResponse response)
+        {
+            var stream = await response.Content.ReadAsStreamAsync();
+            var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
+            throw new ApiErrorException(error);
+        }
+
         protected void ValidateDocumentId(string documentId)
         {
             if (documentId.Split('/').Length != 2)
