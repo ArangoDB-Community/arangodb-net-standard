@@ -12,6 +12,8 @@ namespace ArangoDBNetStandardTest
 {
     public class DocumentApiTest : ApiTestBase
     {
+        private static readonly int NOT_FOUND_NUM = 1202;
+
         private DocumentApiClient _docClient;
         private ArangoDBClient _adb;
         private readonly string _dbName = nameof(DocumentApiTest);
@@ -37,6 +39,35 @@ namespace ArangoDBNetStandardTest
                 // collection must exist already
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        [Fact]
+        public async Task DeleteDocument_ShouldSucceed()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
+            var response = await _docClient.PostDocumentAsync("TestCollection", document);
+            Assert.NotNull(response._id);
+
+            var deleteResponse = await _docClient.DeleteDocumentAsync(response._id);
+            Assert.True(deleteResponse.StatusCode >= 200 && deleteResponse.StatusCode < 300);
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _docClient.GetDocumentAsync<object>(response._id));
+
+            Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found
+        }
+
+        [Fact]
+        public async Task DeleteDocument_ShouldThrow_WhenDocumentNotFound()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
+            var response = await _docClient.PostDocumentAsync("TestCollection", document);
+            Assert.NotNull(response._id);
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _docClient.DeleteDocumentAsync("TestCollection/abc123"));
+
+            Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -233,7 +264,7 @@ namespace ArangoDBNetStandardTest
                 });
 
             Assert.True(updateResponse[0].Error);
-            Assert.Equal(1202, updateResponse[0].ErrorNum);
+            Assert.Equal(NOT_FOUND_NUM, updateResponse[0].ErrorNum);
         }
     }
 }
