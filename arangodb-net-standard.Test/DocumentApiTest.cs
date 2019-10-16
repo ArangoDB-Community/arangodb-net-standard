@@ -12,6 +12,14 @@ namespace ArangoDBNetStandardTest
 {
     public class DocumentApiTest : ApiTestBase
     {
+        /// <summary>
+        /// Class used for testing document API.
+        /// </summary>
+        public class MyTestClass: DocumentBase
+        {
+            public string Message { get; set; }
+        }
+
         private static readonly int NOT_FOUND_NUM = 1202;
 
         private DocumentApiClient _docClient;
@@ -68,6 +76,43 @@ namespace ArangoDBNetStandardTest
                 await _docClient.DeleteDocumentAsync("TestCollection/abc123"));
 
             Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum);
+        }
+
+        [Fact]
+        public async Task DeleteDocument_ShouldThrow_WhenDocumentIdNotValid()
+        {
+            await Assert.ThrowsAsync<ArgumentException>(async () =>
+                await _docClient.DeleteDocumentAsync("NotAValidID"));
+        }
+
+        [Fact]
+        public async Task GetDocument_ShouldSucceed()
+        {
+            var document = new Dictionary<string, object> { ["Message"] = "value" };
+            var response = await _docClient.PostDocumentAsync("TestCollection", document);
+            Assert.NotNull(response._id);
+
+            var newDoc = await _docClient.GetDocumentAsync<MyTestClass>(response._id);
+
+            Assert.NotNull(response._rev);
+            Assert.Equal(response._rev, newDoc._rev);
+            Assert.Equal("value", newDoc.Message);
+        }
+
+        [Fact]
+        public async Task GetDocument_ShouldThrow_WhenDocumentDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _docClient.GetDocumentAsync<object>("TestCollection/123"));
+
+            Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum);
+        }
+
+        [Fact]
+        public async Task GetDocument_ShouldThrow_WhenDocumentIdNotValid()
+        {
+            await Assert.ThrowsAsync<ArgumentException>(async () =>
+               await _docClient.GetDocumentAsync<object>("123"));
         }
 
         [Fact]
