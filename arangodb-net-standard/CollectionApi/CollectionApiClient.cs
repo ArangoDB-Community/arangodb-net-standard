@@ -51,7 +51,7 @@ namespace ArangoDBNetStandard.CollectionApi
             {
                 return;
             }
-            await HandleApiError(response);
+            await GetApiErrorException(response);
         }
     }
 }

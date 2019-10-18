@@ -12,11 +12,11 @@ namespace ArangoDBNetStandard
 {
     public abstract class ApiClientBase
     {
-        protected async Task HandleApiError(IApiClientResponse response)
+        protected async Task<ApiErrorException> GetApiErrorException(IApiClientResponse response)
         {
             var stream = await response.Content.ReadAsStreamAsync();
             var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
-            throw new ApiErrorException(error);
+            return new ApiErrorException(error);
         }
 
         protected void ValidateDocumentId(string documentId)
@@ -31,7 +31,9 @@ namespace ArangoDBNetStandard
         protected T DeserializeJsonFromStream<T>(Stream stream, bool useCamelCasePropertyNames = false, bool ignoreNullValues = false)
         {
             if (stream == null || stream.CanRead == false)
+            {
                 return default(T);
+            }
 
             using (var sr = new StreamReader(stream))
             using (var jtr = new JsonTextReader(sr))

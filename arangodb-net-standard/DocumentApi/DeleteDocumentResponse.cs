@@ -2,13 +2,8 @@
 
 namespace ArangoDBNetStandard.DocumentApi
 {
-    public class DeleteDocumentResponse
+    public class DeleteDocumentResponse<T>: DocumentBase
     {
-        public int StatusCode { get; private set; }
-
-        public DeleteDocumentResponse(int statusCode)
-        {
-            this.StatusCode = statusCode;
-        }
+        public T Old { get; set; }
     }
 }

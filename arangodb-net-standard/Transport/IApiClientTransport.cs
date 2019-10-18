@@ -27,6 +27,14 @@ namespace ArangoDBNetStandard.Transport
         Task<IApiClientResponse> DeleteAsync(string requestUri);
 
         /// <summary>
+        /// Send a DELETE request with body content.
+        /// </summary>
+        /// <param name="requestUri"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        Task<IApiClientResponse> DeleteAsync(string requestUri, StringContent content);
+
+        /// <summary>
         /// Send a PUT request.
         /// </summary>
         /// <param name="requestUri"></param>

@@ -65,6 +65,22 @@ namespace ArangoDBNetStandard.Transport.Http
         }
 
         /// <summary>
+        /// Send a DELETE request with body content using <see cref="HttpClient"/>.
+        /// </summary>
+        /// <param name="requestUri"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task<IApiClientResponse> DeleteAsync(string requestUri, StringContent content)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, requestUri)
+            {
+                Content = content
+            };
+            var response = await _client.SendAsync(request);
+            return new HttpApiClientResponse(response);
+        }
+
+        /// <summary>
         /// Sends a POST request using <see cref="HttpClient"/>.
         /// </summary>
         /// <param name="requestUri"></param>

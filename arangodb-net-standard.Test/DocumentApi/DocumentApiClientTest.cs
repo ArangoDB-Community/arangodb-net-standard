@@ -15,7 +15,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         /// <summary>
         /// Class used for testing document API.
         /// </summary>
-        public class MyTestClass: DocumentBase
+        public class MyTestClass : DocumentBase
         {
             public string Message { get; set; }
         }
@@ -44,7 +44,33 @@ namespace ArangoDBNetStandardTest.DocumentApi
             Assert.NotNull(response._id);
 
             var deleteResponse = await _docClient.DeleteDocumentAsync(response._id);
-            Assert.True(deleteResponse.StatusCode >= 200 && deleteResponse.StatusCode < 300);
+            Assert.Null(deleteResponse.Old); // we didn't request `Old` so it should be null
+            Assert.Equal(response._id, deleteResponse._id);
+            Assert.Equal(response._key, deleteResponse._key);
+            Assert.Equal(response._rev, deleteResponse._rev);
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _docClient.GetDocumentAsync<object>(response._id));
+
+            Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found
+        }
+
+        [Fact]
+        public async Task DeleteDocument_ShouldSucceed_WhenOldDocumentOptionIsRequested()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["Message"] = "Hello" };
+            var response = await _docClient.PostDocumentAsync("TestCollection", document);
+            Assert.NotNull(response._id);
+
+            var deleteResponse = await _docClient.DeleteDocumentAsync<MyTestClass>(response._id, new DeleteDocumentsOptions
+            {
+                ReturnOld = true
+            });
+            Assert.NotNull(deleteResponse.Old); // we requested `Old`, it should not be null
+            Assert.Equal(response._id, deleteResponse._id);
+            Assert.Equal(response._key, deleteResponse._key);
+            Assert.Equal(response._rev, deleteResponse._rev);
+            Assert.Equal("Hello", deleteResponse.Old.Message);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
                 await _docClient.GetDocumentAsync<object>(response._id));
@@ -70,6 +96,142 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             await Assert.ThrowsAsync<ArgumentException>(async () =>
                 await _docClient.DeleteDocumentAsync("NotAValidID"));
+        }
+
+        [Fact]
+        public async Task DeleteDocuments_ShouldSucceed()
+        {
+            var docs = new[] {
+                new Dictionary<string, object> { ["Message"] = "first" },
+                new Dictionary<string, object> { ["Message"] = "second" }
+            }
+            .Select(item => _docClient.PostDocumentAsync("TestCollection", item).GetAwaiter().GetResult())
+            .ToList();
+
+            Assert.Collection(docs, 
+                (item) => Assert.NotNull(item._id),
+                (item) => Assert.NotNull(item._id));
+
+            var response = await _docClient.DeleteDocumentsAsync("TestCollection", docs.Select(d => d._id).ToList());
+            Assert.Collection(response, 
+                (item) => Assert.NotNull(item._id),
+                (item) => Assert.NotNull(item._id));
+
+            // Should get "not found" for deleted docs
+            Assert.Collection(docs,
+                async (item) =>
+                {
+                    var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                        await _docClient.GetDocumentAsync<object>(item._id));
+
+                    Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
+                },
+                async (item) =>
+                {
+                    var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                        await _docClient.GetDocumentAsync<object>(item._id));
+
+                    Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
+                });
+        }
+
+        [Fact]
+        public async Task DeleteDocuments_ShouldSucceed_WhenOldDocumentOptionIsSelected()
+        {
+            var docs = new[] {
+                new Dictionary<string, object> { ["Message"] = "first" },
+                new Dictionary<string, object> { ["Message"] = "second" }
+            }
+            .Select(item => _docClient.PostDocumentAsync("TestCollection", item).GetAwaiter().GetResult())
+            .ToList();
+
+            Assert.Collection(docs,
+                (item) => Assert.NotNull(item._id),
+                (item) => Assert.NotNull(item._id));
+
+            var response = await _docClient.DeleteDocumentsAsync<MyTestClass>(
+                "TestCollection",
+                docs.Select(d => d._id).ToList(),
+                new DeleteDocumentsOptions
+                {
+                    ReturnOld = true
+                });
+
+            Assert.Collection(response,
+                (item) =>
+                {
+                    Assert.NotNull(item._id);
+                    Assert.NotNull(item.Old);
+                    Assert.Equal("first", item.Old.Message);
+                },
+                (item) =>
+                {
+                    Assert.NotNull(item._id);
+                    Assert.NotNull(item.Old);
+                    Assert.Equal("second", item.Old.Message);
+                });
+
+            // Should get "not found" for deleted docs
+            Assert.Collection(docs,
+                async (item) =>
+                {
+                    var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                        await _docClient.GetDocumentAsync<object>(item._id));
+
+                    Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
+                },
+                async (item) =>
+                {
+                    var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                        await _docClient.GetDocumentAsync<object>(item._id));
+
+                    Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
+                });
+        }
+
+        [Fact]
+        public async Task DeleteDocuments_ShouldNotThrowButReportFailure_WhenSomeDocumentSelectorsAreInvalid()
+        {
+            var docs = new[] {
+                new Dictionary<string, object> { ["Message"] = "first" },
+                new Dictionary<string, object> { ["Message"] = "second" }
+            }
+            .Select(item => _docClient.PostDocumentAsync("TestCollection", item).GetAwaiter().GetResult())
+            .ToList();
+
+            Assert.Collection(docs,
+                (item) => Assert.NotNull(item._id),
+                (item) => Assert.NotNull(item._id));
+
+            var ids = docs.Select(d => d._id).ToList();
+            ids[1] = "nonsense";
+
+            var response = await _docClient.DeleteDocumentsAsync("TestCollection", ids);
+            Assert.Collection(response,
+                // First result succeeds
+                (item) => Assert.NotNull(item._id),
+                // Second result fails with NOT_FOUND error
+                (item) => {
+                    Assert.Null(item._id);
+                    Assert.True(item.Error);
+                    Assert.Equal(NOT_FOUND_NUM, item.ErrorNum);
+                });
+
+            // Should get "not found" for deleted docs
+            Assert.Collection(docs,
+                async (item) =>
+                {
+                    var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                        await _docClient.GetDocumentAsync<object>(item._id));
+
+                    Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
+                },
+                async (item) =>
+                {
+                    var doc = await _docClient.GetDocumentAsync<MyTestClass>(item._id);
+
+                    Assert.Equal("second", doc.Message); // document is found, it was not deleted
+                });
         }
 
         [Fact]
