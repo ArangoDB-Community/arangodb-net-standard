@@ -3,6 +3,9 @@ jobs:
   build:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+      - image: arangodb:3.4.8
+        environment:
+          ARANGO_ROOT_PASSWORD: root
     steps:
       - checkout
       - run:
