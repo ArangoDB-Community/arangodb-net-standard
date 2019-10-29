@@ -1,12 +1,14 @@
 # arangodb-net-standard: The C#/.NET Standard API driver for ArangoDB.
 
-## Project summary
+[![CircleCI](https://circleci.com/gh/Actify-Inc/arangodb-net-standard.svg?style=svg)](https://circleci.com/gh/Actify-Inc/arangodb-net-standard)
 
-arangodb-net-standard is a consistent, comprehensive, minimal interface to enable .NET applications to use the complete range of features exposed by the ArangoDB REST API.
+## Summary
 
-The arangodb-net-standard library does not aim to provide much in the way of abstraction on top of the individual REST API functions offered by ArangoDB but it does aim to provide comprehensive coverage of all of the available options for each of ArangoDB's REST API endpoints.
+`arangodb-net-standard` is a consistent, comprehensive, minimal driver for the [ArangoDB REST API](https://www.arangodb.com/docs/stable/http/). Built using .NET Standard 2.0, the library provides .NET Core and .NET Framework applications with the complete range of features exposed by the ArangoDB REST API.
 
-The driver is built using the standard [HttpClient](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=netstandard-2.0) interface for making HTTP requests, along with `Json.NET` for (de)serialisation to/from CLI types.
+The library does not aim to provide much in the way of abstraction on top of the individual REST API functions offered by ArangoDB but it does aim to provide comprehensive coverage of all of the available options for each of ArangoDB's REST API endpoints.
+
+The driver is built using the standard [HttpClient](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=netstandard-2.0) interface for making HTTP requests, along with [Json.NET](https://www.newtonsoft.com/json) for (de)serialisation to/from CLI types.
 
 In addition the library provides:
 
@@ -14,35 +16,38 @@ In addition the library provides:
 - Adherence to common-practice C# naming conventions
 - Consistent approach for each API endpoint
 
+## Contributing
+
+We welcome any contributions from the wider ArangoDB community. See the [roadmap document](project/roadmap.md) to get an idea of what still needs done. 
+
+Please discuss via issue, email, or any other method with the owners of this repository before working on something so we can keep everyone on the right track.
+
 ## Usage
 
-The arangodb-net-standard client is split into individual classes for each REST API entity.  For example, `DocumentApiClient`, `CollectionApiClient`, etc.  
+The library  is split into individual classes for each REST API entity.  For example, `DocumentApiClient`, `CollectionApiClient`, etc.  
 
-Each API client class can be instantiated by passing an instance of `HttpClient`. For use in server applications it is recommended to use the same instance of `HttpClient` for all interactions with an ArangoDB server. In other contexts, you may wish to dispose the client after each operation or set of operations.
+Each API client class can be instantiated by passing an instance of `IApiClientTransport`. A concrete implementation of this interface is provided, `HttpApiTransport`, which acts as a facade over an instance of `HttpClient`. It is recommended to use a single instance of `HttpApiTransport` in your application in accordance with [the documentation](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=netframework-4.8#remarks) for `HttpClient`.
 
-An instance of `HttpClient` can be set up with appropriate base path and basic auth credentials as follows:
+An instance of `HttpApiTransport` can be created with appropriate base path and basic auth credentials as follows:
 
 ```csharp
-var httpClient = new HttpClient();
-httpClient.BaseAddress = new Uri("http://localhost:8529/_db/" + dbName +"/");
-httpClient.DefaultRequestHeaders.Authorization =
-    new System.Net.Http.Headers.AuthenticationHeaderValue(
-        "Basic",
-        Convert.ToBase64String(Encoding.ASCII.GetBytes("root:root")));
+var transport = new HttpApiTransport(
+    new Uri("http://localhost:8529/"),
+    dbName,
+    "root",
+    "root");
 ```
 
-Note the trailing `/` on the Base address - it's important! Without this, relative API paths used by the library won't work.
-
-Once you have an instance of `HttpClient`, you can instantiate an individual Api client class, e.g.
+Once you have an instance of `HttpApiTransport`, you can instantiate an individual API client class, e.g.
 
 ```csharp
-var documentClient = new DocumentApiClient(httpClient);
+var documentClient = new DocumentApiClient(httpTransport);
 ```
 
 The library also offers a composite class which exposes all of the different clients, used as follows:
 
 ```csharp
-var adb = new ArangoDBClient(httpClient);
+var adb = new ArangoDBClient(httpTransport);
 ```
 
 With an instance of `ArangoDBClient` you can access instances of the individual client classes as properties, such as:
