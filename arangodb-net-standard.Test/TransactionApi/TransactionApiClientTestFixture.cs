@@ -21,11 +21,11 @@ namespace ArangoDBNetStandardTest.TransactionApi
             CreateDatabase(dbName);
             ArangoDBClient = GetArangoDBClient(dbName);
             Task.WaitAll(
-                ArangoDBClient.Collection.PostCollectionAsync(new PostCollectionOptions
+                ArangoDBClient.Collection.PostCollectionAsync(new PostCollectionRequest
                 {
                     Name = TestCollection1
                 }),
-                ArangoDBClient.Collection.PostCollectionAsync(new PostCollectionOptions
+                ArangoDBClient.Collection.PostCollectionAsync(new PostCollectionRequest
                 {
                     Name = TestCollection2
                 }));
