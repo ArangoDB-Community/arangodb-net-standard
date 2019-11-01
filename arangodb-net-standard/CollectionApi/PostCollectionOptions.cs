@@ -1,35 +1,39 @@
-﻿namespace ArangoDBNetStandard.CollectionApi
+﻿using System.Collections.Generic;
+
+namespace ArangoDBNetStandard.CollectionApi
 {
     public class PostCollectionOptions
     {
-        public string DistributeShardsLike { get; set; }
+        /// <summary>
+        /// Default is true which means the server will only report success back to the
+        /// client if all replicas have created the collection. Set to false if you want
+        /// faster server responses and don’t care about full replication.
+        /// </summary>
+        public bool? WaitForSyncReplication { get; set; }
 
-        public bool? DoCompact { get; set; }
+        /// <summary>
+        /// Default is true which means the server will check if there are enough replicas
+        /// available at creation time and bail out otherwise. Set to false to disable
+        /// this extra check.
+        /// </summary>
+        public bool? EnforceReplicationFactor { get; set; }
 
-        public int? IndexBuckets { get; set; }
-
-        public bool? IsSystem { get; set; }
-
-        public bool? IsVolatile { get; set; }
-
-        public long? JournalSize { get; set; }
-
-        public CollectionKeyOptions KeyOptions { get; set; }
-
-        public string Name { get; set; }
-
-        public int? NumberOfShards { get; set; }
-
-        public int? ReplicationFactor { get; set; }
-
-        public string ShardKeys { get; set; }
-
-        public string ShardingStrategy { get; set; }
-
-        public string SmartJoinAttribute { get; set; }
-
-        public int? Type { get; set; }
-
-        public bool? WaitForSync { get; set; }
+        /// <summary>
+        /// Get the set of options in a format suited to a URL query string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToQueryString()
+        {
+            List<string> query = new List<string>();
+            if (WaitForSyncReplication != null)
+            {
+                query.Add("waitForSyncReplication=" + (WaitForSyncReplication.Value ? 1 : 0));
+            }
+            if (EnforceReplicationFactor != null)
+            {
+                query.Add("enforceReplicationFactor=" + (EnforceReplicationFactor.Value ? 1 : 0));
+            }
+            return string.Join("&", query);
+        }
     }
 }

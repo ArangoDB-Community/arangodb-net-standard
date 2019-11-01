@@ -17,9 +17,14 @@ namespace ArangoDBNetStandard.CollectionApi
             _transport = transport;
         }
 
-        public async Task<PostCollectionResponse> PostCollectionAsync(PostCollectionOptions options)
+        public async Task<PostCollectionResponse> PostCollectionAsync(PostCollectionRequest request, PostCollectionOptions options = null)
         {
-            StringContent content = GetStringContent(options, true, true);
+            string uriString = _collectionApiPath;
+            if (options != null)
+            {
+                uriString += "?" + options.ToQueryString();
+            }
+            StringContent content = GetStringContent(request, true, true);
             using (var response = await _transport.PostAsync(_collectionApiPath, content))
             {
                 var stream = await response.Content.ReadAsStreamAsync();
