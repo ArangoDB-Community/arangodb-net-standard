@@ -10,7 +10,7 @@
 
         public string ErrorMessage { get; set; }
 
-        public int ErrorNum { get; set; }
+        public ErrorCode ErrorNum { get; set; }
 
         public int Code { get; set; }
     }

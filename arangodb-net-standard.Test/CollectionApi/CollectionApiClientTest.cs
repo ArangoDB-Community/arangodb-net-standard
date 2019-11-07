@@ -87,7 +87,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             {
                 await _collectionApi.PostCollectionAsync(request);
             });
-            Assert.Equal(1207, ex.ApiError.ErrorNum);
+            Assert.Equal(ErrorCode.ARANGO_DUPLICATE_NAME, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             {
                 await _collectionApi.PostCollectionAsync(request);
             });
-            Assert.Equal(1208, ex.ApiError.ErrorNum);
+            Assert.Equal(ErrorCode.ARANGO_ILLEGAL_NAME, ex.ApiError.ErrorNum);
         }
     }
 }

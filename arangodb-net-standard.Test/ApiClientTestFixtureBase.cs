@@ -54,7 +54,7 @@ namespace ArangoDBNetStandardTest
                         Name = dbName
                     }).GetAwaiter().GetResult();
                 }
-                catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
+                catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == ErrorCode.ARANGO_DUPLICATE_NAME)
                 {
                     // database must exist already
                     Console.WriteLine(ex.Message);

@@ -23,7 +23,7 @@ namespace ArangoDBNetStandard
         /// ArangoDB error number.
         /// See https://www.arangodb.com/docs/stable/appendix-error-codes.html for error numbers and descriptions.
         /// </summary>
-        public int ErrorNum { get; set; }
+        public ErrorCode ErrorNum { get; set; }
 
         /// <summary>
         /// HTTP status code.

@@ -46,7 +46,7 @@ namespace ArangoDBNetStandardTest.CursorApi
             });
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
-            Assert.Equal(1203, ex.ApiError.ErrorNum);
+            Assert.Equal(ErrorCode.ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 await _cursorApi.PutCursorAsync<long>("nada"));
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
-            Assert.Equal(1600, ex.ApiError.ErrorNum);
+            Assert.Equal(ErrorCode.CURSOR_NOT_FOUND, ex.ApiError.ErrorNum);
             Assert.Equal(404, ex.ApiError.Code);
         }
 
@@ -92,7 +92,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 await _cursorApi.DeleteCursorAsync("nada"));
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
-            Assert.Equal(1600, ex.ApiError.ErrorNum);
+            Assert.Equal(ErrorCode.CURSOR_NOT_FOUND, ex.ApiError.ErrorNum);
             Assert.Equal(404, ex.ApiError.Code);
         }
 

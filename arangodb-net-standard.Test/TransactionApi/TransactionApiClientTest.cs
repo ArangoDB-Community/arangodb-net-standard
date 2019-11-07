@@ -70,7 +70,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
                         Write = new[] { "test" }
                     }
                 }));
-            Assert.Equal(10, ex.ApiError.ErrorNum);
+            Assert.Equal(ErrorCode.BAD_PARAMETER, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
                 {
                     Action = "function (params) { console.log('This is a test'); }"
                 }));
-            Assert.Equal(10, ex.ApiError.ErrorNum);
+            Assert.Equal(ErrorCode.BAD_PARAMETER, ex.ApiError.ErrorNum);
         }
     }
 }

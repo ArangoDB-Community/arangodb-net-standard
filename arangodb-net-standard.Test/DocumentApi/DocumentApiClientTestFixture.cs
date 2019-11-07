@@ -29,7 +29,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     .GetAwaiter()
                     .GetResult();
             }
-            catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
+            catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == ErrorCode.ARANGO_DUPLICATE_NAME)
             {
                 // The collection must exist already, carry on...
                 Console.WriteLine(ex.Message);
