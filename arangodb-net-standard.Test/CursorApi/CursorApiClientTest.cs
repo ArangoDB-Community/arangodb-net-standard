@@ -4,6 +4,7 @@ using ArangoDBNetStandard.DatabaseApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -82,7 +83,7 @@ namespace ArangoDBNetStandardTest.CursorApi
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1600, ex.ApiError.ErrorNum);
-            Assert.Equal(404, ex.ApiError.Code);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
         }
 
         [Fact]
@@ -93,7 +94,7 @@ namespace ArangoDBNetStandardTest.CursorApi
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1600, ex.ApiError.ErrorNum);
-            Assert.Equal(404, ex.ApiError.Code);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
         }
 
         [Fact]
