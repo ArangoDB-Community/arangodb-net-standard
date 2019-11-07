@@ -230,7 +230,31 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
-            Assert.NotNull(collectionExists);
+            Assert.NotNull(collectionExists);            
+        }
+
+        [Fact]
+        public async Task GetCollectionAsync_ShouldSucceed()
+        {
+            await GenerateCollections(new string[] { "MyTempCollection" });
+
+            var collection = await _collectionApi.GetCollectionAsync(new GetCollectionOptions { CollectionName = "MyTempCollection" });
+
+            Assert.Equal("MyTempCollection", collection.Name);
+
+            await _collectionApi.DeleteCollectionAsync("MyTempCollection");
+        }
+
+        private async Task GenerateCollections(string[] collectionNames)
+        {
+            foreach (var collection in collectionNames)
+            {
+                await _collectionApi.PostCollectionAsync(new PostCollectionRequest
+                {
+                    Name = collection,
+                    Type = 3
+                });
+            }
         }
     }
 }
