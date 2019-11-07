@@ -1,10 +1,12 @@
-﻿namespace ArangoDBNetStandard.CollectionApi
+﻿using System.Net;
+
+namespace ArangoDBNetStandard.CollectionApi
 {
     public class PostCollectionResponse
     {
         public bool Error { get; set; }
 
-        public int Code { get; set; }
+        public HttpStatusCode Code { get; set; }
 
         public bool WaitForSync { get; set; }
 

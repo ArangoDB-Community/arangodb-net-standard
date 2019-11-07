@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
+using System.Threading.Tasks;
 
 namespace ArangoDBNetStandardTest.TransactionApi
 {
-    public class TransactionApiClientTestFixture: ApiClientTestFixtureBase
+    public class TransactionApiClientTestFixture : ApiClientTestFixtureBase
     {
         public ArangoDBClient ArangoDBClient { get; private set; }
 
@@ -17,10 +14,19 @@ namespace ArangoDBNetStandardTest.TransactionApi
 
         public TransactionApiClientTestFixture()
         {
+        }
+
+        public override async Task InitializeAsync()
+        {
+            await base.InitializeAsync();
+
             string dbName = nameof(TransactionApiClientTest);
-            CreateDatabase(dbName);
+
+            await CreateDatabase(dbName);
+
             ArangoDBClient = GetArangoDBClient(dbName);
-            Task.WaitAll(
+
+            await Task.WhenAll(
                 ArangoDBClient.Collection.PostCollectionAsync(new PostCollectionRequest
                 {
                     Name = TestCollection1

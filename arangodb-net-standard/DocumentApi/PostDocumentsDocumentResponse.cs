@@ -1,4 +1,6 @@
-﻿namespace ArangoDBNetStandard.DocumentApi
+﻿using System.Net;
+
+namespace ArangoDBNetStandard.DocumentApi
 {
     /// <summary>
     /// Response model for a single POST Document request.
@@ -12,6 +14,6 @@
 
         public ErrorCode ErrorNum { get; set; }
 
-        public int Code { get; set; }
+        public HttpStatusCode Code { get; set; }
     }
 }

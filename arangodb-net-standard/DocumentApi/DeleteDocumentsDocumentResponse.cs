@@ -1,4 +1,6 @@
-﻿namespace ArangoDBNetStandard.DocumentApi
+﻿using System.Net;
+
+namespace ArangoDBNetStandard.DocumentApi
 {
     public class DeleteDocumentsDocumentResponse<T>: DeleteDocumentResponse<T>
     {
@@ -8,6 +10,6 @@
 
         public ErrorCode ErrorNum { get; set; }
 
-        public int Code { get; set; }
+        public HttpStatusCode Code { get; set; }
     }
 }

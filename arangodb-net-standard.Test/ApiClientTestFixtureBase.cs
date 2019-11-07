@@ -3,12 +3,12 @@ using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.Transport.Http;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace ArangoDBNetStandardTest
 {
-    public abstract class ApiClientTestFixtureBase: IDisposable
+    public abstract class ApiClientTestFixtureBase : IDisposable, IAsyncLifetime
     {
         private List<string> _databases = new List<string>();
 
@@ -31,17 +31,16 @@ namespace ArangoDBNetStandardTest
             return new ArangoDBClient(httpClient);
         }
 
-        protected void DropDatabase(string dbName)
+        protected async Task DropDatabase(string dbName)
         {
             using (var systemDbClient = GetHttpTransport("_system"))
             {
                 var dbApiClient = new DatabaseApiClient(systemDbClient);
-                var response = dbApiClient.DeleteDatabaseAsync(dbName)
-                    .GetAwaiter().GetResult();
+                var response = await dbApiClient.DeleteDatabaseAsync(dbName);
             }
         }
 
-        protected void CreateDatabase(string dbName)
+        protected async Task CreateDatabase(string dbName)
         {
             // Create the test database
             using (var systemDbClient = GetHttpTransport("_system"))
@@ -49,10 +48,10 @@ namespace ArangoDBNetStandardTest
                 var dbApiClient = new DatabaseApiClient(systemDbClient);
                 try
                 {
-                    var postDatabaseResponse = dbApiClient.PostDatabaseAsync(new PostDatabaseRequest
+                    var postDatabaseResponse = await dbApiClient.PostDatabaseAsync(new PostDatabaseRequest
                     {
                         Name = dbName
-                    }).GetAwaiter().GetResult();
+                    });
                 }
                 catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == ErrorCode.ARANGO_DUPLICATE_NAME)
                 {
@@ -67,20 +66,8 @@ namespace ArangoDBNetStandardTest
         }
 
         public virtual void Dispose()
-        {
-            foreach(var dbName in _databases)
-            {
-                try
-                {
-                    DropDatabase(dbName);
-                }
-                catch(ApiErrorException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    continue;
-                }
-            }
-            foreach(var transport in _transports)
+        {   
+            foreach (var transport in _transports)
             {
                 try
                 {
@@ -88,6 +75,27 @@ namespace ArangoDBNetStandardTest
                 }
                 catch (ObjectDisposedException)
                 {
+                    continue;
+                }
+            }
+        }
+
+        public virtual Task InitializeAsync()
+        {
+            return Task.FromResult(0);
+        }
+
+        public virtual async Task DisposeAsync()
+        {
+            foreach (var dbName in _databases)
+            {
+                try
+                {
+                    await DropDatabase(dbName);
+                }
+                catch (ApiErrorException ex)
+                {
+                    Console.WriteLine(ex.Message);
                     continue;
                 }
             }

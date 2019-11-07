@@ -1,4 +1,6 @@
-﻿namespace ArangoDBNetStandard.TransactionApi
+﻿using System.Net;
+
+namespace ArangoDBNetStandard.TransactionApi
 {
     /// <summary>
     /// Response from ArangoDB after executing a transaction.
@@ -14,7 +16,7 @@
         /// <summary>
         /// The ArangoDB result code.
         /// </summary>
-        public int Code { get; set; }
+        public HttpStatusCode Code { get; set; }
 
         /// <summary>
         /// Deserialized result from the transaction function.

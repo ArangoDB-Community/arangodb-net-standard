@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
+using System;
+using System.Threading.Tasks;
 
 namespace ArangoDBNetStandardTest.DocumentApi
 {
-    public class DocumentApiClientTestFixture: ApiClientTestFixtureBase
+    public class DocumentApiClientTestFixture : ApiClientTestFixtureBase
     {
         public ArangoDBClient ArangoDBClient { get; private set; }
 
@@ -14,20 +13,25 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
         public DocumentApiClientTestFixture()
         {
+        }
+
+        public override async Task InitializeAsync()
+        {
+            await base.InitializeAsync();
+
             string dbName = nameof(DocumentApiClientTest);
-            CreateDatabase(dbName);
+
+            await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
 
             try
             {
-                var response = ArangoDBClient.Collection.PostCollectionAsync(
+                var response = await ArangoDBClient.Collection.PostCollectionAsync(
                     new PostCollectionRequest
                     {
                         Name = TestCollection
-                    })
-                    .GetAwaiter()
-                    .GetResult();
+                    });
             }
             catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == ErrorCode.ARANGO_DUPLICATE_NAME)
             {

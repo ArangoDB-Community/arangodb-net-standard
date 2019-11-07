@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Net;
 
 namespace ArangoDBNetStandard
 {
@@ -28,6 +26,6 @@ namespace ArangoDBNetStandard
         /// <summary>
         /// HTTP status code.
         /// </summary>
-        public int Code { get; set; }
+        public HttpStatusCode Code { get; set; }
     }
 }
