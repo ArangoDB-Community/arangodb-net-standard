@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Net;
 
 namespace ArangoDBNetStandard.CursorApi
 {
@@ -13,7 +12,7 @@ namespace ArangoDBNetStandard.CursorApi
 
         public long Count { get; set; }
 
-        public int Code { get; set; }
+        public HttpStatusCode Code { get; set; }
 
         public CursorResultExtra Extra { get; set; }
 
