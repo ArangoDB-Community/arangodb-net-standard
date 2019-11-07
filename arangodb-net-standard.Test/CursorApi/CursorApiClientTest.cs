@@ -13,7 +13,6 @@ namespace ArangoDBNetStandardTest.CursorApi
 {
     public class CursorApiClientTest : IClassFixture<CursorApiClientTestFixture>
     {
-        private readonly string _dbName = nameof(CursorApiClientTest);
         private CursorApiClient _cursorApi;
 
         public class MyModel
