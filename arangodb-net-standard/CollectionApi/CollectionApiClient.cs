@@ -85,5 +85,23 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw await GetApiErrorException(response);
             };
         }
+
+        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsOptions options = null)
+        {
+            string uriString = _collectionApiPath;
+            if (options != null)
+            {
+                uriString += "?" + options.ToQueryString();
+            }
+            using (var response = await _transport.GetAsync(uriString))
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return DeserializeJsonFromStream<GetCollectionsResponse>(stream, true, false);
+                }
+                throw new ApiErrorException(DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false));
+            }
+        }
     }
 }
