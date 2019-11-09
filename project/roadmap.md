@@ -22,7 +22,7 @@ A tick indicates an item is implemented and has automated tests in place.
 
 - [ ]	GET/_api/collection reads all collections
 - [X]	POST/_api/collection Create collection
-- [ ]	DELETE/_api/collection/{collection-name} Drops a collection
+- [X]	DELETE/_api/collection/{collection-name} Drops a collection
 - [ ]	GET/_api/collection/{collection-name} Return information about a collection
 - [ ]	GET/_api/collection/{collection-name}/count Return number of documents in a collection
 - [ ]	GET/_api/collection/{collection-name}/properties Read properties of a collection
