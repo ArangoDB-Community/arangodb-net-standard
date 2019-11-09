@@ -18,6 +18,34 @@ namespace ArangoDBNetStandardTest.CollectionApi
         }
 
         [Fact]
+        public async Task DeleteCollectionAsync_ShouldSucceed()
+        {
+            string clx = "DeleteCollectionAsync_ShouldSucceed";
+
+            // create a collection so we can delete it
+            var createResponse = await _collectionApi.PostCollectionAsync(
+                new PostCollectionRequest
+                {
+                    Name = clx
+                });
+            string clxId = createResponse.Id;
+            Assert.False(createResponse.Error);
+            Assert.NotNull(clxId);
+
+            var deleteResponse = await _collectionApi.DeleteCollectionAsync(clx);
+            Assert.False(deleteResponse.Error);
+            Assert.Equal(clxId, deleteResponse.Id);
+        }
+
+        [Fact]
+        public async Task DeleteCollectionAsync_ShouldThrow_WhenCollectionDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _collectionApi.DeleteCollectionAsync("NotACollection"));
+            Assert.Equal(1203, ex.ApiError.ErrorNum);
+        }
+
+        [Fact]
         public async Task PostCollectionAsync_ShouldSucceed()
         {
             var response = await _collectionApi.PostCollectionAsync(

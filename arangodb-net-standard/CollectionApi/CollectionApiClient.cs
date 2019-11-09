@@ -39,14 +39,14 @@ namespace ArangoDBNetStandard.CollectionApi
 
         public async Task<DeleteCollectionResponse> DeleteCollectionAsync(string collectionName)
         {
-            var response = await _transport.DeleteAsync(_collectionApiPath + "/" + collectionName);
-            if (response.IsSuccessStatusCode)
-            {
-                return new DeleteCollectionResponse((int)response.StatusCode);
+            using (var response = await _transport.DeleteAsync(_collectionApiPath + "/" + collectionName)) {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteCollectionResponse>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
             }
-            var stream = await response.Content.ReadAsStreamAsync();
-            var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
-            throw new ApiErrorException(error);
         }
 
         public async Task PutCollectionTruncateAsync(string collectionName)
