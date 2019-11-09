@@ -29,7 +29,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [ ]	PUT/_api/collection/{collection-name}/properties Change properties of a collection
 - [ ]	PUT/_api/collection/{collection-name}/rename Rename collection
 - [ ]	GET/_api/collection/{collection-name}/revision Return collection revision id
-- [ ]	PUT/_api/collection/{collection-name}/truncate Truncate collection
+- [X]	PUT/_api/collection/{collection-name}/truncate Truncate collection
 
 #### Cursor API
 
