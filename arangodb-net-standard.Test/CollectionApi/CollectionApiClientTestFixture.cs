@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
 using ArangoDBNetStandard;
+using ArangoDBNetStandard.CollectionApi;
 
 namespace ArangoDBNetStandardTest.CollectionApi
 {
     public class CollectionApiClientTestFixture : ApiClientTestFixtureBase
     {
         public ArangoDBClient ArangoDBClient { get; internal set; }
+
+        public string TestCollection { get; } = "TestCollection";
 
         public CollectionApiClientTestFixture()
         {
@@ -20,6 +23,12 @@ namespace ArangoDBNetStandardTest.CollectionApi
             await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
+
+            await ArangoDBClient.Collection.PostCollectionAsync(
+                new PostCollectionRequest
+                {
+                    Name = TestCollection
+                });
         }
     }
 }

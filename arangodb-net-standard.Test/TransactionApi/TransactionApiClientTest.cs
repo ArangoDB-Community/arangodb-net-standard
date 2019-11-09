@@ -14,8 +14,8 @@ namespace ArangoDBNetStandardTest.TransactionApi
         public TransactionApiClientTest(TransactionApiClientTestFixture fixture)
         {
             _adb = fixture.ArangoDBClient;
-            _adb.Collection.PutCollectionTruncateAsync(fixture.TestCollection1).Wait();
-            _adb.Collection.PutCollectionTruncateAsync(fixture.TestCollection2).Wait();
+            _adb.Collection.TruncateCollectionAsync(fixture.TestCollection1).Wait();
+            _adb.Collection.TruncateCollectionAsync(fixture.TestCollection2).Wait();
         }
 
         [Fact]
