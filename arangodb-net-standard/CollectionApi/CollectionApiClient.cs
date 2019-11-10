@@ -1,9 +1,7 @@
-﻿using ArangoDBNetStandard.Transport;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
+
+using ArangoDBNetStandard.Transport;
 
 namespace ArangoDBNetStandard.CollectionApi
 {
@@ -49,14 +47,23 @@ namespace ArangoDBNetStandard.CollectionApi
             throw new ApiErrorException(error);
         }
 
-        public async Task PutCollectionTruncateAsync(string collectionName)
+        /// <summary>
+        /// Truncates a collection, i.e. removes all documents in the collection.
+        /// PUT/_api/collection/{collection-name}/truncate
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <returns></returns>
+        public async Task<TruncateCollectionResult> TruncateCollectionAsync(string collectionName)
         {
-            var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/truncate", null);
-            if (response.IsSuccessStatusCode)
+            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/truncate", null))
             {
-                return;
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<TruncateCollectionResult>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
             }
-            await GetApiErrorException(response);
         }
     }
 }

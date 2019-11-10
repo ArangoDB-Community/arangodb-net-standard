@@ -31,7 +31,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             _docClient = _adb.Document;
 
             // Truncate TestCollection before each test
-            _adb.Collection.PutCollectionTruncateAsync(fixture.TestCollection)
+            _adb.Collection.TruncateCollectionAsync(fixture.TestCollection)
                 .GetAwaiter()
                 .GetResult();
         }
