@@ -111,7 +111,6 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <returns></returns>
         public async Task<IApiClientResponse> GetAsync(string requestUri)
         {
-
             var response = await _client.GetAsync(requestUri);
             return new HttpApiClientResponse(response);
         }

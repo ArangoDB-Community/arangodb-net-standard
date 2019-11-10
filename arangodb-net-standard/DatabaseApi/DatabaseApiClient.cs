@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.DatabaseApi
 {
-    public class DatabaseApiClient: ApiClientBase
+    public class DatabaseApiClient : ApiClientBase
     {
         private IApiClientTransport _client;
         private readonly string _databaseApiPath = "_api/database";
@@ -46,6 +46,45 @@ namespace ArangoDBNetStandard.DatabaseApi
                 var stream = await response.Content.ReadAsStreamAsync();
                 var apiError = DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false);
                 throw new ApiErrorException(apiError);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the list of all existing databases.
+        /// (Only possible from within the _system database)
+        /// </summary>
+        /// <remarks>
+        /// You should use <see cref="ListUserDatabasesAsync"/> to fetch the list of the databases
+        /// available for the current user.
+        /// </remarks>
+        /// <returns></returns>
+        public async Task<ListDatabaseResult> ListDatabasesAsync()
+        {
+            using (var response = await _client.GetAsync(_databaseApiPath))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<ListDatabaseResult>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the list of all databases the current user can access.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ListDatabaseResult> ListUserDatabasesAsync()
+        {
+            using (var response = await _client.GetAsync(_databaseApiPath + "/user"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<ListDatabaseResult>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
             }
         }
     }
