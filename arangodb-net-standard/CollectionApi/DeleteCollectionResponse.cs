@@ -1,12 +1,13 @@
-﻿namespace ArangoDBNetStandard.CollectionApi
+﻿using System.Net;
+
+namespace ArangoDBNetStandard.CollectionApi
 {
     public class DeleteCollectionResponse
     {
-        public int StatusCode { get; private set; }
+        public bool Error { get; set; }
 
-        public DeleteCollectionResponse(int statusCode)
-        {
-            this.StatusCode = statusCode;
-        }
+        public HttpStatusCode Code { get; set; }
+
+        public string Id { get; set; }
     }
 }
