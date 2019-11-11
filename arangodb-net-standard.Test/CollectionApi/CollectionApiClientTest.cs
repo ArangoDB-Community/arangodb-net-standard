@@ -181,9 +181,10 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
                 await _collectionApi.TruncateCollectionAsync("NotACollection"));
 
-            Assert.Equal(ex.ApiError.ErrorNum, 1203);
+            Assert.Equal(1203, ex.ApiError.ErrorNum);
         }
 
+        [Fact]
         public async Task GetCollectionCountAsync_ShouldSucceed()
         {
             var newDoc = await _adb.Document.PostDocumentAsync(_testCollection, new PostDocumentsOptions());
@@ -193,6 +194,17 @@ namespace ArangoDBNetStandardTest.CollectionApi
             });
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.False(response.Error);
+            Assert.False(response.IsSystem);
+            Assert.Equal(3, response.Status);
+            Assert.Equal("loaded", response.StatusString);
+            Assert.Equal(2, response.Type);
+            Assert.False(response.WaitForSync);
+            Assert.NotEqual("", response.GloballyUniqueId);
+            Assert.NotEqual("", response.Id);
+            Assert.NotEqual("", response.ObjectId);
+            Assert.NotNull(response.KeyOptions);
+            Assert.False(response.WaitForSync);
             Assert.Equal(1, response.Count);
             await _adb.Document.DeleteDocumentAsync(newDoc._id);
         }
