@@ -241,8 +241,16 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var collection = await _collectionApi.GetCollectionAsync("MyTempCollection");
 
             Assert.Equal("MyTempCollection", collection.Name);
+        }
 
-            await _collectionApi.DeleteCollectionAsync("MyTempCollection");
+        [Fact]
+        public async Task GetCollectionAsync_ShouldThrowNotFound()
+        {
+            await GenerateCollections(new string[] { "MyFoundCollection" });
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () => await _collectionApi.GetCollectionAsync("MyWrongCollection"));
+
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
         }
 
         private async Task GenerateCollections(string[] collectionNames)

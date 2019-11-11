@@ -126,7 +126,7 @@ namespace ArangoDBNetStandard.CollectionApi
                     return collection;
                 }
                 throw await GetApiErrorException(response);
-            };           
+            };
         }
     }
 }
