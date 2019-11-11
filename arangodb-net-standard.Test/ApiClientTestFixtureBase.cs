@@ -12,7 +12,7 @@ namespace ArangoDBNetStandardTest
     {
         private List<string> _databases = new List<string>();
 
-        private List<HttpApiTransport> _transports = new List<HttpApiTransport>();
+        private readonly List<HttpApiTransport> _transports = new List<HttpApiTransport>();
 
         protected HttpApiTransport GetHttpTransport(string dbName)
         {
