@@ -85,7 +85,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw await GetApiErrorException(response);
             };
         }
-        
+
         /// Get all collections
         /// GET/_api/collection
         /// </summary>
@@ -99,7 +99,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 uriString += "?" + options.ToQueryString();
             }
             using (var response = await _transport.GetAsync(uriString))
-            {                
+            {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
@@ -128,7 +128,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw await GetApiErrorException(response);
             }
         }
-        
+
         /// Read properties of a collection
         /// /_api/collection/{collection-name}/properties
         /// </summary>
@@ -136,13 +136,37 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName)
         {
-            var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/properties");            
-            if (response.IsSuccessStatusCode)
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/properties"))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
-                return DeserializeJsonFromStream<GetCollectionPropertiesResponse>(stream);
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetCollectionPropertiesResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
             }
-            throw await GetApiErrorException(response);
+        }
+
+        /// <summary>
+        /// Rename a collection
+        /// /_api/collection/{collection-name}/rename
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionRequest request)
+        {
+            StringContent content = GetStringContent(request, true, false);
+            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/rename", content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    var collection = DeserializeJsonFromStream<RenameCollectionResponse>(stream, false, true);
+                    return collection;
+                }
+                throw await GetApiErrorException(response);
+            }
         }
     }
 }
