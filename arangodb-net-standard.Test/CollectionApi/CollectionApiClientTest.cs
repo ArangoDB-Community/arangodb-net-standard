@@ -200,9 +200,9 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.Equal("loaded", response.StatusString);
             Assert.Equal(2, response.Type);
             Assert.False(response.WaitForSync);
-            Assert.NotEqual("", response.GloballyUniqueId);
-            Assert.NotEqual("", response.Id);
-            Assert.NotEqual("", response.ObjectId);
+            Assert.NotNull(response.GloballyUniqueId);
+            Assert.NotNull(response.Id);
+            Assert.NotNull(response.ObjectId);
             Assert.NotNull(response.KeyOptions);
             Assert.False(response.WaitForSync);
             Assert.Equal(1, response.Count);
