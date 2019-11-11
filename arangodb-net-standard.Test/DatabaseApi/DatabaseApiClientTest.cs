@@ -20,6 +20,81 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         }
 
         [Fact]
+        public async Task PostDatabaseAsync_ShouldSucceed()
+        {
+            PostDatabaseResult result = await _fixture.DatabaseClientSystem.PostDatabaseAsync(
+                new PostDatabaseRequest()
+                {
+                    Name = nameof(PostDatabaseAsync_ShouldSucceed)
+                });
+
+            await _fixture.DatabaseClientSystem.DeleteDatabaseAsync(nameof(PostDatabaseAsync_ShouldSucceed));
+
+            Assert.False(result.Error);
+            Assert.Equal(HttpStatusCode.Created, result.Code);
+            Assert.True(result.Result);
+        }
+
+        [Fact]
+        public async Task PostDatabaseAsync_ShouldThrow_WhenDatabaseUsedIsNotSystem()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _fixture.DatabaseClientOther.PostDatabaseAsync(new PostDatabaseRequest()
+                {
+                    Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseUsedIsNotSystem)
+                });
+            });
+
+            ApiErrorResponse apiError = ex.ApiError;
+
+            Assert.Equal(HttpStatusCode.Forbidden, apiError.Code);
+            Assert.Equal(1230, apiError.ErrorNum);
+        }
+
+        [Fact]
+        public async Task PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist()
+        {
+            await _fixture.DatabaseClientSystem.PostDatabaseAsync(new PostDatabaseRequest()
+            {
+                Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist)
+            });
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _fixture.DatabaseClientSystem.PostDatabaseAsync(new PostDatabaseRequest()
+                {
+                    Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist)
+                });
+            });
+
+            await _fixture.DatabaseClientSystem.DeleteDatabaseAsync(
+                nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist));
+
+            ApiErrorResponse apiError = ex.ApiError;
+
+            Assert.Equal(HttpStatusCode.Conflict, apiError.Code);
+            Assert.Equal(1207, apiError.ErrorNum);
+        }
+
+        [Fact]
+        public async Task PostDatabaseAsync_ShouldThrow_WhenDatabaseUsedDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _fixture.DatabaseClientNonExistent.PostDatabaseAsync(new PostDatabaseRequest()
+                {
+                    Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseUsedDoesNotExist)
+                });
+            });
+
+            ApiErrorResponse apiError = ex.ApiError;
+
+            Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
+            Assert.Equal(1228, apiError.ErrorNum);
+        }
+
+        [Fact]
         public async Task ListDatabasesAsync_ShouldSucceed()
         {
             ListDatabaseResult result = await _fixture.DatabaseClientSystem.ListDatabasesAsync();

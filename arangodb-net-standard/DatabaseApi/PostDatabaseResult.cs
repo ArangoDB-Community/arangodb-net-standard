@@ -1,21 +1,26 @@
-﻿namespace ArangoDBNetStandard.DatabaseApi
+﻿using System.Net;
+
+namespace ArangoDBNetStandard.DatabaseApi
 {
+    /// <summary>
+    /// Represents the content of the response returned
+    /// by an endpoint that creates a new database.
+    /// </summary>
     public class PostDatabaseResult
     {
         /// <summary>
-        /// True if the database was created, otherwise see <see cref="HttpStatus"/>.
+        /// Indicates whether an error occurred (false in this case).
         /// </summary>
-        public bool Result { get; set; }
+        public bool Error { get; set; }
 
         /// <summary>
-        /// HTTP status code.
+        /// The HTTP status code.
         /// </summary>
-        public int HttpStatus { get; set; }
+        public HttpStatusCode Code { get; set; }
 
-        public PostDatabaseResult(int httpStatus)
-        {
-            HttpStatus = httpStatus;
-            Result = httpStatus >= 200 && httpStatus < 300;
-        }
+        /// <summary>
+        /// Indicates that the database was created. Always true.
+        /// </summary>
+        public bool Result { get; set; }
     }
 }

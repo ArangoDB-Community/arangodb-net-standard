@@ -19,6 +19,12 @@ namespace ArangoDBNetStandard.DatabaseApi
             _client = client;
         }
 
+        /// <summary>
+        /// Creates a new database.
+        /// (Only possible from within the _system database)
+        /// </summary>
+        /// <param name="request">The parameters required by this endpoint.</param>
+        /// <returns></returns>
         public async Task<PostDatabaseResult> PostDatabaseAsync(PostDatabaseRequest request)
         {
             var content = GetStringContent(request, true, true);
@@ -26,12 +32,10 @@ namespace ArangoDBNetStandard.DatabaseApi
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    return new PostDatabaseResult((int)response.StatusCode);
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PostDatabaseResult>(stream, true);
                 }
-
-                var stream = await response.Content.ReadAsStreamAsync();
-                var apiError = DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false);
-                throw new ApiErrorException(apiError);
+                throw await GetApiErrorException(response);
             }
         }
 
