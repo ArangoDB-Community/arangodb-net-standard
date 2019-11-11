@@ -216,7 +216,6 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionsAsync_ShouldSucceed()
         {
-
             var response = await _collectionApi.GetCollectionsAsync(new GetCollectionsQuery
             {
                 ExcludeSystem = true // System adds 9 collections that we don't need to test
