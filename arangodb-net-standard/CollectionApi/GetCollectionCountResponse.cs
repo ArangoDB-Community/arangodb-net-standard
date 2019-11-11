@@ -18,8 +18,6 @@ namespace ArangoDBNetStandard.CollectionApi
 
         public string GloballyUniqueId { get; set; }
 
-        public string ObjectId { get; set; }
-
         public string Id { get; set; }
 
         public string Name { get; set; }
