@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
 
@@ -23,12 +24,19 @@ namespace ArangoDBNetStandardTest.CollectionApi
             await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
-
-            await ArangoDBClient.Collection.PostCollectionAsync(
-                new PostCollectionRequest
-                {
-                    Name = TestCollection
-                });
+            try
+            {
+                await ArangoDBClient.Collection.PostCollectionAsync(
+                    new PostCollectionRequest
+                    {
+                        Name = TestCollection
+                    });
+            }
+            catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
+            {
+                // The collection must exist already, carry on...
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

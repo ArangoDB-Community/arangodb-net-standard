@@ -66,5 +66,18 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        public async Task<GetCollectionCountResponse> GetCollectionCountAsync(GetCollectionCountOptions options = null)
+        {
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + options.CollectionName + "/count"))
+            {                
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetCollectionCountResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            };
+        }
     }
 }

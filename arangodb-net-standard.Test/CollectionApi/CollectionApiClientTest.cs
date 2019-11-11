@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
+using ArangoDBNetStandard.DocumentApi;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.CollectionApi
@@ -14,12 +15,12 @@ namespace ArangoDBNetStandardTest.CollectionApi
     {
         private CollectionApiClient _collectionApi;
         private ArangoDBClient _adb;
-        private string _testCollection;
+        private readonly string _testCollection;
 
         public CollectionApiClientTest(CollectionApiClientTestFixture fixture)
         {
             _adb = fixture.ArangoDBClient;
-            _collectionApi = fixture.ArangoDBClient.Collection;
+            _collectionApi = _adb.Collection;
             _testCollection = fixture.TestCollection;
 
             // Truncate TestCollection before each test
@@ -181,6 +182,28 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 await _collectionApi.TruncateCollectionAsync("NotACollection"));
 
             Assert.Equal(ex.ApiError.ErrorNum, 1203);
+        }
+
+        public async Task GetCollectionCountAsync_ShouldSucceed()
+        {
+            var newDoc = await _adb.Document.PostDocumentAsync(_testCollection, new PostDocumentsOptions());
+            var response = await _collectionApi.GetCollectionCountAsync(new GetCollectionCountOptions
+            {
+                CollectionName = _testCollection
+            });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(1, response.Count);
+            await _adb.Document.DeleteDocumentAsync(newDoc._id);
+        }
+
+        [Fact]
+        public async Task GetCollectionCountAsync_ShouldThrow_WhenCollectionDoesNotExist() {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () => await _collectionApi.GetCollectionCountAsync(new GetCollectionCountOptions
+            {
+                CollectionName = "bogusCollection"
+            }));
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
     }
 }
