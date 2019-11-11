@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -220,32 +220,40 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
         [Fact]
         public async Task GetCollectionsAsync_ShouldSucceed()
-        {
+        {            
             string[] collectionNames = new string[] { "MyFirstCollection", "MySecondCollection", "MyThirdCollection" };
-
             await GenerateCollections(collectionNames);
 
             var response = await _collectionApi.GetCollectionsAsync(new GetCollectionsOptions
             {
                 ExcludeSystem = true // System adds 9 collections that we don't need to test
             });
-
+            Assert.NotEmpty(response.Result);
             var collectionExists = response.Result.Where(x => x.Name == "MyFirstCollection");
 
             Assert.False(response.Error);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.Code);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.NotNull(collectionExists);
+            await DisposeCollections(collectionNames);
         }
 
         private async Task GenerateCollections(string[] collectionNames)
         {
-            for (int i = 0; i < collectionNames.Length; i++)
+            foreach (var collection in collectionNames)
             {
                 await _collectionApi.PostCollectionAsync(new PostCollectionRequest
                 {
-                    Name = collectionNames[i],
+                    Name = collection,
                     Type = 3
                 });
+            }
+        }
+
+        private async Task DisposeCollections(string[] collectionNames)
+        {
+            foreach (var collection in collectionNames)
+            {
+                await _collectionApi.DeleteCollectionAsync(collection);
             }
         }
     }

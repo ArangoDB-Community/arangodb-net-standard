@@ -86,7 +86,12 @@ namespace ArangoDBNetStandard.CollectionApi
             };
         }
 
-        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsOptions options = null)
+        /// Get all collections
+        /// GET/_api/collection
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsOptions options)
         {
             string uriString = _collectionApiPath;
             if (options != null)
@@ -94,13 +99,13 @@ namespace ArangoDBNetStandard.CollectionApi
                 uriString += "?" + options.ToQueryString();
             }
             using (var response = await _transport.GetAsync(uriString))
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
+            {                
                 if (response.IsSuccessStatusCode)
                 {
+                    var stream = await response.Content.ReadAsStreamAsync();
                     return DeserializeJsonFromStream<GetCollectionsResponse>(stream, true, false);
                 }
-                throw new ApiErrorException(DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false));
+                throw await GetApiErrorException(response);
             }
         }
     }
