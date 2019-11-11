@@ -211,5 +211,23 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw await GetApiErrorException(response);
             }
         }
+        
+        /// GET/_api/collection/{collection-name}/figures
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public async Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName)
+        {
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/figures"))
+            {                
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetCollectionFiguresResponse>(stream);
+                }
+
+                throw await GetApiErrorException(response);
+            };            
+        }
     }
 }

@@ -212,7 +212,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 await _collectionApi.GetCollectionCountAsync("bogusCollection"));
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
-
+        
         [Fact]
         public async Task GetCollectionsAsync_ShouldSucceed()
         {
@@ -382,6 +382,14 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1203, exception.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task GetCollectionFiguresAsync_ShouldSucceed()
+        {
+            var response = await _collectionApi.GetCollectionFiguresAsync(_testCollection);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.NotNull(response.Figures);
         }
     }
 }
