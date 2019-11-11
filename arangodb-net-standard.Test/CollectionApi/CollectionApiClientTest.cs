@@ -238,7 +238,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         {
             await GenerateCollections(new string[] { "MyTempCollection" });
 
-            var collection = await _collectionApi.GetCollectionAsync(new GetCollectionOptions { CollectionName = "MyTempCollection" });
+            var collection = await _collectionApi.GetCollectionAsync("MyTempCollection");
 
             Assert.Equal("MyTempCollection", collection.Name);
 

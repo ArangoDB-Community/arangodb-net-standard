@@ -109,28 +109,24 @@ namespace ArangoDBNetStandard.CollectionApi
             }
         }
 
-        public async Task<GetCollectionResponse> GetCollectionAsync(GetCollectionOptions options = null)
+        /// <summary>
+        /// Gets the requested collection
+        /// GET/_api/collection/{collection-name}
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <returns></returns>
+        public async Task<GetCollectionResponse> GetCollectionAsync(string collectionName)
         {
-            try
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName))
             {
-                if (options != null)
+                if (response.IsSuccessStatusCode)
                 {
-                    var response = await _transport.GetAsync(_collectionApiPath + "/" + options.CollectionName);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var stream = await response.Content.ReadAsStreamAsync();
-                        var collection = DeserializeJsonFromStream<GetCollectionResponse>(stream, false, true);
-                        return collection;
-                    }
-                    throw await GetApiErrorException(response);
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    var collection = DeserializeJsonFromStream<GetCollectionResponse>(stream, false, true);
+                    return collection;
                 }
-                throw new ApiErrorException("Collection Name is required");
-            }
-            catch (Exception ex)
-            {
-                throw new ApiErrorException(ex.Message);
-            }
+                throw await GetApiErrorException(response);
+            };           
         }
     }
 }
