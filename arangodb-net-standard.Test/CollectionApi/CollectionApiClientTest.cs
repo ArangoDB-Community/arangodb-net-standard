@@ -274,6 +274,12 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.False(response.IsSystem);
             Assert.NotNull(response.Id);
             Assert.False(response.Error);
+            // set the test collection back to the constant
+            var reverse = await _collectionApi.RenameCollectionAsync("testingCollection", new RenameCollectionRequest
+            {
+                Name = _testCollection
+            });
+            Assert.Equal(HttpStatusCode.OK, reverse.Code);
         }
     }
 }
