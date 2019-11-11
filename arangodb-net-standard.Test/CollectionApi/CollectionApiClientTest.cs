@@ -220,41 +220,18 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
         [Fact]
         public async Task GetCollectionsAsync_ShouldSucceed()
-        {            
-            string[] collectionNames = new string[] { "MyFirstCollection", "MySecondCollection", "MyThirdCollection" };
-            await GenerateCollections(collectionNames);
+        {
 
             var response = await _collectionApi.GetCollectionsAsync(new GetCollectionsOptions
             {
                 ExcludeSystem = true // System adds 9 collections that we don't need to test
             });
             Assert.NotEmpty(response.Result);
-            var collectionExists = response.Result.Where(x => x.Name == "MyFirstCollection");
+            var collectionExists = response.Result.Where(x => x.Name == _testCollection);
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.NotNull(collectionExists);
-            await DisposeCollections(collectionNames);
-        }
-
-        private async Task GenerateCollections(string[] collectionNames)
-        {
-            foreach (var collection in collectionNames)
-            {
-                await _collectionApi.PostCollectionAsync(new PostCollectionRequest
-                {
-                    Name = collection,
-                    Type = 3
-                });
-            }
-        }
-
-        private async Task DisposeCollections(string[] collectionNames)
-        {
-            foreach (var collection in collectionNames)
-            {
-                await _collectionApi.DeleteCollectionAsync(collection);
-            }
         }
     }
 }

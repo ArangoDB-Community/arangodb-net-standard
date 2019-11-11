@@ -11,7 +11,7 @@ namespace ArangoDBNetStandard.CollectionApi
             List<string> query = new List<string>();
             if (ExcludeSystem != null)
             {
-                query.Add("excludeSystem=" + (ExcludeSystem.Value ? 1 : 0));
+                query.Add("excludeSystem=" + ExcludeSystem.ToString().ToLower());
             }
             return string.Join("&", query);
         }
