@@ -5,6 +5,7 @@ using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DocumentApi;
+using ArangoDBNetStandard.GraphApi;
 using ArangoDBNetStandard.TransactionApi;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.Transport.Http;
@@ -44,6 +45,11 @@ namespace ArangoDBNetStandard
         public TransactionApiClient Transaction { get; private set; }
 
         /// <summary>
+        /// Graph API
+        /// </summary>
+        public GraphApiClient Graph { get; private set; }
+
+        /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
         /// <see cref="HttpClient"/> instance.
         /// </summary>
@@ -56,7 +62,7 @@ namespace ArangoDBNetStandard
             Document = new DocumentApiClient(_transport);
             Collection = new CollectionApiClient(_transport);
             Transaction = new TransactionApiClient(_transport);
-            //Graph = new GraphApiClient(client);
+            Graph = new GraphApiClient(_transport);
         }
 
         /// <summary>
@@ -72,6 +78,7 @@ namespace ArangoDBNetStandard
             Document = new DocumentApiClient(_transport);
             Collection = new CollectionApiClient(_transport);
             Transaction = new TransactionApiClient(_transport);
+            Graph = new GraphApiClient(_transport);
         }
 
         /// <summary>
