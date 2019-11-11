@@ -37,7 +37,7 @@ namespace ArangoDBNetStandard.CollectionApi
 
         public async Task<DeleteCollectionResponse> DeleteCollectionAsync(string collectionName)
         {
-            using (var response = await _transport.DeleteAsync(_collectionApiPath + "/" + collectionName)) 
+            using (var response = await _transport.DeleteAsync(_collectionApiPath + "/" + collectionName))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -67,10 +67,16 @@ namespace ArangoDBNetStandard.CollectionApi
             }
         }
 
-        public async Task<GetCollectionCountResponse> GetCollectionCountAsync(GetCollectionCountOptions options = null)
+        /// <summary>
+        /// Gets count of documents in a collection
+        /// GET/_api/collection/{collection-name}/properties
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public async Task<GetCollectionCountResponse> GetCollectionCountAsync(GetCollectionCountOptions options)
         {
             using (var response = await _transport.GetAsync(_collectionApiPath + "/" + options.CollectionName + "/count"))
-            {                
+            {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
