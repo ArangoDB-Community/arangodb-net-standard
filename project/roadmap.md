@@ -39,10 +39,10 @@ A tick indicates an item is implemented and has automated tests in place.
 
 #### Database API
 
-- [ ]	GET/_api/database List of databases
+- [X]	GET/_api/database List of databases
 - [ ]	POST/_api/database Create database
 - [ ]	GET/_api/database/current Information of the database
-- [ ]	GET/_api/database/user List of accessible databases
+- [X]	GET/_api/database/user List of accessible databases
 - [ ]	DELETE/_api/database/{database-name} Drop database
 
 #### Document API
