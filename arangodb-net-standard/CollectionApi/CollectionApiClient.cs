@@ -91,7 +91,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsOptions options)
+        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsOptions options = null)
         {
             string uriString = _collectionApiPath;
             if (options != null)
