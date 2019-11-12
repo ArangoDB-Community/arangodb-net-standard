@@ -266,7 +266,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         public async Task RenameCollectionAsync_ShouldSucceed()
         {
             await _adb.Collection.PostCollectionAsync(
-                    new PostCollectionRequest
+                    new PostCollectionBody
                     {
                         Name = "TempCollection"
                     });
