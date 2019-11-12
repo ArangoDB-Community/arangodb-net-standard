@@ -1,7 +1,9 @@
 ﻿namespace ArangoDBNetStandard.CollectionApi
 {
-    public class Indexes : FiguresBase
+    public class Indexes
     {
         public int Size { get; set; }
+
+        public int Count { get; set; }
     }
 }

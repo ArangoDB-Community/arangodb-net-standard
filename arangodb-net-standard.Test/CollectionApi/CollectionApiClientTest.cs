@@ -212,7 +212,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 await _collectionApi.GetCollectionCountAsync("bogusCollection"));
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
-        
+
         [Fact]
         public async Task GetCollectionsAsync_ShouldSucceed()
         {
