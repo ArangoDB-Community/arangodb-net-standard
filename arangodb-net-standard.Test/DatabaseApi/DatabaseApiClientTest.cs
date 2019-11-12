@@ -97,7 +97,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task ListDatabasesAsync_ShouldSucceed()
         {
-            ListDatabaseResult result = await _fixture.DatabaseClientSystem.ListDatabasesAsync();
+            ListDatabaseResult result = await _fixture.DatabaseClientSystem.GetDatabasesAsync();
 
             Assert.False(result.Error);
             Assert.Equal(HttpStatusCode.OK, result.Code);
@@ -109,7 +109,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _fixture.DatabaseClientOther.ListDatabasesAsync();
+                await _fixture.DatabaseClientOther.GetDatabasesAsync();
             });
 
             ApiErrorResponse apiError = ex.ApiError;
@@ -123,7 +123,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _fixture.DatabaseClientNonExistent.ListDatabasesAsync();
+                await _fixture.DatabaseClientNonExistent.GetDatabasesAsync();
             });
 
             ApiErrorResponse apiError = ex.ApiError;
@@ -135,7 +135,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task ListUserDatabasesAsync_ShouldSucceed()
         {
-            ListDatabaseResult result = await _fixture.DatabaseClientOther.ListUserDatabasesAsync();
+            ListDatabaseResult result = await _fixture.DatabaseClientOther.GetUserDatabasesAsync();
 
             Assert.False(result.Error);
             Assert.Equal(HttpStatusCode.OK, result.Code);
@@ -147,7 +147,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _fixture.DatabaseClientNonExistent.ListDatabasesAsync();
+                await _fixture.DatabaseClientNonExistent.GetDatabasesAsync();
             });
 
             ApiErrorResponse apiError = ex.ApiError;
