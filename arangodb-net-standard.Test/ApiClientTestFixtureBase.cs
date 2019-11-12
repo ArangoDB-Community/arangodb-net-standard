@@ -48,7 +48,7 @@ namespace ArangoDBNetStandardTest
                 var dbApiClient = new DatabaseApiClient(systemDbClient);
                 try
                 {
-                    var postDatabaseResponse = await dbApiClient.PostDatabaseAsync(new PostDatabaseRequest
+                    var postDatabaseResponse = await dbApiClient.PostDatabaseAsync(new PostDatabaseBody
                     {
                         Name = dbName
                     });

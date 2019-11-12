@@ -42,14 +42,14 @@ namespace ArangoDBNetStandard.CursorApi
         public async Task<CursorResponse<T>> PostCursorAsync<T>(
                 string query,
                 Dictionary<string, object> bindVars = null,
-                PostCursorOptions options = null,
+                PostCursorQuery options = null,
                 bool? count = null,
                 long? batchSize = null,
                 bool? cache = null,
                 long? memoryLimit = null,
                 int? ttl = null)
         {
-            return await PostCursorAsync<T>(new PostCursorRequest
+            return await PostCursorAsync<T>(new PostCursorBody
             {
                 Query = query,
                 BindVars = bindVars,
@@ -62,7 +62,7 @@ namespace ArangoDBNetStandard.CursorApi
             });
         }
 
-        public async Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorRequest cursorRequest)
+        public async Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorBody cursorRequest)
         {
             var content = GetStringContent(cursorRequest, true, true);
             using (var response = await _client.PostAsync(_cursorApiPath, content))

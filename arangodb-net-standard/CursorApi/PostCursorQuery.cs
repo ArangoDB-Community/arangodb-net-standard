@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ArangoDBNetStandard.CursorApi
 {
-    public class PostCursorOptions
+    public class PostCursorQuery
     {
         // TODO
     }

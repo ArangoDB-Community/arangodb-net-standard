@@ -6,13 +6,13 @@ using System.Text;
 
 namespace ArangoDBNetStandard.CursorApi
 {
-    public class PostCursorRequest
+    public class PostCursorBody
     {
         public string Query { get; set; }
 
         public Dictionary<string, object> BindVars { get; set; }
 
-        public PostCursorOptions Options { get; set; }
+        public PostCursorQuery Options { get; set; }
 
         public bool? Count { get; set; }
 
