@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.DatabaseApi
 {
-    public class DeleteDatabaseResult
+    public class DeleteDatabaseResponse
     {
         /// <summary>
         /// HttpStatus
@@ -12,7 +12,7 @@
         /// </summary>
         public bool Result { get; private set; }
 
-        public DeleteDatabaseResult(int statusCode)
+        public DeleteDatabaseResponse(int statusCode)
         {
             HttpStatus = statusCode;
             Result = statusCode >= 200 && statusCode < 300;

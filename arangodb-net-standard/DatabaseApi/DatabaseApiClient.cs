@@ -25,7 +25,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// </summary>
         /// <param name="request">The parameters required by this endpoint.</param>
         /// <returns></returns>
-        public async Task<PostDatabaseResult> PostDatabaseAsync(PostDatabaseRequest request)
+        public async Task<PostDatabaseResponse> PostDatabaseAsync(PostDatabaseBody request)
         {
             var content = GetStringContent(request, true, true);
             using (var response = await _client.PostAsync(_databaseApiPath, content))
@@ -33,19 +33,19 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostDatabaseResult>(stream, true);
+                    return DeserializeJsonFromStream<PostDatabaseResponse>(stream, true);
                 }
                 throw await GetApiErrorException(response);
             }
         }
 
-        public async Task<DeleteDatabaseResult> DeleteDatabaseAsync(string dbName)
+        public async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string dbName)
         {
             using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + dbName))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    return new DeleteDatabaseResult((int)response.StatusCode);
+                    return new DeleteDatabaseResponse((int)response.StatusCode);
                 }
                 var stream = await response.Content.ReadAsStreamAsync();
                 var apiError = DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false);
@@ -62,14 +62,14 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// available for the current user.
         /// </remarks>
         /// <returns></returns>
-        public async Task<ListDatabaseResult> GetDatabasesAsync()
+        public async Task<ListDatabaseResponse> GetDatabasesAsync()
         {
             using (var response = await _client.GetAsync(_databaseApiPath))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<ListDatabaseResult>(stream, true, false);
+                    return DeserializeJsonFromStream<ListDatabaseResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -79,14 +79,14 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// Retrieves the list of all databases the current user can access.
         /// </summary>
         /// <returns></returns>
-        public async Task<ListDatabaseResult> GetUserDatabasesAsync()
+        public async Task<ListDatabaseResponse> GetUserDatabasesAsync()
         {
             using (var response = await _client.GetAsync(_databaseApiPath + "/user"))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<ListDatabaseResult>(stream, true, false);
+                    return DeserializeJsonFromStream<ListDatabaseResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }

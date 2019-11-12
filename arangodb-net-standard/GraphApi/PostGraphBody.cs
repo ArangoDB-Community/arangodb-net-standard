@@ -10,6 +10,6 @@ namespace ArangoDBNetStandard.GraphApi
 
         public bool IsSmart { get; set; }
 
-        public PostGraphOptions Options { get; set; }
+        public PostGraphQuery Options { get; set; }
     }
 }

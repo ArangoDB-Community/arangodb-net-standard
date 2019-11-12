@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.TransactionApi
     /// <summary>
     /// Represents information required to make a transaction request to ArangoDB.
     /// </summary>
-    public class PostTransactionRequest
+    public class PostTransactionBody
     {
         /// <summary>
         /// JavaScript function describing the transaction action.

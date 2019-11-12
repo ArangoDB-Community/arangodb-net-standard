@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.CollectionApi
 {
-    public class TruncateCollectionResult
+    public class TruncateCollectionResponse
     {
         public bool Error { get; set; }
 

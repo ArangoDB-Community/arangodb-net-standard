@@ -28,7 +28,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// <typeparam name="T">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="request">Object containing information to submit in the POST transaction request.</param>
         /// <returns>Response from ArangoDB after processing the request.</returns>
-        public async Task<PostTransactionResponse<T>> PostTransactionAsync<T>(PostTransactionRequest request)
+        public async Task<PostTransactionResponse<T>> PostTransactionAsync<T>(PostTransactionBody request)
         {
             var content = GetStringContent(request, true, true);
             using (var response = await _client.PostAsync(_transactionApiPath, content))

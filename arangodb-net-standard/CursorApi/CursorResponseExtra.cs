@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ArangoDBNetStandard.CursorApi
 {
-    public class CursorResultExtra
+    public class CursorResponseExtra
     {
         public string Id { get; set; }
     }
