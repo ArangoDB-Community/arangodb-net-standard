@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ArangoDBNetStandard.DocumentApi
 {
-    public class DeleteDocumentsOptions
+    public class DeleteDocumentsQuery
     {
         public bool? WaitForSync { get; set; }
 

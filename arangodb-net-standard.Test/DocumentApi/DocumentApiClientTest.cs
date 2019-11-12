@@ -62,7 +62,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var response = await _docClient.PostDocumentAsync("TestCollection", document);
             Assert.NotNull(response._id);
 
-            var deleteResponse = await _docClient.DeleteDocumentAsync<MyTestClass>(response._id, new DeleteDocumentsOptions
+            var deleteResponse = await _docClient.DeleteDocumentAsync<MyTestClass>(response._id, new DeleteDocumentsQuery
             {
                 ReturnOld = true
             });
@@ -152,7 +152,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var response = await _docClient.DeleteDocumentsAsync<MyTestClass>(
                 "TestCollection",
                 docs.Select(d => d._id).ToList(),
-                new DeleteDocumentsOptions
+                new DeleteDocumentsQuery
                 {
                     ReturnOld = true
                 });
@@ -280,7 +280,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task PostDocument_ShouldSucceed_WhenNewDocIsReturned()
         {
             var doc = new { test = 123 };
-            var response = await _docClient.PostDocumentAsync("TestCollection", doc, new PostDocumentsOptions
+            var response = await _docClient.PostDocumentAsync("TestCollection", doc, new PostDocumentsQuery
             {
                 ReturnNew = true
             });
@@ -321,7 +321,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             dynamic document1 = new { test = "value" };
             dynamic document2 = new { test = "value" };
-            var response = await _docClient.PostDocumentsAsync("TestCollection", new dynamic[] { document1, document2 }, new PostDocumentsOptions
+            var response = await _docClient.PostDocumentsAsync("TestCollection", new dynamic[] { document1, document2 }, new PostDocumentsQuery
             {
                 ReturnNew = true
             });
@@ -373,7 +373,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var updateResponse = await _docClient.PutDocumentAsync(
                 response._id,
                 new { stuff = "new" },
-                new PutDocumentsOptions
+                new PutDocumentsQuery
                 {
                     ReturnNew = true
                 });
@@ -394,7 +394,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var updateResponse1 = await _docClient.PutDocumentAsync(
                 response._id,
                 new { stuff = "new" },
-                new PutDocumentsOptions
+                new PutDocumentsQuery
                 {
                     ReturnNew = true
                 });
@@ -408,7 +408,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     response._id,
                     // Use the initial rev value when updating, is out of sync
                     new { stuff = "more", response._rev },
-                    new PutDocumentsOptions
+                    new PutDocumentsQuery
                     {
                         IgnoreRevs = false
                     }));

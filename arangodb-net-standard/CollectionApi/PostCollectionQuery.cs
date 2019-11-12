@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.CollectionApi
 {
-    public class PostCollectionOptions
+    public class PostCollectionQuery
     {
         /// <summary>
         /// Default is true which means the server will only report success back to the

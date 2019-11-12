@@ -15,7 +15,7 @@ namespace ArangoDBNetStandard.CollectionApi
             _transport = transport;
         }
 
-        public async Task<PostCollectionResponse> PostCollectionAsync(PostCollectionRequest request, PostCollectionOptions options = null)
+        public async Task<PostCollectionResponse> PostCollectionAsync(PostCollectionBody request, PostCollectionQuery options = null)
         {
             string uriString = _collectionApiPath;
             if (options != null)
@@ -54,14 +54,14 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName"></param>
         /// <returns></returns>
-        public async Task<TruncateCollectionResult> TruncateCollectionAsync(string collectionName)
+        public async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName)
         {
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/truncate", null))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<TruncateCollectionResult>(stream, true, false);
+                    return DeserializeJsonFromStream<TruncateCollectionResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -69,13 +69,13 @@ namespace ArangoDBNetStandard.CollectionApi
 
         /// <summary>
         /// Gets count of documents in a collection
-        /// GET/_api/collection/{collection-name}/properties
+        /// GET/_api/collection/{collection-name}/count
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="collectionName"></param>
         /// <returns></returns>
-        public async Task<GetCollectionCountResponse> GetCollectionCountAsync(GetCollectionCountOptions options)
+        public async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + options.CollectionName + "/count"))
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/count"))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -91,7 +91,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsOptions options = null)
+        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery options = null)
         {
             string uriString = _collectionApiPath;
             if (options != null)
@@ -126,7 +126,23 @@ namespace ArangoDBNetStandard.CollectionApi
                     return collection;
                 }
                 throw await GetApiErrorException(response);
-            };
+            }
+        }
+        
+        /// Read properties of a collection
+        /// /_api/collection/{collection-name}/properties
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public async Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName)
+        {
+            var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/properties");            
+            if (response.IsSuccessStatusCode)
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+                return DeserializeJsonFromStream<GetCollectionPropertiesResponse>(stream);
+            }
+            throw await GetApiErrorException(response);
         }
     }
 }
