@@ -58,11 +58,11 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// (Only possible from within the _system database)
         /// </summary>
         /// <remarks>
-        /// You should use <see cref="ListUserDatabasesAsync"/> to fetch the list of the databases
+        /// You should use <see cref="GetUserDatabasesAsync"/> to fetch the list of the databases
         /// available for the current user.
         /// </remarks>
         /// <returns></returns>
-        public async Task<ListDatabaseResponse> ListDatabasesAsync()
+        public async Task<ListDatabaseResponse> GetDatabasesAsync()
         {
             using (var response = await _client.GetAsync(_databaseApiPath))
             {
@@ -79,7 +79,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// Retrieves the list of all databases the current user can access.
         /// </summary>
         /// <returns></returns>
-        public async Task<ListDatabaseResponse> ListUserDatabasesAsync()
+        public async Task<ListDatabaseResponse> GetUserDatabasesAsync()
         {
             using (var response = await _client.GetAsync(_databaseApiPath + "/user"))
             {
