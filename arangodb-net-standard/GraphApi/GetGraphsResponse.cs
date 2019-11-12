@@ -3,9 +3,9 @@ using System.Net;
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class GetGraphsResult
+    public class GetGraphsResponse
     {
-        public IEnumerable<GetGraphsGraphResult> Graphs { get; set; }
+        public IEnumerable<GetGraphsGraph> Graphs { get; set; }
 
         public HttpStatusCode Code { get; set; }
 

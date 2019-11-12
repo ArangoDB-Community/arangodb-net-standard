@@ -7,7 +7,7 @@ namespace ArangoDBNetStandard.DocumentApi
     /// <summary>
     /// Options used when calling ArangoDB PUT document endpoint.
     /// </summary>
-    public class PutDocumentsOptions
+    public class PutDocumentsQuery
     {
         /// <summary>
         /// Whether to wait until the new documents have been synced to disk.

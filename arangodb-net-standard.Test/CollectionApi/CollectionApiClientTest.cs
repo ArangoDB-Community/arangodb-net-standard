@@ -187,7 +187,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionCountAsync_ShouldSucceed()
         {
-            var newDoc = await _adb.Document.PostDocumentAsync(_testCollection, new PostDocumentsOptions());
+            var newDoc = await _adb.Document.PostDocumentAsync(_testCollection, new PostDocumentsQuery());
             var response = await _collectionApi.GetCollectionCountAsync(_testCollection);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
