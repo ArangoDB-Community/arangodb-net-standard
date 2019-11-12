@@ -32,7 +32,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="document"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<PostDocumentResponse<T>> PostDocumentAsync<T>(string collectionName, T document, PostDocumentsOptions options = null)
+        public async Task<PostDocumentResponse<T>> PostDocumentAsync<T>(string collectionName, T document, PostDocumentsQuery options = null)
         {
             string uriString = _docApiPath + "/" + collectionName;
             if (options != null)
@@ -59,7 +59,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documents"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(string collectionName, IList<T> documents, PostDocumentsOptions options = null)
+        public async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(string collectionName, IList<T> documents, PostDocumentsQuery options = null)
         {
             string uriString = _docApiPath + "/" + collectionName;
             if (options != null)
@@ -86,7 +86,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documents"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<PostDocumentsResponse<T>> PutDocumentsAsync<T>(string collectionName, IList<T> documents, PutDocumentsOptions options = null)
+        public async Task<PostDocumentsResponse<T>> PutDocumentsAsync<T>(string collectionName, IList<T> documents, PutDocumentsQuery options = null)
         {
             string uri = _docApiPath + "/" + collectionName;
             if (options != null)
@@ -113,7 +113,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="doc"></param>
         /// <param name="opts"></param>
         /// <returns></returns>
-        public async Task<PostDocumentResponse<T>> PutDocumentAsync<T>(string documentId, T doc, PutDocumentsOptions opts = null)
+        public async Task<PostDocumentResponse<T>> PutDocumentAsync<T>(string documentId, T doc, PutDocumentsQuery opts = null)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
@@ -170,14 +170,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
         /// in the returned <see cref="DeleteDocumentResponse{object}"/>. Its value will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentsOptions.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// <see cref="DeleteDocumentsQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string collectionName, string documentKey, DeleteDocumentsOptions options = null)
+        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string collectionName, string documentKey, DeleteDocumentsQuery options = null)
         {
             return await DeleteDocumentAsync<object>($"{collectionName}/{documentKey}", options);
         }
@@ -188,13 +188,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
         /// in the returned <see cref="DeleteDocumentResponse{object}"/>. Its value will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentsOptions.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// <see cref="DeleteDocumentsQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="documentId"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string documentId, DeleteDocumentsOptions options = null)
+        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string documentId, DeleteDocumentsQuery options = null)
         {
             return await DeleteDocumentAsync<object>(documentId, options);
         }
@@ -206,14 +206,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
         /// in the returned <see cref="DeleteDocumentsResponse{object}"/>. These will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentsOptions.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// <see cref="DeleteDocumentsQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="collectionName"></param>
         /// <param name="selectors"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(string collectionName, IList<string> selectors, DeleteDocumentsOptions options = null)
+        public async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(string collectionName, IList<string> selectors, DeleteDocumentsQuery options = null)
         {
             return await DeleteDocumentsAsync<object>(collectionName, selectors, options);
         }
@@ -226,7 +226,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string collectionName, string documentKey, DeleteDocumentsOptions options = null)
+        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string collectionName, string documentKey, DeleteDocumentsQuery options = null)
         {
             return await DeleteDocumentAsync<T>($"{collectionName}/{documentKey}", options);
         }
@@ -237,7 +237,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string documentId, DeleteDocumentsOptions options = null)
+        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string documentId, DeleteDocumentsQuery options = null)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
@@ -266,7 +266,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="selectors"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(string collectionName, IList<string> selectors, DeleteDocumentsOptions options = null)
+        public async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(string collectionName, IList<string> selectors, DeleteDocumentsQuery options = null)
         {
             string uri = _docApiPath + "/" + collectionName;
             if (options != null)

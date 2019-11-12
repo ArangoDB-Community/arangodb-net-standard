@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ArangoDBNetStandard.CursorApi
 {
-    public class PostCursorRequest
+    public class PostCursorBody
     {
         public string Query { get; set; }
 

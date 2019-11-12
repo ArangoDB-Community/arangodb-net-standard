@@ -6,7 +6,7 @@ namespace ArangoDBNetStandard.DatabaseApi
     /// Represents the content of the response returned
     /// by an endpoint that creates a new database.
     /// </summary>
-    public class PostDatabaseResult
+    public class PostDatabaseResponse
     {
         /// <summary>
         /// Indicates whether an error occurred (false in this case).

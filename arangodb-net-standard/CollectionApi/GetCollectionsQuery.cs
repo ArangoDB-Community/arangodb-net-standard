@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.CollectionApi
 {
-    public class GetCollectionsOptions
+    public class GetCollectionsQuery
     {
         public bool? ExcludeSystem { get; set; }
 

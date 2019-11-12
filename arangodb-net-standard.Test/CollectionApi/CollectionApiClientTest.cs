@@ -36,7 +36,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
             // create a collection so we can delete it
             var createResponse = await _collectionApi.PostCollectionAsync(
-                new PostCollectionRequest
+                new PostCollectionBody
                 {
                     Name = clx
                 });
@@ -61,7 +61,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         public async Task PostCollectionAsync_ShouldSucceed()
         {
             var response = await _collectionApi.PostCollectionAsync(
-                new PostCollectionRequest
+                new PostCollectionBody
                 {
                     Name = "MyCollection"
                 });
@@ -77,7 +77,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         public async Task PostCollectionAsync_ShouldSucceed_WhenUsingKeyOptions()
         {
             var response = await _collectionApi.PostCollectionAsync(
-                new PostCollectionRequest
+                new PostCollectionBody
                 {
                     Name = "MyCollectionWithKeyOptions",
                     KeyOptions = new CollectionKeyOptions
@@ -102,7 +102,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         public async Task PostCollectionAsync_ShouldSucceed_WhenEdgeCollection()
         {
             var response = await _collectionApi.PostCollectionAsync(
-                new PostCollectionRequest
+                new PostCollectionBody
                 {
                     Name = "MyEdgeCollection",
                     Type = 3
@@ -118,7 +118,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task PostCollectionAsync_ShouldThrow_WhenCollectionNameExists()
         {
-            var request = new PostCollectionRequest
+            var request = new PostCollectionBody
             {
                 Name = "MyOneAndOnlyCollection"
             };
@@ -133,7 +133,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task PostCollectionAsync_ShouldThrow_WhenCollectionNameInvalid()
         {
-            var request = new PostCollectionRequest
+            var request = new PostCollectionBody
             {
                 Name = "My collection name with spaces"
             };
@@ -187,11 +187,8 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionCountAsync_ShouldSucceed()
         {
-            var newDoc = await _adb.Document.PostDocumentAsync(_testCollection, new PostDocumentsOptions());
-            var response = await _collectionApi.GetCollectionCountAsync(new GetCollectionCountOptions
-            {
-                CollectionName = _testCollection
-            });
+            var newDoc = await _adb.Document.PostDocumentAsync(_testCollection, new PostDocumentsQuery());
+            var response = await _collectionApi.GetCollectionCountAsync(_testCollection);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -210,10 +207,8 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
         [Fact]
         public async Task GetCollectionCountAsync_ShouldThrow_WhenCollectionDoesNotExist() {
-            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () => await _collectionApi.GetCollectionCountAsync(new GetCollectionCountOptions
-            {
-                CollectionName = "bogusCollection"
-            }));
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _collectionApi.GetCollectionCountAsync("bogusCollection"));
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
 
@@ -221,7 +216,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         public async Task GetCollectionsAsync_ShouldSucceed()
         {
 
-            var response = await _collectionApi.GetCollectionsAsync(new GetCollectionsOptions
+            var response = await _collectionApi.GetCollectionsAsync(new GetCollectionsQuery
             {
                 ExcludeSystem = true // System adds 9 collections that we don't need to test
             });

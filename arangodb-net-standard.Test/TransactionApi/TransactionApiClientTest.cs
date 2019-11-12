@@ -28,7 +28,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
                      value = new[] { "world", "love" }
                 });
 
-            var result = await _adb.Transaction.PostTransactionAsync<List<DocumentBase>>(new PostTransactionRequest
+            var result = await _adb.Transaction.PostTransactionAsync<List<DocumentBase>>(new PostTransactionBody
             {
                 Action = @"
                     function (params) { 
@@ -62,7 +62,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
         public async Task PostTransaction_ShouldThrow_WhenFunctionDefinitionHasSyntaxErrors()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () => 
-                await _adb.Transaction.PostTransactionAsync<object>(new PostTransactionRequest
+                await _adb.Transaction.PostTransactionAsync<object>(new PostTransactionBody
                 {
                     Action = "function (params) { syntax error }",
                     Collections = new PostTransactionRequestCollections
@@ -77,7 +77,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
         public async Task PostTransaction_ShouldThrow_WhenWriteCollectionIsNotDeclared()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _adb.Transaction.PostTransactionAsync<object>(new PostTransactionRequest
+                await _adb.Transaction.PostTransactionAsync<object>(new PostTransactionBody
                 {
                     Action = "function (params) { console.log('This is a test'); }"
                 }));

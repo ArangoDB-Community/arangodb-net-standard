@@ -22,8 +22,8 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task PostDatabaseAsync_ShouldSucceed()
         {
-            PostDatabaseResult result = await _fixture.DatabaseClientSystem.PostDatabaseAsync(
-                new PostDatabaseRequest()
+            PostDatabaseResponse result = await _fixture.DatabaseClientSystem.PostDatabaseAsync(
+                new PostDatabaseBody()
                 {
                     Name = nameof(PostDatabaseAsync_ShouldSucceed)
                 });
@@ -40,7 +40,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _fixture.DatabaseClientOther.PostDatabaseAsync(new PostDatabaseRequest()
+                await _fixture.DatabaseClientOther.PostDatabaseAsync(new PostDatabaseBody()
                 {
                     Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseUsedIsNotSystem)
                 });
@@ -55,14 +55,14 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist()
         {
-            await _fixture.DatabaseClientSystem.PostDatabaseAsync(new PostDatabaseRequest()
+            await _fixture.DatabaseClientSystem.PostDatabaseAsync(new PostDatabaseBody()
             {
                 Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist)
             });
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _fixture.DatabaseClientSystem.PostDatabaseAsync(new PostDatabaseRequest()
+                await _fixture.DatabaseClientSystem.PostDatabaseAsync(new PostDatabaseBody()
                 {
                     Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist)
                 });
@@ -82,7 +82,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _fixture.DatabaseClientNonExistent.PostDatabaseAsync(new PostDatabaseRequest()
+                await _fixture.DatabaseClientNonExistent.PostDatabaseAsync(new PostDatabaseBody()
                 {
                     Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseUsedDoesNotExist)
                 });
@@ -97,7 +97,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task ListDatabasesAsync_ShouldSucceed()
         {
-            ListDatabaseResult result = await _fixture.DatabaseClientSystem.ListDatabasesAsync();
+            ListDatabaseResponse result = await _fixture.DatabaseClientSystem.ListDatabasesAsync();
 
             Assert.False(result.Error);
             Assert.Equal(HttpStatusCode.OK, result.Code);
@@ -135,7 +135,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task ListUserDatabasesAsync_ShouldSucceed()
         {
-            ListDatabaseResult result = await _fixture.DatabaseClientOther.ListUserDatabasesAsync();
+            ListDatabaseResponse result = await _fixture.DatabaseClientOther.ListUserDatabasesAsync();
 
             Assert.False(result.Error);
             Assert.Equal(HttpStatusCode.OK, result.Code);

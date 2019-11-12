@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.GraphApi
 {
-    public class PostGraphResult
+    public class PostGraphResponse
     {
         // TODO
     }
