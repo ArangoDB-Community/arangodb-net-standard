@@ -13,7 +13,7 @@ namespace ArangoDBNetStandard.GraphApi
             _transport = transport;
         }
 
-        public async Task<PostGraphResult> PostGraph(PostGraphBody postGraphBody)
+        public async Task<PostGraphResponse> PostGraph(PostGraphBody postGraphBody)
         {
             var content = GetStringContent(postGraphBody, true, true);
             using (var response = await _transport.PostAsync(_graphApiPath, content))
@@ -21,20 +21,20 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostGraphResult>(stream, true, false);
+                    return DeserializeJsonFromStream<PostGraphResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }
         }
 
-        public async Task<GetGraphsResult> GetGraphs()
+        public async Task<GetGraphsResponse> GetGraphs()
         {
             using (var response = await _transport.GetAsync(_graphApiPath))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetGraphsResult>(stream, true, false);
+                    return DeserializeJsonFromStream<GetGraphsResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }

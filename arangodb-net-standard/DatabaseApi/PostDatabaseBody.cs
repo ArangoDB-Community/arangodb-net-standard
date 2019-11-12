@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.DatabaseApi
 {
-    public class PostDatabaseRequest
+    public class PostDatabaseBody
     {
         public string Name { get; set; }
 

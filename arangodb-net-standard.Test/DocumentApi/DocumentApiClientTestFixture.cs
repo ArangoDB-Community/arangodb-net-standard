@@ -28,7 +28,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             try
             {
                 var response = await ArangoDBClient.Collection.PostCollectionAsync(
-                    new PostCollectionRequest
+                    new PostCollectionBody
                     {
                         Name = TestCollection
                     });

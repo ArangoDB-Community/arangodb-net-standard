@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class GetGraphsGraphResult
+    public class GetGraphsGraph
     {
         public string _id { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.CollectionApi
 {
-    public class PostCollectionRequest
+    public class PostCollectionBody
     {
         public string DistributeShardsLike { get; set; }
 

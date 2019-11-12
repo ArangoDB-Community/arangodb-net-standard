@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.GraphApi
 {
-    public class PostGraphOptions
+    public class PostGraphQuery
     {
         public string SmartGraphAttribute { get; set; }
 

@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.DocumentApi
     /// <summary>
     /// Options used when calling ArangoDB POST document endpoint.
     /// </summary>
-    public class PostDocumentsOptions
+    public class PostDocumentsQuery
     {
         public bool? WaitForSync { get; set; }
 

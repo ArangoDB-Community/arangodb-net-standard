@@ -14,7 +14,7 @@ namespace ArangoDBNetStandard.CursorApi
 
         public HttpStatusCode Code { get; set; }
 
-        public CursorResultExtra Extra { get; set; }
+        public CursorResponseExtra Extra { get; set; }
 
         public bool Cached { get; set; }
 
