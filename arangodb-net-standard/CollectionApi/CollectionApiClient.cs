@@ -69,7 +69,7 @@ namespace ArangoDBNetStandard.CollectionApi
 
         /// <summary>
         /// Gets count of documents in a collection
-        /// GET/_api/collection/{collection-name}/properties
+        /// GET/_api/collection/{collection-name}/count
         /// </summary>
         /// <param name="collectionName"></param>
         /// <returns></returns>
@@ -107,6 +107,23 @@ namespace ArangoDBNetStandard.CollectionApi
                 }
                 throw await GetApiErrorException(response);
             }
+        }
+
+        /// <summary>
+        /// Read properties of a collection
+        /// /_api/collection/{collection-name}/properties
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public async Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName)
+        {
+            var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/properties");            
+            if (response.IsSuccessStatusCode)
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+                return DeserializeJsonFromStream<GetCollectionPropertiesResponse>(stream);
+            }
+            throw await GetApiErrorException(response);
         }
     }
 }

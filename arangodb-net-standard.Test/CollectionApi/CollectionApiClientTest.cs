@@ -227,5 +227,20 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.NotNull(collectionExists);
         }
+
+        [Fact]
+        public async Task GetCollectionPropertiesAsync_ShouldSucceed()
+        {
+            var response = await _collectionApi.GetCollectionPropertiesAsync(_testCollection);
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.NotNull(response.KeyOptions);
+            Assert.False(response.WaitForSync);
+            Assert.Equal(_testCollection, response.Name);
+            Assert.NotNull(response.ObjectId);
+            Assert.False(response.IsSystem);
+            Assert.Equal(3, response.Status);
+            Assert.Equal(2, response.Type);
+        }
     }
 }
