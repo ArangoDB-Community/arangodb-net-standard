@@ -12,7 +12,7 @@ namespace ArangoDBNetStandard.CursorApi
 
         public Dictionary<string, object> BindVars { get; set; }
 
-        public PostCursorQuery Options { get; set; }
+        public PostCursorOptions Options { get; set; }
 
         public bool? Count { get; set; }
 

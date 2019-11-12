@@ -42,7 +42,7 @@ namespace ArangoDBNetStandard.CursorApi
         public async Task<CursorResponse<T>> PostCursorAsync<T>(
                 string query,
                 Dictionary<string, object> bindVars = null,
-                PostCursorQuery options = null,
+                PostCursorOptions options = null,
                 bool? count = null,
                 long? batchSize = null,
                 bool? cache = null,
