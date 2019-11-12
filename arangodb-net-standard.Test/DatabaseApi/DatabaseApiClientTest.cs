@@ -97,7 +97,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task ListDatabasesAsync_ShouldSucceed()
         {
-            ListDatabaseResponse result = await _fixture.DatabaseClientSystem.GetDatabasesAsync();
+            GetDatabasesResponse result = await _fixture.DatabaseClientSystem.GetDatabasesAsync();
 
             Assert.False(result.Error);
             Assert.Equal(HttpStatusCode.OK, result.Code);
@@ -135,7 +135,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task ListUserDatabasesAsync_ShouldSucceed()
         {
-            ListDatabaseResponse result = await _fixture.DatabaseClientOther.GetUserDatabasesAsync();
+            GetDatabasesResponse result = await _fixture.DatabaseClientOther.GetUserDatabasesAsync();
 
             Assert.False(result.Error);
             Assert.Equal(HttpStatusCode.OK, result.Code);
