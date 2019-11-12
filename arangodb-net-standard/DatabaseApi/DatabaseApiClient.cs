@@ -62,14 +62,14 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// available for the current user.
         /// </remarks>
         /// <returns></returns>
-        public async Task<ListDatabaseResponse> GetDatabasesAsync()
+        public async Task<GetDatabasesResponse> GetDatabasesAsync()
         {
             using (var response = await _client.GetAsync(_databaseApiPath))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<ListDatabaseResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetDatabasesResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -79,14 +79,14 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// Retrieves the list of all databases the current user can access.
         /// </summary>
         /// <returns></returns>
-        public async Task<ListDatabaseResponse> GetUserDatabasesAsync()
+        public async Task<GetDatabasesResponse> GetUserDatabasesAsync()
         {
             using (var response = await _client.GetAsync(_databaseApiPath + "/user"))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<ListDatabaseResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetDatabasesResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }
