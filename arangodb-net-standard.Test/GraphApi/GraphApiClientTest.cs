@@ -8,8 +8,8 @@ namespace ArangoDBNetStandardTest.GraphApi
 {
     public class GraphApiClientTest : IClassFixture<GraphApiClientTestFixture>
     {
-        private GraphApiClientTestFixture _fixture;
-        private GraphApiClient _client;
+        private readonly GraphApiClientTestFixture _fixture;
+        private readonly GraphApiClient _client;
 
         public GraphApiClientTest(GraphApiClientTestFixture fixture)
         {
