@@ -188,10 +188,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         public async Task GetCollectionCountAsync_ShouldSucceed()
         {
             var newDoc = await _adb.Document.PostDocumentAsync(_testCollection, new PostDocumentsOptions());
-            var response = await _collectionApi.GetCollectionCountAsync(new GetCollectionCountOptions
-            {
-                CollectionName = _testCollection
-            });
+            var response = await _collectionApi.GetCollectionCountAsync(_testCollection);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -210,10 +207,8 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
         [Fact]
         public async Task GetCollectionCountAsync_ShouldThrow_WhenCollectionDoesNotExist() {
-            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () => await _collectionApi.GetCollectionCountAsync(new GetCollectionCountOptions
-            {
-                CollectionName = "bogusCollection"
-            }));
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _collectionApi.GetCollectionCountAsync("bogusCollection"));
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
 

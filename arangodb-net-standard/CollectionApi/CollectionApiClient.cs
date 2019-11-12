@@ -71,11 +71,11 @@ namespace ArangoDBNetStandard.CollectionApi
         /// Gets count of documents in a collection
         /// GET/_api/collection/{collection-name}/properties
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="collectionName"></param>
         /// <returns></returns>
-        public async Task<GetCollectionCountResponse> GetCollectionCountAsync(GetCollectionCountOptions options)
+        public async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + options.CollectionName + "/count"))
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/count"))
             {
                 if (response.IsSuccessStatusCode)
                 {
