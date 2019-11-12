@@ -85,7 +85,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw await GetApiErrorException(response);
             };
         }
-
+        
         /// Get all collections
         /// GET/_api/collection
         /// </summary>
@@ -110,6 +110,25 @@ namespace ArangoDBNetStandard.CollectionApi
         }
 
         /// <summary>
+        /// Gets the requested collection
+        /// GET/_api/collection/{collection-name}
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <returns></returns>
+        public async Task<GetCollectionResponse> GetCollectionAsync(string collectionName)
+        {
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    var collection = DeserializeJsonFromStream<GetCollectionResponse>(stream, false, true);
+                    return collection;
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+        
         /// Read properties of a collection
         /// /_api/collection/{collection-name}/properties
         /// </summary>

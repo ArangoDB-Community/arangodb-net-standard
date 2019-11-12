@@ -225,7 +225,25 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
-            Assert.NotNull(collectionExists);
+            Assert.NotNull(collectionExists);            
+        }
+
+        [Fact]
+        public async Task GetCollectionAsync_ShouldSucceed()
+        {
+            var collection = await _collectionApi.GetCollectionAsync(_testCollection);
+
+            Assert.Equal(_testCollection, collection.Name);
+        }
+
+        [Fact]
+        public async Task GetCollectionAsync_ShouldThrow_WhenNotFound()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () => {
+                await _collectionApi.GetCollectionAsync("MyWrongCollection");
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
         }
 
         [Fact]
