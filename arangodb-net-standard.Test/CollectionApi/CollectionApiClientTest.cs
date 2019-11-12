@@ -335,5 +335,15 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.NotNull(response.Revision);
             Assert.NotNull(response.StatusString);
         }
+
+        [Fact]
+        public async Task GetCollectionRevisionAsync_ShouldThrow_WhenCollectionNotFound()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _collectionApi.GetCollectionRevisionAsync("bogusCollection");
+            });
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+        }
     }
 }
