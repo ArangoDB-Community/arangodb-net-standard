@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard.Transport;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.GraphApi
@@ -35,6 +36,20 @@ namespace ArangoDBNetStandard.GraphApi
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
                     return DeserializeJsonFromStream<GetGraphsResponse>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        public async Task<DeleteGraphResponse> DeleteGraphAsync(string graphName, DeleteGraphBody body)
+        {
+            StringContent _body = GetStringContent(body, true, true);
+            using (var response = await _transport.DeleteAsync(_graphApiPath + "/" + graphName, _body))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteGraphResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }

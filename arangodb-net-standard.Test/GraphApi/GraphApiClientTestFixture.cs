@@ -13,6 +13,8 @@ namespace ArangoDBNetStandardTest.GraphApi
 
         public string TestCollection { get; } = "TestCollection";
 
+        public string TestGraph { get; } = "TestGraph";
+
         public override async Task InitializeAsync()
         {
             await base.InitializeAsync();
@@ -39,7 +41,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             // create a graph
             await ArangoDBClient.Graph.PostGraph(new PostGraphBody
             {
-                Name = "MyGraph",
+                Name = TestGraph,
                 EdgeDefinitions = new List<EdgeDefinition>
                 {
                     new EdgeDefinition
