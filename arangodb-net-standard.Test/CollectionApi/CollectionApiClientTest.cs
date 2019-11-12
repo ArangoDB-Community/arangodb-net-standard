@@ -236,33 +236,19 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionAsync_ShouldSucceed()
         {
-            await GenerateCollections(new string[] { "MyTempCollection" });
+            var collection = await _collectionApi.GetCollectionAsync(_testCollection);
 
-            var collection = await _collectionApi.GetCollectionAsync("MyTempCollection");
-
-            Assert.Equal("MyTempCollection", collection.Name);
+            Assert.Equal(_testCollection, collection.Name);
         }
 
         [Fact]
-        public async Task GetCollectionAsync_ShouldThrowNotFound()
+        public async Task GetCollectionAsync_ShouldThrow_WhenNotFound()
         {
-            await GenerateCollections(new string[] { "MyFoundCollection" });
-
-            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () => await _collectionApi.GetCollectionAsync("MyWrongCollection"));
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () => {
+                await _collectionApi.GetCollectionAsync("MyWrongCollection");
+            });
 
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-        }
-
-        private async Task GenerateCollections(string[] collectionNames)
-        {
-            foreach (var collection in collectionNames)
-            {
-                await _collectionApi.PostCollectionAsync(new PostCollectionRequest
-                {
-                    Name = collection,
-                    Type = 3
-                });
-            }
         }
     }
 }
