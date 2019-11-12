@@ -323,5 +323,17 @@ namespace ArangoDBNetStandardTest.CollectionApi
             });
             Assert.Equal(1203, exception.ApiError.ErrorNum); // Arango Data Source Not Found
         }
+
+        [Fact]
+        public async Task GetCollectionRevisionAsync_ShouldSucceed()
+        {
+            var response = await _collectionApi.GetCollectionRevisionAsync(_testCollection);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(_testCollection, response.Name);
+            Assert.NotNull(response.Id);
+            Assert.NotNull(response.KeyOptions);
+            Assert.NotNull(response.Revision);
+            Assert.NotNull(response.StatusString);
+        }
     }
 }
