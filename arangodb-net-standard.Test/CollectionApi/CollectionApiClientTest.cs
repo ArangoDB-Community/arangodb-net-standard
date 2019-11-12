@@ -265,7 +265,12 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task RenameCollectionAsync_ShouldSucceed()
         {
-            var response = await _collectionApi.RenameCollectionAsync(_testCollection, new RenameCollectionRequest
+            await _adb.Collection.PostCollectionAsync(
+                    new PostCollectionRequest
+                    {
+                        Name = "TempCollection"
+                    });
+            var response = await _collectionApi.RenameCollectionAsync("TempCollection", new RenameCollectionRequest
             {
                 Name = "testingCollection"
             });
@@ -274,12 +279,45 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.False(response.IsSystem);
             Assert.NotNull(response.Id);
             Assert.False(response.Error);
-            // set the test collection back to the constant
-            var reverse = await _collectionApi.RenameCollectionAsync("testingCollection", new RenameCollectionRequest
+        }
+
+        [Fact]
+        public async Task RenameCollectionAsync_ShouldThrow_WhenCollectionNotFound()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                Name = _testCollection
+                await _collectionApi.RenameCollectionAsync("bogusCollection", new RenameCollectionRequest
+                {
+                    Name = "testingCollection"
+                });
             });
-            Assert.Equal(HttpStatusCode.OK, reverse.Code);
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+        }
+
+        [Fact]
+        public async Task RenameCollectionAsync_ShouldThrow_WhenNameInvalid()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _collectionApi.RenameCollectionAsync(_testCollection, new RenameCollectionRequest
+                {
+                    Name = "Bad Collection Name"
+                });
+            });
+            Assert.Equal(1208, exception.ApiError.ErrorNum); // Arango Illegal Name
+        }
+
+        [Fact]
+        public async Task RenameCollectionAsync_ShouldThrow_WhenCollectionInvalid()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _collectionApi.RenameCollectionAsync("Bad Collection Name", new RenameCollectionRequest
+                {
+                    Name = "testingCollection"
+                });
+            });
+            Assert.Equal(1203, exception.ApiError.ErrorNum); // Arango Data Source Not Found
         }
     }
 }

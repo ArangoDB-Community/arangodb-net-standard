@@ -17,7 +17,5 @@ namespace ArangoDBNetStandard.CollectionApi
         public HttpStatusCode Code { get; set; }
 
         public bool Error { get; set; }
-
-
     }
 }

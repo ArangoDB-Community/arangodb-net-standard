@@ -148,7 +148,7 @@ namespace ArangoDBNetStandard.CollectionApi
         }
 
         /// <summary>
-        /// Rename a collection
+        /// Rename a collection.
         /// /_api/collection/{collection-name}/rename
         /// </summary>
         /// <param name="collectionName"></param>
