@@ -41,10 +41,21 @@ namespace ArangoDBNetStandard.GraphApi
             }
         }
 
-        public async Task<DeleteGraphResponse> DeleteGraphAsync(string graphName, DeleteGraphBody body)
+        /// <summary>
+        /// Delete graph
+        /// DELETE /_api/gharial/{graph-name}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public async Task<DeleteGraphResponse> DeleteGraphAsync(string graphName, DeleteGraphQuery query = null)
         {
-            StringContent _body = GetStringContent(body, true, true);
-            using (var response = await _transport.DeleteAsync(_graphApiPath + "/" + graphName, _body))
+            string uriString = _graphApiPath + "/" + graphName;
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.DeleteAsync(uriString))
             {
                 if (response.IsSuccessStatusCode)
                 {

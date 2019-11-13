@@ -56,11 +56,11 @@ namespace ArangoDBNetStandardTest.GraphApi
                     }
                 }
             });
-            var body = new DeleteGraphBody
+            var query = new DeleteGraphQuery
             {
-                DropCollections = false
+                DropCollections = 12
             };
-            var response = await _client.DeleteGraphAsync("temp_graph", body);
+            var response = await _client.DeleteGraphAsync("temp_graph", query);
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.True(response.Removed);
             Assert.False(response.Error);
@@ -71,7 +71,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.DeleteGraphAsync("boggus_graph", new DeleteGraphBody
+                await _client.DeleteGraphAsync("boggus_graph", new DeleteGraphQuery
                 {
                     DropCollections = false
                 });
