@@ -12,11 +12,13 @@ namespace ArangoDBNetStandardTest.DatabaseApi
     /// </summary>
     public class DatabaseApiClientTest : IClassFixture<DatabaseApiClientTestFixture>
     {
-        private DatabaseApiClientTestFixture _fixture;
+        private readonly DatabaseApiClientTestFixture _fixture;
+        private readonly DatabaseApiClient _client;
 
         public DatabaseApiClientTest(DatabaseApiClientTestFixture fixture)
         {
             _fixture = fixture;
+            _client = fixture.DatabaseClientSystem;
         }
 
         [Fact]
@@ -154,6 +156,32 @@ namespace ArangoDBNetStandardTest.DatabaseApi
 
             Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
             Assert.Equal(1228, apiError.ErrorNum);
+        }
+
+        [Fact]
+        public async Task GetCurrentDatabaseAsync_ShouldSucceed()
+        {
+            var response = await _client.GetCurrentDatabaseAsync();
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.True(response.Result.IsSystem);
+            Assert.False(response.Error);
+            Assert.Equal("1", response.Result.Id);
+            Assert.Equal("_system", response.Result.Name);
+            Assert.False(string.IsNullOrEmpty(response.Result.Path));
+        }
+
+        [Fact]
+        public async Task GetCurrentDatabaseAsync_ShouldSucceed_WhenNoDatabaseExists()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _fixture.DatabaseClientNonExistent.GetCurrentDatabaseAsync();
+            });
+
+            ApiErrorResponse apiError = ex.ApiError;
+
+            Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
+            Assert.Equal(1228, apiError.ErrorNum); // ARANGO_DATABASE_NOT_FOUND
         }
     }
 }

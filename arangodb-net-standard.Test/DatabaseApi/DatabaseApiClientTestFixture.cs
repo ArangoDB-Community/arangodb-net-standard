@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using ArangoDBNetStandard;
 using ArangoDBNetStandard.DatabaseApi;
 
 namespace ArangoDBNetStandardTest.DatabaseApi
