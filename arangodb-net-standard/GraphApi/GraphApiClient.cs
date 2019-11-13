@@ -42,7 +42,9 @@ namespace ArangoDBNetStandard.GraphApi
         }
 
         /// <summary>
-        /// Delete graph
+        /// Deletes an existing graph object by name.
+        /// Optionally all collections not used by other
+        /// graphs can be deleted as well, using <see cref = "DeleteGraphQuery" ></ see >.
         /// DELETE /_api/gharial/{graph-name}
         /// </summary>
         /// <param name="graphName"></param>
