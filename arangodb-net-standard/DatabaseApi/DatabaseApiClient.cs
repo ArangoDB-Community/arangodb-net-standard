@@ -91,5 +91,22 @@ namespace ArangoDBNetStandard.DatabaseApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Retrieves information about the current database.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<GetCurrentDatabaseInfoResponse> GetCurrentDatabaseInfoAsync()
+        {
+            using (var response = await _client.GetAsync(_databaseApiPath + "/current"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetCurrentDatabaseInfoResponse>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }

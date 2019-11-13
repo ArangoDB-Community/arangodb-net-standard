@@ -155,5 +155,37 @@ namespace ArangoDBNetStandardTest.DatabaseApi
             Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
             Assert.Equal(1228, apiError.ErrorNum);
         }
+
+        [Fact]
+        public async Task GetCurrentDatabaseInfoAsync_ShouldSucceed()
+        {
+            GetCurrentDatabaseInfoResponse response =
+                await _fixture.DatabaseClientSystem.GetCurrentDatabaseInfoAsync();
+
+            Assert.False(response.Error);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+
+            CurrentDatabaseInfo dbInfo = response.Result;
+
+            Assert.NotNull(dbInfo);
+            Assert.NotNull(dbInfo.Id);
+            Assert.True(dbInfo.IsSystem);
+            Assert.Equal("_system", dbInfo.Name);
+            Assert.NotNull(dbInfo.Path);
+        }
+
+        [Fact]
+        public async Task GetCurrentDatabaseInfoAsync_ShouldThrow_WhenDatabaseDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _fixture.DatabaseClientNonExistent.GetDatabasesAsync();
+            });
+
+            ApiErrorResponse apiError = ex.ApiError;
+
+            Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
+            Assert.Equal(1228, apiError.ErrorNum);
+        }
     }
 }
