@@ -58,7 +58,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
             var query = new DeleteGraphQuery
             {
-                DropCollections = 12
+                DropCollections = false
             };
             var response = await _client.DeleteGraphAsync("temp_graph", query);
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
