@@ -265,17 +265,20 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task RenameCollectionAsync_ShouldSucceed()
         {
+            string initialClx = nameof(RenameCollectionAsync_ShouldSucceed);
+            string renamedClx = initialClx + "_Renamed";
+
             await _adb.Collection.PostCollectionAsync(
                     new PostCollectionBody
                     {
-                        Name = "TempCollection"
+                        Name = initialClx
                     });
-            var response = await _collectionApi.RenameCollectionAsync("TempCollection", new RenameCollectionBody
+            var response = await _collectionApi.RenameCollectionAsync(initialClx, new RenameCollectionBody
             {
-                Name = "testingCollection"
+                Name = renamedClx
             });
             Assert.Equal(HttpStatusCode.OK, response.Code);
-            Assert.Equal("testingCollection", response.Name);
+            Assert.Equal(renamedClx, response.Name);
             Assert.False(response.IsSystem);
             Assert.NotNull(response.Id);
             Assert.False(response.Error);
