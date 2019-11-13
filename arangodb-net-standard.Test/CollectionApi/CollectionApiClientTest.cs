@@ -270,7 +270,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                     {
                         Name = "TempCollection"
                     });
-            var response = await _collectionApi.RenameCollectionAsync("TempCollection", new RenameCollectionRequest
+            var response = await _collectionApi.RenameCollectionAsync("TempCollection", new RenameCollectionBody
             {
                 Name = "testingCollection"
             });
@@ -286,12 +286,13 @@ namespace ArangoDBNetStandardTest.CollectionApi
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _collectionApi.RenameCollectionAsync("bogusCollection", new RenameCollectionRequest
+                await _collectionApi.RenameCollectionAsync("bogusCollection", new RenameCollectionBody
                 {
                     Name = "testingCollection"
                 });
             });
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1203, exception.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
 
         [Fact]
@@ -299,7 +300,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _collectionApi.RenameCollectionAsync(_testCollection, new RenameCollectionRequest
+                await _collectionApi.RenameCollectionAsync(_testCollection, new RenameCollectionBody
                 {
                     Name = "Bad Collection Name"
                 });
@@ -312,7 +313,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _collectionApi.RenameCollectionAsync("Bad Collection Name", new RenameCollectionRequest
+                await _collectionApi.RenameCollectionAsync("Bad Collection Name", new RenameCollectionBody
                 {
                     Name = "testingCollection"
                 });

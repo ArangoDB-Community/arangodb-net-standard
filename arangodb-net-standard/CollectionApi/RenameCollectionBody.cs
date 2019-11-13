@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.CollectionApi
 {
-    public class RenameCollectionRequest
+    public class RenameCollectionBody
     {
         public string Name { get; set; }
     }

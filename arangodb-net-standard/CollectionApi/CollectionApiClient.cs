@@ -149,14 +149,14 @@ namespace ArangoDBNetStandard.CollectionApi
 
         /// <summary>
         /// Rename a collection.
-        /// /_api/collection/{collection-name}/rename
+        /// PUT /_api/collection/{collection-name}/rename
         /// </summary>
         /// <param name="collectionName"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionRequest request)
+        public async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body)
         {
-            StringContent content = GetStringContent(request, true, false);
+            StringContent content = GetStringContent(body, true, false);
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/rename", content))
             {
                 if (response.IsSuccessStatusCode)
