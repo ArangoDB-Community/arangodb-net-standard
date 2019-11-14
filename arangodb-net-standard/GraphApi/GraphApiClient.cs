@@ -137,5 +137,32 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Adds an additional edge definition to the graph.
+        /// This edge definition has to contain a collection and an array of
+        /// each from and to vertex collections.An edge definition can only
+        /// be added if this definition is either not used in any other graph, or
+        /// it is used with exactly the same definition. It is not possible to
+        /// store a definition “e” from “v1” to “v2” in the one graph, and “e”
+        /// from “v2” to “v1” in the other graph.
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public async Task<PostGraphEdgeResponse> PostGraphEdgeAsync(string graphName, EdgeDefinition body)
+        {
+            StringContent content = GetStringContent(body, true, true);
+            var str = content.ReadAsStringAsync();
+            using (var response = await _transport.PostAsync(_graphApiPath + "/" + graphName + "/edge", content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PostGraphEdgeResponse>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }

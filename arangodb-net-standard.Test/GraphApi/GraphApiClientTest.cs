@@ -232,5 +232,44 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
             Assert.Equal(1221, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_KEY_BAD
         }
+
+        [Fact]
+        public async Task PostGraphEdgeAsync_ShouldSucceed()
+        {
+            var response = await _client.PostGraphEdgeAsync(_fixture.TestGraph, new EdgeDefinition
+            {
+                From = new string[] { "fromclxx" },
+                To = new string[] { "toclxx" },
+                Collection = "clxx"
+            });
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.False(response.Error);
+            var edgeDefinition = response.Graph.EdgeDefinitions.Where(x => x.Collection == "clsxx").FirstOrDefault();
+            Assert.NotNull(edgeDefinition);
+            Assert.Equal(_fixture.TestGraph, response.Graph.Name);
+            Assert.Equal(1, response.Graph.SmartGraphAttribute);
+            Assert.Equal(1, response.Graph._id);
+            Assert.Equal(1, response.Graph._rev);
+            Assert.Equal(1, response.Graph.);
+            Assert.Equal(1, response.Graph.Name);
+            Assert.Equal(1, response.Graph.Name);
+        }
+
+        [Fact]
+        public async Task PostGraphEdgeAsync_ShouldThrow_WhenNotFound()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PostGraphEdgeAsync("boggus_graph", new EdgeDefinition
+                {
+                    From = new string[] { "fromclxx" },
+                    To = new string[] { "toclxx" },
+                    Collection = "clxx"
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
     }
 }
