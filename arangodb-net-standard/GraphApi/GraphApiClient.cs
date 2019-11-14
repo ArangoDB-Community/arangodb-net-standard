@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard.Transport;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.GraphApi
@@ -35,6 +36,33 @@ namespace ArangoDBNetStandard.GraphApi
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
                     return DeserializeJsonFromStream<GetGraphsResponse>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Deletes an existing graph object by name.
+        /// Optionally all collections not used by other
+        /// graphs can be deleted as well, using <see cref = "DeleteGraphQuery" ></ see >.
+        /// DELETE /_api/gharial/{graph-name}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public async Task<DeleteGraphResponse> DeleteGraphAsync(string graphName, DeleteGraphQuery query = null)
+        {
+            string uriString = _graphApiPath + "/" + graphName;
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.DeleteAsync(uriString))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteGraphResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }

@@ -3,6 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 using ArangoDBNetStandard.GraphApi;
+using System.Collections.Generic;
+using ArangoDBNetStandard;
 
 namespace ArangoDBNetStandardTest.GraphApi
 {
@@ -33,9 +35,50 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(1, graph.NumberOfShards);
             Assert.Equal(1, graph.ReplicationFactor);
             Assert.False(graph.IsSmart);
-            Assert.Equal("MyGraph", graph._key);
-            Assert.Equal("_graphs/MyGraph", graph._id);
+            Assert.Equal(_fixture.TestGraph, graph._key);
+            Assert.Equal("_graphs/" + _fixture.TestGraph, graph._id);
             Assert.NotNull(graph._rev);
+        }
+
+        [Fact]
+        public async Task DeleteGraphAsync_ShouldSucceed()
+        {
+            await _fixture.ArangoDBClient.Graph.PostGraph(new PostGraphBody
+            {
+                Name = "temp_graph",
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { "fromclx" },
+                        To = new string[] { "toclx" },
+                        Collection = "clx"
+                    }
+                }
+            });
+            var query = new DeleteGraphQuery
+            {
+                DropCollections = false
+            };
+            var response = await _client.DeleteGraphAsync("temp_graph", query);
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.True(response.Removed);
+            Assert.False(response.Error);
+        }
+
+        [Fact]
+        public async Task DeleteGraphAsync_ShouldThrow_WhenNotFound()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.DeleteGraphAsync("boggus_graph", new DeleteGraphQuery
+                {
+                    DropCollections = false
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
         }
     }
 }
