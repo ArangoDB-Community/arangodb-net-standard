@@ -7,7 +7,7 @@ namespace ArangoDBNetStandard.DatabaseApi
     /// Represents the content of the response returned
     /// by an endpoint that gets the list of databases.
     /// </summary>
-    public class ListDatabaseResponse
+    public class GetDatabasesResponse
     {
         /// <summary>
         /// Indicates whether an error occurred (false in this case).
