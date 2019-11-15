@@ -242,7 +242,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 Name = tempGraph,
                 EdgeDefinitions = new List<EdgeDefinition>()
             });
-            var response = await _client.PostGraphEdgeAsync(tempGraph, new EdgeDefinition
+            var response = await _client.PostGraphEdgeDefinitionAsync(tempGraph, new EdgeDefinition
             {
                 From = new string[] { "fromclxx" },
                 To = new string[] { "toclxx" },
@@ -263,7 +263,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PostGraphEdgeAsync("boggus_graph", new EdgeDefinition
+                await _client.PostGraphEdgeDefinitionAsync("boggus_graph", new EdgeDefinition
                 {
                     From = new string[] { "fromclxx" },
                     To = new string[] { "toclxx" },

@@ -150,10 +150,9 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public async Task<PostGraphEdgeResponse> PostGraphEdgeAsync(string graphName, EdgeDefinition body)
+        public async Task<PostGraphEdgeResponse> PostGraphEdgeDefinitionAsync(string graphName, EdgeDefinition body)
         {
             StringContent content = GetStringContent(body, true, true);
-            var str = content.ReadAsStringAsync();
             using (var response = await _transport.PostAsync(_graphApiPath + "/" + graphName + "/edge", content))
             {
                 if (response.IsSuccessStatusCode)
