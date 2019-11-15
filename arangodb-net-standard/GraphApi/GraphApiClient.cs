@@ -14,6 +14,11 @@ namespace ArangoDBNetStandard.GraphApi
             _transport = transport;
         }
 
+        /// <summary>
+        /// Creates a new graph in the graph module.
+        /// </summary>
+        /// <param name="postGraphBody">The information of the graph to create.</param>
+        /// <returns></returns>
         public async Task<PostGraphResponse> PostGraph(PostGraphBody postGraphBody)
         {
             var content = GetStringContent(postGraphBody, true, true);
