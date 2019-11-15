@@ -16,7 +16,7 @@ namespace ArangoDBNetStandard.GraphApi
 
         public int NumberOfShards { get; set; }
 
-        public bool? IsSmart { get; set; }
+        public bool IsSmart { get; set; }
 
         public string _id { get; set; }
 

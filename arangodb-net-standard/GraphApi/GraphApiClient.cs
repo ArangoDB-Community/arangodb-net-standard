@@ -1,6 +1,7 @@
 ﻿using ArangoDBNetStandard.Transport;
 using System.Net;
 using System.Net.Http;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.GraphApi
@@ -153,7 +154,7 @@ namespace ArangoDBNetStandard.GraphApi
         public async Task<PostGraphEdgeResponse> PostGraphEdgeDefinitionAsync(string graphName, EdgeDefinition body)
         {
             StringContent content = GetStringContent(body, true, true);
-            using (var response = await _transport.PostAsync(_graphApiPath + "/" + graphName + "/edge", content))
+            using (var response = await _transport.PostAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge", content))
             {
                 if (response.IsSuccessStatusCode)
                 {
