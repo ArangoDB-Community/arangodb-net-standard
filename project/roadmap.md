@@ -59,8 +59,9 @@ A tick indicates an item is implemented and has automated tests in place.
 - [ ]	PUT/_api/simple/all-keys Read all documents
 
 #### Graph API
+<<<<<<< HEAD
 - [X]	GET/_api/gharial List all graphs
-- [ ]	POST/_api/gharial Create a graph
+- [X]	POST/_api/gharial Create a graph
 - [X]	DELETE/_api/gharial/{graph} Drop a graph
 - [X]	GET/_api/gharial/{graph} Get a graph
 - [X]	GET/_api/gharial/{graph}/edge List edge definitions

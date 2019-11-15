@@ -39,7 +39,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             }
 
             // create a graph
-            await ArangoDBClient.Graph.PostGraph(new PostGraphBody
+            await ArangoDBClient.Graph.PostGraphAsync(new PostGraphBody
             {
                 Name = TestGraph,
                 EdgeDefinitions = new List<EdgeDefinition>
