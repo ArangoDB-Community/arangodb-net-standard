@@ -24,7 +24,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         public async Task GetGraphsAsync_ShouldSucceed()
         {
             // get the list of graphs
-            var graphsResult = await _fixture.ArangoDBClient.Graph.GetGraphs();
+            var graphsResult = await _fixture.ArangoDBClient.Graph.GetGraphsAsync();
 
             // test result
             Assert.Equal(HttpStatusCode.OK, graphsResult.Code);
