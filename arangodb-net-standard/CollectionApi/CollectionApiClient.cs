@@ -68,7 +68,7 @@ namespace ArangoDBNetStandard.CollectionApi
         }
 
         /// <summary>
-        /// Gets count of documents in a collection
+        /// Gets count of documents in a collection.
         /// GET/_api/collection/{collection-name}/count
         /// </summary>
         /// <param name="collectionName"></param>
@@ -86,7 +86,8 @@ namespace ArangoDBNetStandard.CollectionApi
             };
         }
 
-        /// Get all collections
+        /// <summary>
+        /// Get all collections.
         /// GET/_api/collection
         /// </summary>
         /// <param name="options"></param>
@@ -110,7 +111,7 @@ namespace ArangoDBNetStandard.CollectionApi
         }
 
         /// <summary>
-        /// Gets the requested collection
+        /// Gets the requested collection.
         /// GET/_api/collection/{collection-name}
         /// </summary>
         /// <param name="collectionName"></param>
@@ -129,8 +130,8 @@ namespace ArangoDBNetStandard.CollectionApi
             }
         }
 
-        /// Read properties of a collection
-        /// /_api/collection/{collection-name}/properties
+        /// Read properties of a collection.
+        /// GET /_api/collection/{collection-name}/properties
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
