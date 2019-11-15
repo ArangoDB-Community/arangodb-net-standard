@@ -111,5 +111,24 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Lists all edge collections within this graph.
+        /// GET /_api/gharial/{graph}/edge
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <returns></returns>
+        public async Task<GetGraphEdgeCollectionsResponse> GetGraphEdgeCollectionsAsync(string graphName)
+        {
+            using (var response = await _transport.GetAsync(_graphApiPath + "/" + graphName + "/edge"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetGraphEdgeCollectionsResponse>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
