@@ -1,6 +1,6 @@
 ﻿using ArangoDBNetStandard.Transport;
-using System.Net;
 using System.Net.Http;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.GraphApi
@@ -159,6 +159,25 @@ namespace ArangoDBNetStandard.GraphApi
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
                     return DeserializeJsonFromStream<PostGraphEdgeResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        public async Task<PostVertexCollectionResponse> PostVertexCollectionAsync(string graphName, string collectionName, PostVertexCollectionQuery query = null)
+        {
+            string uriString = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+            StringContent content = GetStringContent(new { }, true, true);
+            using (var response = await _transport.PostAsync(uriString, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PostVertexCollectionResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

@@ -274,5 +274,46 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
         }
+
+        // PostVertexCollectionAsync 
+        [Fact]
+        public async Task PostVertexCollectionAsync_ShouldSucceed()
+        {
+            var edge = nameof(PostVertexCollectionAsync_ShouldSucceed) + "_EdgeClx";
+            var graph = nameof(PostVertexCollectionAsync_ShouldSucceed) + "_GraphClx";
+
+            // Create edge collection
+            var createClxResponse = await _fixture.ArangoDBClient.Collection.PostCollectionAsync(
+                new PostCollectionBody()
+                {
+                    Name = edge,
+                    Type = 3
+                });
+
+            // Create GRaph
+            PostGraphResponse createGraphResponse = await _client.PostGraph(new PostGraphBody()
+            {
+                Name = graph,
+                EdgeDefinitions = new List<EdgeDefinition>()
+                {
+                    new EdgeDefinition()
+                    {
+                        Collection = edge,
+                        From = new string[] { "FromCollection" },
+                        To = new string[] { "ToCollection" }
+                    }
+                }
+            });
+
+            var query = new PostVertexCollectionQuery
+            {
+                WaitForSync = false,
+                ReturnNew = true
+            };
+
+            var response = await _client.PostVertexCollectionAsync(graph, edge, query);
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+        }
     }
 }
