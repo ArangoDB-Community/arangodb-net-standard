@@ -351,17 +351,20 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task PutCollectionPropertyAsync_ShouldSucceed()
         {
-            var beforeResponse = await _collectionApi.GetCollectionPropertiesAsync(_testCollection);
+            var putCollection = await _adb.Collection.PostCollectionAsync(new PostCollectionBody
+            {
+                 Name = nameof(PutCollectionPropertyAsync_ShouldSucceed)
+            });
+            var beforeResponse = await _collectionApi.GetCollectionPropertiesAsync(putCollection.Name);
 
             var body = new PutCollectionPropertyBody
             {
-                JournalSize = 2097152,
                 WaitForSync = !beforeResponse.WaitForSync
             };
-            var response = await _collectionApi.PutCollectionPropertyAsync(_testCollection, body);
+            var response = await _collectionApi.PutCollectionPropertyAsync(putCollection.Name, body);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
-            Assert.Equal(body.WaitForSync, !response.WaitForSync);
+            Assert.NotEqual(beforeResponse.WaitForSync, response.WaitForSync);
         }
 
         [Fact]
