@@ -8,6 +8,6 @@ namespace ArangoDBNetStandard.GraphApi
 
         public HttpStatusCode Code { get; set; }
 
-        public bool? Error { get; set; }
+        public bool Error { get; set; }
     }
 }
