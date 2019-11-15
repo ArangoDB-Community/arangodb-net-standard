@@ -80,14 +80,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName"></param>
         /// <returns></returns>
-        public async Task<GetGraphResponse> GetGraphAsync(string graphName)
+        public async Task<GetGraphEdgeCollectionsResponse> GetGraphAsync(string graphName)
         {
             using (var response = await _transport.GetAsync(_graphApiPath + "/" + graphName))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetGraphResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetGraphEdgeCollectionsResponse>(stream, true, false);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -118,7 +118,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName"></param>
         /// <returns></returns>
-        public async Task<GetGraphEdgesResponse> GetGraphEdgesAsync(string graphName)
+        public async Task<GetGraphEdgesResponse> GetGraphEdgeCollectionsAsync(string graphName)
         {
             using (var response = await _transport.GetAsync(_graphApiPath + "/" + graphName + "/edge"))
             {
