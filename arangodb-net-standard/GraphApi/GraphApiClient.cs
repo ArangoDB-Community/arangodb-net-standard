@@ -33,7 +33,12 @@ namespace ArangoDBNetStandard.GraphApi
             }
         }
 
-        public async Task<GetGraphsResponse> GetGraphs()
+        /// <summary>
+        /// Lists all graphs stored in this database.
+        /// GET /_api/gharial
+        /// </summary>
+        /// <returns></returns>
+        public async Task<GetGraphsResponse> GetGraphsAsync()
         {
             using (var response = await _transport.GetAsync(_graphApiPath))
             {
