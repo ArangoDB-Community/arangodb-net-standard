@@ -92,5 +92,24 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Lists all vertex collections within the given graph.
+        /// GET /_api/gharial/{graph}/vertex
+        /// </summary>
+        /// <param name="graph">The name of the graph.</param>
+        /// <returns></returns>
+        public async Task<GetVertexCollectionsResponse> GetVertexCollections(string graph)
+        {
+            using (var response = await _transport.GetAsync(_graphApiPath + '/' + graph + "/vertex"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetVertexCollectionsResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }

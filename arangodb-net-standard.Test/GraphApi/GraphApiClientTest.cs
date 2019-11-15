@@ -5,6 +5,7 @@ using Xunit;
 using ArangoDBNetStandard.GraphApi;
 using System.Collections.Generic;
 using ArangoDBNetStandard;
+using ArangoDBNetStandard.CollectionApi;
 
 namespace ArangoDBNetStandardTest.GraphApi
 {
@@ -27,9 +28,9 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             // test result
             Assert.Equal(HttpStatusCode.OK, graphsResult.Code);
-            Assert.Single(graphsResult.Graphs);
+            Assert.NotEmpty(graphsResult.Graphs);
 
-            var graph = graphsResult.Graphs.First();
+            var graph = graphsResult.Graphs.First(x => x._key == _fixture.TestGraph);
             Assert.Single(graph.EdgeDefinitions);
             Assert.Empty(graph.OrphanCollections);
             Assert.Equal(1, graph.NumberOfShards);
@@ -106,6 +107,63 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task GetVertexCollectionsAsync_ShouldSucceed()
+        {
+            // Create an edge collection
+
+            string edgeClx = nameof(GetGraphsAsync_ShouldSucceed) + "_EdgeClx";
+
+            var createClxResponse = await _fixture.ArangoDBClient.Collection.PostCollectionAsync(
+                new PostCollectionBody()
+                {
+                    Name = edgeClx,
+                    Type = 3
+                });
+
+            Assert.Equal(edgeClx, createClxResponse.Name);
+
+            // Create a Graph
+
+            string graphName = nameof(GetVertexCollectionsAsync_ShouldSucceed);
+
+            PostGraphResponse createGraphResponse = await _client.PostGraph(new PostGraphBody()
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>()
+                {
+                    new EdgeDefinition()
+                    {
+                        Collection = edgeClx,
+                        From = new string[] { "FromCollection" },
+                        To = new string[] { "ToCollection" }
+                    }
+                }
+            });
+
+            // List the vertex collections
+
+            GetVertexCollectionsResponse response = await _client.GetVertexCollections(graphName);
+
+            Assert.Equal(2, response.Collections.Count());
+            Assert.Contains("FromCollection", response.Collections);
+            Assert.Contains("ToCollection", response.Collections);
+        }
+
+        [Fact]
+        public async Task GetVertexCollectionsAsync_ShouldThrow_WhenGraphDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.GetVertexCollections("GraphThatDoesNotExist");
+            });
+
+            ApiErrorResponse apiError = ex.ApiError;
+
+            Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
+            Assert.Equal(1924, apiError.ErrorNum);
         }
     }
 }
