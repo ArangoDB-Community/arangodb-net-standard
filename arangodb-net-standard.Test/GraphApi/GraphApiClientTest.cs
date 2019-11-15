@@ -165,5 +165,25 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
             Assert.Equal(1924, apiError.ErrorNum);
         }
+
+        [Fact]
+        public async Task GetGraphEdgesAsync_ShouldSucceed()
+        {
+            var response = await _client.GetGraphEdgesAsync(_fixture.TestGraph);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.NotEmpty(response.Collections);
+            Assert.False(response.Error);
+        }
+
+        [Fact]
+        public async Task GetGraphEdgesAsync_ShouldThrow_WhenGraphIsNotFound()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.GetGraphEdgesAsync("bogus_graph");
+            });
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
     }
 }
