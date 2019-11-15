@@ -169,5 +169,24 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Get a revision of the collection. 
+        /// GET /_api/collection/{collection-name}/revision
+        /// </summary>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <returns></returns>
+        public async Task<GetCollectionRevisionResponse> GetCollectionRevisionAsync(string collectionName)
+        {
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/revision"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetCollectionRevisionResponse>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
