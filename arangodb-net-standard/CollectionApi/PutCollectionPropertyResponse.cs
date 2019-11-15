@@ -8,7 +8,7 @@ namespace ArangoDBNetStandard.CollectionApi
 
         public string Name { get; set; }
 
-        public bool? WaitForSync { get; set; }
+        public bool WaitForSync { get; set; }
 
         public long JournalSize { get; set; }
 
@@ -16,11 +16,11 @@ namespace ArangoDBNetStandard.CollectionApi
 
         public int Type { get; set; }
 
-        public bool? IsSystem { get; set; }
+        public bool IsSystem { get; set; }
 
-        public bool? IsVolatile { get; set; }
+        public bool IsVolatile { get; set; }
 
-        public bool? DoCompact { get; set; }
+        public bool DoCompact { get; set; }
 
         public CollectionKeyOptions KeyOptions { get; set; }
 

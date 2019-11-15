@@ -368,7 +368,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         }
 
         [Fact]
-        public async Task PutCollectionPropertyAsync_ShouldThrow_WhenNotFound()
+        public async Task PutCollectionPropertyAsync_ShouldThrow_WhenCollectionDoesNotExist()
         {
             var body = new PutCollectionPropertyBody
             {
