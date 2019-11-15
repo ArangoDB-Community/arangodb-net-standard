@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 
 using ArangoDBNetStandard.Transport;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ArangoDBNetStandard.CollectionApi
 {
@@ -184,6 +186,27 @@ namespace ArangoDBNetStandard.CollectionApi
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
                     return DeserializeJsonFromStream<GetCollectionRevisionResponse>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Changes the properties of a collection
+        /// PUT /_api/collection/{collection-name}/properties
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public async Task<PutCollectionPropertyResponse> PutCollectionPropertyAsync(string collectionName, PutCollectionPropertyBody body)
+        {
+            StringContent content = GetStringContent(body, true, true);
+            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/properties", content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PutCollectionPropertyResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

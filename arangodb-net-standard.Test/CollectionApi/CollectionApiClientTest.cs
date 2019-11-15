@@ -206,7 +206,8 @@ namespace ArangoDBNetStandardTest.CollectionApi
         }
 
         [Fact]
-        public async Task GetCollectionCountAsync_ShouldThrow_WhenCollectionDoesNotExist() {
+        public async Task GetCollectionCountAsync_ShouldThrow_WhenCollectionDoesNotExist()
+        {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
                 await _collectionApi.GetCollectionCountAsync("bogusCollection"));
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
@@ -225,7 +226,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
-            Assert.NotNull(collectionExists);            
+            Assert.NotNull(collectionExists);
         }
 
         [Fact]
@@ -239,7 +240,8 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionAsync_ShouldThrow_WhenNotFound()
         {
-            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () => {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
                 await _collectionApi.GetCollectionAsync("MyWrongCollection");
             });
 
@@ -261,7 +263,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.Equal(3, response.Status);
             Assert.Equal(2, response.Type);
         }
-        
+
         [Fact]
         public async Task RenameCollectionAsync_ShouldSucceed()
         {
@@ -344,6 +346,42 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 await _collectionApi.GetCollectionRevisionAsync("bogusCollection");
             });
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+        }
+
+        [Fact]
+        public async Task PutCollectionPropertyAsync_ShouldSucceed()
+        {
+            var putCollection = await _adb.Collection.PostCollectionAsync(new PostCollectionBody
+            {
+                 Name = nameof(PutCollectionPropertyAsync_ShouldSucceed)
+            });
+            var beforeResponse = await _collectionApi.GetCollectionPropertiesAsync(putCollection.Name);
+
+            var body = new PutCollectionPropertyBody
+            {
+                WaitForSync = !beforeResponse.WaitForSync
+            };
+            var response = await _collectionApi.PutCollectionPropertyAsync(putCollection.Name, body);
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.NotEqual(beforeResponse.WaitForSync, response.WaitForSync);
+        }
+
+        [Fact]
+        public async Task PutCollectionPropertyAsync_ShouldThrow_WhenCollectionDoesNotExist()
+        {
+            var body = new PutCollectionPropertyBody
+            {
+                JournalSize = 313136,
+                WaitForSync = false
+            };
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _collectionApi.PutCollectionPropertyAsync("bogusCollection", body);
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1203, exception.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
     }
 }
