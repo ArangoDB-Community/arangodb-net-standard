@@ -236,7 +236,13 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task PostGraphEdgeAsync_ShouldSucceed()
         {
-            var response = await _client.PostGraphEdgeAsync(_fixture.TestGraph, new EdgeDefinition
+            string tempGraph = nameof(PostGraphEdgeAsync_ShouldSucceed);
+            var postEdgeGraph = await _client.PostGraph(new PostGraphBody
+            {
+                Name = tempGraph,
+                EdgeDefinitions = new List<EdgeDefinition>()
+            });
+            var response = await _client.PostGraphEdgeAsync(tempGraph, new EdgeDefinition
             {
                 From = new string[] { "fromclxx" },
                 To = new string[] { "toclxx" },
@@ -244,15 +250,12 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
-            var edgeDefinition = response.Graph.EdgeDefinitions.Where(x => x.Collection == "clsxx").FirstOrDefault();
-            Assert.NotNull(edgeDefinition);
-            Assert.Equal(_fixture.TestGraph, response.Graph.Name);
-            Assert.Equal(1, response.Graph.SmartGraphAttribute);
-            Assert.Equal(1, response.Graph._id);
-            Assert.Equal(1, response.Graph._rev);
-            Assert.Equal(1, response.Graph.);
-            Assert.Equal(1, response.Graph.Name);
-            Assert.Equal(1, response.Graph.Name);
+            Assert.Single(response.Graph.EdgeDefinitions);
+            Assert.Equal(tempGraph, response.Graph.Name);
+            Assert.Equal("_graphs/" + tempGraph, response.Graph._id);
+            Assert.NotNull(response.Graph._rev);
+            Assert.False(response.Graph.IsSmart);
+            Assert.Empty(response.Graph.OrphanCollections);
         }
 
         [Fact]
