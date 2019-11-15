@@ -67,5 +67,25 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Selects information for a given graph.
+        /// Will return the edge definitions as well as the orphan collections.
+        /// GET /_api/gharial/{graph}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <returns></returns>
+        public async Task<GetGraphResponse> GetGraphAsync(string graphName)
+        {
+            using (var response = await _transport.GetAsync(_graphApiPath + "/" + graphName))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetGraphResponse>(stream, true, false);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
