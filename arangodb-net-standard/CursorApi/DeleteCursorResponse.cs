@@ -1,12 +1,25 @@
-﻿namespace ArangoDBNetStandard.CursorApi
+﻿using System.Net;
+
+namespace ArangoDBNetStandard.CursorApi
 {
+    /// <summary>
+    /// Represents a response returned after deleting a cursor.
+    /// </summary>
     public class DeleteCursorResponse
     {
-        public int StatusCode { get; private set; }
+        /// <summary>
+        /// Indicates whether an error occurred (false in this case).
+        /// </summary>
+        public bool Error { get; set; }
 
-        public DeleteCursorResponse(int statusCode)
-        {
-            this.StatusCode = statusCode;
-        }
+        /// <summary>
+        /// The HTTP status code.
+        /// </summary>
+        public HttpStatusCode Code { get; set; }
+
+        /// <summary>
+        /// The id of the cursor.
+        /// </summary>
+        public string Id { get; set; }
     }
 }
