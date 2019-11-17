@@ -27,7 +27,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostGraphResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<PostGraphResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -45,7 +45,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetGraphsResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetGraphsResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -72,7 +72,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<DeleteGraphResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<DeleteGraphResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -92,7 +92,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetGraphResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetGraphResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -130,7 +130,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetGraphEdgeCollectionsResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetGraphEdgeCollectionsResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

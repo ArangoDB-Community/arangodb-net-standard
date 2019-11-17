@@ -30,10 +30,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 var stream = await response.Content.ReadAsStreamAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<PostCollectionResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<PostCollectionResponse>(stream);
                 }
-                throw new ApiErrorException(
-                    DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false));
+                throw await GetApiErrorException(response);
             }
         }
 
@@ -44,7 +43,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<DeleteCollectionResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<DeleteCollectionResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -63,7 +62,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<TruncateCollectionResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<TruncateCollectionResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -106,7 +105,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetCollectionsResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetCollectionsResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -125,7 +124,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    var collection = DeserializeJsonFromStream<GetCollectionResponse>(stream, false, true);
+                    var collection = DeserializeJsonFromStream<GetCollectionResponse>(stream);
                     return collection;
                 }
                 throw await GetApiErrorException(response);
@@ -165,7 +164,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    var collection = DeserializeJsonFromStream<RenameCollectionResponse>(stream, false, true);
+                    var collection = DeserializeJsonFromStream<RenameCollectionResponse>(stream);
                     return collection;
                 }
                 throw await GetApiErrorException(response);
@@ -185,7 +184,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetCollectionRevisionResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetCollectionRevisionResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

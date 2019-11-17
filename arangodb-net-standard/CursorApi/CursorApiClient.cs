@@ -67,13 +67,12 @@ namespace ArangoDBNetStandard.CursorApi
             var content = GetStringContent(cursorRequest, true, true);
             using (var response = await _client.PostAsync(_cursorApiPath, content))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
                 if (response.IsSuccessStatusCode)
                 {
+                    var stream = await response.Content.ReadAsStreamAsync();
                     return DeserializeJsonFromStream<CursorResponse<T>>(stream);
                 }
-                ApiErrorResponse error = DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false);
-                throw new ApiErrorException(error);
+                throw await GetApiErrorException(response);
             }
         }
 
@@ -85,9 +84,7 @@ namespace ArangoDBNetStandard.CursorApi
                 {
                     return new DeleteCursorResponse((int)response.StatusCode);
                 }
-                var stream = await response.Content.ReadAsStreamAsync();
-                ApiErrorResponse error = DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false);
-                throw new ApiErrorException(error);
+                throw await GetApiErrorException(response);
             }
         }
 
@@ -95,13 +92,12 @@ namespace ArangoDBNetStandard.CursorApi
         {
             using (var response = await _client.PutAsync(_cursorApiPath + "/" + cursorId, new StringContent(string.Empty)))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
                 if (response.IsSuccessStatusCode)
                 {
+                    var stream = await response.Content.ReadAsStreamAsync();
                     return DeserializeJsonFromStream<PutCursorResponse<T>>(stream);
                 }
-                ApiErrorResponse error = DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false);
-                throw new ApiErrorException(error);
+                throw await GetApiErrorException(response);
             }
         }
     }

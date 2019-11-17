@@ -33,7 +33,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostDatabaseResponse>(stream, true);
+                    return DeserializeJsonFromStream<PostDatabaseResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -47,9 +47,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 {
                     return new DeleteDatabaseResponse((int)response.StatusCode);
                 }
-                var stream = await response.Content.ReadAsStreamAsync();
-                var apiError = DeserializeJsonFromStream<ApiErrorResponse>(stream, true, false);
-                throw new ApiErrorException(apiError);
+                throw await GetApiErrorException(response);
             }
         }
 
@@ -69,7 +67,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetDatabasesResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetDatabasesResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -86,7 +84,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetDatabasesResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetDatabasesResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -103,7 +101,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetCurrentDatabaseInfoResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<GetCurrentDatabaseInfoResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
