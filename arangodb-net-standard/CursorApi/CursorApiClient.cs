@@ -2,7 +2,6 @@
 using ArangoDBNetStandard.Transport;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.CursorApi
@@ -74,9 +73,9 @@ namespace ArangoDBNetStandard.CursorApi
             });
         }
 
-        public async Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorBody cursorRequest)
+        public async Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorBody postCursorBody)
         {
-            var content = GetContent(cursorRequest, true, true);
+            var content = GetContent(postCursorBody, true, true);
             using (var response = await _client.PostAsync(_cursorApiPath, content))
             {
                 if (response.IsSuccessStatusCode)
