@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,7 +85,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <returns></returns>
         public async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId)
         {
-            using (var response = await _client.DeleteAsync(_cursorApiPath + "/" + cursorId))
+            using (var response = await _client.DeleteAsync(_cursorApiPath + "/" + WebUtility.UrlEncode(cursorId)))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -97,7 +98,7 @@ namespace ArangoDBNetStandard.CursorApi
 
         public async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId)
         {
-            using (var response = await _client.PutAsync(_cursorApiPath + "/" + cursorId, new StringContent(string.Empty)))
+            using (var response = await _client.PutAsync(_cursorApiPath + "/" + WebUtility.UrlEncode(cursorId), new StringContent(string.Empty)))
             {
                 if (response.IsSuccessStatusCode)
                 {
