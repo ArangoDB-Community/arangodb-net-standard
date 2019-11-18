@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 ﻿using System.Net.Http;
 using System.Net;
+=======
+﻿using System.Net;
+using System.Net.Http;
+>>>>>>> UrlEcode the uri parameters
 using System.Threading.Tasks;
 
 using ArangoDBNetStandard.Transport;
@@ -211,14 +216,16 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw await GetApiErrorException(response);
             }
         }
-        
+
+        /// <summary>
+        /// Contains the number of documents and additional statistical information about the collection.
         /// GET/_api/collection/{collection-name}/figures
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
         public async Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/figures"))
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/figures"))
             {                
                 if (response.IsSuccessStatusCode)
                 {
