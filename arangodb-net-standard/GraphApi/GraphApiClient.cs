@@ -159,7 +159,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostGraphEdgeResponse>(stream, true, false);
+                    return DeserializeJsonFromStream<PostGraphEdgeResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
