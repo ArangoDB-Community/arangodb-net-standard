@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 using ArangoDBNetStandard;
@@ -24,11 +25,13 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
         private DocumentApiClient _docClient;
         private ArangoDBClient _adb;
+        private readonly string _testCollection;
 
         public DocumentApiClientTest(DocumentApiClientTestFixture fixture)
         {
             _adb = fixture.ArangoDBClient;
             _docClient = _adb.Document;
+            _testCollection = fixture.TestCollection;
 
             // Truncate TestCollection before each test
             _adb.Collection.TruncateCollectionAsync(fixture.TestCollection)
@@ -108,12 +111,12 @@ namespace ArangoDBNetStandardTest.DocumentApi
             .Select(item => _docClient.PostDocumentAsync("TestCollection", item).GetAwaiter().GetResult())
             .ToList();
 
-            Assert.Collection(docs, 
+            Assert.Collection(docs,
                 (item) => Assert.NotNull(item._id),
                 (item) => Assert.NotNull(item._id));
 
             var response = await _docClient.DeleteDocumentsAsync("TestCollection", docs.Select(d => d._id).ToList());
-            Assert.Collection(response, 
+            Assert.Collection(response,
                 (item) => Assert.NotNull(item._id),
                 (item) => Assert.NotNull(item._id));
 
@@ -211,7 +214,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 // First result succeeds
                 (item) => Assert.NotNull(item._id),
                 // Second result fails with NOT_FOUND error
-                (item) => {
+                (item) =>
+                {
                     Assert.Null(item._id);
                     Assert.True(item.Error);
                     Assert.Equal(NOT_FOUND_NUM, item.ErrorNum);
@@ -459,6 +463,47 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             Assert.True(updateResponse[0].Error);
             Assert.Equal(NOT_FOUND_NUM, updateResponse[0].ErrorNum);
+        }
+
+        [Fact]
+        public async Task ReadAllDocumentsAsync_ShouldSucceed()
+        {
+            var postResponse = await _docClient.PostDocumentsAsync(_testCollection,
+                new[] {
+                    new { value = 1 },
+                    new { value = 2 }
+                });
+
+            var response = await _docClient.ReadAllDocumentsAsync(_testCollection, new AllDocumentsBody
+            {
+                Collection = _testCollection,
+                Type = "id"
+            });
+
+            Assert.Equal(HttpStatusCode.Created, response.Code);
+            Assert.False(response.Cached);
+            Assert.False(response.Error);
+            Assert.False(response.HasMore);
+            Assert.Equal(2, response.Result.Count());
+            Assert.False(response.Cached);
+            Assert.NotEqual(0, response.Extra.Stats.ExecutionTime);
+            Assert.NotEqual(0, response.Extra.Stats.PeakMemoryUsage);
+            Assert.Equal(2, response.Extra.Stats.ScannedFull);
+        }
+
+        [Fact]
+        public async Task ReadAllDocumentsAsync_ShouldThrow_WhenCollectionDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _docClient.ReadAllDocumentsAsync("bogusCollection", new AllDocumentsBody
+                {
+                    Collection = "bogusCollection",
+                    Type = "id"
+                });
+            });
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
     }
 }

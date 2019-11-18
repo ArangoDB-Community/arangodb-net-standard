@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace ArangoDBNetStandard.DocumentApi
     /// <summary>
     /// Provides access to ArangoDB document API.
     /// </summary>
-    public class DocumentApiClient: ApiClientBase
+    public class DocumentApiClient : ApiClientBase
     {
         private readonly string _docApiPath = "_api/document";
         private IApiClientTransport _client;
@@ -132,7 +133,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 throw await GetApiErrorException(response);
             }
         }
-      
+
         /// <summary>
         /// Get an existing document.
         /// </summary>
@@ -286,5 +287,28 @@ namespace ArangoDBNetStandard.DocumentApi
             }
         }
 
+        /// <summary>
+        /// Returns an array of all keys, ids, or URI paths for all documents in the
+        /// collection identified by collection.The type of the result array is
+        /// determined by the type attribute.
+        /// Note that the results have no defined order and thus the order should
+        /// not be relied on.
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public async Task<AllDocumentsResponse> ReadAllDocumentsAsync(string collectionName, AllDocumentsBody body)
+        {
+            var content = GetStringContent(body, false, false);
+            using (var response = await _client.PutAsync("_api/simple/all-keys?collection=" + collectionName, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<AllDocumentsResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
