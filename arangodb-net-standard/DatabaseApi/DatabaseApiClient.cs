@@ -43,7 +43,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <returns></returns>
         public async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string databaseName)
         {
-            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + databaseName))
+            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + WebUtility.UrlEncode(databaseName)))
             {
                 if (response.IsSuccessStatusCode)
                 {
