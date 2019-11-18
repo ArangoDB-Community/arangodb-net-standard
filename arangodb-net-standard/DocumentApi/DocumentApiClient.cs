@@ -377,5 +377,42 @@ namespace ArangoDBNetStandard.DocumentApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Get headers based on collection and _key with option headers.
+        /// 200: is returned if the document was found. 
+        /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
+        /// 404: is returned if the document or collection was not found. 
+        /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
+        /// HEAD /_api/document/{document-handle}
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <param name="headers"></param>
+        /// <returns></returns>
+        public async Task<DocumentHeaderResponse> HeadDocumentAsync(string collectionName, string documentKey, HeadDocumentHeader headers = null)
+        {
+            return await HeadDocumentAsync($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", headers);
+        }
+
+
+        /// <summary>
+        /// Get headers based on Document _id
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="headers">Object containing a dictionary of Header keys and values</param>
+        /// <returns></returns>
+        public async Task<DocumentHeaderResponse> HeadDocumentAsync(string documentId, HeadDocumentHeader headers = null)
+        {
+            ValidateDocumentId(documentId);
+            var uriString = _docApiPath + "/" + documentId;
+            using (var response = await _client.HeadAsync(uriString, headers != null ? headers.Headers : null))
+            {
+                return new DocumentHeaderResponse
+                {
+                    Code = (HttpStatusCode)response.StatusCode
+                };
+            }
+        }
     }
 }

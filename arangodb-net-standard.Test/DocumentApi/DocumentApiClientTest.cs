@@ -614,5 +614,57 @@ namespace ArangoDBNetStandardTest.DocumentApi
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
+
+        [Fact]
+        public async Task ReadDocumentHeaderAsync_ShouldSucceed()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
+            var headers = new Dictionary<string, string>();
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
+            {
+                Headers = headers
+            });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+        }
+
+        [Fact]
+        public async Task ReadDocumentHeaderAsync_ShouldReturnPreconditionFailed_WhenIfMatch()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
+            var headers = new Dictionary<string, string>();
+            headers.Add("If-Match", "nonesense");
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
+            {
+                Headers = headers
+            });
+
+            Assert.Equal(HttpStatusCode.PreconditionFailed, response.Code);
+        }
+
+        [Fact]
+        public async Task ReadDocumentHeaderAsync_ShouldReturnNotModified_WhenIfNonMatch()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
+            var headers = new Dictionary<string, string>();
+            headers.Add("If-None-Match", docResponse._rev);
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
+            {
+                Headers = headers
+            });
+
+            Assert.Equal(HttpStatusCode.NotModified, response.Code);
+        }
+
+        [Fact]
+        public async Task ReadDocumentHeaderAsync_ShouldReturnNotFound_WhenCollectionDoesNotExist()
+        {
+            var response = await _docClient.HeadDocumentAsync("bogusCollection", "123456");
+
+            Assert.Equal(HttpStatusCode.NotFound, response.Code);
+        }
     }
 }

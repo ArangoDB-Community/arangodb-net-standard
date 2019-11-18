@@ -56,5 +56,12 @@ namespace ArangoDBNetStandard.Transport
         /// <param name="content"></param>
         /// <returns></returns>
         Task<IApiClientResponse> PatchAsync(string requestUri, StringContent content);
+
+        /// <summary>
+        /// Send a Head Request
+        /// </summary>
+        /// <param name="requestUri"></param>
+        /// <returns></returns>
+        Task<IApiClientResponse> HeadAsync(string requestUri, Dictionary<string, string> headers = null);
     }
 }
