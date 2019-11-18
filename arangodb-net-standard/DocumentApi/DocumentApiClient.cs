@@ -142,7 +142,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public async Task<T> GetDocumentAsync<T>(string collectionName, string documentKey)
         {
-            return await GetDocumentAsync<T>($"{WebUtility.UrlEncode(collectionName)}/{documentKey}");
+            return await GetDocumentAsync<T>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}");
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string collectionName, string documentKey, DeleteDocumentsQuery query = null)
         {
-            return await DeleteDocumentAsync<object>($"{WebUtility.UrlEncode(collectionName)}/{documentKey}", query);
+            return await DeleteDocumentAsync<object>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", query);
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string collectionName, string documentKey, DeleteDocumentsQuery query = null)
         {
-            return await DeleteDocumentAsync<T>($"{WebUtility.UrlEncode(collectionName)}/{documentKey}", query);
+            return await DeleteDocumentAsync<T>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", query);
         }
 
         /// <summary>

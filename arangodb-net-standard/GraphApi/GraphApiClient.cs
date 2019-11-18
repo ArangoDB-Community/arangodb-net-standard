@@ -105,9 +105,9 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graph">The name of the graph.</param>
         /// <returns></returns>
-        public async Task<GetVertexCollectionsResponse> GetVertexCollections(string graph)
+        public async Task<GetVertexCollectionsResponse> GetVertexCollections(string graphName)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + '/' + WebUtility.UrlEncode(graph) + "/vertex"))
+            using (var response = await _transport.GetAsync(_graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex"))
             {
                 if (response.IsSuccessStatusCode)
                 {
