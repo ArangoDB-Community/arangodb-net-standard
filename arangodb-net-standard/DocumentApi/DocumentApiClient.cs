@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -32,12 +32,12 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="document"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<PostDocumentResponse<T>> PostDocumentAsync<T>(string collectionName, T document, PostDocumentsQuery options = null)
+        public async Task<PostDocumentResponse<T>> PostDocumentAsync<T>(string collectionName, T document, PostDocumentsQuery query = null)
         {
-            string uriString = _docApiPath + "/" + collectionName;
-            if (options != null)
+            string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
             {
-                uriString += "?" + options.ToQueryString();
+                uriString += "?" + query.ToQueryString();
             }
             var content = GetStringContent(document, false, false);
             using (var response = await _client.PostAsync(uriString, content))
@@ -59,12 +59,12 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documents"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(string collectionName, IList<T> documents, PostDocumentsQuery options = null)
+        public async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(string collectionName, IList<T> documents, PostDocumentsQuery query = null)
         {
-            string uriString = _docApiPath + "/" + collectionName;
-            if (options != null)
+            string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
             {
-                uriString += "?" + options.ToQueryString();
+                uriString += "?" + query.ToQueryString();
             }
             StringContent content = GetStringContent(documents, false, false);
             using (var response = await _client.PostAsync(uriString, content))
@@ -86,12 +86,12 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documents"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<PostDocumentsResponse<T>> PutDocumentsAsync<T>(string collectionName, IList<T> documents, PutDocumentsQuery options = null)
+        public async Task<PostDocumentsResponse<T>> PutDocumentsAsync<T>(string collectionName, IList<T> documents, PutDocumentsQuery query = null)
         {
-            string uri = _docApiPath + "/" + collectionName;
-            if (options != null)
+            string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
             {
-                uri += "?" + options.ToQueryString();
+                uri += "?" + query.ToQueryString();
             }
             var content = GetStringContent(documents, false, false);
             using (var response = await _client.PutAsync(uri, content))
@@ -142,7 +142,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public async Task<T> GetDocumentAsync<T>(string collectionName, string documentKey)
         {
-            return await GetDocumentAsync<T>($"{collectionName}/{documentKey}");
+            return await GetDocumentAsync<T>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}");
         }
 
         /// <summary>
@@ -177,9 +177,9 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string collectionName, string documentKey, DeleteDocumentsQuery options = null)
+        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string collectionName, string documentKey, DeleteDocumentsQuery query = null)
         {
-            return await DeleteDocumentAsync<object>($"{collectionName}/{documentKey}", options);
+            return await DeleteDocumentAsync<object>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", query);
         }
 
         /// <summary>
@@ -194,9 +194,9 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string documentId, DeleteDocumentsQuery options = null)
+        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string documentId, DeleteDocumentsQuery query = null)
         {
-            return await DeleteDocumentAsync<object>(documentId, options);
+            return await DeleteDocumentAsync<object>(documentId, query);
         }
 
         /// <summary>
@@ -213,9 +213,9 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="selectors"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(string collectionName, IList<string> selectors, DeleteDocumentsQuery options = null)
+        public async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(string collectionName, IList<string> selectors, DeleteDocumentsQuery query = null)
         {
-            return await DeleteDocumentsAsync<object>(collectionName, selectors, options);
+            return await DeleteDocumentsAsync<object>(collectionName, selectors, query);
         }
 
         /// <summary>
@@ -226,9 +226,9 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string collectionName, string documentKey, DeleteDocumentsQuery options = null)
+        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string collectionName, string documentKey, DeleteDocumentsQuery query = null)
         {
-            return await DeleteDocumentAsync<T>($"{collectionName}/{documentKey}", options);
+            return await DeleteDocumentAsync<T>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", query);
         }
 
         /// <summary>
@@ -237,13 +237,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string documentId, DeleteDocumentsQuery options = null)
+        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string documentId, DeleteDocumentsQuery query = null)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
-            if (options != null)
+            if (query != null)
             {
-                uri += "?" + options.ToQueryString();
+                uri += "?" + query.ToQueryString();
             }
             using (var response = await _client.DeleteAsync(uri))
             {
@@ -266,12 +266,12 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="selectors"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(string collectionName, IList<string> selectors, DeleteDocumentsQuery options = null)
+        public async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(string collectionName, IList<string> selectors, DeleteDocumentsQuery query = null)
         {
-            string uri = _docApiPath + "/" + collectionName;
-            if (options != null)
+            string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
             {
-                uri += "?" + options.ToQueryString();
+                uri += "?" + query.ToQueryString();
             }
             var content = GetStringContent(selectors, false, false);
             using (var response = await _client.DeleteAsync(uri, content))
