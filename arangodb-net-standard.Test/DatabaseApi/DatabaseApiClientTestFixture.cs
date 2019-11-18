@@ -24,6 +24,8 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         /// </summary>
         public DatabaseApiClient DatabaseClientOther { get; internal set; }
 
+        public string DeletableDatabase { get; } = "DeletableDatabase";
+
         public DatabaseApiClientTestFixture()
         {
             DatabaseClientSystem = GetArangoDBClient("_system").Database;
@@ -37,6 +39,8 @@ namespace ArangoDBNetStandardTest.DatabaseApi
             string dbName = nameof(DatabaseApiClientTestFixture);
 
             await CreateDatabase(dbName);
+
+            await CreateDatabase(DeletableDatabase, true);
 
             DatabaseClientOther = GetArangoDBClient(dbName).Database;
         }

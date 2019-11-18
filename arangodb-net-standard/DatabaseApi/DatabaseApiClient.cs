@@ -34,13 +34,21 @@ namespace ArangoDBNetStandard.DatabaseApi
             }
         }
 
-        public async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string dbName)
+        /// <summary>
+        /// Delete a database. dropping a database is only possible from within the _system database.
+        /// The _system database itself cannot be dropped.
+        /// DELETE /_api/database/{database-name}
+        /// </summary>
+        /// <param name="dbName"></param>
+        /// <returns></returns>
+        public async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string databaseName)
         {
-            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + WebUtility.UrlEncode(dbName)))
+            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + databaseName))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    return new DeleteDatabaseResponse((int)response.StatusCode);
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return new DeleteDatabaseResponse((HttpStatusCode)response.StatusCode);
                 }
                 throw await GetApiErrorException(response);
             }

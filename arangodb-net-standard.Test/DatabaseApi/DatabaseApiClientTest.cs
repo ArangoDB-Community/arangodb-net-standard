@@ -12,11 +12,13 @@ namespace ArangoDBNetStandardTest.DatabaseApi
     /// </summary>
     public class DatabaseApiClientTest : IClassFixture<DatabaseApiClientTestFixture>
     {
-        private DatabaseApiClientTestFixture _fixture;
+        private readonly DatabaseApiClientTestFixture _fixture;
+        private readonly DatabaseApiClient _client;
 
         public DatabaseApiClientTest(DatabaseApiClientTestFixture fixture)
         {
             _fixture = fixture;
+            _client = fixture.DatabaseClientSystem;
         }
 
         [Fact]
@@ -186,6 +188,26 @@ namespace ArangoDBNetStandardTest.DatabaseApi
 
             Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
             Assert.Equal(1228, apiError.ErrorNum);
+        }
+
+        [Fact]
+        public async Task DeleteDatabaseAsync_ShouldSucceed()
+        {
+            var response = await _client.DeleteDatabaseAsync(_fixture.DeletableDatabase);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.False(response.Error);
+            Assert.True(response.Result);
+        }
+
+        [Fact]
+        public async Task DeleteDatabaseAsync_ShouldThrow_WhenDatabaseDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.DeleteDatabaseAsync("bogusDatabase");
+            });
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1228, ex.ApiError.ErrorNum); // ARANGO_DATABASE_NOT_FOUND
         }
     }
 }

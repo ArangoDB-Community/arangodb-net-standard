@@ -40,7 +40,7 @@ namespace ArangoDBNetStandardTest
             }
         }
 
-        protected async Task CreateDatabase(string dbName)
+        protected async Task CreateDatabase(string dbName, bool? exclude = false)
         {
             // Create the test database
             using (var systemDbClient = GetHttpTransport("_system"))
@@ -60,7 +60,10 @@ namespace ArangoDBNetStandardTest
                 }
                 finally
                 {
-                    _databases.Add(dbName);
+                    if(exclude != true)
+                    {
+                        _databases.Add(dbName);
+                    }                    
                 }
             }
         }

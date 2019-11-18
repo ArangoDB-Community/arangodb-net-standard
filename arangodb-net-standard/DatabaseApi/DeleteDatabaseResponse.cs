@@ -1,21 +1,29 @@
-﻿namespace ArangoDBNetStandard.DatabaseApi
+﻿using System.Net;
+
+namespace ArangoDBNetStandard.DatabaseApi
 {
     public class DeleteDatabaseResponse
     {
         /// <summary>
         /// HttpStatus
         /// </summary>
-        public int HttpStatus { get; private set; }
+        public HttpStatusCode Code { get; private set; }
 
         /// <summary>
-        /// True if the database was deleted, otherwise see <see cref="HttpStatus"/>
+        /// True if the database was deleted, otherwise see <see cref="Code"/>
         /// </summary>
         public bool Result { get; private set; }
 
-        public DeleteDatabaseResponse(int statusCode)
+        /// <summary>
+        /// Error specified in Arango Docs
+        /// </summary>
+        public bool Error { get; set; }
+
+        public DeleteDatabaseResponse(HttpStatusCode code)
         {
-            HttpStatus = statusCode;
-            Result = statusCode >= 200 && statusCode < 300;
+            Code = code;
+            Result = true;
+            Error = false;
         }
     }
 }
