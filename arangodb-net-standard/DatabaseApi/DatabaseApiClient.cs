@@ -1,10 +1,5 @@
 ﻿using ArangoDBNetStandard.Transport;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.DatabaseApi
@@ -41,7 +36,7 @@ namespace ArangoDBNetStandard.DatabaseApi
 
         public async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string dbName)
         {
-            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + dbName))
+            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + WebUtility.UrlEncode(dbName)))
             {
                 if (response.IsSuccessStatusCode)
                 {

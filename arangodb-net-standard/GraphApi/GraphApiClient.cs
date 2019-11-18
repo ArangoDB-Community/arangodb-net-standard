@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard.Transport;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -62,7 +63,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public async Task<DeleteGraphResponse> DeleteGraphAsync(string graphName, DeleteGraphQuery query = null)
         {
-            string uriString = _graphApiPath + "/" + graphName;
+            string uriString = _graphApiPath + "/" + WebUtility.UrlEncode(graphName);
             if (query != null)
             {
                 uriString += "?" + query.ToQueryString();
@@ -87,7 +88,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public async Task<GetGraphResponse> GetGraphAsync(string graphName)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + "/" + graphName))
+            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName)))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -106,7 +107,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public async Task<GetVertexCollectionsResponse> GetVertexCollections(string graph)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + '/' + graph + "/vertex"))
+            using (var response = await _transport.GetAsync(_graphApiPath + '/' + WebUtility.UrlEncode(graph) + "/vertex"))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -125,7 +126,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public async Task<GetGraphEdgeCollectionsResponse> GetGraphEdgeCollectionsAsync(string graphName)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + "/" + graphName + "/edge"))
+            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge"))
             {
                 if (response.IsSuccessStatusCode)
                 {

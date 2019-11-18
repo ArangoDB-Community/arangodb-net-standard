@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Net;
 using System.Threading.Tasks;
 
 using ArangoDBNetStandard.Transport;
@@ -17,14 +18,14 @@ namespace ArangoDBNetStandard.CollectionApi
             _transport = transport;
         }
 
-        public async Task<PostCollectionResponse> PostCollectionAsync(PostCollectionBody request, PostCollectionQuery options = null)
+        public async Task<PostCollectionResponse> PostCollectionAsync(PostCollectionBody body, PostCollectionQuery options = null)
         {
             string uriString = _collectionApiPath;
             if (options != null)
             {
                 uriString += "?" + options.ToQueryString();
             }
-            StringContent content = GetStringContent(request, true, true);
+            StringContent content = GetStringContent(body, true, true);
             using (var response = await _transport.PostAsync(_collectionApiPath, content))
             {
                 var stream = await response.Content.ReadAsStreamAsync();
@@ -39,7 +40,7 @@ namespace ArangoDBNetStandard.CollectionApi
 
         public async Task<DeleteCollectionResponse> DeleteCollectionAsync(string collectionName)
         {
-            using (var response = await _transport.DeleteAsync(_collectionApiPath + "/" + collectionName))
+            using (var response = await _transport.DeleteAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName)))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -58,7 +59,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName)
         {
-            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/truncate", null))
+            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/truncate", null))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -77,7 +78,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/count"))
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/count"))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -94,12 +95,12 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery options = null)
+        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery query = null)
         {
             string uriString = _collectionApiPath;
-            if (options != null)
+            if (query != null)
             {
-                uriString += "?" + options.ToQueryString();
+                uriString += "?" + query.ToQueryString();
             }
             using (var response = await _transport.GetAsync(uriString))
             {
@@ -120,7 +121,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<GetCollectionResponse> GetCollectionAsync(string collectionName)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName))
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName)))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -139,7 +140,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/properties"))
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/properties"))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -160,7 +161,7 @@ namespace ArangoDBNetStandard.CollectionApi
         public async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body)
         {
             StringContent content = GetStringContent(body, true, false);
-            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/rename", content))
+            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/rename", content))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -180,7 +181,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<GetCollectionRevisionResponse> GetCollectionRevisionAsync(string collectionName)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + collectionName + "/revision"))
+            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/revision"))
             {
                 if (response.IsSuccessStatusCode)
                 {
