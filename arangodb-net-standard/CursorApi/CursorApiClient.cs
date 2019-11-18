@@ -98,7 +98,8 @@ namespace ArangoDBNetStandard.CursorApi
 
         public async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId)
         {
-            using (var response = await _client.PutAsync(_cursorApiPath + "/" + WebUtility.UrlEncode(cursorId), new StringContent(string.Empty)))
+            var uriString = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
+            using (var response = await _client.PutAsync(uriString, new StringContent(string.Empty)))
             {
                 if (response.IsSuccessStatusCode)
                 {
