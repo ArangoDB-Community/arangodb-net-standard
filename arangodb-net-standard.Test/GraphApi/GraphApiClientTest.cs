@@ -189,7 +189,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task PostGraphAsync_ShouldSucceed()
         {
-            var graphName = nameof(PostGraphAsync_ShouldSucceed) + "_clx";
+            var graphName = nameof(PostGraphAsync_ShouldSucceed) + "_graph";
             var response = await _client.PostGraphAsync(new PostGraphBody
             {
                 Name = graphName,
@@ -210,7 +210,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PostGraphAsync_ShouldThrow_WhenInvalidName()
+        public async Task PostGraphAsync_ShouldThrow_WhenGraphNameIsInvalid()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
