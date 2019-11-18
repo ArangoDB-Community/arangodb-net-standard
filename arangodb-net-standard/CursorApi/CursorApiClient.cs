@@ -76,13 +76,20 @@ namespace ArangoDBNetStandard.CursorApi
             }
         }
 
+        /// <summary>
+        /// Deletes an existing cursor and frees the resources associated with it.
+        /// DELETE /_api/cursor/{cursor-identifier}
+        /// </summary>
+        /// <param name="cursorId">The id of the cursor to delete.</param>
+        /// <returns></returns>
         public async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId)
         {
             using (var response = await _client.DeleteAsync(_cursorApiPath + "/" + cursorId))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    return new DeleteCursorResponse((int)response.StatusCode);
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteCursorResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
