@@ -26,7 +26,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	GET/_api/collection/{collection-name} Return information about a collection
 - [X]	GET/_api/collection/{collection-name}/count Return number of documents in a collection
 - [X]	GET/_api/collection/{collection-name}/properties Read properties of a collection
-- [ ]	PUT/_api/collection/{collection-name}/properties Change properties of a collection
+- [X]	PUT/_api/collection/{collection-name}/properties Change properties of a collection
 - [X]	PUT/_api/collection/{collection-name}/rename Rename collection
 - [X]	GET/_api/collection/{collection-name}/revision Return collection revision id
 - [X]	PUT/_api/collection/{collection-name}/truncate Truncate collection

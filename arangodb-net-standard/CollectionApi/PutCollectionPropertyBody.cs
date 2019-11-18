@@ -9,6 +9,5 @@ namespace ArangoDBNetStandard.CollectionApi
         public bool? WaitForSync { get; set; }
 
         public long? JournalSize { get; set; }
-        
     }
 }
