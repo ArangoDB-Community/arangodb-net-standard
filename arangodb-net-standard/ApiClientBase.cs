@@ -28,7 +28,7 @@ namespace ArangoDBNetStandard
             }
         }
 
-        protected T DeserializeJsonFromStream<T>(Stream stream, bool useCamelCasePropertyNames = false, bool ignoreNullValues = false)
+        protected T DeserializeJsonFromStream<T>(Stream stream)
         {
             if (stream == null || stream.CanRead == false)
             {
@@ -38,15 +38,10 @@ namespace ArangoDBNetStandard
             using (var sr = new StreamReader(stream))
             using (var jtr = new JsonTextReader(sr))
             {
-                var js = new JsonSerializer
-                {
-                    NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
-                };
-                if (useCamelCasePropertyNames)
-                {
-                    js.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                }
+                var js = new JsonSerializer();
+
                 var searchResult = js.Deserialize<T>(jtr);
+
                 return searchResult;
             }
         }

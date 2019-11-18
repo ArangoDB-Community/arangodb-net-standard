@@ -250,7 +250,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    var responseModel = DeserializeJsonFromStream<DeleteDocumentResponse<T>>(stream, true, false);
+                    var responseModel = DeserializeJsonFromStream<DeleteDocumentResponse<T>>(stream);
                     return responseModel;
                 }
                 throw await GetApiErrorException(response);
@@ -279,7 +279,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    var responseModel = DeserializeJsonFromStream<DeleteDocumentsResponse<T>>(stream, true, false);
+                    var responseModel = DeserializeJsonFromStream<DeleteDocumentsResponse<T>>(stream);
                     return responseModel;
                 }
                 throw await GetApiErrorException(response);
