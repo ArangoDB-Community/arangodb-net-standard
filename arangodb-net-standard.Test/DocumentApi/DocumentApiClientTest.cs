@@ -508,5 +508,87 @@ namespace ArangoDBNetStandardTest.DocumentApi
             Assert.True(response[0].Error);
             Assert.Equal(1202, response[0].ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
         }
+
+        [Fact]
+        public async Task PatchDocumentAsync_ShouldSucceed()
+        {
+            var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
+                new[] {
+                    new { value = 1 },
+                    new { value = 2 }
+                });
+
+            var response = await _docClient.PatchDocumentAsync(_testCollection, addDocResponse[0]._key, new
+            {
+                _key = addDocResponse[0]._key,
+                value = 3
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.Equal(addDocResponse[0]._rev, response.Result._oldRev);
+            Assert.NotEqual(addDocResponse[0]._rev, response.Result._rev);
+            Assert.Equal(addDocResponse[0]._key, response.Result._key);
+        }
+
+        [Fact]
+        public async Task PatchDocumentAsync_ShouldReturnCreated_WhenWaitForAsyncIsTrue()
+        {
+            var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
+                new[] {
+                    new { value = 1 },
+                    new { value = 2 }
+                });
+
+            var response = await _docClient.PatchDocumentAsync(_testCollection, addDocResponse[0]._key, new
+            {
+                _key = addDocResponse[0]._key,
+                value = 3
+            }, new PatchDocumentQuery
+            {
+                WaitForSync = true
+            });
+
+            Assert.Equal(HttpStatusCode.Created, response.Code);
+            Assert.Equal(addDocResponse[0]._rev, response.Result._oldRev);
+            Assert.NotEqual(addDocResponse[0]._rev, response.Result._rev);
+            Assert.Equal(addDocResponse[0]._key, response.Result._key);
+        }
+
+        [Fact]
+        public async Task PatchDocumentAsync_ShouldThrowBadRequest_WhenJsonIsInvalid()
+        {
+            var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
+                new[] {
+                    new { value = 1 },
+                    new { value = 2 }
+                });
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _docClient.PatchDocumentAsync(_testCollection, addDocResponse[0]._key, new
+                {
+                    _key = 1351.3,
+                    bogusProp = "bogusProp"
+                }, new PatchDocumentQuery
+                {
+                    WaitForSync = true
+                });
+            });
+            Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
+        }
+
+        [Fact]
+        public async Task PatchDocumentAsync_ShouldThrowNotFound_WhenCollectionDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _docClient.PatchDocumentAsync("BogusCollection", "12345", new
+                {
+                    _key = 1351.3,
+                    bogusProp = "bogusProp"
+                });
+            });
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+        }
     }
 }

@@ -326,5 +326,60 @@ namespace ArangoDBNetStandard.DocumentApi
             }
         }
 
+        /// <summary>
+        /// Partially updates the document identified by document-handle.
+        /// The body of the request must contain a JSON document with the
+        /// attributes to patch(the patch document). All attributes from the
+        /// patch document will be added to the existing document if they do not
+        /// yet exist, and overwritten in the existing document if they do exist
+        /// there.
+        /// PATCH/_api/document/{document-handle}
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <param name="body"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PatchDocumentResponse> PatchDocumentAsync(string collectionName, string documentKey, object body, PatchDocumentQuery query = null)
+        {
+            return await PatchDocumentAsync(WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(documentKey), body, query);
+        }
+
+        /// <summary>
+        /// Partially updates the document identified by document-handle.
+        /// The body of the request must contain a JSON document with the
+        /// attributes to patch(the patch document). All attributes from the
+        /// patch document will be added to the existing document if they do not
+        /// yet exist, and overwritten in the existing document if they do exist
+        /// there.
+        /// PATCH/_api/document/{document-handle}
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="body"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PatchDocumentResponse> PatchDocumentAsync(string documentId, object body, PatchDocumentQuery query = null)
+        {
+            ValidateDocumentId(documentId);
+            string uriString = _docApiPath + "/" + documentId;
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+            StringContent content = GetStringContent(body, true, true);
+            using (var response = await _client.PatchAsync(uriString, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return new PatchDocumentResponse
+                    {
+                        Code = (HttpStatusCode)response.StatusCode,
+                        Result = DeserializeJsonFromStream<PatchDocumentResult>(stream)
+                    };
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
