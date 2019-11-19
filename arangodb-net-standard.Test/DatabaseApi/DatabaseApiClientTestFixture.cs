@@ -24,7 +24,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         /// </summary>
         public DatabaseApiClient DatabaseClientOther { get; internal set; }
 
-        public string DeletableDatabase { get; } = "DeletableDatabase";
+        public string DeletableDatabase { get; } = nameof(DatabaseApiClientTestFixture) + "_ToBeDeleted";
 
         public DatabaseApiClientTestFixture()
         {

@@ -1,5 +1,8 @@
 ﻿using ArangoDBNetStandard.Transport;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.DatabaseApi
@@ -35,11 +38,11 @@ namespace ArangoDBNetStandard.DatabaseApi
         }
 
         /// <summary>
-        /// Delete a database. dropping a database is only possible from within the _system database.
+        /// Delete a database. Dropping a database is only possible from within the _system database.
         /// The _system database itself cannot be dropped.
         /// DELETE /_api/database/{database-name}
         /// </summary>
-        /// <param name="dbName"></param>
+        /// <param name="databaseName"></param>
         /// <returns></returns>
         public async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string databaseName)
         {
@@ -48,7 +51,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return new DeleteDatabaseResponse((HttpStatusCode)response.StatusCode);
+                    return DeserializeJsonFromStream<DeleteDatabaseResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
