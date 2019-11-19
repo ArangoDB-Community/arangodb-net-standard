@@ -66,7 +66,7 @@ namespace ArangoDBNetStandardTest
         }
 
         public virtual void Dispose()
-        {   
+        {
             foreach (var transport in _transports)
             {
                 try
