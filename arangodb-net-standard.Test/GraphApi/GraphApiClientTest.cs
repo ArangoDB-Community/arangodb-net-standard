@@ -275,45 +275,56 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
         }
 
-        // PostVertexCollectionAsync 
         [Fact]
         public async Task PostVertexCollectionAsync_ShouldSucceed()
         {
-            var edge = nameof(PostVertexCollectionAsync_ShouldSucceed) + "_EdgeClx";
-            var graph = nameof(PostVertexCollectionAsync_ShouldSucceed) + "_GraphClx";
+            // Create a new graph
 
-            // Create edge collection
-            var createClxResponse = await _fixture.ArangoDBClient.Collection.PostCollectionAsync(
-                new PostCollectionBody()
+            string graphName = nameof(PostVertexCollectionAsync_ShouldSucceed);
+
+            PostGraphResponse createResponse = await _client.PostGraph(
+                new PostGraphBody()
                 {
-                    Name = edge,
-                    Type = 3
+                    Name = graphName
                 });
 
-            // Create GRaph
-            PostGraphResponse createGraphResponse = await _client.PostGraph(new PostGraphBody()
-            {
-                Name = graph,
-                EdgeDefinitions = new List<EdgeDefinition>()
+            // Add a vertex collection
+
+            string clxToAdd = nameof(PostVertexCollectionAsync_ShouldSucceed);
+
+            PostVertexCollectionResponse response = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
                 {
-                    new EdgeDefinition()
-                    {
-                        Collection = edge,
-                        From = new string[] { "FromCollection" },
-                        To = new string[] { "ToCollection" }
-                    }
-                }
+                    Collection = clxToAdd
+                });
+
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.False(response.Error);
+
+            PostVertexCollectionModifiedGraph graph = response.Graph;
+
+            Assert.Contains(clxToAdd, graph.OrphanCollections);
+        }
+
+        [Fact]
+        public async Task PostVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound()
+        {
+            string graphName = nameof(PostVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound);
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PostVertexCollectionAsync(graphName, new PostVertexCollectionBody()
+                {
+                    Collection = "VertexCollectionThatShouldNotBeCreated"
+                });
             });
 
-            var query = new PostVertexCollectionQuery
-            {
-                WaitForSync = false,
-                ReturnNew = true
-            };
+            ApiErrorResponse apiError = ex.ApiError;
 
-            var response = await _client.PostVertexCollectionAsync(graph, edge, query);
-
-            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.True(apiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
+            Assert.Equal(1924, apiError.ErrorNum);
         }
     }
 }

@@ -2,14 +2,24 @@
 
 namespace ArangoDBNetStandard.GraphApi
 {
+    /// <summary>
+    /// Represents a response containing information about the modified graph.
+    /// </summary>
     public class PostVertexCollectionResponse
     {
-        public PostGraphVertex New { get; set; }
+        /// <summary>
+        /// Indicates whether an error occurred (false in this case).
+        /// </summary>
+        public bool Error { get; set; }
 
-        public PostGraphVertex Vertex { get; set; }
-
+        /// <summary>
+        /// The HTTP status code.
+        /// </summary>
         public HttpStatusCode Code { get; set; }
 
-        public bool Error { get; set; }
+        /// <summary>
+        /// The information about the modified graph.
+        /// </summary>
+        public PostVertexCollectionModifiedGraph Graph { get; set; }
     }
 }

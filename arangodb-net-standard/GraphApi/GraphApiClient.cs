@@ -164,15 +164,23 @@ namespace ArangoDBNetStandard.GraphApi
             }
         }
 
-        public async Task<PostVertexCollectionResponse> PostVertexCollectionAsync(string graphName, string collectionName, PostVertexCollectionQuery query = null)
+        /// <summary>
+        /// Adds a vertex collection to the set of orphan collections of the graph.
+        /// If the collection does not exist, it will be created.
+        /// POST /_api/gharial/{graph}/vertex
+        /// </summary>
+        /// <param name="graphName">The name of the graph.</param>
+        /// <param name="body">The information of the vertex collection.</param>
+        /// <returns></returns>
+        public async Task<PostVertexCollectionResponse> PostVertexCollectionAsync(
+            string graphName,
+            PostVertexCollectionBody body)
         {
-            string uriString = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex/" + WebUtility.UrlEncode(collectionName);
-            if (query != null)
-            {
-                uriString += "?" + query.ToQueryString();
-            }
-            StringContent content = GetStringContent(new { }, true, true);
-            using (var response = await _transport.PostAsync(uriString, content))
+            string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex";
+
+            StringContent content = GetStringContent(body, true, true);
+
+            using (var response = await _transport.PostAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
                 {
