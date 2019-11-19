@@ -56,7 +56,6 @@ A tick indicates an item is implemented and has automated tests in place.
 - [ ]	HEAD/_api/document/{document-handle} Read document header
 - [ ]	PATCH/_api/document/{document-handle} Update document
 - [X]	PUT/_api/document/{document-handle} Replace document
-- [ ]	PUT/_api/simple/all-keys Read all documents
 
 #### Graph API
 - [X]	GET/_api/gharial List all graphs
