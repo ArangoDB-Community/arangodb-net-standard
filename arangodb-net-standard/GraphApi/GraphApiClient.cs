@@ -1,7 +1,6 @@
 ﻿using ArangoDBNetStandard.Transport;
 using System.Net;
 using System.Net.Http;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.GraphApi
