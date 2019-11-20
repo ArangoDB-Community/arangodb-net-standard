@@ -64,7 +64,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	DELETE/_api/gharial/{graph} Drop a graph
 - [X]	GET/_api/gharial/{graph} Get a graph
 - [X]	GET/_api/gharial/{graph}/edge List edge definitions
-- [ ]	POST/_api/gharial/{graph}/edge Add edge definition
+- [X]	POST/_api/gharial/{graph}/edge Add edge definition
 - [ ]	POST/_api/gharial/{graph}/edge/{collection} Create an edge
 - [ ]	DELETE/_api/gharial/{graph}/edge/{collection}/{edge} Remove an edge
 - [ ]	GET/_api/gharial/{graph}/edge/{collection}/{edge} Get an edge

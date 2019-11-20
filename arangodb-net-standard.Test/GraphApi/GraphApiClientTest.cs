@@ -232,5 +232,47 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
             Assert.Equal(1221, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_KEY_BAD
         }
+
+        [Fact]
+        public async Task PostGraphEdgeDefinitionAsync_ShouldSucceed()
+        {
+            string tempGraph = nameof(PostGraphEdgeDefinitionAsync_ShouldSucceed);
+            var postEdgeGraph = await _client.PostGraphAsync(new PostGraphBody
+            {
+                Name = tempGraph,
+                EdgeDefinitions = new List<EdgeDefinition>()
+            });
+            var response = await _client.PostGraphEdgeDefinitionAsync(tempGraph, new PostGraphEdgeBody
+            {
+                From = new string[] { "fromclxx" },
+                To = new string[] { "toclxx" },
+                Collection = "clxx"
+            });
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.False(response.Error);
+            Assert.Single(response.Graph.EdgeDefinitions);
+            Assert.Equal(tempGraph, response.Graph.Name);
+            Assert.Equal("_graphs/" + tempGraph, response.Graph._id);
+            Assert.NotNull(response.Graph._rev);
+            Assert.False(response.Graph.IsSmart);
+            Assert.Empty(response.Graph.OrphanCollections);
+        }
+
+        [Fact]
+        public async Task PostGraphEdgeDefinitionAsync_ShouldThrow_WhenGraphNotFound()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PostGraphEdgeDefinitionAsync("boggus_graph", new PostGraphEdgeBody
+                {
+                    From = new string[] { "fromclxx" },
+                    To = new string[] { "toclxx" },
+                    Collection = "clxx"
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
     }
 }
