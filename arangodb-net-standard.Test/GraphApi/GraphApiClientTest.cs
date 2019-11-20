@@ -234,9 +234,9 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PostGraphEdgeAsync_ShouldSucceed()
+        public async Task PostGraphEdgeDefinitionAsync_ShouldSucceed()
         {
-            string tempGraph = nameof(PostGraphEdgeAsync_ShouldSucceed);
+            string tempGraph = nameof(PostGraphEdgeDefinitionAsync_ShouldSucceed);
             var postEdgeGraph = await _client.PostGraph(new PostGraphBody
             {
                 Name = tempGraph,
@@ -259,7 +259,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PostGraphEdgeAsync_ShouldThrow_WhenNotFound()
+        public async Task PostGraphEdgeDefinitionAsync_ShouldThrow_WhenGraphNotFound()
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {

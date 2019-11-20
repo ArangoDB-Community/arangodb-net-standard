@@ -4,7 +4,7 @@ namespace ArangoDBNetStandard.GraphApi
 {
     public class PostGraphEdgeResponse
     {
-        public Graph Graph { get; set; }
+        public PostGraphEdgeDefinitionGraph Graph { get; set; }
 
         public HttpStatusCode Code { get; set; }
 
