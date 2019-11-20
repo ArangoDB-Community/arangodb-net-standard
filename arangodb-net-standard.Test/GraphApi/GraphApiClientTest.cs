@@ -44,7 +44,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task DeleteGraphAsync_ShouldSucceed()
         {
-            await _fixture.ArangoDBClient.Graph.PostGraph(new PostGraphBody
+            await _fixture.ArangoDBClient.Graph.PostGraphAsync(new PostGraphBody
             {
                 Name = "temp_graph",
                 EdgeDefinitions = new List<EdgeDefinition>
@@ -129,7 +129,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             string graphName = nameof(GetVertexCollectionsAsync_ShouldSucceed);
 
-            PostGraphResponse createGraphResponse = await _client.PostGraph(new PostGraphBody()
+            PostGraphResponse createGraphResponse = await _client.PostGraphAsync(new PostGraphBody()
             {
                 Name = graphName,
                 EdgeDefinitions = new List<EdgeDefinition>()
@@ -184,6 +184,53 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task PostGraphAsync_ShouldSucceed()
+        {
+            var graphName = nameof(PostGraphAsync_ShouldSucceed) + "_graph";
+            var response = await _client.PostGraphAsync(new PostGraphBody
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { "fromclx" },
+                        To = new string[] { "toclx" },
+                        Collection = "clx"
+                    }
+                }
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.Single(response.Graph.EdgeDefinitions);
+            Assert.Equal(graphName, response.Graph.Name);
+        }
+
+        [Fact]
+        public async Task PostGraphAsync_ShouldThrow_WhenGraphNameIsInvalid()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PostGraphAsync(new PostGraphBody
+                {
+                    Name = "Bad Graph Name",
+                    EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { "fromclx" },
+                        To = new string[] { "toclx" },
+                        Collection = "clx"
+                    }
+                }
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
+            Assert.Equal(1221, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_KEY_BAD
         }
     }
 }

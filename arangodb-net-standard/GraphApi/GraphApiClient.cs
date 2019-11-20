@@ -17,10 +17,11 @@ namespace ArangoDBNetStandard.GraphApi
 
         /// <summary>
         /// Creates a new graph in the graph module.
+        /// POST /_api/gharial
         /// </summary>
         /// <param name="postGraphBody">The information of the graph to create.</param>
         /// <returns></returns>
-        public async Task<PostGraphResponse> PostGraph(PostGraphBody postGraphBody)
+        public async Task<PostGraphResponse> PostGraphAsync(PostGraphBody postGraphBody)
         {
             var content = GetStringContent(postGraphBody, true, true);
             using (var response = await _transport.PostAsync(_graphApiPath, content))
