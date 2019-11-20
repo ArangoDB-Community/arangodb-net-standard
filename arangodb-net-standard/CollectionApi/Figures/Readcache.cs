@@ -1,6 +1,6 @@
-﻿namespace ArangoDBNetStandard.CollectionApi
+﻿namespace ArangoDBNetStandard.CollectionApi.Figures
 {
-    public class Alive
+    public class ReadCache
     {
         public int Size { get; set; }
 

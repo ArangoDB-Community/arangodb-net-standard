@@ -1,6 +1,8 @@
-﻿namespace ArangoDBNetStandard.CollectionApi
+﻿using ArangoDBNetStandard.CollectionApi.Figures;
+
+namespace ArangoDBNetStandard.CollectionApi
 {
-    public class Figures
+    public class FiguresResult
     {
         public DataFiles DataFiles { get; set; }
 

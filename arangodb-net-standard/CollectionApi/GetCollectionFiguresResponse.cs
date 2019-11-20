@@ -4,7 +4,7 @@ namespace ArangoDBNetStandard.CollectionApi
 {
     public class GetCollectionFiguresResponse
     {
-        public Figures Figures { get; set; }
+        public FiguresResult Figures { get; set; }
 
         public CollectionKeyOptions KeyOptions { get; set; }
 

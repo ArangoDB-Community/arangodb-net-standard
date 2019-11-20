@@ -1,4 +1,4 @@
-﻿namespace ArangoDBNetStandard.CollectionApi
+﻿namespace ArangoDBNetStandard.CollectionApi.Figures
 {
     public class DataFiles
     {

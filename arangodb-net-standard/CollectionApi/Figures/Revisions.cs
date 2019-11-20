@@ -1,6 +1,6 @@
-﻿namespace ArangoDBNetStandard.CollectionApi
+﻿namespace ArangoDBNetStandard.CollectionApi.Figures
 {
-    public class Indexes
+    public class Revisions
     {
         public int Size { get; set; }
 
