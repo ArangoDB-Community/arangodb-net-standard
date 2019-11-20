@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-﻿using System.Net.Http;
-using System.Net;
-=======
 ﻿using System.Net;
 using System.Net.Http;
->>>>>>> UrlEcode the uri parameters
 using System.Threading.Tasks;
 
 using ArangoDBNetStandard.Transport;
