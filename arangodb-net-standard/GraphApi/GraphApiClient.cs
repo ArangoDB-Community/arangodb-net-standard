@@ -231,5 +231,33 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Remove one edge definition from the graph. This will only remove the
+        /// edge collection, the vertex collections remain untouched and can still
+        /// be used in your queries.
+        /// DELETE/_api/gharial/{graph}/edge/{definition}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<DeleteEdgeDefinitionResponse> DeleteEdgeDefinitionAsync(string graphName, string collectionName, DeleteEdgeDefinitionQuery query = null)
+        {
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.DeleteAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteEdgeDefinitionResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }

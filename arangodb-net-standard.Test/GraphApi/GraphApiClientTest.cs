@@ -330,7 +330,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
             Assert.Equal(1924, apiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
         }
-
+        
         [Fact]
         public async Task PostVertexAsync_ShouldSucceed()
         {
@@ -442,6 +442,86 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.False(response.Error);
             Assert.NotNull(response.New);
             Assert.Equal(propertyName, response.New.Name);
+        }
+
+         [Fact]
+        public async Task DeleteEdgeDefinitionAsync_ShouldSucceed()
+        {
+            string edgeClx = nameof(DeleteEdgeDefinitionAsync_ShouldSucceed) + "_EdgeClx";
+
+            var createClxResponse = await _fixture.ArangoDBClient.Collection.PostCollectionAsync(
+                new PostCollectionBody()
+                {
+                    Name = edgeClx,
+                    Type = 3
+                });
+
+            Assert.Equal(edgeClx, createClxResponse.Name);
+
+            string graphName = nameof(DeleteEdgeDefinitionAsync_ShouldSucceed);
+
+            PostGraphResponse createGraphResponse = await _client.PostGraphAsync(new PostGraphBody()
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>()
+                {
+                    new EdgeDefinition()
+                    {
+                        Collection = edgeClx,
+                        From = new string[] { "FromCollection" },
+                        To = new string[] { "ToCollection" }
+                    }
+                }
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, createGraphResponse.Code);
+
+            var response = await _client.DeleteEdgeDefinitionAsync(graphName, edgeClx, new DeleteEdgeDefinitionQuery
+            {
+                WaitForSync = false,
+                DropCollections = true
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.Empty(response.Graph.EdgeDefinitions);
+
+            var getAfterResponse = await _client.GetGraphEdgeCollectionsAsync(graphName);
+
+            var collectionFound = getAfterResponse.Collections.Where(x => x == edgeClx).FirstOrDefault();
+
+            Assert.Null(collectionFound);
+        }
+
+        [Fact]
+        public async Task DeleteEdgeDefinitionAsync_ShouldThrow_WhenEdgeDefinitionNameDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.DeleteEdgeDefinitionAsync(_fixture.TestGraph, "bogus_edgeclx", new DeleteEdgeDefinitionQuery
+                {
+                    WaitForSync = false,
+                    DropCollections = true
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1930, ex.ApiError.ErrorNum); // GRAPH_EDGE_COLLECTION_NOT_USED
+        }
+
+        [Fact]
+        public async Task DeleteEdgeDefinitionAsync_ShouldThrow_WhenGraphNameDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.DeleteEdgeDefinitionAsync("bogus_graph", _fixture.TestCollection, new DeleteEdgeDefinitionQuery
+                {
+                    WaitForSync = false,
+                    DropCollections = true
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1924, ex.ApiError.ErrorNum); // GRAPH_NOT_FOUND
         }
     }
 }
