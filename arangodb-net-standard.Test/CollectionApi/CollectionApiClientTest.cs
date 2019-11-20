@@ -216,7 +216,6 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionsAsync_ShouldSucceed()
         {
-
             var response = await _collectionApi.GetCollectionsAsync(new GetCollectionsQuery
             {
                 ExcludeSystem = true // System adds 9 collections that we don't need to test
@@ -382,6 +381,24 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1203, exception.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task GetCollectionFiguresAsync_ShouldSucceed()
+        {
+            var response = await _collectionApi.GetCollectionFiguresAsync(_testCollection);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.NotNull(response.Figures);
+        }
+
+        [Fact]
+        public async Task GetCollectionFiguresAsync_ShouldThrow_WhenCollectionNotFound()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _collectionApi.GetCollectionFiguresAsync("bogusCollection");
+            });
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
     }
 }

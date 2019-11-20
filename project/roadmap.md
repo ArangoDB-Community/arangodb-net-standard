@@ -30,6 +30,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	PUT/_api/collection/{collection-name}/rename Rename collection
 - [X]	GET/_api/collection/{collection-name}/revision Return collection revision id
 - [X]	PUT/_api/collection/{collection-name}/truncate Truncate collection
+- [X]	GET/_api/collection/{collection-name}/figures Return statistics for a collection
 
 #### Cursor API
 
