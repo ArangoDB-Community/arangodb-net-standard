@@ -1227,5 +1227,101 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
         }
+
+        [Fact]
+        public async Task PutGraphDefinitionAsync_ShouldSucceed()
+        {
+            string edgeClx = nameof(PutGraphDefinitionAsync_ShouldSucceed) + "_EdgeClx";
+
+            var createClxResponse = await _fixture.ArangoDBClient.Collection.PostCollectionAsync(
+                new PostCollectionBody()
+                {
+                    Name = edgeClx,
+                    Type = 3
+                });
+
+            Assert.Equal(edgeClx, createClxResponse.Name);
+
+            string graphName = nameof(PutGraphDefinitionAsync_ShouldSucceed) + "_graph";
+
+            PostGraphResponse createGraphResponse = await _client.PostGraphAsync(new PostGraphBody()
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>()
+                {
+                    new EdgeDefinition()
+                    {
+                        Collection = edgeClx,
+                        From = new string[] { "FromCollection" },
+                        To = new string[] { "ToCollection" }
+                    }
+                }
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, createGraphResponse.Code);
+
+            var response = await _client.PutGraphDefinitionAsync(graphName, edgeClx, new PutGraphDefinitionBody
+            {
+                Collection = edgeClx,
+                To = new string[] { "ToClx" },
+                From = new string[] { "FromClx" }
+            }, new PutGraphDefinitionQuery
+            {
+                WaitForSync = false,
+                DropCollections = true
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.False(response.Error);
+            string beforeFromDefintion = createGraphResponse.Graph.EdgeDefinitions.FirstOrDefault().From.FirstOrDefault();
+            string afterFromDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().From.FirstOrDefault();
+            string beforeToDefintion = createGraphResponse.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
+            string afterToDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
+            Assert.NotEqual(beforeFromDefintion, afterFromDefinition);
+            Assert.NotEqual(beforeToDefintion, afterToDefinition);
+        }
+
+        [Fact]
+        public async Task PutGraphDefinitionAsync_ShouldThrow_WhenGraphNameDoesNotExist()
+        {
+            var edgeClx = nameof(PutGraphDefinitionAsync_ShouldThrow_WhenGraphNameDoesNotExist) + "_edgeClx";
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PutGraphDefinitionAsync("bogus_collection", edgeClx, new PutGraphDefinitionBody
+                {
+                    Collection = edgeClx,
+                    To = new string[] { "ToClx" },
+                    From = new string[] { "FromClx" }
+                }, new PutGraphDefinitionQuery
+                {
+                    WaitForSync = false,
+                    DropCollections = true
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1924, ex.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task PutGraphDefinitionAsync_ShouldThrow_WhenEdgeCollectionNameDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PutGraphDefinitionAsync(_fixture.TestGraph, "bogus_edgeclx", new PutGraphDefinitionBody
+                {
+                    Collection = "bogus_edgeclx",
+                    To = new string[] { "ToClx" },
+                    From = new string[] { "FromClx" }
+                }, new PutGraphDefinitionQuery
+                {
+                    WaitForSync = false,
+                    DropCollections = true
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1930, ex.ApiError.ErrorNum); // GRAPH_EDGE_COLLECTION_NOT_USED
+        }
     }
 }

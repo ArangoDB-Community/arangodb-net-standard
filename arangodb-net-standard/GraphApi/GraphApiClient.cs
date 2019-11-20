@@ -512,5 +512,34 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Change one specific edge definition.
+        /// This will modify all occurrences of this definition in all graphs known to your database.
+        /// PUT/_api/gharial/{graph}/edge/{definition}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="body"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PutGraphDefinitionResponse> PutGraphDefinitionAsync(string graphName, string collectionName, PutGraphDefinitionBody body, PutGraphDefinitionQuery query = null)
+        {
+            string uriString = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+            StringContent content = GetStringContent(body, true, true);
+            using (var response = await _transport.PutAsync(uriString, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PutGraphDefinitionResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }

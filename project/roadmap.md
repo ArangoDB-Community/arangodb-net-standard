@@ -71,7 +71,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [ ]	PATCH/_api/gharial/{graph}/edge/{collection}/{edge} Modify an edge
 - [X]	PUT/_api/gharial/{graph}/edge/{collection}/{edge} Replace an edge
 - [X]	DELETE/_api/gharial/{graph}/edge/{definition} Remove an edge definition from the graph
-- [ ]	PUT/_api/gharial/{graph}/edge/{definition} Replace an edge definition
+- [X]	PUT/_api/gharial/{graph}/edge/{definition} Replace an edge definition
 - [X]	GET/_api/gharial/{graph}/vertex List vertex collections
 - [X]	POST/_api/gharial/{graph}/vertex Add vertex collection
 - [X]	DELETE/_api/gharial/{graph}/vertex/{collection} Remove vertex collection
