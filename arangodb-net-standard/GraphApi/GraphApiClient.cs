@@ -296,5 +296,36 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Creates a new edge in the collection.
+        /// Within the body the edge has to contain a _from and _to value
+        /// referencing to valid vertices in the graph.
+        /// Furthermore the edge has to be valid in the definition of the used
+        /// edge collection.
+        /// POST /_api/gharial/{graph}/edge/{collection}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public async Task<PostGraphEdgeResponse> PostGraphEdgeAsync(string graphName, string collectionName, PostGraphEdgeBody body, PostGraphEdgeQuery query = null)
+        {
+            StringContent content = GetStringContent(body, true, true);
+            string uriString = _graphApiPath + "/" + graphName + "/edge/" + collectionName;
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.PostAsync(uriString, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PostGraphEdgeResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
