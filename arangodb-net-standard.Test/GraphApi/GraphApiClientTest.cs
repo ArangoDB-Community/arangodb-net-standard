@@ -237,7 +237,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         public async Task PostGraphEdgeDefinitionAsync_ShouldSucceed()
         {
             string tempGraph = nameof(PostGraphEdgeDefinitionAsync_ShouldSucceed);
-            var postEdgeGraph = await _client.PostGraph(new PostGraphBody
+            var postEdgeGraph = await _client.PostGraphAsync(new PostGraphBody
             {
                 Name = tempGraph,
                 EdgeDefinitions = new List<EdgeDefinition>()
