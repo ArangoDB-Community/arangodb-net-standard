@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Net;
 using System.Threading.Tasks;
+using System;
 
 namespace ArangoDBNetStandard.GraphApi
 {
@@ -192,6 +193,40 @@ namespace ArangoDBNetStandard.GraphApi
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
                     return DeserializeJsonFromStream<PostVertexCollectionResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Adds a vertex to the given collection.
+        /// POST/_api/gharial/{graph}/vertex/{collection}
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="body"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PostVertexResponse> PostVertexAsync<T>(
+            string graphName,
+            string collectionName,
+            T body,
+            PostVertexQuery query = null)
+        {
+            string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
+                "/vertex/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            StringContent content = GetStringContent(body, true, true);
+            using (var response = await _transport.PostAsync(uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PostVertexResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
