@@ -242,12 +242,14 @@ namespace ArangoDBNetStandardTest.GraphApi
                 Name = tempGraph,
                 EdgeDefinitions = new List<EdgeDefinition>()
             });
-            var response = await _client.PostGraphEdgeDefinitionAsync(tempGraph, new PostGraphEdgeBody
-            {
-                From = new string[] { "fromclxx" },
-                To = new string[] { "toclxx" },
-                Collection = "clxx"
-            });
+            var response = await _client.PostGraphEdgeDefinitionAsync(
+                tempGraph,
+                new PostGraphEdgeDefinitionBody
+                {
+                    From = new string[] { "fromclxx" },
+                    To = new string[] { "toclxx" },
+                    Collection = "clxx"
+                });
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
             Assert.Single(response.Graph.EdgeDefinitions);
@@ -263,12 +265,14 @@ namespace ArangoDBNetStandardTest.GraphApi
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PostGraphEdgeDefinitionAsync("boggus_graph", new PostGraphEdgeBody
-                {
-                    From = new string[] { "fromclxx" },
-                    To = new string[] { "toclxx" },
-                    Collection = "clxx"
-                });
+                await _client.PostGraphEdgeDefinitionAsync(
+                    "boggus_graph",
+                    new PostGraphEdgeDefinitionBody
+                    {
+                        From = new string[] { "fromclxx" },
+                        To = new string[] { "toclxx" },
+                        Collection = "clxx"
+                    });
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
