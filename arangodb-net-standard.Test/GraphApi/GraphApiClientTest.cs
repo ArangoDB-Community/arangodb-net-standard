@@ -403,5 +403,43 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
+
+        [Fact]
+        public async Task PostVertexAsync_ShouldReturnNewVertex_WhenReturnNewIsTrue()
+        {
+            // Create a new graph
+
+            string graphName = nameof(PostVertexAsync_ShouldReturnNewVertex_WhenReturnNewIsTrue);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+
+            // Add a vertex collection
+
+            string clxToAdd = nameof(PostVertexAsync_ShouldReturnNewVertex_WhenReturnNewIsTrue);
+
+            PostVertexCollectionResponse createvertexClxresponse = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
+                {
+                    Collection = clxToAdd
+                });
+
+            var response = await _client.PostVertexAsync<object>(graphName, clxToAdd, new
+            {
+                Name = clxToAdd + "_vtx"
+            }, new PostVertexQuery
+            {
+                 ReturnNew = true,
+                 WaitForSync = true
+            });
+
+            Assert.Equal(HttpStatusCode.Created, response.Code);
+            Assert.False(response.Error);
+            Assert.NotNull(response.New);
+        }
     }
 }

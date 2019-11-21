@@ -205,13 +205,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <typeparam name="T"></typeparam>
         /// <param name="graphName"></param>
         /// <param name="collectionName"></param>
-        /// <param name="body"></param>
+        /// <param name="vertex"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PostVertexResponse> PostVertexAsync<T>(
+        public async Task<PostVertexResponse<T>> PostVertexAsync<T>(
             string graphName,
             string collectionName,
-            T body,
+            T vertex,
             PostVertexQuery query = null)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
@@ -220,13 +220,13 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            StringContent content = GetStringContent(body, true, true);
+            StringContent content = GetStringContent(vertex, false, false);
             using (var response = await _transport.PostAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostVertexResponse>(stream);
+                    return DeserializeJsonFromStream<PostVertexResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
