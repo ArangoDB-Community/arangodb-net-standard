@@ -324,7 +324,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(apiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
-            Assert.Equal(1924, apiError.ErrorNum);
+            Assert.Equal(1924, apiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
         }
     }
 }
