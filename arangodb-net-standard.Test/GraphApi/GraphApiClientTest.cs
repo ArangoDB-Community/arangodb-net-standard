@@ -274,5 +274,57 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
         }
+
+        [Fact]
+        public async Task PostVertexCollectionAsync_ShouldSucceed()
+        {
+            // Create a new graph
+
+            string graphName = nameof(PostVertexCollectionAsync_ShouldSucceed);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+
+            // Add a vertex collection
+
+            string clxToAdd = nameof(PostVertexCollectionAsync_ShouldSucceed);
+
+            PostVertexCollectionResponse response = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
+                {
+                    Collection = clxToAdd
+                });
+
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.False(response.Error);
+
+            PostVertexCollectionModifiedGraph graph = response.Graph;
+
+            Assert.Contains(clxToAdd, graph.OrphanCollections);
+        }
+
+        [Fact]
+        public async Task PostVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound()
+        {
+            string graphName = nameof(PostVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound);
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PostVertexCollectionAsync(graphName, new PostVertexCollectionBody()
+                {
+                    Collection = "VertexCollectionThatShouldNotBeCreated"
+                });
+            });
+
+            ApiErrorResponse apiError = ex.ApiError;
+
+            Assert.True(apiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
+            Assert.Equal(1924, apiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+        }
     }
 }
