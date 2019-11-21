@@ -298,31 +298,40 @@ namespace ArangoDBNetStandard.GraphApi
         }
 
         /// <summary>
-        /// Creates a new edge in the collection.
-        /// Within the body the edge has to contain a _from and _to value
-        /// referencing to valid vertices in the graph.
-        /// Furthermore the edge has to be valid in the definition of the used
-        /// edge collection.
+        /// Creates an edge in an existing graph.
+        /// The edge must contain a _from and _to value
+        /// referencing valid vertices in the graph.
+        /// The edge has to conform to the definition of the edge collection it is added to.
         /// POST /_api/gharial/{graph}/edge/{collection}
         /// </summary>
-        /// <param name="graphName"></param>
-        /// <param name="collectionName"></param>
-        /// <param name="body"></param>
+        /// <typeparam name="T">The type of the edge to create.
+        /// Must contain valid _from and _to properties once serialized.</typeparam>
+        /// <param name="graphName">The name of the graph.</param>
+        /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
+        /// <param name="edge">The edge to create.</param>
         /// <returns></returns>
-        public async Task<PostGraphEdgeResponse> PostGraphEdgeAsync(string graphName, string collectionName, PostGraphEdgeBody body, PostGraphEdgeQuery query = null)
+        public async Task<PostGraphEdgeResponse<T>> PostGraphEdgeAsync<T>(
+            string graphName,
+            string collectionName,
+            T edge,
+            PostGraphEdgeQuery query = null)
         {
-            StringContent content = GetStringContent(body, true, true);
-            string uriString = _graphApiPath + "/" + graphName + "/edge/" + collectionName;
+            StringContent content = GetStringContent(edge, false, false);
+
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
+                "/edge/" + WebUtility.UrlEncode(collectionName);
+
             if (query != null)
             {
-                uriString += "?" + query.ToQueryString();
+                uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.PostAsync(uriString, content))
+
+            using (var response = await _transport.PostAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostGraphEdgeResponse>(stream);
+                    return DeserializeJsonFromStream<PostGraphEdgeResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
