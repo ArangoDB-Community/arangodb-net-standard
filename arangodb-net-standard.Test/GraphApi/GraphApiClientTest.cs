@@ -282,7 +282,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             string graphName = nameof(PostVertexCollectionAsync_ShouldSucceed);
 
-            PostGraphResponse createResponse = await _client.PostGraph(
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
                 new PostGraphBody()
                 {
                     Name = graphName
