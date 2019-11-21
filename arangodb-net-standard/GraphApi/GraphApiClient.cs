@@ -242,9 +242,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteEdgeDefinitionResponse> DeleteEdgeDefinitionAsync(string graphName, string collectionName, DeleteEdgeDefinitionQuery query = null)
+        public async Task<DeleteEdgeDefinitionResponse> DeleteEdgeDefinitionAsync(
+            string graphName,
+            string collectionName,
+            DeleteEdgeDefinitionQuery query = null)
         {
-            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge/" + WebUtility.UrlEncode(collectionName);
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
+                "/edge/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
