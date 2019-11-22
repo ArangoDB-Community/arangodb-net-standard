@@ -341,5 +341,33 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Gets a vertex from the given collection.
+        /// GET/_api/gharial/{graph}/vertex/{collection}/{vertex}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="vertexKey"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<GetVertexResponse<T>> GetVertexAsync<T>(string graphName, string collectionName, string vertexKey, GetVertexQuery query = null)
+        {
+            string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
+                "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" + vertexKey;
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.GetAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetVertexResponse<T>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
