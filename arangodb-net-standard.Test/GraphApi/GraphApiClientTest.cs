@@ -427,10 +427,11 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     Collection = clxToAdd
                 });
+            var propertyName = clxToAdd + "_vtx";
 
-            var response = await _client.PostVertexAsync<object>(graphName, clxToAdd, new
+            var response = await _client.PostVertexAsync(graphName, clxToAdd, new
             {
-                Name = clxToAdd + "_vtx"
+                Name = propertyName
             }, new PostVertexQuery
             {
                  ReturnNew = true,
@@ -440,6 +441,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.Created, response.Code);
             Assert.False(response.Error);
             Assert.NotNull(response.New);
+            Assert.Equal(propertyName, response.New.Name);
         }
     }
 }
