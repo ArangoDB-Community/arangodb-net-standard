@@ -562,11 +562,11 @@ namespace ArangoDBNetStandardTest.GraphApi
         public async Task DeleteVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound()
         {
             string graphName = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound);
-            string clxToAdd = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound);
+            string clxToDelete = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.DeleteVertexCollectionAsync(graphName, clxToAdd);
+                await _client.DeleteVertexCollectionAsync(graphName, clxToDelete);
             });
 
             Assert.True(ex.ApiError.Error);
@@ -585,11 +585,11 @@ namespace ArangoDBNetStandardTest.GraphApi
                    Name = graphName
                });
 
-            string clxToAdd = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenVertexIsNotFound);
+            string clxToDelete = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenVertexIsNotFound);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.DeleteVertexCollectionAsync(graphName, clxToAdd);
+                await _client.DeleteVertexCollectionAsync(graphName, clxToDelete);
             });
 
             Assert.True(ex.ApiError.Error);
