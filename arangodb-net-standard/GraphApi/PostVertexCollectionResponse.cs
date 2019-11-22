@@ -20,6 +20,6 @@ namespace ArangoDBNetStandard.GraphApi
         /// <summary>
         /// The information about the modified graph.
         /// </summary>
-        public PostVertexCollectionModifiedGraph Graph { get; set; }
+        public GraphResult Graph { get; set; }
     }
 }

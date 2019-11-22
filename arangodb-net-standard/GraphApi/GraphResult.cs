@@ -3,9 +3,10 @@
 namespace ArangoDBNetStandard.GraphApi
 {
     /// <summary>
-    /// Represents information about a modified graph.
+    /// Represents graph information returned in the response
+    /// of graph management endpoints.
     /// </summary>
-    public class PostVertexCollectionModifiedGraph
+    public class GraphResult
     {
         /// <summary>
         /// The internal id value of this graph.

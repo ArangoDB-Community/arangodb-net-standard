@@ -20,6 +20,6 @@ namespace ArangoDBNetStandard.GraphApi
         /// <summary>
         /// The information about the newly created graph.
         /// </summary>
-        public PostGraphCreatedGraph Graph { get; set; }
+        public GraphResult Graph { get; set; }
     }
 }
