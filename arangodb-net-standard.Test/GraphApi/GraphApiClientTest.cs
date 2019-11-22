@@ -596,5 +596,40 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
             Assert.Equal(1928, ex.ApiError.ErrorNum); // GRAPH_NOT_IN_ORPHAN_COLLECTION
         }
+
+        [Fact]
+        public async Task DeleteVertexCollectionAsync_ShouldDropCollection_WhenDropCollectionIsTrue()
+        {
+            // Create a new graph
+
+            string graphName = "DeleteVertexCollectionAsync_ShouldThrowNotFound_WhenCollectionDropIsTrue";
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+
+            // Add a vertex collection
+
+            string clxToDelete = "DeleteVertexCollectionAsync_ShouldDropCollection";
+
+            PostVertexCollectionResponse createVertexResponse = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
+                {
+                    Collection = clxToDelete
+                });
+
+            var response = await _client.DeleteVertexCollectionAsync(graphName, clxToDelete, new DeleteVertexCollectionQuery
+            {
+                DropCollection = true
+            });
+
+            var collection = await _client.GetVertexCollections(graphName);
+            var deletedCollection = collection.Collections.Where(x => x == clxToDelete).FirstOrDefault();
+
+            Assert.Null(deletedCollection);
+        }
     }
 }
