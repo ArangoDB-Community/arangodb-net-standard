@@ -330,5 +330,118 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
             Assert.Equal(1924, apiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
         }
+
+        [Fact]
+        public async Task PostVertexAsync_ShouldSucceed()
+        {
+            // Create a new graph
+
+            string graphName = nameof(PostVertexAsync_ShouldSucceed);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+
+            // Add a vertex collection
+
+            string clxToAdd = nameof(PostVertexCollectionAsync_ShouldSucceed);
+
+            PostVertexCollectionResponse createvertexClxresponse = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
+                {
+                    Collection = clxToAdd
+                });
+
+            var response = await _client.PostVertexAsync<object>(graphName, clxToAdd, new
+            {
+                Name = clxToAdd + "_vtx"
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.False(response.Error);
+            Assert.NotNull(response.Vertex);
+        }
+
+        [Fact]
+        public async Task PostVertexAsync_ShouldThrow_WhenGraphIsNotFound()
+        {
+            string graphName = nameof(PostVertexAsync_ShouldThrow_WhenGraphIsNotFound);
+            string vertex = nameof(PostVertexAsync_ShouldThrow_WhenGraphIsNotFound) + "_vtx";
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PostVertexAsync(graphName, vertex, new { });
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task PostVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound()
+        {
+            // Create a new graph
+            string graphName = nameof(PostVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+            string vertex = nameof(PostVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound) + "_vtx";
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PostVertexAsync(graphName, vertex, new { });
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task PostVertexAsync_ShouldReturnNewVertex_WhenReturnNewIsTrue()
+        {
+            // Create a new graph
+
+            string graphName = nameof(PostVertexAsync_ShouldReturnNewVertex_WhenReturnNewIsTrue);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+
+            // Add a vertex collection
+
+            string clxToAdd = nameof(PostVertexAsync_ShouldReturnNewVertex_WhenReturnNewIsTrue);
+
+            PostVertexCollectionResponse createvertexClxresponse = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
+                {
+                    Collection = clxToAdd
+                });
+            var propertyName = clxToAdd + "_vtx";
+
+            var response = await _client.PostVertexAsync(graphName, clxToAdd, new
+            {
+                Name = propertyName
+            }, new PostVertexQuery
+            {
+                 ReturnNew = true,
+                 WaitForSync = true
+            });
+
+            Assert.Equal(HttpStatusCode.Created, response.Code);
+            Assert.False(response.Error);
+            Assert.NotNull(response.New);
+            Assert.Equal(propertyName, response.New.Name);
+        }
     }
 }
