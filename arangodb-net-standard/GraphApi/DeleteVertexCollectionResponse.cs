@@ -8,6 +8,6 @@ namespace ArangoDBNetStandard.GraphApi
 
         public HttpStatusCode Code { get; set; }
 
-        public GetGraphsGraph Graph { get; set; }
+        public DeleteVertexCollectionGraph Graph { get; set; }
     }
 }

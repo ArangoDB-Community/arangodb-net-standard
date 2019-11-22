@@ -10,6 +10,8 @@ namespace ArangoDBNetStandard.GraphApi
 
         public string _rev { get; set; }
 
+        public string Name { get; set; }
+
         public string SmartGraphAttribute { get; set; }
 
         public int ReplicationFactor { get; set; }
