@@ -21,5 +21,7 @@ namespace ArangoDBNetStandard.GraphApi
         public bool IsSmart { get; set; }
 
         public IEnumerable<EdgeDefinition> EdgeDefinitions { get; set; }
+
+        public string Name { get; set; }
     }
 }
