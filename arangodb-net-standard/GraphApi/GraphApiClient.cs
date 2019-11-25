@@ -40,6 +40,10 @@ namespace ArangoDBNetStandard.GraphApi
         /// Lists all graphs stored in this database.
         /// GET /_api/gharial
         /// </summary>
+        /// <remarks>
+        /// Note: The <see cref="GraphResult.Name"/> property is null for <see cref="GraphApiClient.GetGraphsAsync"/> in ArangoDB 4.5.2 and below,
+        /// in which case you can use <see cref="GraphResult._key"/> instead.
+        /// </remarks>
         /// <returns></returns>
         public async Task<GetGraphsResponse> GetGraphsAsync()
         {

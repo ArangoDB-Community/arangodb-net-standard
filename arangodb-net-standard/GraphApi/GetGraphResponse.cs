@@ -4,7 +4,7 @@ namespace ArangoDBNetStandard.GraphApi
 {
     public class GetGraphResponse
     {
-        public GetGraphsGraph Graph { get; set; }
+        public GraphResult Graph { get; set; }
 
         public HttpStatusCode Code { get; set; }
 

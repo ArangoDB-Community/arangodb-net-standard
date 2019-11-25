@@ -26,6 +26,8 @@ namespace ArangoDBNetStandard.GraphApi
 
         /// <summary>
         /// The name of the graph.
+        /// Note: This property is null for <see cref="GraphApiClient.GetGraphsAsync"/> in ArangoDB 4.5.2 and below,
+        /// in which case you can use <see cref="_key"/> instead.
         /// </summary>
         public string Name { get; set; }
 
