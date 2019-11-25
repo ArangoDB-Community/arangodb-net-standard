@@ -8,6 +8,6 @@ namespace ArangoDBNetStandard.GraphApi
 
         public bool Error { get; set; }
 
-        public DeleteEdgeDefinitionGraph Graph { get; set; }
+        public GraphResult Graph { get; set; }
     }
 }
