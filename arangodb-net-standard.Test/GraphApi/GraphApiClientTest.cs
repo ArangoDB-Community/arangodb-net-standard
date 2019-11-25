@@ -626,10 +626,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                 DropCollection = true
             });
 
-            var collection = await _client.GetVertexCollections(graphName);
-            var deletedCollection = collection.Collections.Where(x => x == clxToDelete).FirstOrDefault();
-
-            Assert.Null(deletedCollection);
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _fixture.ArangoDBClient.Collection.GetCollectionAsync(clxToDelete);
+            });
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
     }
 }
