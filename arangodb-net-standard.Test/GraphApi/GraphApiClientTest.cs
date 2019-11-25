@@ -434,8 +434,8 @@ namespace ArangoDBNetStandardTest.GraphApi
                 Name = propertyName
             }, new PostVertexQuery
             {
-                 ReturnNew = true,
-                 WaitForSync = true
+                ReturnNew = true,
+                WaitForSync = true
             });
 
             Assert.Equal(HttpStatusCode.Created, response.Code);
@@ -444,7 +444,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(propertyName, response.New.Name);
         }
 
-         [Fact]
+        [Fact]
         public async Task DeleteEdgeDefinitionAsync_ShouldSucceed()
         {
             string edgeClx = nameof(DeleteEdgeDefinitionAsync_ShouldSucceed) + "_EdgeClx";
@@ -522,6 +522,116 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1924, ex.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task DeleteVertexCollectionAsync_ShouldSucceed()
+        {
+            // Create a new graph
+
+            string graphName = nameof(DeleteVertexCollectionAsync_ShouldSucceed);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+
+            // Add a vertex collection
+
+            string clxToDelete = nameof(DeleteVertexCollectionAsync_ShouldSucceed);
+
+            PostVertexCollectionResponse createVertexResponse = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
+                {
+                    Collection = clxToDelete
+                });
+
+            var response = await _client.DeleteVertexCollectionAsync(graphName, clxToDelete, new DeleteVertexCollectionQuery
+            {
+                DropCollection = false
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.False(response.Error);
+            Assert.Empty(response.Graph.OrphanCollections);
+        }
+
+        [Fact]
+        public async Task DeleteVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound()
+        {
+            string graphName = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound);
+            string clxToDelete = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenGraphIsNotFound);
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.DeleteVertexCollectionAsync(graphName, clxToDelete);
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task DeleteVertexCollectionAsync_ShouldThrow_WhenVertexIsNotFound()
+        {
+            string graphName = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenVertexIsNotFound);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+               new PostGraphBody()
+               {
+                   Name = graphName
+               });
+
+            string clxToDelete = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenVertexIsNotFound);
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.DeleteVertexCollectionAsync(graphName, clxToDelete);
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
+            Assert.Equal(1928, ex.ApiError.ErrorNum); // GRAPH_NOT_IN_ORPHAN_COLLECTION
+        }
+
+        [Fact]
+        public async Task DeleteVertexCollectionAsync_ShouldDropCollection_WhenDropCollectionIsTrue()
+        {
+            // Create a new graph
+
+            string graphName = "DeleteVertexCollectionAsync_ShouldThrowNotFound_WhenCollectionDropIsTrue";
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+
+            // Add a vertex collection
+
+            string clxToDelete = "DeleteVertexCollectionAsync_ShouldDropCollection";
+
+            PostVertexCollectionResponse createVertexResponse = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
+                {
+                    Collection = clxToDelete
+                });
+
+            var response = await _client.DeleteVertexCollectionAsync(graphName, clxToDelete, new DeleteVertexCollectionQuery
+            {
+                DropCollection = true
+            });
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _fixture.ArangoDBClient.Collection.GetCollectionAsync(clxToDelete);
+            });
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
     }
 }

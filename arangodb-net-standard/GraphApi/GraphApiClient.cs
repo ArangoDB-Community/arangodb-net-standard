@@ -263,5 +263,38 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Removes a vertex collection from the graph and optionally deletes the collection,
+        /// if it is not used in any other graph.
+        /// It can only remove vertex collections that are no longer part of edge definitions,
+        /// if they are used in edge definitions you are required to modify those first.
+        /// DELETE/_api/gharial/{graph}/vertex/{collection}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<DeleteVertexCollectionResponse> DeleteVertexCollectionAsync(
+            string graphName,
+            string collectionName,
+            DeleteVertexCollectionQuery query = null)
+        {
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
+                "/vertex/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.DeleteAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteVertexCollectionResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
