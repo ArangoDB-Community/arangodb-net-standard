@@ -933,7 +933,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+            Assert.Equal(1202, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
         }
 
         [Fact]
@@ -1619,7 +1619,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 WaitForSync = true
             });
 
-            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
             Assert.Equal(afterVertexClxVtx, response.New.Name);
             Assert.NotEqual(response.New.Name, response.Old.Name);
