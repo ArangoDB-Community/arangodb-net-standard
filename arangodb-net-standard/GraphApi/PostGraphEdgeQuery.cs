@@ -22,11 +22,11 @@ namespace ArangoDBNetStandard.GraphApi
             List<string> query = new List<string>();
             if (ReturnNew != null)
             {
-                query.Add("waitForSync=" + ReturnNew.ToString().ToLower());
+                query.Add("returnNew=" + ReturnNew.ToString().ToLower());
             }
             if (WaitForSync != null)
             {
-                query.Add("returnNew=" + WaitForSync.ToString().ToLower());
+                query.Add("waitForSync=" + WaitForSync.ToString().ToLower());
             }
             return string.Join("&", query);
         }

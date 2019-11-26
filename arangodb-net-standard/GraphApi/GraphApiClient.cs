@@ -305,7 +305,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// POST /_api/gharial/{graph}/edge/{collection}
         /// </summary>
         /// <typeparam name="T">The type of the edge to create.
-        /// Must contain valid _from and _to properties once serialized.</typeparam>
+        /// Must contain valid _from and _to properties once serialized.
+        /// <c>null</c> properties are preserved during serialization.</typeparam>
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edge">The edge to create.</param>
