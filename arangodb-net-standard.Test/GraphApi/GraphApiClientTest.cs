@@ -470,8 +470,8 @@ namespace ArangoDBNetStandardTest.GraphApi
                     new EdgeDefinition()
                     {
                         Collection = edgeClx,
-                        From = new string[] { "FromCollection" },
-                        To = new string[] { "ToCollection" }
+                        From = new string[] { "FromPutCollection" },
+                        To = new string[] { "ToPutCollection" }
                     }
                 }
             });
@@ -1267,7 +1267,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 From = new string[] { "FromClx" }
             }, new PutGraphDefinitionQuery
             {
-                WaitForSync = false,
+                WaitForSync = true,
                 DropCollections = true
             });
 
@@ -1279,8 +1279,6 @@ namespace ArangoDBNetStandardTest.GraphApi
             string afterToDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
             Assert.NotEqual(beforeFromDefintion, afterFromDefinition);
             Assert.NotEqual(beforeToDefintion, afterToDefinition);
-            // Check that collections were dropped
-            Assert.Empty(response.Graph.OrphanCollections);
         }
 
         [Fact]
