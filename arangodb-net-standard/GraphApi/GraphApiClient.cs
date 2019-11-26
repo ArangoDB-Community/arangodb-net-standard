@@ -296,5 +296,46 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Creates an edge in an existing graph.
+        /// The edge must contain a _from and _to value
+        /// referencing valid vertices in the graph.
+        /// The edge has to conform to the definition of the edge collection it is added to.
+        /// POST /_api/gharial/{graph}/edge/{collection}
+        /// </summary>
+        /// <typeparam name="T">The type of the edge to create.
+        /// Must contain valid _from and _to properties once serialized.
+        /// <c>null</c> properties are preserved during serialization.</typeparam>
+        /// <param name="graphName">The name of the graph.</param>
+        /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
+        /// <param name="edge">The edge to create.</param>
+        /// <returns></returns>
+        public async Task<PostGraphEdgeResponse<T>> PostGraphEdgeAsync<T>(
+            string graphName,
+            string collectionName,
+            T edge,
+            PostGraphEdgeQuery query = null)
+        {
+            StringContent content = GetStringContent(edge, false, false);
+
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
+                "/edge/" + WebUtility.UrlEncode(collectionName);
+
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+
+            using (var response = await _transport.PostAsync(uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PostGraphEdgeResponse<T>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
