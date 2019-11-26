@@ -1279,6 +1279,8 @@ namespace ArangoDBNetStandardTest.GraphApi
             string afterToDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
             Assert.NotEqual(beforeFromDefintion, afterFromDefinition);
             Assert.NotEqual(beforeToDefintion, afterToDefinition);
+            // Check that collections were dropped
+            Assert.Empty(response.Graph.OrphanCollections);
         }
 
         [Fact]
