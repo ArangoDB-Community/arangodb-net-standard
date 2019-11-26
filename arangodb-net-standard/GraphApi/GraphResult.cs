@@ -3,9 +3,10 @@
 namespace ArangoDBNetStandard.GraphApi
 {
     /// <summary>
-    /// Represents information about a modified graph.
+    /// Represents graph information returned in the response
+    /// of graph management endpoints.
     /// </summary>
-    public class PostVertexCollectionModifiedGraph
+    public class GraphResult
     {
         /// <summary>
         /// The internal id value of this graph.
@@ -25,6 +26,8 @@ namespace ArangoDBNetStandard.GraphApi
 
         /// <summary>
         /// The name of the graph.
+        /// Note: This property is null for <see cref="GraphApiClient.GetGraphsAsync"/> in ArangoDB 4.5.2 and below,
+        /// in which case you can use <see cref="_key"/> instead.
         /// </summary>
         public string Name { get; set; }
 

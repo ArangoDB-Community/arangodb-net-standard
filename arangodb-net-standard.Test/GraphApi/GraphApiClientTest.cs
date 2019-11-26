@@ -307,7 +307,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
 
-            PostVertexCollectionModifiedGraph graph = response.Graph;
+            GraphResult graph = response.Graph;
 
             Assert.Contains(clxToAdd, graph.OrphanCollections);
         }

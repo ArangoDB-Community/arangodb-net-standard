@@ -11,7 +11,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <summary>
         /// The information about the modified graph.
         /// </summary>
-        public PostGraphEdgeDefinitionGraph Graph { get; set; }
+        public GraphResult Graph { get; set; }
 
         /// <summary>
         /// The HTTP status code.
