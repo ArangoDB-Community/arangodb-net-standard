@@ -696,7 +696,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            StringContent content = GetStringContent(vertex, true, true);
+            StringContent content = GetStringContent(vertex, false, false);
             using (var response = await _transport.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
