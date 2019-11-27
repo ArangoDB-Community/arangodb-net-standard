@@ -383,6 +383,7 @@ namespace ArangoDBNetStandard.GraphApi
 
         /// <summary>
         /// Gets an edge from the given graph using the edge's document-handle.
+        /// GET /_api/gharial/{graph}/edge/{collection}/{edge}
         /// </summary>
         /// <typeparam name="T">The type of the edge document to deserialize to.</typeparam>
         /// <param name="graphName">The name of the graph.</param>
