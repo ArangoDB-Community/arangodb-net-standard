@@ -534,13 +534,12 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 WaitForSync = true
             });
 
-            Assert.Equal(HttpStatusCode.Created, response.Code);
-            Assert.Equal(addDocResponse[0]._rev, response.Result._oldRev);
-            Assert.NotEqual(addDocResponse[0]._rev, response.Result._rev);
-            Assert.Equal(addDocResponse[0]._key, response.Result._key);
-            Assert.Equal(addDocResponse[0].New.value, response.Result.Old.value);
-            Assert.NotEqual(addDocResponse[0].New.value, response.Result.New.value);
-            Assert.Equal(addDocResponse[0].New.name, response.Result.New.name);
+            Assert.Equal(addDocResponse[0]._rev, response._oldRev);
+            Assert.NotEqual(addDocResponse[0]._rev, response._rev);
+            Assert.Equal(addDocResponse[0]._key, response._key);
+            Assert.Equal(addDocResponse[0].New.value, response.Old.value);
+            Assert.NotEqual(addDocResponse[0].New.value, response.New.value);
+            Assert.Equal(addDocResponse[0].New.name, response.New.name);
         }
 
         [Fact]
@@ -569,13 +568,12 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 Silent = true
             });
 
-            Assert.Equal(HttpStatusCode.Created, response.Code);
-            Assert.Null(response.Result.Old);
-            Assert.Null(response.Result.New);
-            Assert.Null(response.Result._oldRev);
-            Assert.Null(response.Result._id);
-            Assert.Null(response.Result._key);
-            Assert.Null(response.Result._rev);
+            Assert.Null(response.Old);
+            Assert.Null(response.New);
+            Assert.Null(response._oldRev);
+            Assert.Null(response._id);
+            Assert.Null(response._key);
+            Assert.Null(response._rev);
         }
 
         [Fact]

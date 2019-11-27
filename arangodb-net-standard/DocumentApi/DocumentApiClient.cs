@@ -372,11 +372,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return new PatchDocumentResponse<U>
-                    {
-                        Code = (HttpStatusCode)response.StatusCode,
-                        Result = DeserializeJsonFromStream<PatchDocumentResult<U>>(stream)
-                    };
+                    return DeserializeJsonFromStream<PatchDocumentResponse<U>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
