@@ -304,10 +304,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
-        /// <param name="selectors"></param>
+        /// <param name="patches"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(string collectionName, IList<T> selectors, PatchDocumentsQuery query = null)
+        public async Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(string collectionName, IList<T> patches, PatchDocumentsQuery query = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
