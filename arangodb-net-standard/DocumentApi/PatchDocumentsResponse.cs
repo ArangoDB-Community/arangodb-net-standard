@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Net;
-
-namespace ArangoDBNetStandard.DocumentApi
+﻿namespace ArangoDBNetStandard.DocumentApi
 {
-    public class PatchDocumentsResponse<U>
+    public class PatchDocumentsResponse<U> : DocumentBase
     {
-        public HttpStatusCode Code { get; set; }
+        public U New { get; set; }
 
-        public IList<PatchDocument<U>> Documents { get; set; }
+        public U Old { get; set; }
+
+        public bool Error { get; set; }
+
+        public int ErrorNum { get; set; }
     }
 }

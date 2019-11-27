@@ -491,11 +491,10 @@ namespace ArangoDBNetStandardTest.DocumentApi
                         ReturnOld = true
                     });
 
-            Assert.Equal(HttpStatusCode.Created, response.Code);
-            Assert.Equal(2, response.Documents.Count);
-            Assert.NotEqual(postResponse[0]._rev, response.Documents[0]._rev);
-            Assert.NotEqual(postResponse[0].New.Name, response.Documents[0].New.Name);
-            Assert.Equal(postResponse[0].New.Name, response.Documents[0].Old.Name);
+            Assert.Equal(2, response.Count);
+            Assert.NotEqual(postResponse[0]._rev, response[0]._rev);
+            Assert.NotEqual(postResponse[0].New.Name, response[0].New.Name);
+            Assert.Equal(postResponse[0].New.Name, response[0].Old.Name);
         }
 
         [Fact]
@@ -506,8 +505,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     new { _key = "bogusDocument", value = 4 }
                     }, null);
 
-            Assert.True(response.Documents[0].Error);
-            Assert.Equal(1202, response.Documents[0].ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
+            Assert.True(response[0].Error);
+            Assert.Equal(1202, response[0].ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
         }
     }
 }

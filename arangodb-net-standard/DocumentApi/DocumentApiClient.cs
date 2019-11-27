@@ -307,7 +307,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="selectors"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(string collectionName, IList<T> selectors, PatchDocumentsQuery query = null)
+        public async Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(string collectionName, IList<T> selectors, PatchDocumentsQuery query = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -320,12 +320,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    var responseModel = DeserializeJsonFromStream<IList<PatchDocument<U>>>(stream);
-                    return new PatchDocumentsResponse<U>
-                    {
-                         Code = (HttpStatusCode)response.StatusCode,
-                         Documents = responseModel
-                    };
+                    return DeserializeJsonFromStream<IList<PatchDocumentsResponse<U>>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
