@@ -340,7 +340,12 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchDocumentResponse> PatchDocumentAsync(string collectionName, string documentKey, object body, PatchDocumentQuery query = null)
+        public async Task<PatchDocumentResponse<T>> PatchDocumentAsync<T>(string collectionName, string documentKey, T body, PatchDocumentQuery query = null)
+        {
+            return await PatchDocumentAsync(WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(documentKey), body, query);
+        }
+
+        public async Task<PatchDocumentResponse<object>> PatchDocumentAsync(string collectionName, string documentKey, object body, PatchDocumentQuery query = null)
         {
             return await PatchDocumentAsync(WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(documentKey), body, query);
         }
@@ -358,7 +363,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchDocumentResponse> PatchDocumentAsync(string documentId, object body, PatchDocumentQuery query = null)
+        public async Task<PatchDocumentResponse<T>> PatchDocumentAsync<T>(string documentId, T body, PatchDocumentQuery query = null)
         {
             ValidateDocumentId(documentId);
             string uriString = _docApiPath + "/" + documentId;
@@ -366,16 +371,16 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            StringContent content = GetStringContent(body, true, true);
+            StringContent content = GetStringContent(body, false, false);
             using (var response = await _client.PatchAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return new PatchDocumentResponse
+                    return new PatchDocumentResponse<T>
                     {
                         Code = (HttpStatusCode)response.StatusCode,
-                        Result = DeserializeJsonFromStream<PatchDocumentResult>(stream)
+                        Result = DeserializeJsonFromStream<PatchDocumentResult<T>>(stream)
                     };
                 }
                 throw await GetApiErrorException(response);

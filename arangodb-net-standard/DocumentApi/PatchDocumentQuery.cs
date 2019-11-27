@@ -35,19 +35,19 @@ namespace ArangoDBNetStandard.DocumentApi
             }
             if (KeepNull != null)
             {
-                queryParams.Add("keepNull=" + Silent.ToString().ToLower());
+                queryParams.Add("keepNull=" + KeepNull.ToString().ToLower());
             }
             if (MergeObjects != null)
             {
-                queryParams.Add("mergeObjects=" + Silent.ToString().ToLower());
+                queryParams.Add("mergeObjects=" + MergeObjects.ToString().ToLower());
             }
             if (ReturnNew != null)
             {
-                queryParams.Add("returnNew=" + Silent.ToString().ToLower());
+                queryParams.Add("returnNew=" + ReturnNew.ToString().ToLower());
             }
             if (IgnoreRevs != null)
             {
-                queryParams.Add("ignoreRevs=" + Silent.ToString().ToLower());
+                queryParams.Add("ignoreRevs=" + IgnoreRevs.ToString().ToLower());
             }
             return string.Join("&", queryParams);
         }

@@ -2,10 +2,10 @@
 
 namespace ArangoDBNetStandard.DocumentApi
 {
-    public class PatchDocumentResponse
+    public class PatchDocumentResponse<T>
     {
         public HttpStatusCode Code { get; set; }
 
-        public PatchDocumentResult Result { get; set; }
+        public PatchDocumentResult<T> Result { get; set; }
     }
 }

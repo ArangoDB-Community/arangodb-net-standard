@@ -514,20 +514,67 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
                 new[] {
-                    new { value = 1 },
-                    new { value = 2 }
+                    new { Value = 1 },
+                    new { Value = 2 }
+                }, new PostDocumentsQuery
+                {
+                     ReturnNew = true,
+                     ReturnOld = true,
+                     WaitForSync = true
                 });
 
             var response = await _docClient.PatchDocumentAsync(_testCollection, addDocResponse[0]._key, new
             {
-                _key = addDocResponse[0]._key,
-                value = 3
+                addDocResponse[0]._key,
+                Value = 3
+            }, new PatchDocumentQuery
+            {
+                ReturnNew = true,
+                ReturnOld = true,
+                WaitForSync = true
             });
 
-            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.Equal(HttpStatusCode.Created, response.Code);
             Assert.Equal(addDocResponse[0]._rev, response.Result._oldRev);
             Assert.NotEqual(addDocResponse[0]._rev, response.Result._rev);
             Assert.Equal(addDocResponse[0]._key, response.Result._key);
+            Assert.Equal(addDocResponse[0].New.Value, response.Result.Old.Value);
+            Assert.NotEqual(addDocResponse[0].New.Value, response.Result.New.Value);
+        }
+
+        [Fact]
+        public async Task PatchDocumentAsync_ShouldReturnNullResponse_WhenSilentIsTrue()
+        {
+            var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
+                new[] {
+                    new { Value = 1 },
+                    new { Value = 2 }
+                }, new PostDocumentsQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
+
+            var response = await _docClient.PatchDocumentAsync(_testCollection, addDocResponse[0]._key, new
+            {
+                addDocResponse[0]._key,
+                Value = 3
+            }, new PatchDocumentQuery
+            {
+                ReturnNew = true,
+                ReturnOld = true,
+                WaitForSync = true,
+                Silent = true
+            });
+
+            Assert.Equal(HttpStatusCode.Created, response.Code);
+            Assert.Null(response.Result.Old);
+            Assert.Null(response.Result.New);
+            Assert.Null(response.Result._oldRev);
+            Assert.Null(response.Result._id);
+            Assert.Null(response.Result._key);
+            Assert.Null(response.Result._rev);
         }
 
         [Fact]
