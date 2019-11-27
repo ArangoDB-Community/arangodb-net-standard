@@ -631,5 +631,45 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Updates the data of the specific edge in the collection.
+        /// PATCH/_api/gharial/{graph}/edge/{collection}/{edge}
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="U"></typeparam>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="edgeKey"></param>
+        /// <param name="edge"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
+            string graphName,
+            string collectionName,
+            string edgeKey,
+            T edge,
+            PatchEdgeQuery query = null)
+        {
+            StringContent content = GetStringContent(edge, false, false);
+
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
+                "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
+
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+
+            using (var response = await _transport.PatchAsync(uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PatchEdgeResponse<U>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
