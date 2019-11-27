@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.DocumentApi;
+using ArangoDBNetStandardTest.GraphApi.Models;
 
 namespace ArangoDBNetStandardTest.GraphApi
 {
@@ -713,6 +714,114 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task GetVertexAsync_ShouldSucceed()
+        {
+            // Create a new graph
+
+            string graphName = nameof(GetVertexAsync_ShouldSucceed);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+
+            // Add a vertex collection
+
+            string clxToAdd = nameof(GetVertexAsync_ShouldSucceed);
+
+            PostVertexCollectionResponse createvertexClxresponse = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
+                {
+                    Collection = clxToAdd
+                });
+
+            var createVtxResponse = await _client.PostVertexAsync<object>(graphName, clxToAdd, new
+            {
+                Name = clxToAdd + "_vtx"
+            });
+
+            var response = await _client.GetVertexAsync<GetVertexMockModel>(graphName, clxToAdd, createVtxResponse.Vertex._key);
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.False(response.Error);
+            Assert.NotNull(response.Vertex);
+            Assert.Equal(clxToAdd + "_vtx", response.Vertex.Name);
+            Assert.Equal(createVtxResponse.Vertex._key, response.Vertex._key);
+            Assert.Equal(createVtxResponse.Vertex._id, response.Vertex._id);
+        }
+
+        [Fact]
+        public async Task GetVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound()
+        {
+            // Create a new graph
+            string graphName = nameof(GetVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+            string vertex = nameof(GetVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound) + "_vtx";
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.GetVertexAsync<GetVertexMockModel>(graphName, vertex, "12345");
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task GetVertexAsync_ShouldThrow_WhenVertexIsNotFound()
+        {
+            // Create a new graph
+            string graphName = nameof(GetVertexAsync_ShouldThrow_WhenVertexIsNotFound);
+
+            PostGraphResponse createResponse = await _client.PostGraphAsync(
+                new PostGraphBody()
+                {
+                    Name = graphName
+                });
+            string vertex = nameof(GetVertexAsync_ShouldThrow_WhenVertexIsNotFound) + "_vtx";
+
+            PostVertexCollectionResponse createvertexClxresponse = await _client.PostVertexCollectionAsync(
+                graphName,
+                new PostVertexCollectionBody()
+                {
+                    Collection = vertex
+                });
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.GetVertexAsync<GetVertexMockModel>(graphName, vertex, "12345");
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1202, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task GetVertexAsync_ShouldThrow_WhenGraphIsNotFound()
+        {
+            string graphName = nameof(GetVertexAsync_ShouldThrow_WhenGraphIsNotFound);
+            string vertex = nameof(GetVertexAsync_ShouldThrow_WhenGraphIsNotFound) + "_vtx";
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.GetVertexAsync<GetVertexMockModel>(graphName, vertex, "12345");
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
         }
     }
 }
