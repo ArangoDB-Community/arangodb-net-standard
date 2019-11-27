@@ -147,7 +147,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             // List the vertex collections
 
-            GetVertexCollectionsResponse response = await _client.GetVertexCollections(graphName);
+            GetVertexCollectionsResponse response = await _client.GetVertexCollectionsAsync(graphName);
 
             Assert.Equal(2, response.Collections.Count());
             Assert.Contains("FromCollection", response.Collections);
@@ -159,7 +159,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.GetVertexCollections("GraphThatDoesNotExist");
+                await _client.GetVertexCollectionsAsync("GraphThatDoesNotExist");
             });
 
             ApiErrorResponse apiError = ex.ApiError;
@@ -169,20 +169,20 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task GetGraphEdgeCollectionsAsync_ShouldSucceed()
+        public async Task GetEdgeCollectionsAsync_ShouldSucceed()
         {
-            var response = await _client.GetGraphEdgeCollectionsAsync(_fixture.TestGraph);
+            var response = await _client.GetEdgeCollectionsAsync(_fixture.TestGraph);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.NotEmpty(response.Collections);
             Assert.False(response.Error);
         }
 
         [Fact]
-        public async Task GetGraphEdgeCollectionsAsync_ShouldThrow_WhenGraphIsNotFound()
+        public async Task GetEdgeCollectionsAsync_ShouldThrow_WhenGraphIsNotFound()
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.GetGraphEdgeCollectionsAsync("bogus_graph");
+                await _client.GetEdgeCollectionsAsync("bogus_graph");
             });
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -236,15 +236,15 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PostGraphEdgeDefinitionAsync_ShouldSucceed()
+        public async Task PostEdgeDefinitionAsync_ShouldSucceed()
         {
-            string tempGraph = nameof(PostGraphEdgeDefinitionAsync_ShouldSucceed);
+            string tempGraph = nameof(PostEdgeDefinitionAsync_ShouldSucceed);
             var postEdgeGraph = await _client.PostGraphAsync(new PostGraphBody
             {
                 Name = tempGraph,
                 EdgeDefinitions = new List<EdgeDefinition>()
             });
-            var response = await _client.PostGraphEdgeDefinitionAsync(
+            var response = await _client.PostEdgeDefinitionAsync(
                 tempGraph,
                 new PostGraphEdgeDefinitionBody
                 {
@@ -263,11 +263,11 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PostGraphEdgeDefinitionAsync_ShouldThrow_WhenGraphNotFound()
+        public async Task PostEdgeDefinitionAsync_ShouldThrow_WhenGraphNotFound()
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PostGraphEdgeDefinitionAsync(
+                await _client.PostEdgeDefinitionAsync(
                     "boggus_graph",
                     new PostGraphEdgeDefinitionBody
                     {
@@ -487,7 +487,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.Empty(response.Graph.EdgeDefinitions);
 
-            var getAfterResponse = await _client.GetGraphEdgeCollectionsAsync(graphName);
+            var getAfterResponse = await _client.GetEdgeCollectionsAsync(graphName);
 
             var collectionFound = getAfterResponse.Collections.Where(x => x == edgeClx).FirstOrDefault();
 
@@ -637,9 +637,9 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PostGraphEdgeAsync_ShouldSucceed()
+        public async Task PostEdgeAsync_ShouldSucceed()
         {
-            string graphName = nameof(PostGraphEdgeAsync_ShouldSucceed);
+            string graphName = nameof(PostEdgeAsync_ShouldSucceed);
             string fromClx = graphName + "_fromclx";
             string toClx = graphName + "_toclx";
             string edgeClx = graphName + "_edgeclx";
@@ -674,7 +674,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             // Create the edge
 
-            var response = await _client.PostGraphEdgeAsync(
+            var response = await _client.PostEdgeAsync(
                 graphName,
                 edgeClx,
                 new
@@ -700,13 +700,13 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PostGraphEdgeAsync_ShouldThrow_WhenGraphNotFound()
+        public async Task PostEdgeAsync_ShouldThrow_WhenGraphNotFound()
         {
-            string graphName = nameof(PostGraphEdgeAsync_ShouldThrow_WhenGraphNotFound);
+            string graphName = nameof(PostEdgeAsync_ShouldThrow_WhenGraphNotFound);
 
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PostGraphEdgeAsync(graphName, "edgeClx", new
+                await _client.PostEdgeAsync(graphName, "edgeClx", new
                 {
                     myKey = "myValue"
                 });
