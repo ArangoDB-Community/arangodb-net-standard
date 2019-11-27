@@ -1138,5 +1138,94 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1202, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
         }
+
+        [Fact]
+        public async Task PuGraphEdgeAsync_ShouldSucceed()
+        {
+            string graphName = nameof(PuGraphEdgeAsync_ShouldSucceed);
+            string fromClx = graphName + "_fromclx";
+            string toClx = graphName + "_toclx";
+            string edgeClx = graphName + "_edgeclx";
+
+            // Create a new graph
+
+            await _fixture.ArangoDBClient.Graph.PostGraphAsync(new PostGraphBody
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { fromClx },
+                        To = new string[] { toClx },
+                        Collection = edgeClx
+                    }
+                }
+            });
+
+            // Create a document in the vertex collections
+
+            PostDocumentResponse<object> fromResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                fromClx,
+                new { myKey = "myValue" });
+
+            PostDocumentResponse<object> toResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                toClx,
+                new { myKey = "myValue" });
+
+            // Create the edge
+
+            var createEdgeResponse = await _client.PostEdgeAsync(
+                graphName,
+                edgeClx,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "myValue"
+                },
+                new PostGraphEdgeQuery
+                {
+                    ReturnNew = true,
+                    WaitForSync = true
+                });
+
+            var response = await _client.PutGraphEdgeAsync(graphName, edgeClx, createEdgeResponse.Edge._key, new
+            {
+                _from = fromResponse._id,
+                _to = toResponse._id,
+                myKey = "newValue"
+            }, new PutGraphEdgeQuery
+            {
+                ReturnNew = true,
+                ReturnOld = true,
+                WaitForSync = true
+            });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
+            Assert.NotEqual(createEdgeResponse.New.myKey, response.New.myKey);
+            Assert.False(response.Error);
+            Assert.NotEqual(response.Edge._rev, createEdgeResponse.Edge._rev);
+        }
+
+        [Fact]
+        public async Task PuGraphEdgeAsync_ShouldThrow_WhenGraphNotFound()
+        {
+            string graphName = nameof(PuGraphEdgeAsync_ShouldThrow_WhenGraphNotFound);
+
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PutGraphEdgeAsync(graphName, "edgeClx", "", new
+                {
+                    myKey = "myValue"
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
     }
 }
