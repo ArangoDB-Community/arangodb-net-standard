@@ -10,7 +10,7 @@ namespace ArangoDBNetStandard.DocumentApi
     /// <summary>
     /// Provides access to ArangoDB document API.
     /// </summary>
-    public class DocumentApiClient: ApiClientBase
+    public class DocumentApiClient : ApiClientBase
     {
         private readonly string _docApiPath = "_api/document";
         private IApiClientTransport _client;
@@ -30,7 +30,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
         /// <param name="document"></param>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public async Task<PostDocumentResponse<T>> PostDocumentAsync<T>(string collectionName, T document, PostDocumentsQuery query = null)
         {
@@ -57,7 +57,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
         /// <param name="documents"></param>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(string collectionName, IList<T> documents, PostDocumentsQuery query = null)
         {
@@ -84,7 +84,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
         /// <param name="documents"></param>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public async Task<PostDocumentsResponse<T>> PutDocumentsAsync<T>(string collectionName, IList<T> documents, PutDocumentsQuery query = null)
         {
@@ -132,7 +132,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 throw await GetApiErrorException(response);
             }
         }
-      
+
         /// <summary>
         /// Get an existing document.
         /// </summary>
@@ -175,7 +175,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </remarks>
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string collectionName, string documentKey, DeleteDocumentsQuery query = null)
         {
@@ -192,7 +192,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// when deleting documents.
         /// </remarks>
         /// <param name="documentId"></param>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string documentId, DeleteDocumentsQuery query = null)
         {
@@ -211,7 +211,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </remarks>
         /// <param name="collectionName"></param>
         /// <param name="selectors"></param>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(string collectionName, IList<string> selectors, DeleteDocumentsQuery query = null)
         {
@@ -224,7 +224,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string collectionName, string documentKey, DeleteDocumentsQuery query = null)
         {
@@ -235,7 +235,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// Delete a document based on its document ID.
         /// </summary>
         /// <param name="documentId"></param>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string documentId, DeleteDocumentsQuery query = null)
         {
@@ -264,7 +264,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
         /// <param name="selectors"></param>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(string collectionName, IList<string> selectors, DeleteDocumentsQuery query = null)
         {
@@ -281,6 +281,46 @@ namespace ArangoDBNetStandard.DocumentApi
                     var stream = await response.Content.ReadAsStreamAsync();
                     var responseModel = DeserializeJsonFromStream<DeleteDocumentsResponse<T>>(stream);
                     return responseModel;
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Partially updates documents, the documents to update are specified
+        /// by the _key attributes in the body objects.The body of the
+        /// request must contain a JSON array of document updates with the
+        /// attributes to patch(the patch documents). All attributes from the
+        /// patch documents will be added to the existing documents if they do
+        /// not yet exist, and overwritten in the existing documents if they do
+        /// exist there.
+        /// Setting an attribute value to null in the patch documents will cause a
+        /// value of null to be saved for the attribute by default.
+        /// If ignoreRevs is false and there is a _rev attribute in a
+        /// document in the body and its value does not match the revision of
+        /// the corresponding document in the database, the precondition is
+        /// violated.
+        /// PATCH/_api/document/{collection}
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="patches"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(string collectionName, IList<T> patches, PatchDocumentsQuery query = null)
+        {
+            string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            var content = GetStringContent(patches, false, false);
+            using (var response = await _client.PatchAsync(uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<IList<PatchDocumentsResponse<U>>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
