@@ -450,7 +450,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchVertexResponse<T>> PatchVertexAsync<T>(
+        public async Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
             string graphName,
             string collectionName,
             string vertexKey,
@@ -469,7 +469,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PatchVertexResponse<T>>(stream);
+                    return DeserializeJsonFromStream<PatchVertexResponse<U>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

@@ -1024,7 +1024,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             string graphName = nameof(PatchVertexAsync_ShouldSucceed);
 
-            PostGraphResponse createResponse = await _client.PostGraphAsync(
+            var createGraphResponse = await _client.PostGraphAsync(
                 new PostGraphBody()
                 {
                     Name = graphName
@@ -1034,7 +1034,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             string clxToAdd = nameof(PatchVertexAsync_ShouldSucceed);
 
-            PostVertexCollectionResponse createvertexClxresponse = await _client.PostVertexCollectionAsync(
+            var createVtxClxResponse = await _client.PostVertexCollectionAsync(
                 graphName,
                 new PostVertexCollectionBody()
                 {
@@ -1043,10 +1043,15 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             var createVtxResponse = await _client.PostVertexAsync(graphName, clxToAdd, new
             {
-                Name = clxToAdd + "_vtx"
+                Name = clxToAdd + "_vtx",
+                Value = "myValue"
+            }, new PostVertexQuery
+            {
+                ReturnNew = true,
+                WaitForSync = true
             });
 
-            var response = await _client.PatchVertexAsync(graphName, clxToAdd, createVtxResponse.Vertex._key, new PatchVertexMockModel
+            var response = await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(graphName, clxToAdd, createVtxResponse.Vertex._key, new
             {
                 Name = clxToAdd + "_vtx_2"
             }, new PatchVertexQuery
@@ -1061,8 +1066,8 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.NotNull(response.Vertex);
             Assert.NotEqual(createVtxResponse.Vertex._rev, response.Vertex._rev);
             Assert.NotEqual(createVtxResponse.Vertex._rev, response.New._rev);
-            Assert.Equal(clxToAdd + "_vtx_2", response.New.Name);
-            Assert.Equal(clxToAdd + "_vtx", response.Old.Name);
+            Assert.NotEqual(createVtxResponse.New.Name, response.New.Name);
+            Assert.Equal(createVtxResponse.New.Value, response.New.Value);
         }
 
         [Fact]
@@ -1073,7 +1078,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PatchVertexAsync(graphName, vertex, "12345", new { });
+                await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(graphName, vertex, "12345", new { });
             });
 
             Assert.True(ex.ApiError.Error);
@@ -1096,7 +1101,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PatchVertexAsync(graphName, vertex, "12345", new { });
+                await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(graphName, vertex, "12345", new { });
             });
 
             Assert.True(ex.ApiError.Error);
@@ -1126,7 +1131,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PatchVertexAsync(graphName, vertexClx, "12345", new { });
+                await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(graphName, vertexClx, "12345", new { });
             });
 
             Assert.True(ex.ApiError.Error);
