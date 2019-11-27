@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.DocumentApi;
+using ArangoDBNetStandardTest.DocumentApi.Models;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.DocumentApi
@@ -479,30 +480,28 @@ namespace ArangoDBNetStandardTest.DocumentApi
                    WaitForSync = true
                });
 
-            var response = await _docClient.PatchDocumentsAsync(_testCollection,
+            var response = await _docClient.PatchDocumentsAsync<object, PatchDocumentsMockModel>(_testCollection,
                 new[] {
-                    new { postResponse[0]._key, Value = 4, Name = "test1" },
-                    new { postResponse[1]._key, Value = 2, Name = "test4" },
-                    new { postResponse[2]._key, Value = 6, Name = "test3" }
+                    new { postResponse[0]._key, Name = "test5" },
+                    new { postResponse[1]._key, Name = "test4" }
                     }, new PatchDocumentsQuery
                     {
                         ReturnNew = true,
-                        WaitForSync = true
+                        WaitForSync = true,
+                        ReturnOld = true
                     });
 
             Assert.Equal(HttpStatusCode.Created, response.Code);
-            Assert.Equal(3, response.Documents.Count);
+            Assert.Equal(2, response.Documents.Count);
             Assert.NotEqual(postResponse[0]._rev, response.Documents[0]._rev);
-            Assert.NotEqual(postResponse[0].New.Value, response.Documents[0].New.Value);
-            Assert.Equal(postResponse[0].New.Name, response.Documents[0].New.Name);
-            Assert.NotEqual(postResponse[1].New.Name, response.Documents[1].New.Name);
-            Assert.Equal(postResponse[1].New.Value, response.Documents[1].New.Value);
+            Assert.NotEqual(postResponse[0].New.Name, response.Documents[0].New.Name);
+            Assert.Equal(postResponse[0].New.Name, response.Documents[0].Old.Name);
         }
 
         [Fact]
         public async Task PatchDocumentsAsync_ShouldRecordError_WhenDocumentDoesNotExist()
         {
-            var response = await _docClient.PatchDocumentsAsync(_testCollection,
+            var response = await _docClient.PatchDocumentsAsync<object, PatchDocumentsMockModel>(_testCollection,
                 new[] {
                     new { _key = "bogusDocument", value = 4 }
                     }, null);

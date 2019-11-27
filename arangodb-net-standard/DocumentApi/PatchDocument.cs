@@ -1,10 +1,10 @@
 ﻿namespace ArangoDBNetStandard.DocumentApi
 {
-    public class PatchDocument<T> : DocumentBase
+    public class PatchDocument<U> : DocumentBase
     {
-        public T New { get; set; }
+        public U New { get; set; }
 
-        public T Old { get; set; }
+        public U Old { get; set; }
 
         public bool Error { get; set; }
 
