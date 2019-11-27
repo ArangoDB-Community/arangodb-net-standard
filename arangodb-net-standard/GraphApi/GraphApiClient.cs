@@ -343,6 +343,38 @@ namespace ArangoDBNetStandard.GraphApi
         }
 
         /// <summary>
+        /// Removes an edge from the collection.
+        /// DELETE /_api/gharial/{graph}/edge/{collection}/{edge}
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="edgeKey"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<DeleteGraphEdgeResponse<T>> DeleteGraphEdgeAsync<T>(
+            string graphName,
+            string collectionName,
+            string edgeKey,
+            DeleteGraphEdgeQuery query = null)
+        {
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
+                "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.DeleteAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteGraphEdgeResponse<T>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
         /// Gets a vertex from the given collection.
         /// GET/_api/gharial/{graph}/vertex/{collection}/{vertex}
         /// </summary>

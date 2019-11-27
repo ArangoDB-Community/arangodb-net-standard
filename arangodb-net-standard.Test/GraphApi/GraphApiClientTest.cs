@@ -717,6 +717,84 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
+        public async Task DeleteGraphEdgeAsync_ShouldSucceed()
+        {
+            string graphName = nameof(DeleteGraphEdgeAsync_ShouldSucceed);
+            string fromClx = graphName + "_fromclx";
+            string toClx = graphName + "_toclx";
+            string edgeClx = graphName + "_edgeclx";
+
+            // Create a new graph
+
+            await _fixture.ArangoDBClient.Graph.PostGraphAsync(new PostGraphBody
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { fromClx },
+                        To = new string[] { toClx },
+                        Collection = edgeClx
+                    }
+                }
+            });
+
+            // Create a document in the vertex collections
+
+            PostDocumentResponse<object> fromResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                fromClx,
+                new { myKey = "myValue" });
+
+            PostDocumentResponse<object> toResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                toClx,
+                new { myKey = "myValue" });
+
+            // Create the edge
+
+            var createEdgeResponse = await _client.PostGraphEdgeAsync(
+                graphName,
+                edgeClx,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "myValue"
+                },
+                new PostGraphEdgeQuery
+                {
+                    ReturnNew = true,
+                    WaitForSync = true
+                });
+            // Delete edge
+            DeleteGraphEdgeResponse<DeleteGraphEdgeMockModel> response = await _client.DeleteGraphEdgeAsync<DeleteGraphEdgeMockModel>(graphName, edgeClx, createEdgeResponse.Edge._key, new DeleteGraphEdgeQuery
+            {
+                ReturnOld = true,
+                WaitForSync = true
+            });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
+            Assert.True(response.Removed);
+            Assert.False(response.Error);
+        }
+
+        [Fact]
+        public async Task DeleteGraphEdgeAsync_ShouldThrow_WhenGraphNotFound()
+        {
+            string graphName = nameof(DeleteGraphEdgeAsync_ShouldThrow_WhenGraphNotFound);
+
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.DeleteGraphEdgeAsync<object>(graphName, "edgeClx", "");
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
+        
         public async Task GetVertexAsync_ShouldSucceed()
         {
             // Create a new graph
