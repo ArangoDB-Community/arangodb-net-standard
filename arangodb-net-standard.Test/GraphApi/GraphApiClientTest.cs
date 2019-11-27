@@ -754,7 +754,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             // Create the edge
 
-            var createEdgeResponse = await _client.PostGraphEdgeAsync(
+            var createEdgeResponse = await _client.PostEdgeAsync(
                 graphName,
                 edgeClx,
                 new
@@ -795,6 +795,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
         }
         
+        [Fact]
         public async Task GetVertexAsync_ShouldSucceed()
         {
             // Create a new graph
