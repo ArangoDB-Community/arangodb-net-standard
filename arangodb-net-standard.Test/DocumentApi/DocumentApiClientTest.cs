@@ -514,8 +514,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
                 new[] {
-                    new { Value = 1 },
-                    new { Value = 2 }
+                    new { value = 1, name = "test1" },
+                    new { value = 2, name = "test2" }
                 }, new PostDocumentsQuery
                 {
                      ReturnNew = true,
@@ -523,10 +523,10 @@ namespace ArangoDBNetStandardTest.DocumentApi
                      WaitForSync = true
                 });
 
-            var response = await _docClient.PatchDocumentAsync(_testCollection, addDocResponse[0]._key, new
+            var response = await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
             {
                 addDocResponse[0]._key,
-                Value = 3
+                value = 3
             }, new PatchDocumentQuery
             {
                 ReturnNew = true,
@@ -538,8 +538,9 @@ namespace ArangoDBNetStandardTest.DocumentApi
             Assert.Equal(addDocResponse[0]._rev, response.Result._oldRev);
             Assert.NotEqual(addDocResponse[0]._rev, response.Result._rev);
             Assert.Equal(addDocResponse[0]._key, response.Result._key);
-            Assert.Equal(addDocResponse[0].New.Value, response.Result.Old.Value);
-            Assert.NotEqual(addDocResponse[0].New.Value, response.Result.New.Value);
+            Assert.Equal(addDocResponse[0].New.value, response.Result.Old.value);
+            Assert.NotEqual(addDocResponse[0].New.value, response.Result.New.value);
+            Assert.Equal(addDocResponse[0].New.name, response.Result.New.name);
         }
 
         [Fact]
@@ -547,8 +548,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
                 new[] {
-                    new { Value = 1 },
-                    new { Value = 2 }
+                    new { value = 1, name = "test1" },
+                    new { value = 2 , name = "test2"}
                 }, new PostDocumentsQuery
                 {
                     ReturnNew = true,
@@ -556,10 +557,10 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     WaitForSync = true
                 });
 
-            var response = await _docClient.PatchDocumentAsync(_testCollection, addDocResponse[0]._key, new
+            var response = await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
             {
                 addDocResponse[0]._key,
-                Value = 3
+                value = 3
             }, new PatchDocumentQuery
             {
                 ReturnNew = true,
@@ -578,30 +579,6 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
-        public async Task PatchDocumentAsync_ShouldReturnCreated_WhenWaitForAsyncIsTrue()
-        {
-            var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
-                new[] {
-                    new { value = 1 },
-                    new { value = 2 }
-                });
-
-            var response = await _docClient.PatchDocumentAsync(_testCollection, addDocResponse[0]._key, new
-            {
-                _key = addDocResponse[0]._key,
-                value = 3
-            }, new PatchDocumentQuery
-            {
-                WaitForSync = true
-            });
-
-            Assert.Equal(HttpStatusCode.Created, response.Code);
-            Assert.Equal(addDocResponse[0]._rev, response.Result._oldRev);
-            Assert.NotEqual(addDocResponse[0]._rev, response.Result._rev);
-            Assert.Equal(addDocResponse[0]._key, response.Result._key);
-        }
-
-        [Fact]
         public async Task PatchDocumentAsync_ShouldThrowBadRequest_WhenJsonIsInvalid()
         {
             var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
@@ -612,7 +589,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _docClient.PatchDocumentAsync(_testCollection, addDocResponse[0]._key, new
+                await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
                 {
                     _key = 1351.3,
                     bogusProp = "bogusProp"
@@ -622,6 +599,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 });
             });
             Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
+            Assert.Equal(1221, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_KEY_BAD
         }
 
         [Fact]
@@ -629,13 +607,14 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _docClient.PatchDocumentAsync("BogusCollection", "12345", new
+                await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>("BogusCollection", "12345", new
                 {
                     _key = 1351.3,
                     bogusProp = "bogusProp"
                 });
             });
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
     }
 }

@@ -340,14 +340,9 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchDocumentResponse<T>> PatchDocumentAsync<T>(string collectionName, string documentKey, T body, PatchDocumentQuery query = null)
+        public async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(string collectionName, string documentKey, T body, PatchDocumentQuery query = null)
         {
-            return await PatchDocumentAsync(WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(documentKey), body, query);
-        }
-
-        public async Task<PatchDocumentResponse<object>> PatchDocumentAsync(string collectionName, string documentKey, object body, PatchDocumentQuery query = null)
-        {
-            return await PatchDocumentAsync(WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(documentKey), body, query);
+            return await PatchDocumentAsync<T, U>(WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(documentKey), body, query);
         }
 
         /// <summary>
@@ -363,7 +358,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchDocumentResponse<T>> PatchDocumentAsync<T>(string documentId, T body, PatchDocumentQuery query = null)
+        public async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(string documentId, T body, PatchDocumentQuery query = null)
         {
             ValidateDocumentId(documentId);
             string uriString = _docApiPath + "/" + documentId;
@@ -377,10 +372,10 @@ namespace ArangoDBNetStandard.DocumentApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return new PatchDocumentResponse<T>
+                    return new PatchDocumentResponse<U>
                     {
                         Code = (HttpStatusCode)response.StatusCode,
-                        Result = DeserializeJsonFromStream<PatchDocumentResult<T>>(stream)
+                        Result = DeserializeJsonFromStream<PatchDocumentResult<U>>(stream)
                     };
                 }
                 throw await GetApiErrorException(response);

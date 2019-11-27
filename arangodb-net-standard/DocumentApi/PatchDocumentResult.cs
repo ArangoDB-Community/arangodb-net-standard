@@ -1,10 +1,10 @@
 ﻿namespace ArangoDBNetStandard.DocumentApi
 {
-    public class PatchDocumentResult<T>
+    public class PatchDocumentResult<U>
     {
-        public T New { get; set; }
+        public U New { get; set; }
 
-        public T Old { get; set; }
+        public U Old { get; set; }
 
         public string _key { get; set; }
 
