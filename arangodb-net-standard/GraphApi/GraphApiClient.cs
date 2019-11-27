@@ -351,7 +351,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<GetVertexResponse<T>> GetVertexAsync<T>(string graphName, string collectionName, string vertexKey, GetVertexQuery query = null)
+        public async Task<GetVertexResponse<T>> GetVertexAsync<T>(
+            string graphName,
+            string collectionName,
+            string vertexKey,
+            GetVertexQuery query = null)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
                 "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" + vertexKey;
