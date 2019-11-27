@@ -450,7 +450,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchVertexResponse<T>> PatchVertexAsync<T>(string graphName, string collectionName, string vertexKey, T body, PatchVertexQuery query = null)
+        public async Task<PatchVertexResponse<T>> PatchVertexAsync<T>(
+            string graphName,
+            string collectionName,
+            string vertexKey,
+            T body,
+            PatchVertexQuery query = null)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
                 "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey);
@@ -458,7 +463,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            StringContent content = GetStringContent(body, true, true);
+            StringContent content = GetStringContent(body, false, false);
             using (var response = await _transport.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)

@@ -10,7 +10,7 @@ namespace ArangoDBNetStandard.GraphApi
 
         public HttpStatusCode Code { get; set; }
 
-        public T Vertex { get; set; }
+        public PatchVertexResult Vertex { get; set; }
 
         public bool Error { get; set; }
     }
