@@ -314,7 +314,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetStringContent(selectors, false, false);
+            var content = GetStringContent(patches, false, false);
             using (var response = await _client.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
