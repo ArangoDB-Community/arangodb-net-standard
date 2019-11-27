@@ -49,7 +49,7 @@ A tick indicates an item is implemented and has automated tests in place.
 #### Document API
 
 - [X]	DELETE/_api/document/{collection} Removes multiple documents
-- [ ]	PATCH/_api/document/{collection} Update documents
+- [X]	PATCH/_api/document/{collection} Update documents
 - [X]	POST/_api/document/{collection} Create document
 - [X]	PUT/_api/document/{collection} Replace documents
 - [X]	DELETE/_api/document/{document-handle} Removes a document
