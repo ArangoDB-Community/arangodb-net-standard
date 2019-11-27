@@ -111,7 +111,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graph">The name of the graph.</param>
         /// <returns></returns>
-        public async Task<GetVertexCollectionsResponse> GetVertexCollections(string graphName)
+        public async Task<GetVertexCollectionsResponse> GetVertexCollectionsAsync(string graphName)
         {
             using (var response = await _transport.GetAsync(_graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex"))
             {
@@ -130,7 +130,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName"></param>
         /// <returns></returns>
-        public async Task<GetGraphEdgeCollectionsResponse> GetGraphEdgeCollectionsAsync(string graphName)
+        public async Task<GetGraphEdgeCollectionsResponse> GetEdgeCollectionsAsync(string graphName)
         {
             using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge"))
             {
@@ -156,7 +156,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="body">The information of the edge definition.</param>
         /// <returns></returns>
-        public async Task<PostGraphEdgeDefinitionResponse> PostGraphEdgeDefinitionAsync(
+        public async Task<PostGraphEdgeDefinitionResponse> PostEdgeDefinitionAsync(
             string graphName,
             PostGraphEdgeDefinitionBody body)
         {
@@ -315,7 +315,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edge">The edge to create.</param>
         /// <returns></returns>
-        public async Task<PostGraphEdgeResponse<T>> PostGraphEdgeAsync<T>(
+        public async Task<PostGraphEdgeResponse<T>> PostEdgeAsync<T>(
             string graphName,
             string collectionName,
             T edge,
