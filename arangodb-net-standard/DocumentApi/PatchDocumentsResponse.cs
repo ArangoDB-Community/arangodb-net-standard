@@ -3,10 +3,10 @@ using System.Net;
 
 namespace ArangoDBNetStandard.DocumentApi
 {
-    public class PatchDocumentsResponse
+    public class PatchDocumentsResponse<T>
     {
         public HttpStatusCode Code { get; set; }
 
-        public IList<PatchDocument> Documents { get; set; }
+        public IList<PatchDocument<T>> Documents { get; set; }
     }
 }

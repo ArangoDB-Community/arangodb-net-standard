@@ -470,28 +470,37 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             var postResponse = await _docClient.PostDocumentsAsync(_testCollection,
                new[] {
-                    new { value = 1 },
-                    new { value = 2 },
-                    new { value = 3 }
+                    new { Value = 1, Name = "test1" },
+                    new { Value = 2, Name = "test2" },
+                    new { Value = 3, Name = "test3" }
+               }, new PostDocumentsQuery
+               {
+                   ReturnNew = true,
+                   WaitForSync = true
                });
 
             var response = await _docClient.PatchDocumentsAsync(_testCollection,
                 new[] {
-                    new { postResponse[0]._key, value = 4 },
-                    new { postResponse[1]._key, value = 5 },
-                    new { postResponse[2]._key, value = 6 }
+                    new { postResponse[0]._key, Value = 4, Name = "test1" },
+                    new { postResponse[1]._key, Value = 2, Name = "test4" },
+                    new { postResponse[2]._key, Value = 6, Name = "test3" }
+                    }, new PatchDocumentsQuery
+                    {
+                        ReturnNew = true,
+                        WaitForSync = true
                     });
 
-            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.Equal(HttpStatusCode.Created, response.Code);
             Assert.Equal(3, response.Documents.Count);
-            Assert.NotNull(response.Documents[0]._key);
-            Assert.NotNull(response.Documents[0]._id);
-            Assert.NotNull(response.Documents[0]._rev);
             Assert.NotEqual(postResponse[0]._rev, response.Documents[0]._rev);
+            Assert.NotEqual(postResponse[0].New.Value, response.Documents[0].New.Value);
+            Assert.Equal(postResponse[0].New.Name, response.Documents[0].New.Name);
+            Assert.NotEqual(postResponse[1].New.Name, response.Documents[1].New.Name);
+            Assert.Equal(postResponse[1].New.Value, response.Documents[1].New.Value);
         }
 
         [Fact]
-        public async Task PatchDocumentsAsync_ShouldThrow_WhenDocumentDoesNotExist()
+        public async Task PatchDocumentsAsync_ShouldRecordError_WhenDocumentDoesNotExist()
         {
             var response = await _docClient.PatchDocumentsAsync(_testCollection,
                 new[] {
