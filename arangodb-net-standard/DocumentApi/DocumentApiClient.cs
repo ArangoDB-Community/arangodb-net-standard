@@ -414,7 +414,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>
         /// <returns></returns>
-        public async Task<DocumentHeaderResponse> HeadDocumentAsync(
+        public async Task<HeadDocumentResponse> HeadDocumentAsync(
             string collectionName,
             string documentKey,
             HeadDocumentHeader headers = null)
@@ -438,7 +438,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>
         /// <returns></returns>
-        public async Task<DocumentHeaderResponse> HeadDocumentAsync(string documentId, HeadDocumentHeader headers = null)
+        public async Task<HeadDocumentResponse> HeadDocumentAsync(string documentId, HeadDocumentHeader headers = null)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
@@ -453,7 +453,7 @@ namespace ArangoDBNetStandard.DocumentApi
             }
             using (var response = await _client.HeadAsync(uri, headerCollection))
             {
-                return new DocumentHeaderResponse
+                return new HeadDocumentResponse
                 {
                     Code = (HttpStatusCode)response.StatusCode,
                     Etag = response.Headers.ETag

@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 
 namespace ArangoDBNetStandard.DocumentApi
 {
-    public class DocumentHeaderResponse
+    public class HeadDocumentResponse
     {
         public HttpStatusCode Code { get; set; }
 
