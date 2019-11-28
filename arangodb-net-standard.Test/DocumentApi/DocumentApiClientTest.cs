@@ -508,5 +508,111 @@ namespace ArangoDBNetStandardTest.DocumentApi
             Assert.True(response[0].Error);
             Assert.Equal(1202, response[0].ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
         }
+
+        [Fact]
+        public async Task PatchDocumentAsync_ShouldSucceed()
+        {
+            var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
+                new[] {
+                    new { value = 1, name = "test1" },
+                    new { value = 2, name = "test2" }
+                }, new PostDocumentsQuery
+                {
+                     ReturnNew = true,
+                     ReturnOld = true,
+                     WaitForSync = true
+                });
+
+            var response = await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
+            {
+                addDocResponse[0]._key,
+                value = 3
+            }, new PatchDocumentQuery
+            {
+                ReturnNew = true,
+                ReturnOld = true,
+                WaitForSync = true
+            });
+
+            Assert.Equal(addDocResponse[0]._rev, response._oldRev);
+            Assert.NotEqual(addDocResponse[0]._rev, response._rev);
+            Assert.Equal(addDocResponse[0]._key, response._key);
+            Assert.Equal(addDocResponse[0].New.value, response.Old.value);
+            Assert.NotEqual(addDocResponse[0].New.value, response.New.value);
+            Assert.Equal(addDocResponse[0].New.name, response.New.name);
+        }
+
+        [Fact]
+        public async Task PatchDocumentAsync_ShouldReturnNullResponse_WhenSilentIsTrue()
+        {
+            var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
+                new[] {
+                    new { value = 1, name = "test1" },
+                    new { value = 2 , name = "test2"}
+                }, new PostDocumentsQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
+
+            var response = await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
+            {
+                addDocResponse[0]._key,
+                value = 3
+            }, new PatchDocumentQuery
+            {
+                ReturnNew = true,
+                ReturnOld = true,
+                WaitForSync = true,
+                Silent = true
+            });
+
+            Assert.Null(response.Old);
+            Assert.Null(response.New);
+            Assert.Null(response._oldRev);
+            Assert.Null(response._id);
+            Assert.Null(response._key);
+            Assert.Null(response._rev);
+        }
+
+        [Fact]
+        public async Task PatchDocumentAsync_ShouldThrowBadRequest_WhenJsonIsInvalid()
+        {
+            var addDocResponse = await _docClient.PostDocumentsAsync(_testCollection,
+                new[] {
+                    new { value = 1 },
+                    new { value = 2 }
+                });
+
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
+                {
+                    _key = 1351.3,
+                    bogusProp = "bogusProp"
+                }, new PatchDocumentQuery
+                {
+                    WaitForSync = true
+                });
+            });
+            Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
+            Assert.Equal(1221, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_KEY_BAD
+        }
+
+        [Fact]
+        public async Task PatchDocumentAsync_ShouldThrowNotFound_WhenCollectionDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>("BogusCollection", "12345", new
+                {
+                    _key = 1351.3,
+                    bogusProp = "bogusProp"
+                });
+            });
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+        }
     }
 }

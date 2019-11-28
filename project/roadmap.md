@@ -55,7 +55,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	DELETE/_api/document/{document-handle} Removes a document
 - [X]	GET/_api/document/{document-handle} Read document
 - [ ]	HEAD/_api/document/{document-handle} Read document header
-- [ ]	PATCH/_api/document/{document-handle} Update document
+- [X]	PATCH/_api/document/{document-handle} Update document
 - [X]	PUT/_api/document/{document-handle} Replace document
 
 #### Graph API
