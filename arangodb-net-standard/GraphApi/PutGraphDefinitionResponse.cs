@@ -8,6 +8,6 @@ namespace ArangoDBNetStandard.GraphApi
 
         public bool Error { get; set; }
 
-        public GetGraphsGraph Graph { get; set; }
+        public GraphResult Graph { get; set; }
     }
 }
