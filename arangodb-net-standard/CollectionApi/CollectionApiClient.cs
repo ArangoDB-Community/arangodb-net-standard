@@ -1,10 +1,8 @@
-﻿using System.Net;
+﻿using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Transport;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-
-using ArangoDBNetStandard.Transport;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace ArangoDBNetStandard.CollectionApi
 {
@@ -13,7 +11,25 @@ namespace ArangoDBNetStandard.CollectionApi
         private IApiClientTransport _transport;
         private string _collectionApiPath = "_api/collection";
 
+        /// <summary>
+        /// Creates an instance of <see cref="CollectionApiClient"/>
+        /// using the provided transport layer and the default JSON serialization.
+        /// </summary>
+        /// <param name="client"></param>
         public CollectionApiClient(IApiClientTransport transport)
+            : base(new JsonNetContentSerialization())
+        {
+            _transport = transport;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="CollectionApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="transport"></param>
+        /// <param name="serializer"></param>
+        public CollectionApiClient(IApiClientTransport transport, IContentSerialization serializer)
+            : base(serializer)
         {
             _transport = transport;
         }
@@ -221,7 +237,7 @@ namespace ArangoDBNetStandard.CollectionApi
         public async Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName)
         {
             using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/figures"))
-            {                
+            {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
@@ -229,7 +245,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 }
 
                 throw await GetApiErrorException(response);
-            };            
+            };
         }
     }
 }

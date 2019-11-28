@@ -1,17 +1,21 @@
-﻿using ArangoDBNetStandard.Transport;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Transport;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard
 {
     public abstract class ApiClientBase
     {
+        private readonly IContentSerialization _contentSerializer;
+
+        public ApiClientBase(IContentSerialization contentSerializer)
+        {
+            _contentSerializer = contentSerializer;
+        }
+
         protected async Task<ApiErrorException> GetApiErrorException(IApiClientResponse response)
         {
             var stream = await response.Content.ReadAsStreamAsync();
@@ -30,35 +34,16 @@ namespace ArangoDBNetStandard
 
         protected T DeserializeJsonFromStream<T>(Stream stream)
         {
-            if (stream == null || stream.CanRead == false)
-            {
-                return default(T);
-            }
-
-            using (var sr = new StreamReader(stream))
-            using (var jtr = new JsonTextReader(sr))
-            {
-                var js = new JsonSerializer();
-
-                var searchResult = js.Deserialize<T>(jtr);
-
-                return searchResult;
-            }
+            return _contentSerializer.DeserializeJsonFromStream<T>(stream);
         }
 
         protected StringContent GetStringContent<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues)
         {
-            var jsonSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
-            };
-            if (useCamelCasePropertyNames)
-            {
-                jsonSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            }
-            string json = JsonConvert.SerializeObject(item, jsonSettings);
+            string json = _contentSerializer.SerializeToJson<T>(
+                item,
+                useCamelCasePropertyNames,
+                ignoreNullValues);
             return new StringContent(json);
         }
-
     }
 }

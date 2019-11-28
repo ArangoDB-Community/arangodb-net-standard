@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-
+using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 
 namespace ArangoDBNetStandard.DocumentApi
@@ -16,10 +16,24 @@ namespace ArangoDBNetStandard.DocumentApi
         private IApiClientTransport _client;
 
         /// <summary>
-        /// Create an instance of <see cref="DocumentApiClient"/>.
+        /// Creates an instance of <see cref="DocumentApiClient"/>
+        /// using the provided transport layer and the default JSON serialization.
         /// </summary>
         /// <param name="client"></param>
         public DocumentApiClient(IApiClientTransport client)
+            : base(new JsonNetContentSerialization())
+        {
+            _client = client;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="DocumentApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="serializer"></param>
+        public DocumentApiClient(IApiClientTransport client, IContentSerialization serializer)
+            : base(serializer)
         {
             _client = client;
         }

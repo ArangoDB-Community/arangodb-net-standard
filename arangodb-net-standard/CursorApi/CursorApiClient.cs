@@ -1,11 +1,8 @@
-﻿using ArangoDBNetStandard.Transport;
-using Newtonsoft.Json;
-using System;
+﻿using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Transport;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.CursorApi
@@ -13,16 +10,30 @@ namespace ArangoDBNetStandard.CursorApi
     /// <summary>
     /// ArangoDB Cursor API.
     /// </summary>
-    public class CursorApiClient: ApiClientBase
+    public class CursorApiClient : ApiClientBase
     {
         private readonly string _cursorApiPath = "_api/cursor";
         private IApiClientTransport _client;
 
         /// <summary>
-        /// Create a new <see cref="CursorApi"/>.
+        /// Creates an instance of <see cref="CursorApiClient"/>
+        /// using the provided transport layer and the default JSON serialization.
         /// </summary>
-        /// <param name="client">Set base path and appropriate auth headers on the passed in client.</param>
+        /// <param name="client"></param>
         public CursorApiClient(IApiClientTransport client)
+            : base(new JsonNetContentSerialization())
+        {
+            _client = client;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="CursorApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="serializer"></param>
+        public CursorApiClient(IApiClientTransport client, IContentSerialization serializer)
+            : base(serializer)
         {
             _client = client;
         }

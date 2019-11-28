@@ -1,4 +1,5 @@
-﻿using ArangoDBNetStandard.Transport;
+﻿using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Transport;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,7 +13,25 @@ namespace ArangoDBNetStandard.DatabaseApi
         private IApiClientTransport _client;
         private readonly string _databaseApiPath = "_api/database";
 
+        /// <summary>
+        /// Creates an instance of <see cref="DatabaseApiClient"/>
+        /// using the provided transport layer and the default JSON serialization.
+        /// </summary>
+        /// <param name="client"></param>
         public DatabaseApiClient(IApiClientTransport client)
+            : base(new JsonNetContentSerialization())
+        {
+            _client = client;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="DatabaseApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="serializer"></param>
+        public DatabaseApiClient(IApiClientTransport client, IContentSerialization serializer)
+            : base(serializer)
         {
             _client = client;
         }

@@ -1,8 +1,8 @@
-﻿using ArangoDBNetStandard.Transport;
-using System.Net.Http;
+﻿using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Transport;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
-using System;
 
 namespace ArangoDBNetStandard.GraphApi
 {
@@ -11,7 +11,25 @@ namespace ArangoDBNetStandard.GraphApi
         private IApiClientTransport _transport;
         private readonly string _graphApiPath = "_api/gharial";
 
+        /// <summary>
+        /// Create an instance of <see cref="GraphApiClient"/>
+        /// using the provided transport layer and the default JSON serialization.
+        /// </summary>
+        /// <param name="transport"></param>
         public GraphApiClient(IApiClientTransport transport)
+            : base(new JsonNetContentSerialization())
+        {
+            _transport = transport;
+        }
+
+        /// <summary>
+        /// Create an instance of <see cref="GraphApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="transport"></param>
+        /// <param name="serializer"></param>
+        public GraphApiClient(IApiClientTransport transport, IContentSerialization serializer)
+            : base(serializer)
         {
             _transport = transport;
         }
