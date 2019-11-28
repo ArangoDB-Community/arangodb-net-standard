@@ -405,5 +405,38 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Removes a vertex from the collection.
+        /// DELETE/_api/gharial/{graph}/vertex/{collection}/{vertex}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="vertexKey"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
+            string graphName,
+            string collectionName,
+            string vertexKey,
+            DeleteVertexQuery query = null)
+        {
+            string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
+                "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" +
+                WebUtility.UrlEncode(vertexKey);
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.DeleteAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteVertexResponse<T>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
