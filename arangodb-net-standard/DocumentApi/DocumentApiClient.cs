@@ -106,7 +106,27 @@ namespace ArangoDBNetStandard.DocumentApi
         }
 
         /// <summary>
-        /// Replace a document.
+        /// Replaces the document with handle <document-handle> with the one in
+        /// the body, provided there is such a document and no precondition is
+        /// violated.
+        /// PUT/_api/document/{document-handle}
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <param name="doc"></param>
+        /// <param name="opts"></param>
+        /// <returns></returns>
+        public async Task<PostDocumentResponse<T>> PutDocumentAsync<T>(string collectionName, string documentKey, T doc, PutDocumentsQuery opts = null)
+        {
+            return await PutDocumentAsync($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", doc, opts);
+        }
+
+        /// <summary>
+        /// Replaces the document with handle <document-handle> with the one in
+        /// the body, provided there is such a document and no precondition is
+        /// violated.
+        /// PUT/_api/document/{document-handle}
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
@@ -397,7 +417,10 @@ namespace ArangoDBNetStandard.DocumentApi
 
 
         /// <summary>
-        /// Get headers based on Document _id
+        /// Like GET, but only returns the header fields and not the body. You
+        /// can use this call to get the current revision of a document or check if
+        /// the document was deleted.
+        /// HEAD/_api/document/{document-handle}
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="headers">Object containing a dictionary of Header keys and values</param>
@@ -405,12 +428,22 @@ namespace ArangoDBNetStandard.DocumentApi
         public async Task<DocumentHeaderResponse> HeadDocumentAsync(string documentId, HeadDocumentHeader headers = null)
         {
             ValidateDocumentId(documentId);
-            var uriString = _docApiPath + "/" + documentId;
-            using (var response = await _client.HeadAsync(uriString, headers != null ? headers.Headers : null))
+            string uri = _docApiPath + "/" + documentId;
+            WebHeaderCollection headerCollection;
+            if (headers == null)
+            {
+                headerCollection = new WebHeaderCollection();
+            }
+            else
+            {
+                headerCollection = headers.ToWebHeaderCollection();
+            }
+            using (var response = await _client.HeadAsync(uri, headerCollection))
             {
                 return new DocumentHeaderResponse
                 {
-                    Code = (HttpStatusCode)response.StatusCode
+                    Code = (HttpStatusCode)response.StatusCode,
+                    Etag = response.Headers.ETag
                 };
             }
         }

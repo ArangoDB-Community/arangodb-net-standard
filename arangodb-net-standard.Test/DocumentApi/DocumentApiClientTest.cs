@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using ArangoDBNetStandard;
@@ -620,43 +621,44 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
             var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
-            var headers = new Dictionary<string, string>();
-            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
-            {
-                Headers = headers
-            });
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
         }
 
         [Fact]
-        public async Task ReadDocumentHeaderAsync_ShouldReturnPreconditionFailed_WhenIfMatch()
+        public async Task ReadDocumentHeaderAsync_ShouldReturnNotModified_WhenIfNoneMatchIsGivenAndVersionIsTheSame()
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
             var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
-            var headers = new Dictionary<string, string>();
-            headers.Add("If-Match", "nonesense");
             var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
             {
-                Headers = headers
-            });
-
-            Assert.Equal(HttpStatusCode.PreconditionFailed, response.Code);
-        }
-
-        [Fact]
-        public async Task ReadDocumentHeaderAsync_ShouldReturnNotModified_WhenIfNonMatch()
-        {
-            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
-            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
-            var headers = new Dictionary<string, string>();
-            headers.Add("If-None-Match", docResponse._rev);
-            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
-            {
-                Headers = headers
+                IfNoneMatch = docResponse._rev
             });
 
             Assert.Equal(HttpStatusCode.NotModified, response.Code);
+            Assert.Equal($"\"{docResponse._rev}\"", response.Etag.Tag);
+        }
+
+        [Fact]
+        public async Task ReadDocumentHeaderAsync_ShouldReturnPreconditionFailed_WhenIfMatchIsGivenAndRevisionIsDifferent()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
+            // create the doc
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
+            // Change the revision
+            var updateDocResponse = await _docClient.PutDocumentAsync(_testCollection, docResponse._key, new Dictionary<string, object>
+            {
+                ["key"] = "newValue"
+            });
+            // check if revision has changed
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
+            {
+                IfMatch = docResponse._rev
+            });
+
+            Assert.Equal(HttpStatusCode.PreconditionFailed, response.Code);
+            Assert.NotEqual($"\"{docResponse._rev}\"", response.Etag.Tag);
         }
 
         [Fact]

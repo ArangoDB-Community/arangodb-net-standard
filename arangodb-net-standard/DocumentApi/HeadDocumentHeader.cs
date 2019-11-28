@@ -1,9 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System.Net;
 
 namespace ArangoDBNetStandard.DocumentApi
 {
     public class HeadDocumentHeader
     {
-        public Dictionary<string, string> Headers { get; set; }
+        public string IfMatch { get; set; }
+
+        public string IfNoneMatch { get; set; }
+
+        public WebHeaderCollection ToWebHeaderCollection()
+        {
+            WebHeaderCollection collection = new WebHeaderCollection();
+            if (IfMatch != null)
+            {
+                collection.Add(HttpRequestHeader.IfMatch, $"\"{IfMatch}\"");
+            }
+            if (IfNoneMatch != null)
+            {
+                collection.Add(HttpRequestHeader.IfNoneMatch, $"\"{IfNoneMatch}\"");
+            }
+            return collection;
+        }
     }
 }

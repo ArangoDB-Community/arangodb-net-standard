@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -139,17 +140,16 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> HeadAsync(string requestUri, Dictionary<string, string> headers = null)
+        public async Task<IApiClientResponse> HeadAsync(string requestUri, WebHeaderCollection webHeaderCollection = null)
         {
-            // (HttpMethod.Head, requestUri, );
             var request = new HttpRequestMessage(HttpMethod.Head, requestUri);
 
-            if (headers != null)
+            for (int i = 0; i < webHeaderCollection.Count; i++)
             {
-                foreach (var x in headers)
-                {
-                    request.Headers.Add(x.Key, $"\"{x.Value}\"");
-                }
+                request.Headers.Add(
+                    webHeaderCollection.GetKey(i),
+                    webHeaderCollection.Get(i)
+                );
             }
             var response = await _client.SendAsync(request);
             return new HttpApiClientResponse(response);
