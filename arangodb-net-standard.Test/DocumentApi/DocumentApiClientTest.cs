@@ -519,9 +519,9 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     new { value = 2, name = "test2" }
                 }, new PostDocumentsQuery
                 {
-                     ReturnNew = true,
-                     ReturnOld = true,
-                     WaitForSync = true
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
                 });
 
             var response = await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
@@ -647,7 +647,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             // create the doc
             var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
             // Change the revision
-            var updateDocResponse = await _docClient.PutDocumentAsync(_testCollection, docResponse._key, new Dictionary<string, object>
+            var updateDocResponse = await _docClient.PutDocumentAsync($"{_testCollection}/{docResponse._key}", new Dictionary<string, object>
             {
                 ["key"] = "newValue"
             });

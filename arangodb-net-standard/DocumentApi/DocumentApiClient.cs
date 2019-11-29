@@ -112,23 +112,6 @@ namespace ArangoDBNetStandard.DocumentApi
         /// PUT/_api/document/{document-handle}
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="collectionName"></param>
-        /// <param name="documentKey"></param>
-        /// <param name="doc"></param>
-        /// <param name="opts"></param>
-        /// <returns></returns>
-        public async Task<PostDocumentResponse<T>> PutDocumentAsync<T>(string collectionName, string documentKey, T doc, PutDocumentsQuery opts = null)
-        {
-            return await PutDocumentAsync($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", doc, opts);
-        }
-
-        /// <summary>
-        /// Replaces the document with handle <document-handle> with the one in
-        /// the body, provided there is such a document and no precondition is
-        /// violated.
-        /// PUT/_api/document/{document-handle}
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
         /// <param name="doc"></param>
         /// <param name="opts"></param>

@@ -144,12 +144,12 @@ namespace ArangoDBNetStandard.Transport.Http
         {
             var request = new HttpRequestMessage(HttpMethod.Head, requestUri);
 
-            for (int i = 0; i < webHeaderCollection.Count; i++)
+            if (webHeaderCollection != null)
             {
-                request.Headers.Add(
-                    webHeaderCollection.GetKey(i),
-                    webHeaderCollection.Get(i)
-                );
+                foreach (var key in webHeaderCollection.AllKeys)
+                {
+                    request.Headers.Add(key, webHeaderCollection[key]);
+                }
             }
             var response = await _client.SendAsync(request);
             return new HttpApiClientResponse(response);
