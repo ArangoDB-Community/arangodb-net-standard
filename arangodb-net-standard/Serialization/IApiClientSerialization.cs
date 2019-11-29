@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.Serialization
     /// <summary>
     /// Defines a serialization layer used for the content in transport.
     /// </summary>
-    public interface IContentSerialization
+    public interface IApiClientSerialization
     {
         /// <summary>
         /// Deserializes the JSON structure contained by the specified stream
@@ -17,7 +17,7 @@ namespace ArangoDBNetStandard.Serialization
         T DeserializeJsonFromStream<T>(Stream stream);
 
         /// <summary>
-        /// Serializes the specified object to a JSON string,
+        /// Serializes the specified object to a JSON string encoded as UTF-8 bytes,
         /// following the provided rules for camel case property name and null value handling.
         /// </summary>
         /// <typeparam name="T">The type of the object to serialize.</typeparam>
@@ -25,6 +25,6 @@ namespace ArangoDBNetStandard.Serialization
         /// <param name="useCamelCasePropertyNames">Whether property names should be camel cased.</param>
         /// <param name="ignoreNullValues">Whether null values should be ignored.</param>
         /// <returns></returns>
-        string SerializeToJson<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues);
+        byte[] SerializeToJson<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues);
     }
 }

@@ -75,7 +75,7 @@ namespace ArangoDBNetStandard
         {
             _transport = transport;
 
-            var serialization = new JsonNetContentSerialization();
+            var serialization = new JsonNetApiClientSerialization();
 
             Cursor = new CursorApiClient(_transport, serialization);
             Database = new DatabaseApiClient(_transport, serialization);
@@ -90,7 +90,7 @@ namespace ArangoDBNetStandard
         /// using the provided transport and serialization layers.
         /// </summary>
         /// <param name="transport">The ArangoDB transport layer implementation.</param>
-        public ArangoDBClient(IApiClientTransport transport, IContentSerialization serialization)
+        public ArangoDBClient(IApiClientTransport transport, IApiClientSerialization serialization)
         {
             _transport = transport;
             Cursor = new CursorApiClient(_transport, serialization);

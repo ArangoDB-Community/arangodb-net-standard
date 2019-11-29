@@ -17,7 +17,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="transport"></param>
         public GraphApiClient(IApiClientTransport transport)
-            : base(new JsonNetContentSerialization())
+            : base(new JsonNetApiClientSerialization())
         {
             _transport = transport;
         }
@@ -28,7 +28,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="transport"></param>
         /// <param name="serializer"></param>
-        public GraphApiClient(IApiClientTransport transport, IContentSerialization serializer)
+        public GraphApiClient(IApiClientTransport transport, IApiClientSerialization serializer)
             : base(serializer)
         {
             _transport = transport;
@@ -42,7 +42,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public async Task<PostGraphResponse> PostGraphAsync(PostGraphBody postGraphBody)
         {
-            var content = GetStringContent(postGraphBody, true, true);
+            var content = GetContent(postGraphBody, true, true);
             using (var response = await _transport.PostAsync(_graphApiPath, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -178,7 +178,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             PostGraphEdgeDefinitionBody body)
         {
-            StringContent content = GetStringContent(body, true, true);
+            var content = GetContent(body, true, true);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge";
 
@@ -207,7 +207,7 @@ namespace ArangoDBNetStandard.GraphApi
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex";
 
-            StringContent content = GetStringContent(body, true, true);
+            var content = GetContent(body, true, true);
 
             using (var response = await _transport.PostAsync(uri, content))
             {
@@ -242,7 +242,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            StringContent content = GetStringContent(vertex, false, false);
+            var content = GetContent(vertex, false, false);
             using (var response = await _transport.PostAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -339,7 +339,7 @@ namespace ArangoDBNetStandard.GraphApi
             T edge,
             PostGraphEdgeQuery query = null)
         {
-            StringContent content = GetStringContent(edge, false, false);
+            var content = GetContent(edge, false, false);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName);

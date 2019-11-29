@@ -2,24 +2,28 @@
 using ArangoDBNetStandard.Transport;
 using System;
 using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard
 {
     public abstract class ApiClientBase
     {
-        private readonly IContentSerialization _contentSerializer;
+        private readonly IApiClientSerialization _serialization;
 
-        public ApiClientBase(IContentSerialization contentSerializer)
+        /// <summary>
+        /// Creates an instance of <see cref="ApiClientBase"/> using
+        /// the provided serialization layer.
+        /// </summary>
+        /// <param name="serialization"></param>
+        public ApiClientBase(IApiClientSerialization serialization)
         {
-            _contentSerializer = contentSerializer;
+            _serialization = serialization;
         }
 
         protected async Task<ApiErrorException> GetApiErrorException(IApiClientResponse response)
         {
             var stream = await response.Content.ReadAsStreamAsync();
-            var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
+            var error = _serialization.DeserializeJsonFromStream<ApiErrorResponse>(stream);
             return new ApiErrorException(error);
         }
 
@@ -34,16 +38,15 @@ namespace ArangoDBNetStandard
 
         protected T DeserializeJsonFromStream<T>(Stream stream)
         {
-            return _contentSerializer.DeserializeJsonFromStream<T>(stream);
+            return _serialization.DeserializeJsonFromStream<T>(stream);
         }
 
-        protected StringContent GetStringContent<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues)
+        protected byte[] GetContent<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues)
         {
-            string json = _contentSerializer.SerializeToJson<T>(
+            return _serialization.SerializeToJson<T>(
                 item,
                 useCamelCasePropertyNames,
                 ignoreNullValues);
-            return new StringContent(json);
         }
     }
 }

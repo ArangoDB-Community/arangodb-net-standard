@@ -17,7 +17,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="client"></param>
         public CollectionApiClient(IApiClientTransport transport)
-            : base(new JsonNetContentSerialization())
+            : base(new JsonNetApiClientSerialization())
         {
             _transport = transport;
         }
@@ -28,7 +28,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="transport"></param>
         /// <param name="serializer"></param>
-        public CollectionApiClient(IApiClientTransport transport, IContentSerialization serializer)
+        public CollectionApiClient(IApiClientTransport transport, IApiClientSerialization serializer)
             : base(serializer)
         {
             _transport = transport;
@@ -41,7 +41,7 @@ namespace ArangoDBNetStandard.CollectionApi
             {
                 uriString += "?" + options.ToQueryString();
             }
-            StringContent content = GetStringContent(body, true, true);
+            var content = GetContent(body, true, true);
             using (var response = await _transport.PostAsync(_collectionApiPath, content))
             {
                 var stream = await response.Content.ReadAsStreamAsync();
@@ -175,7 +175,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body)
         {
-            StringContent content = GetStringContent(body, true, false);
+            var content = GetContent(body, true, false);
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/rename", content))
             {
                 if (response.IsSuccessStatusCode)
@@ -216,7 +216,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<PutCollectionPropertyResponse> PutCollectionPropertyAsync(string collectionName, PutCollectionPropertyBody body)
         {
-            StringContent content = GetStringContent(body, true, true);
+            var content = GetContent(body, true, true);
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/properties", content))
             {
                 if (response.IsSuccessStatusCode)

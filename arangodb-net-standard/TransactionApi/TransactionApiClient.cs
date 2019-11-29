@@ -18,7 +18,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// </summary>
         /// <param name="client"></param>
         public TransactionApiClient(IApiClientTransport client)
-            : base(new JsonNetContentSerialization())
+            : base(new JsonNetApiClientSerialization())
         {
             _client = client;
         }
@@ -29,7 +29,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// </summary>
         /// <param name="client"></param>
         /// <param name="serializer"></param>
-        public TransactionApiClient(IApiClientTransport client, IContentSerialization serializer)
+        public TransactionApiClient(IApiClientTransport client, IApiClientSerialization serializer)
             : base(serializer)
         {
             _client = client;
@@ -43,7 +43,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// <returns>Response from ArangoDB after processing the request.</returns>
         public async Task<PostTransactionResponse<T>> PostTransactionAsync<T>(PostTransactionBody body)
         {
-            var content = GetStringContent(body, true, true);
+            var content = GetContent(body, true, true);
             using (var response = await _client.PostAsync(_transactionApiPath, content))
             {
                 var stream = await response.Content.ReadAsStreamAsync();

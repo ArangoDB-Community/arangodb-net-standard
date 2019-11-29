@@ -19,7 +19,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// </summary>
         /// <param name="client"></param>
         public DatabaseApiClient(IApiClientTransport client)
-            : base(new JsonNetContentSerialization())
+            : base(new JsonNetApiClientSerialization())
         {
             _client = client;
         }
@@ -30,7 +30,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// </summary>
         /// <param name="client"></param>
         /// <param name="serializer"></param>
-        public DatabaseApiClient(IApiClientTransport client, IContentSerialization serializer)
+        public DatabaseApiClient(IApiClientTransport client, IApiClientSerialization serializer)
             : base(serializer)
         {
             _client = client;
@@ -44,7 +44,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <returns></returns>
         public async Task<PostDatabaseResponse> PostDatabaseAsync(PostDatabaseBody request)
         {
-            var content = GetStringContent(request, true, true);
+            var content = GetContent(request, true, true);
             using (var response = await _client.PostAsync(_databaseApiPath, content))
             {
                 if (response.IsSuccessStatusCode)

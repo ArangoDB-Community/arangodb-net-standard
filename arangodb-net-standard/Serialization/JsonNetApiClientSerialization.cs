@@ -1,13 +1,14 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.IO;
+using System.Text;
 
 namespace ArangoDBNetStandard.Serialization
 {
     /// <summary>
-    /// Implements a <see cref="IContentSerialization"/> that uses Json.NET.
+    /// Implements a <see cref="IApiClientSerialization"/> that uses Json.NET.
     /// </summary>
-    public class JsonNetContentSerialization : IContentSerialization
+    public class JsonNetApiClientSerialization : IApiClientSerialization
     {
         /// <summary>
         /// Deserializes the JSON structure contained by the specified stream
@@ -35,7 +36,7 @@ namespace ArangoDBNetStandard.Serialization
         }
 
         /// <summary>
-        /// Serializes the specified object to a JSON string,
+        /// Serializes the specified object to a JSON string encoded as UTF-8 bytes,
         /// following the provided rules for camel case property name and null value handling.
         /// </summary>
         /// <typeparam name="T">The type of the object to serialize.</typeparam>
@@ -43,7 +44,7 @@ namespace ArangoDBNetStandard.Serialization
         /// <param name="useCamelCasePropertyNames">Whether property names should be camel cased.</param>
         /// <param name="ignoreNullValues">Whether null values should be ignored.</param>
         /// <returns></returns>
-        public virtual string SerializeToJson<T>(
+        public virtual byte[] SerializeToJson<T>(
             T item,
             bool useCamelCasePropertyNames,
             bool ignoreNullValues)
@@ -60,7 +61,7 @@ namespace ArangoDBNetStandard.Serialization
 
             string json = JsonConvert.SerializeObject(item, jsonSettings);
 
-            return json;
+            return Encoding.UTF8.GetBytes(json);
         }
     }
 }

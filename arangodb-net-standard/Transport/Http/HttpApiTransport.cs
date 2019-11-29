@@ -72,11 +72,11 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> DeleteAsync(string requestUri, StringContent content)
+        public async Task<IApiClientResponse> DeleteAsync(string requestUri, byte[] content)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, requestUri)
             {
-                Content = content
+                Content = new ByteArrayContent(content)
             };
             var response = await _client.SendAsync(request);
             return new HttpApiClientResponse(response);
@@ -88,9 +88,10 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> PostAsync(string requestUri, StringContent content)
+        public async Task<IApiClientResponse> PostAsync(string requestUri, byte[] content)
         {
-            var response = await _client.PostAsync(requestUri, content);
+            var httpContent = new ByteArrayContent(content);
+            var response = await _client.PostAsync(requestUri, httpContent);
             return new HttpApiClientResponse(response);
         }
 
@@ -100,9 +101,10 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> PutAsync(string requestUri, StringContent content)
+        public async Task<IApiClientResponse> PutAsync(string requestUri, byte[] content)
         {
-            var response = await _client.PutAsync(requestUri, content);
+            var httpContent = new ByteArrayContent(content);
+            var response = await _client.PutAsync(requestUri, httpContent);
             return new HttpApiClientResponse(response);
         }
 
@@ -123,12 +125,12 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> PatchAsync(string requestUri, StringContent content)
+        public async Task<IApiClientResponse> PatchAsync(string requestUri, byte[] content)
         {
             var method = new HttpMethod("PATCH");
             var request = new HttpRequestMessage(method, requestUri)
             {
-                Content = content
+                Content = new ByteArrayContent(content)
             };
             var response = await _client.SendAsync(request);
             return new HttpApiClientResponse(response);

@@ -21,7 +21,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <param name="client"></param>
         public CursorApiClient(IApiClientTransport client)
-            : base(new JsonNetContentSerialization())
+            : base(new JsonNetApiClientSerialization())
         {
             _client = client;
         }
@@ -32,7 +32,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <param name="client"></param>
         /// <param name="serializer"></param>
-        public CursorApiClient(IApiClientTransport client, IContentSerialization serializer)
+        public CursorApiClient(IApiClientTransport client, IApiClientSerialization serializer)
             : base(serializer)
         {
             _client = client;
@@ -76,7 +76,7 @@ namespace ArangoDBNetStandard.CursorApi
 
         public async Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorBody cursorRequest)
         {
-            var content = GetStringContent(cursorRequest, true, true);
+            var content = GetContent(cursorRequest, true, true);
             using (var response = await _client.PostAsync(_cursorApiPath, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -110,7 +110,7 @@ namespace ArangoDBNetStandard.CursorApi
         public async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId)
         {
             string uri = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
-            using (var response = await _client.PutAsync(uri, new StringContent(string.Empty)))
+            using (var response = await _client.PutAsync(uri, new byte[0]))
             {
                 if (response.IsSuccessStatusCode)
                 {
