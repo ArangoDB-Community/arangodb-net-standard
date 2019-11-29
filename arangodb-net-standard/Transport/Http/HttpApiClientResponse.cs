@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace ArangoDBNetStandard.Transport.Http
 {
@@ -9,9 +11,11 @@ namespace ArangoDBNetStandard.Transport.Http
         public HttpApiClientResponse(HttpResponseMessage response)
         {
             this.response = response;
+            Headers = response.Headers;
             Content = new HttpApiClientResponseContent(response.Content);
             IsSuccessStatusCode = response.IsSuccessStatusCode;
             StatusCode = (int)response.StatusCode;
+
         }
 
         public IApiClientResponseContent Content { get; private set; }
@@ -19,6 +23,8 @@ namespace ArangoDBNetStandard.Transport.Http
         public bool IsSuccessStatusCode { get; private set; }
 
         public int StatusCode { get; private set; }
+
+        public HttpResponseHeaders Headers { get; set; }
 
         public void Dispose()
         {

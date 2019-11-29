@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using ArangoDBNetStandard;
@@ -518,9 +519,9 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     new { value = 2, name = "test2" }
                 }, new PostDocumentsQuery
                 {
-                     ReturnNew = true,
-                     ReturnOld = true,
-                     WaitForSync = true
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
                 });
 
             var response = await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
@@ -613,6 +614,59 @@ namespace ArangoDBNetStandardTest.DocumentApi
             });
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task ReadDocumentHeaderAsync_ShouldSucceed()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key);
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+        }
+
+        [Fact]
+        public async Task ReadDocumentHeaderAsync_ShouldReturnNotModified_WhenIfNoneMatchIsGivenAndVersionIsTheSame()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
+            {
+                IfNoneMatch = docResponse._rev
+            });
+
+            Assert.Equal(HttpStatusCode.NotModified, response.Code);
+            Assert.Equal($"\"{docResponse._rev}\"", response.Etag.Tag);
+        }
+
+        [Fact]
+        public async Task ReadDocumentHeaderAsync_ShouldReturnPreconditionFailed_WhenIfMatchIsGivenAndRevisionIsDifferent()
+        {
+            Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
+            // create the doc
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
+            // Change the revision
+            var updateDocResponse = await _docClient.PutDocumentAsync($"{_testCollection}/{docResponse._key}", new Dictionary<string, object>
+            {
+                ["key"] = "newValue"
+            });
+            // check if revision has changed
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
+            {
+                IfMatch = docResponse._rev
+            });
+
+            Assert.Equal(HttpStatusCode.PreconditionFailed, response.Code);
+            Assert.NotEqual($"\"{docResponse._rev}\"", response.Etag.Tag);
+        }
+
+        [Fact]
+        public async Task ReadDocumentHeaderAsync_ShouldReturnNotFound_WhenCollectionDoesNotExist()
+        {
+            var response = await _docClient.HeadDocumentAsync("bogusCollection", "123456");
+
+            Assert.Equal(HttpStatusCode.NotFound, response.Code);
         }
     }
 }

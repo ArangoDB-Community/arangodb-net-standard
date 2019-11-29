@@ -106,7 +106,10 @@ namespace ArangoDBNetStandard.DocumentApi
         }
 
         /// <summary>
-        /// Replace a document.
+        /// Replaces the document with handle <document-handle> with the one in
+        /// the body, provided there is such a document and no precondition is
+        /// violated.
+        /// PUT/_api/document/{document-handle}
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
@@ -375,6 +378,69 @@ namespace ArangoDBNetStandard.DocumentApi
                     return DeserializeJsonFromStream<PatchDocumentResponse<U>>(stream);
                 }
                 throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Like GET, but only returns the header fields and not the body. You
+        /// can use this call to get the current revision of a document or check if
+        /// the document was deleted.
+        /// HEAD /_api/document/{document-handle}
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <param name="headers"></param>
+        /// <remarks>
+        /// 200: is returned if the document was found. 
+        /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
+        /// 404: is returned if the document or collection was not found. 
+        /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
+        /// </remarks>
+        /// <returns></returns>
+        public async Task<HeadDocumentResponse> HeadDocumentAsync(
+            string collectionName,
+            string documentKey,
+            HeadDocumentHeader headers = null)
+        {
+            return await HeadDocumentAsync($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", headers);
+        }
+
+        /// <summary>
+        /// Like GET, but only returns the header fields and not the body. You
+        /// can use this call to get the current revision of a document or check if
+        /// the document was deleted.
+        /// HEAD/_api/document/{document-handle}
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="headers">Object containing a dictionary of Header keys and values</param>
+        /// <exception cref="ArgumentException">Document ID is invalid.</exception>
+        /// <remarks>
+        /// 200: is returned if the document was found. 
+        /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
+        /// 404: is returned if the document or collection was not found. 
+        /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
+        /// </remarks>
+        /// <returns></returns>
+        public async Task<HeadDocumentResponse> HeadDocumentAsync(string documentId, HeadDocumentHeader headers = null)
+        {
+            ValidateDocumentId(documentId);
+            string uri = _docApiPath + "/" + documentId;
+            WebHeaderCollection headerCollection;
+            if (headers == null)
+            {
+                headerCollection = new WebHeaderCollection();
+            }
+            else
+            {
+                headerCollection = headers.ToWebHeaderCollection();
+            }
+            using (var response = await _client.HeadAsync(uri, headerCollection))
+            {
+                return new HeadDocumentResponse
+                {
+                    Code = (HttpStatusCode)response.StatusCode,
+                    Etag = response.Headers.ETag
+                };
             }
         }
     }

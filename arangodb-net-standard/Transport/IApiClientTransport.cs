@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,5 +58,12 @@ namespace ArangoDBNetStandard.Transport
         /// <param name="content"></param>
         /// <returns></returns>
         Task<IApiClientResponse> PatchAsync(string requestUri, StringContent content);
+
+        /// <summary>
+        /// Send a Head Request
+        /// </summary>
+        /// <param name="requestUri"></param>
+        /// <returns></returns>
+        Task<IApiClientResponse> HeadAsync(string requestUri, WebHeaderCollection httpRequestHeaders);
     }
 }
