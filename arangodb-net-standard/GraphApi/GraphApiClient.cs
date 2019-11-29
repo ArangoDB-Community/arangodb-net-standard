@@ -474,5 +474,43 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Replaces the data of an edge in the collection.
+        /// PUT /_api/gharial/{graph}/edge/{collection}/{edge}
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="edgeKey"></param>
+        /// <param name="edge"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PutGraphEdgeResponse<T>> PutEdgeAsync<T>(
+            string graphName,
+            string collectionName,
+            string edgeKey,
+            T edge,
+            PutGraphEdgeQuery query = null)
+        {
+            StringContent content = GetStringContent(edge, false, false);
+
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
+                "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
+
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.PutAsync(uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PutGraphEdgeResponse<T>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
