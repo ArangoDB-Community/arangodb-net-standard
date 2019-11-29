@@ -41,7 +41,7 @@ namespace ArangoDBNetStandard.Serialization
         /// </summary>
         /// <typeparam name="T">The type of the object to serialize.</typeparam>
         /// <param name="item">The object to serialize.</param>
-        /// <param name="useCamelCasePropertyNames">Whether property names should be camel cased.</param>
+        /// <param name="useCamelCasePropertyNames">Whether property names should be camel cased (camelCase).</param>
         /// <param name="ignoreNullValues">Whether null values should be ignored.</param>
         /// <returns></returns>
         public virtual byte[] SerializeToJson<T>(
