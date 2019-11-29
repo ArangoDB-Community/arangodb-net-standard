@@ -481,7 +481,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            StringContent content = GetStringContent(body, false, false);
+            var content = GetContent(body, false, false);
             using (var response = await _transport.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -511,7 +511,7 @@ namespace ArangoDBNetStandard.GraphApi
             T edge,
             PutGraphEdgeQuery query = null)
         {
-            StringContent content = GetStringContent(edge, false, false);
+            var content = GetContent(edge, false, false);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
