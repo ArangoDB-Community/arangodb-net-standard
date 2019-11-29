@@ -27,6 +27,12 @@ To run tests, run:
 dotnet test
 ```
 
+To generate a nuget package in the folder `arangodb-net-standard\bin\release`, run:
+
+```
+dotnet pack --configuration Release .\arangodb-net-standard\ArangoDBNetStandard.csproj
+```
+
 You may also open the Visual Studio solution file and build or run tests from within Visual Studio. The main developers on the project use VS2017 at the moment but VS2019 should work in theory.
 
 ## Issues

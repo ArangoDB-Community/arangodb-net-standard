@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>A consistent, comprehensive, minimal interface to enable .NET applications to use the complete range of features exposed by the ArangoDB REST API.</Description>
+    <PackageProjectUrl>https://github.com/Actify-Inc/arangodb-net-standard</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Actify-Inc/arangodb-net-standard</RepositoryUrl>
+    <PackageTags>arangodb arango .net c# netstandard multimodel graph document database</PackageTags>
+    <Version>1.0.0-alpha01</Version>
+    <Company>Actify, Inc</Company>
   </PropertyGroup>
 
   <ItemGroup>
