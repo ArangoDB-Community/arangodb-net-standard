@@ -74,7 +74,9 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName)
         {
-            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/truncate", null))
+            using (var response = await _transport.PutAsync(
+                _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/truncate",
+                new byte[0]))
             {
                 if (response.IsSuccessStatusCode)
                 {

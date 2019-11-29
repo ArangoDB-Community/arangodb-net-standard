@@ -86,7 +86,7 @@ namespace ArangoDBNetStandard.Transport.Http
         /// Sends a POST request using <see cref="HttpClient"/>.
         /// </summary>
         /// <param name="requestUri"></param>
-        /// <param name="content"></param>
+        /// <param name="content">The content of the request, must not be null.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> PostAsync(string requestUri, byte[] content)
         {
@@ -99,7 +99,7 @@ namespace ArangoDBNetStandard.Transport.Http
         /// Sends a PUT request using <see cref="HttpClient"/>.
         /// </summary>
         /// <param name="requestUri"></param>
-        /// <param name="content"></param>
+        /// <param name="content">The content of the request, must not be null.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> PutAsync(string requestUri, byte[] content)
         {
@@ -111,7 +111,7 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <summary>
         /// Sends a GET request using <see cref="HttpClient"/>.
         /// </summary>
-        /// <param name="requestUri"></param>
+        /// <param name="requestUri">The content of the request, must not be null.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> GetAsync(string requestUri)
         {
@@ -123,7 +123,7 @@ namespace ArangoDBNetStandard.Transport.Http
         /// Sends a PATCH request using <see cref="HttpClient"/>.
         /// </summary>
         /// <param name="requestUri"></param>
-        /// <param name="content"></param>
+        /// <param name="content">The content of the request, must not be null.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> PatchAsync(string requestUri, byte[] content)
         {
