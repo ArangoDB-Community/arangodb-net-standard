@@ -523,7 +523,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PutEdgeDefinitionResponse> PutGraphDefinitionAsync(
+        public async Task<PutEdgeDefinitionResponse> PutEdgeDefinitionAsync(
             string graphName,
             string collectionName,
             PutEdgeDefinitionBody body,
