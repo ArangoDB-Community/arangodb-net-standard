@@ -523,7 +523,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PutGraphDefinitionResponse> PutGraphDefinitionAsync(string graphName, string collectionName, PutGraphDefinitionBody body, PutGraphDefinitionQuery query = null)
+        public async Task<PutEdgeDefinitionResponse> PutEdgeDefinitionAsync(string graphName, string collectionName, PutEdgeDefinitionBody body, PutEdgeDefinitionQuery query = null)
         {
             string uriString = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -536,7 +536,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PutGraphDefinitionResponse>(stream);
+                    return DeserializeJsonFromStream<PutEdgeDefinitionResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

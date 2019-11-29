@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class PutGraphDefinitionQuery
+    public class PutEdgeDefinitionQuery
     {
         public bool? WaitForSync { get; set; }
 

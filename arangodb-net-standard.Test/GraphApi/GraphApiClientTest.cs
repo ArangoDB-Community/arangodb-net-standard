@@ -1229,9 +1229,9 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PutGraphDefinitionAsync_ShouldSucceed()
+        public async Task PutEdgeDefinitionAsync_ShouldSucceed()
         {
-            string edgeClx = nameof(PutGraphDefinitionAsync_ShouldSucceed) + "_EdgeClx";
+            string edgeClx = nameof(PutEdgeDefinitionAsync_ShouldSucceed) + "_EdgeClx";
 
             var createClxResponse = await _fixture.ArangoDBClient.Collection.PostCollectionAsync(
                 new PostCollectionBody()
@@ -1242,7 +1242,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.Equal(edgeClx, createClxResponse.Name);
 
-            string graphName = nameof(PutGraphDefinitionAsync_ShouldSucceed) + "_graph";
+            string graphName = nameof(PutEdgeDefinitionAsync_ShouldSucceed) + "_graph";
 
             PostGraphResponse createGraphResponse = await _client.PostGraphAsync(new PostGraphBody()
             {
@@ -1260,12 +1260,12 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.Equal(HttpStatusCode.Accepted, createGraphResponse.Code);
 
-            var response = await _client.PutGraphDefinitionAsync(graphName, edgeClx, new PutGraphDefinitionBody
+            var response = await _client.PutEdgeDefinitionAsync(graphName, edgeClx, new PutEdgeDefinitionBody
             {
                 Collection = edgeClx,
                 To = new string[] { "ToClx" },
                 From = new string[] { "FromClx" }
-            }, new PutGraphDefinitionQuery
+            }, new PutEdgeDefinitionQuery
             {
                 WaitForSync = true,
                 DropCollections = true
@@ -1282,17 +1282,17 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PutGraphDefinitionAsync_ShouldThrow_WhenGraphNameDoesNotExist()
+        public async Task PutEdgeDefinitionAsync_ShouldThrow_WhenGraphNameDoesNotExist()
         {
-            var edgeClx = nameof(PutGraphDefinitionAsync_ShouldThrow_WhenGraphNameDoesNotExist) + "_edgeClx";
+            var edgeClx = nameof(PutEdgeDefinitionAsync_ShouldThrow_WhenGraphNameDoesNotExist) + "_edgeClx";
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PutGraphDefinitionAsync("bogus_collection", edgeClx, new PutGraphDefinitionBody
+                await _client.PutEdgeDefinitionAsync("bogus_collection", edgeClx, new PutEdgeDefinitionBody
                 {
                     Collection = edgeClx,
                     To = new string[] { "ToClx" },
                     From = new string[] { "FromClx" }
-                }, new PutGraphDefinitionQuery
+                }, new PutEdgeDefinitionQuery
                 {
                     WaitForSync = false,
                     DropCollections = true
@@ -1304,16 +1304,16 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PutGraphDefinitionAsync_ShouldThrow_WhenEdgeCollectionNameDoesNotExist()
+        public async Task PutEdgeDefinitionAsync_ShouldThrow_WhenEdgeCollectionNameDoesNotExist()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PutGraphDefinitionAsync(_fixture.TestGraph, "bogus_edgeclx", new PutGraphDefinitionBody
+                await _client.PutEdgeDefinitionAsync(_fixture.TestGraph, "bogus_edgeclx", new PutEdgeDefinitionBody
                 {
                     Collection = "bogus_edgeclx",
                     To = new string[] { "ToClx" },
                     From = new string[] { "FromClx" }
-                }, new PutGraphDefinitionQuery
+                }, new PutEdgeDefinitionQuery
                 {
                     WaitForSync = false,
                     DropCollections = true

@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class PutGraphDefinitionBody
+    public class PutEdgeDefinitionBody
     {
         public string Collection { get; set; }
 

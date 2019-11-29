@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class PutGraphDefinitionResponse
+    public class PutEdgeDefinitionResponse
     {
         public HttpStatusCode Code { get; set; }
 
