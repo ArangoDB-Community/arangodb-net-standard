@@ -8,8 +8,6 @@
 
         public string _rev { get; set; }
 
-        public string _from { get; set; }
-
-        public string _to { get; set; }
+        public string _oldRev { get; set; }
     }
 }
