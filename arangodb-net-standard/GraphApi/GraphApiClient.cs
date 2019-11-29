@@ -41,8 +41,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// GET /_api/gharial
         /// </summary>
         /// <remarks>
-        /// Note: The <see cref="GraphResult.Name"/> property is null for <see cref="GraphApiClient.GetGraphsAsync"/> in ArangoDB 4.5.2 and below,
-        /// in which case you can use <see cref="GraphResult._key"/> instead.
+        /// Note: The <see cref="GraphResult.Name"/> property is null for <see cref="GraphApiClient.GetGraphsAsync"/>
+        /// in ArangoDB 4.5.2 and below, in which case you can use <see cref="GraphResult._key"/> instead.
         /// </remarks>
         /// <returns></returns>
         public async Task<GetGraphsResponse> GetGraphsAsync()
@@ -523,9 +523,16 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PutGraphDefinitionResponse> PutGraphDefinitionAsync(string graphName, string collectionName, PutGraphDefinitionBody body, PutGraphDefinitionQuery query = null)
+        public async Task<PutGraphDefinitionResponse> PutGraphDefinitionAsync(
+            string graphName,
+            string collectionName,
+            PutGraphDefinitionBody body,
+            PutGraphDefinitionQuery query = null)
         {
-            string uriString = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge/" + WebUtility.UrlEncode(collectionName);
+            string uriString = _graphApiPath + "/" +
+                WebUtility.UrlEncode(graphName) + "/edge/" + 
+                WebUtility.UrlEncode(collectionName);
+                
             if (query != null)
             {
                 uriString += "?" + query.ToQueryString();
