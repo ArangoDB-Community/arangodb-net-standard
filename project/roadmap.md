@@ -78,7 +78,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [ ]	POST/_api/gharial/{graph}/vertex/{collection} Create a vertex
 - [ ]	DELETE/_api/gharial/{graph}/vertex/{collection}/{vertex} Remove a vertex
 - [ ]	GET/_api/gharial/{graph}/vertex/{collection}/{vertex} Get a vertex
-- [ ]	PATCH/_api/gharial/{graph}/vertex/{collection}/{vertex} Update a vertex
+- [X]	PATCH/_api/gharial/{graph}/vertex/{collection}/{vertex} Update a vertex
 - [ ]	PUT/_api/gharial/{graph}/vertex/{collection}/{vertex} Replace a vertex
 
 #### Transactions API

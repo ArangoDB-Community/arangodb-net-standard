@@ -438,5 +438,41 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Updates the data of the specific vertex in the collection.
+        /// PATCH/_api/gharial/{graph}/vertex/{collection}/{vertex}
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="vertexKey"></param>
+        /// <param name="body"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
+            string graphName,
+            string collectionName,
+            string vertexKey,
+            T body,
+            PatchVertexQuery query = null)
+        {
+            string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
+                "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey);
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            StringContent content = GetStringContent(body, false, false);
+            using (var response = await _transport.PatchAsync(uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PatchVertexResponse<U>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
