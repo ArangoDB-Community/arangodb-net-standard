@@ -486,7 +486,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edge"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PutGraphEdgeResponse<T>> PutGraphEdgeAsync<T>(
+        public async Task<PutGraphEdgeResponse<T>> PutEdgeAsync<T>(
             string graphName,
             string collectionName,
             string edgeKey,

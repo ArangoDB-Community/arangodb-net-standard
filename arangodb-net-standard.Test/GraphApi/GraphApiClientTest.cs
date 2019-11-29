@@ -1192,7 +1192,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     WaitForSync = true
                 });
 
-            var response = await _client.PutGraphEdgeAsync(graphName, edgeClx, createEdgeResponse.Edge._key, new
+            var response = await _client.PutEdgeAsync(graphName, edgeClx, createEdgeResponse.Edge._key, new
             {
                 _from = fromResponse._id,
                 _to = toResponse._id,
@@ -1218,7 +1218,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PutGraphEdgeAsync(graphName, "edgeClx", "", new
+                await _client.PutEdgeAsync(graphName, "edgeClx", "", new
                 {
                     myKey = "myValue"
                 });
