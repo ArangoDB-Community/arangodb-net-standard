@@ -2,11 +2,11 @@
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class PatchVertexResponse<U>
+    public class PatchVertexResponse<T>
     {
-        public U New { get; set; }
+        public T New { get; set; }
 
-        public U Old { get; set; }
+        public T Old { get; set; }
 
         public HttpStatusCode Code { get; set; }
 
