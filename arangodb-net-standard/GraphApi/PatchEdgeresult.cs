@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.GraphApi
 {
-    public class PatchEdgeresult
+    public class PatchEdgeResult
     {
         public string _id { get; set; }
 

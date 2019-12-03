@@ -12,6 +12,6 @@ namespace ArangoDBNetStandard.GraphApi
 
         public U Old { get; set; }
 
-        public PatchEdgeresult Edge { get; set; }
+        public PatchEdgeResult Edge { get; set; }
     }
 }
