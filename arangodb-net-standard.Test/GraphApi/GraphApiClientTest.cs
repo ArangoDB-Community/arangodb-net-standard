@@ -1267,8 +1267,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 From = new string[] { "FromClx" }
             }, new PutEdgeDefinitionQuery
             {
-                WaitForSync = true,
-                DropCollections = true
+                WaitForSync = true
             });
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
@@ -1294,8 +1293,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     From = new string[] { "FromClx" }
                 }, new PutEdgeDefinitionQuery
                 {
-                    WaitForSync = false,
-                    DropCollections = true
+                    WaitForSync = false
                 });
             });
 
@@ -1315,8 +1313,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     From = new string[] { "FromClx" }
                 }, new PutEdgeDefinitionQuery
                 {
-                    WaitForSync = false,
-                    DropCollections = true
+                    WaitForSync = false
                 });
             });
 
