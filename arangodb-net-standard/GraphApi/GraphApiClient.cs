@@ -651,7 +651,7 @@ namespace ArangoDBNetStandard.GraphApi
             T edge,
             PatchEdgeQuery query = null)
         {
-            StringContent content = GetStringContent(edge, false, false);
+            var content = GetContent(edge, false, false);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
