@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-
+using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 
 namespace ArangoDBNetStandard.DocumentApi
@@ -16,10 +16,24 @@ namespace ArangoDBNetStandard.DocumentApi
         private IApiClientTransport _client;
 
         /// <summary>
-        /// Create an instance of <see cref="DocumentApiClient"/>.
+        /// Creates an instance of <see cref="DocumentApiClient"/>
+        /// using the provided transport layer and the default JSON serialization.
         /// </summary>
         /// <param name="client"></param>
         public DocumentApiClient(IApiClientTransport client)
+            : base(new JsonNetApiClientSerialization())
+        {
+            _client = client;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="DocumentApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="serializer"></param>
+        public DocumentApiClient(IApiClientTransport client, IApiClientSerialization serializer)
+            : base(serializer)
         {
             _client = client;
         }
@@ -39,7 +53,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetStringContent(document, false, false);
+            var content = GetContent(document, false, false);
             using (var response = await _client.PostAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -66,7 +80,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            StringContent content = GetStringContent(documents, false, false);
+            var content = GetContent(documents, false, false);
             using (var response = await _client.PostAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -93,7 +107,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetStringContent(documents, false, false);
+            var content = GetContent(documents, false, false);
             using (var response = await _client.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -124,7 +138,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + opts.ToQueryString();
             }
-            var content = GetStringContent(doc, false, false);
+            var content = GetContent(doc, false, false);
             using (var response = await _client.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -276,7 +290,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetStringContent(selectors, false, false);
+            var content = GetContent(selectors, false, false);
             using (var response = await _client.DeleteAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -317,7 +331,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetStringContent(patches, false, false);
+            var content = GetContent(patches, false, false);
             using (var response = await _client.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -369,7 +383,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            StringContent content = GetStringContent(body, false, false);
+            var content = GetContent(body, false, false);
             using (var response = await _client.PatchAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)

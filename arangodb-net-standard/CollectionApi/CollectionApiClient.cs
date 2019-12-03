@@ -1,10 +1,8 @@
-﻿using System.Net;
+﻿using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Transport;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-
-using ArangoDBNetStandard.Transport;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace ArangoDBNetStandard.CollectionApi
 {
@@ -13,7 +11,25 @@ namespace ArangoDBNetStandard.CollectionApi
         private IApiClientTransport _transport;
         private string _collectionApiPath = "_api/collection";
 
+        /// <summary>
+        /// Creates an instance of <see cref="CollectionApiClient"/>
+        /// using the provided transport layer and the default JSON serialization.
+        /// </summary>
+        /// <param name="client"></param>
         public CollectionApiClient(IApiClientTransport transport)
+            : base(new JsonNetApiClientSerialization())
+        {
+            _transport = transport;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="CollectionApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="transport"></param>
+        /// <param name="serializer"></param>
+        public CollectionApiClient(IApiClientTransport transport, IApiClientSerialization serializer)
+            : base(serializer)
         {
             _transport = transport;
         }
@@ -25,7 +41,7 @@ namespace ArangoDBNetStandard.CollectionApi
             {
                 uriString += "?" + options.ToQueryString();
             }
-            StringContent content = GetStringContent(body, true, true);
+            var content = GetContent(body, true, true);
             using (var response = await _transport.PostAsync(_collectionApiPath, content))
             {
                 var stream = await response.Content.ReadAsStreamAsync();
@@ -58,7 +74,9 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName)
         {
-            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/truncate", null))
+            using (var response = await _transport.PutAsync(
+                _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/truncate",
+                new byte[0]))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -159,7 +177,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body)
         {
-            StringContent content = GetStringContent(body, true, false);
+            var content = GetContent(body, true, false);
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/rename", content))
             {
                 if (response.IsSuccessStatusCode)
@@ -200,7 +218,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public async Task<PutCollectionPropertyResponse> PutCollectionPropertyAsync(string collectionName, PutCollectionPropertyBody body)
         {
-            StringContent content = GetStringContent(body, true, true);
+            var content = GetContent(body, true, true);
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/properties", content))
             {
                 if (response.IsSuccessStatusCode)
@@ -221,7 +239,7 @@ namespace ArangoDBNetStandard.CollectionApi
         public async Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName)
         {
             using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/figures"))
-            {                
+            {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
@@ -229,7 +247,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 }
 
                 throw await GetApiErrorException(response);
-            };            
+            };
         }
     }
 }

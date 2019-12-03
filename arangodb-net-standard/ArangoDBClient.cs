@@ -6,6 +6,7 @@ using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.GraphApi;
+using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.TransactionApi;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.Transport.Http;
@@ -51,7 +52,7 @@ namespace ArangoDBNetStandard
 
         /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
-        /// <see cref="HttpClient"/> instance.
+        /// <see cref="HttpClient"/> instance, using the default JSON serialization.
         /// </summary>
         /// <param name="client"></param>
         public ArangoDBClient(HttpClient client)
@@ -66,19 +67,38 @@ namespace ArangoDBNetStandard
         }
 
         /// <summary>
-        /// Create an instance of <see cref="ArangoDBClient"/> from an existing
-        /// <see cref="IApiClientTransport"/> instance.
+        /// Create an instance of <see cref="ArangoDBClient"/>
+        /// using the provided transport layer and the default JSON serialization.
         /// </summary>
         /// <param name="transport">The ArangoDB transport layer implementation.</param>
         public ArangoDBClient(IApiClientTransport transport)
         {
             _transport = transport;
-            Cursor = new CursorApiClient(_transport);
-            Database = new DatabaseApiClient(_transport);
-            Document = new DocumentApiClient(_transport);
-            Collection = new CollectionApiClient(_transport);
-            Transaction = new TransactionApiClient(_transport);
-            Graph = new GraphApiClient(_transport);
+
+            var serialization = new JsonNetApiClientSerialization();
+
+            Cursor = new CursorApiClient(_transport, serialization);
+            Database = new DatabaseApiClient(_transport, serialization);
+            Document = new DocumentApiClient(_transport, serialization);
+            Collection = new CollectionApiClient(_transport, serialization);
+            Transaction = new TransactionApiClient(_transport, serialization);
+            Graph = new GraphApiClient(_transport, serialization);
+        }
+
+        /// <summary>
+        /// Create an instance of <see cref="ArangoDBClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="transport">The ArangoDB transport layer implementation.</param>
+        public ArangoDBClient(IApiClientTransport transport, IApiClientSerialization serialization)
+        {
+            _transport = transport;
+            Cursor = new CursorApiClient(_transport, serialization);
+            Database = new DatabaseApiClient(_transport, serialization);
+            Document = new DocumentApiClient(_transport, serialization);
+            Collection = new CollectionApiClient(_transport, serialization);
+            Transaction = new TransactionApiClient(_transport, serialization);
+            Graph = new GraphApiClient(_transport, serialization);
         }
 
         /// <summary>
