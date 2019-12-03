@@ -717,9 +717,9 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task DeleteGraphEdgeAsync_ShouldSucceed()
+        public async Task DeleteEdgeAsync_ShouldSucceed()
         {
-            string graphName = nameof(DeleteGraphEdgeAsync_ShouldSucceed);
+            string graphName = nameof(DeleteEdgeAsync_ShouldSucceed);
             string fromClx = graphName + "_fromclx";
             string toClx = graphName + "_toclx";
             string edgeClx = graphName + "_edgeclx";
@@ -769,11 +769,16 @@ namespace ArangoDBNetStandardTest.GraphApi
                     WaitForSync = true
                 });
             // Delete edge
-            DeleteGraphEdgeResponse<DeleteGraphEdgeMockModel> response = await _client.DeleteGraphEdgeAsync<DeleteGraphEdgeMockModel>(graphName, edgeClx, createEdgeResponse.Edge._key, new DeleteGraphEdgeQuery
-            {
-                ReturnOld = true,
-                WaitForSync = true
-            });
+            DeleteEdgeResponse<DeleteGraphEdgeMockModel> response =
+                await _client.DeleteEdgeAsync<DeleteGraphEdgeMockModel>(
+                    graphName,
+                    edgeClx,
+                    createEdgeResponse.Edge._key,
+                    new DeleteEdgeQuery
+                    {
+                        ReturnOld = true,
+                        WaitForSync = true
+                    });
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
@@ -782,13 +787,13 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task DeleteGraphEdgeAsync_ShouldThrow_WhenGraphNotFound()
+        public async Task DeleteEdgeAsync_ShouldThrow_WhenGraphNotFound()
         {
-            string graphName = nameof(DeleteGraphEdgeAsync_ShouldThrow_WhenGraphNotFound);
+            string graphName = nameof(DeleteEdgeAsync_ShouldThrow_WhenGraphNotFound);
 
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.DeleteGraphEdgeAsync<object>(graphName, "edgeClx", "");
+                await _client.DeleteEdgeAsync<object>(graphName, "edgeClx", "");
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);

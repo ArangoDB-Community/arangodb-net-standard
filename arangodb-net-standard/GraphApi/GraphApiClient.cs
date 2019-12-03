@@ -346,17 +346,18 @@ namespace ArangoDBNetStandard.GraphApi
         /// Removes an edge from the collection.
         /// DELETE /_api/gharial/{graph}/edge/{collection}/{edge}
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="graphName"></param>
-        /// <param name="collectionName"></param>
-        /// <param name="edgeKey"></param>
+        /// <typeparam name="T">The type of the edge that is returned in
+        /// <see cref="DeleteEdgeResponse{T}.Old"/> if requested.</typeparam>
+        /// <param name="graphName">The name of the graph.</param>
+        /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
+        /// <param name="edgeKey">The _key attribute of the edge.</param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteGraphEdgeResponse<T>> DeleteGraphEdgeAsync<T>(
+        public async Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
             string graphName,
             string collectionName,
             string edgeKey,
-            DeleteGraphEdgeQuery query = null)
+            DeleteEdgeQuery query = null)
         {
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
@@ -369,7 +370,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<DeleteGraphEdgeResponse<T>>(stream);
+                    return DeserializeJsonFromStream<DeleteEdgeResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

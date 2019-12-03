@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class DeleteGraphEdgeQuery
+    public class DeleteEdgeQuery
     {
         public bool? WaitForSync { get; set; }
 
