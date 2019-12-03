@@ -41,8 +41,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// GET /_api/gharial
         /// </summary>
         /// <remarks>
-        /// Note: The <see cref="GraphResult.Name"/> property is null for <see cref="GraphApiClient.GetGraphsAsync"/> in ArangoDB 4.5.2 and below,
-        /// in which case you can use <see cref="GraphResult._key"/> instead.
+        /// Note: The <see cref="GraphResult.Name"/> property is null for <see cref="GraphApiClient.GetGraphsAsync"/>
+        /// in ArangoDB 4.5.2 and below, in which case you can use <see cref="GraphResult._key"/> instead.
         /// </remarks>
         /// <returns></returns>
         public async Task<GetGraphsResponse> GetGraphsAsync()
@@ -508,6 +508,42 @@ namespace ArangoDBNetStandard.GraphApi
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
                     return DeserializeJsonFromStream<PutGraphEdgeResponse<T>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Change one specific edge definition.
+        /// This will modify all occurrences of this definition in all graphs known to your database.
+        /// PUT/_api/gharial/{graph}/edge/{definition}
+        /// </summary>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="body"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PutEdgeDefinitionResponse> PutEdgeDefinitionAsync(
+            string graphName,
+            string collectionName,
+            PutEdgeDefinitionBody body,
+            PutEdgeDefinitionQuery query = null)
+        {
+            string uriString = _graphApiPath + "/" +
+                WebUtility.UrlEncode(graphName) + "/edge/" + 
+                WebUtility.UrlEncode(collectionName);
+                
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+            var content = GetStringContent(body, true, true);
+            using (var response = await _transport.PutAsync(uriString, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PutEdgeDefinitionResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

@@ -470,8 +470,8 @@ namespace ArangoDBNetStandardTest.GraphApi
                     new EdgeDefinition()
                     {
                         Collection = edgeClx,
-                        From = new string[] { "FromCollection" },
-                        To = new string[] { "ToCollection" }
+                        From = new string[] { "FromPutCollection" },
+                        To = new string[] { "ToPutCollection" }
                     }
                 }
             });
@@ -1226,6 +1226,99 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task PutEdgeDefinitionAsync_ShouldSucceed()
+        {
+            string edgeClx = nameof(PutEdgeDefinitionAsync_ShouldSucceed) + "_EdgeClx";
+
+            var createClxResponse = await _fixture.ArangoDBClient.Collection.PostCollectionAsync(
+                new PostCollectionBody()
+                {
+                    Name = edgeClx,
+                    Type = 3
+                });
+
+            Assert.Equal(edgeClx, createClxResponse.Name);
+
+            string graphName = nameof(PutEdgeDefinitionAsync_ShouldSucceed) + "_graph";
+
+            PostGraphResponse createGraphResponse = await _client.PostGraphAsync(new PostGraphBody()
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>()
+                {
+                    new EdgeDefinition()
+                    {
+                        Collection = edgeClx,
+                        From = new string[] { "FromCollection" },
+                        To = new string[] { "ToCollection" }
+                    }
+                }
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, createGraphResponse.Code);
+
+            var response = await _client.PutEdgeDefinitionAsync(graphName, edgeClx, new PutEdgeDefinitionBody
+            {
+                Collection = edgeClx,
+                To = new string[] { "ToClx" },
+                From = new string[] { "FromClx" }
+            }, new PutEdgeDefinitionQuery
+            {
+                WaitForSync = true
+            });
+
+            Assert.Equal(HttpStatusCode.Accepted, response.Code);
+            Assert.False(response.Error);
+            string beforeFromDefintion = createGraphResponse.Graph.EdgeDefinitions.FirstOrDefault().From.FirstOrDefault();
+            string afterFromDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().From.FirstOrDefault();
+            string beforeToDefintion = createGraphResponse.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
+            string afterToDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
+            Assert.NotEqual(beforeFromDefintion, afterFromDefinition);
+            Assert.NotEqual(beforeToDefintion, afterToDefinition);
+        }
+
+        [Fact]
+        public async Task PutEdgeDefinitionAsync_ShouldThrow_WhenGraphNameDoesNotExist()
+        {
+            var edgeClx = nameof(PutEdgeDefinitionAsync_ShouldThrow_WhenGraphNameDoesNotExist) + "_edgeClx";
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PutEdgeDefinitionAsync("bogus_collection", edgeClx, new PutEdgeDefinitionBody
+                {
+                    Collection = edgeClx,
+                    To = new string[] { "ToClx" },
+                    From = new string[] { "FromClx" }
+                }, new PutEdgeDefinitionQuery
+                {
+                    WaitForSync = false
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1924, ex.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task PutEdgeDefinitionAsync_ShouldThrow_WhenEdgeCollectionNameDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PutEdgeDefinitionAsync(_fixture.TestGraph, "bogus_edgeclx", new PutEdgeDefinitionBody
+                {
+                    Collection = "bogus_edgeclx",
+                    To = new string[] { "ToClx" },
+                    From = new string[] { "FromClx" }
+                }, new PutEdgeDefinitionQuery
+                {
+                    WaitForSync = false
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.Equal(1930, ex.ApiError.ErrorNum); // GRAPH_EDGE_COLLECTION_NOT_USED
         }
     }
 }
