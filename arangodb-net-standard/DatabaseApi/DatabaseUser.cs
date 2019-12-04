@@ -8,7 +8,7 @@ namespace ArangoDBNetStandard.DatabaseApi
 
         public string Passwd { get; set; }
 
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
 
         public Dictionary<string, object> Extra { get; set; }
     }
