@@ -371,6 +371,60 @@ namespace ArangoDBNetStandard.GraphApi
         }
 
         /// <summary>
+        /// Gets an edge from the given graph using the edge collection and _key attribute.
+        /// </summary>
+        /// <typeparam name="T">The type of the edge document to deserialize to.</typeparam>
+        /// <param name="graphName">The name of the graph.</param>
+        /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
+        /// <param name="edgeKey">The _key attribute of the edge.</param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public Task<GetGraphEdgeResponse<T>> GetEdgeAsync<T>(
+            string graphName,
+            string collectionName,
+            string edgeKey,
+            GetGraphEdgeQuery query = null)
+        {
+            return GetEdgeAsync<T>(
+                graphName,
+                WebUtility.UrlEncode(collectionName) + '/' + WebUtility.UrlEncode(edgeKey),
+                query);
+        }
+
+        /// <summary>
+        /// Gets an edge from the given graph using the edge's document-handle.
+        /// GET /_api/gharial/{graph}/edge/{collection}/{edge}
+        /// </summary>
+        /// <typeparam name="T">The type of the edge document to deserialize to.</typeparam>
+        /// <param name="graphName">The name of the graph.</param>
+        /// <param name="edgeHandle">The document-handle of the edge document.</param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<GetGraphEdgeResponse<T>> GetEdgeAsync<T>(
+            string graphName,
+            string edgeHandle,
+            GetGraphEdgeQuery query = null)
+        {
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
+                "/edge/" + edgeHandle;
+
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+
+            using (var response = await _transport.GetAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetGraphEdgeResponse<T>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
         /// Removes an edge from the collection.
         /// DELETE /_api/gharial/{graph}/edge/{collection}/{edge}
         /// </summary>
