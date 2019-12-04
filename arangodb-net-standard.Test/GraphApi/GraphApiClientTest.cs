@@ -917,7 +917,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // GRAPH_DUPLICATE
+            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
         }
 
         [Fact]
@@ -1629,29 +1629,10 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task PutVertexAsync_ShouldThrow_WhenGraphIsNotFound()
         {
-            string graphName = nameof(PutVertexAsync_ShouldThrow_WhenGraphIsNotFound);
             string vertexClx = nameof(PutVertexAsync_ShouldThrow_WhenGraphIsNotFound);
-            string fakeGraph = graphName + "_bogus";
-            PostGraphResponse createGraphResponse = await _client.PostGraphAsync(
-               new PostGraphBody()
-               {
-                   Name = fakeGraph
-               });
-
-            PostVertexCollectionResponse createVertexClxResponse = await _client.PostVertexCollectionAsync(
-               fakeGraph,
-               new PostVertexCollectionBody()
-               {
-                   Collection = vertexClx
-               });
-            var createVertexResponse = await _client.PostVertexAsync(fakeGraph, vertexClx, new
-            {
-                Name = vertexClx + "_vtx"
-            });
-
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PutVertexAsync("bogusGraph", vertexClx, createVertexResponse.Vertex._key, new PutVertexMockModel
+                await _client.PutVertexAsync("bogusGraph", vertexClx, "", new PutVertexMockModel
                 {
                     Name = "Bogus_Name"
                 });
