@@ -644,14 +644,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edge"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
+        public async Task<PatchEdgeResponse<T>> PatchEdgeAsync<T, U>(
             string graphName,
             string collectionName,
             string edgeKey,
-            T edge,
+            U edge,
             PatchEdgeQuery query = null)
         {
-            var content = GetContent(edge, false, false);
+            var content = GetContent(edge, true, true);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
@@ -666,7 +666,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PatchEdgeResponse<U>>(stream);
+                    return DeserializeJsonFromStream<PatchEdgeResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

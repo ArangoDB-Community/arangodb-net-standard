@@ -1541,26 +1541,29 @@ namespace ArangoDBNetStandardTest.GraphApi
                     WaitForSync = true
                 });
 
-            var response = await _client.PatchEdgeAsync<object, PatchEdgeMockModel>(graphName, edgeClx, createEdgeResponse.Edge._key, new
-            {
-                _from = fromResponse._id,
-                _to = toResponse._id,
-                myKey = "newValue"
-            }, new PatchEdgeQuery
-            {
-                ReturnNew = true,
-                ReturnOld = true,
-                WaitForSync = true
-            });
+            var response = await _client.PatchEdgeAsync<PatchEdgeMockModel, object>(
+                graphName,
+                edgeClx,
+                createEdgeResponse.Edge._key,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "newValue"
+                }, new PatchEdgeQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
             Assert.NotEqual(createEdgeResponse.New.myKey, response.New.myKey);
             Assert.False(response.Error);
-            Assert.NotEqual(response.Edge._rev, createEdgeResponse.Edge._rev);
+            Assert.NotEqual(createEdgeResponse.Edge._rev, response.Edge._rev);
             Assert.Equal(createEdgeResponse.New.value, response.New.value);
             Assert.Equal(createEdgeResponse.New.value, response.Old.value);
-            Assert.Equal(createEdgeResponse.New.value, response.New.value);
         }
 
         [Fact]
@@ -1570,7 +1573,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PatchEdgeAsync<object, PatchEdgeMockModel>(graphName, "edgeClx", "", new { });
+                await _client.PatchEdgeAsync<PatchEdgeMockModel, object>(graphName, "edgeClx", "", new { });
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
