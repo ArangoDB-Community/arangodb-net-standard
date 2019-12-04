@@ -64,7 +64,10 @@ namespace ArangoDBNetStandardTest
                 finally
                 {
                     _databases.Add(dbName);
-                    _users.AddRange(users.Select(u => u.Username));
+                    if (users != null)
+                    {
+                        _users?.AddRange(users.Select(u => u.Username));
+                    }
                 }
             }
         }
