@@ -33,7 +33,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.NotEmpty(graphsResult.Graphs);
 
             var graph = graphsResult.Graphs.First(x => x._key == _fixture.TestGraph);
-            Assert.Single(graph.EdgeDefinitions);
+            Assert.NotEmpty(graph.EdgeDefinitions);
             Assert.Empty(graph.OrphanCollections);
             Assert.Equal(1, graph.NumberOfShards);
             Assert.Equal(1, graph.ReplicationFactor);
@@ -90,7 +90,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var response = await _client.GetGraphAsync(_fixture.TestGraph);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal("_graphs/" + _fixture.TestGraph, response.Graph._id);
-            Assert.Single(response.Graph.EdgeDefinitions);
+            Assert.NotEmpty(response.Graph.EdgeDefinitions);
             Assert.Empty(response.Graph.OrphanCollections);
             Assert.Equal(1, response.Graph.NumberOfShards);
             Assert.Equal(1, response.Graph.ReplicationFactor);
@@ -1145,9 +1145,9 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PuGraphEdgeAsync_ShouldSucceed()
+        public async Task PutGraphEdgeAsync_ShouldSucceed()
         {
-            string graphName = nameof(PuGraphEdgeAsync_ShouldSucceed);
+            string graphName = nameof(PutGraphEdgeAsync_ShouldSucceed);
             string fromClx = graphName + "_fromclx";
             string toClx = graphName + "_toclx";
             string edgeClx = graphName + "_edgeclx";
@@ -1236,8 +1236,9 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task PutEdgeDefinitionAsync_ShouldSucceed()
         {
+            var graphClient = _fixture.PutEdgeDefinitionAsync_ShouldSucceed_ArangoDBClient.Graph;
             string edgeClx = nameof(PutEdgeDefinitionAsync_ShouldSucceed);
-            var response = await _client.PutEdgeDefinitionAsync(
+            var response = await graphClient.PutEdgeDefinitionAsync(
                 _fixture.TestGraph,
                 edgeClx,
                 new PutEdgeDefinitionBody
