@@ -17,7 +17,7 @@ namespace ArangoDBNetStandard.Serialization
         /// <typeparam name="T">The type of the object to deserialize to.</typeparam>
         /// <param name="stream">The stream containing the JSON structure to deserialize.</param>
         /// <returns></returns>
-        public virtual T DeserializeJsonFromStream<T>(Stream stream)
+        public virtual T DeserializeFromStream<T>(Stream stream)
         {
             if (stream == null || stream.CanRead == false)
             {
@@ -44,7 +44,7 @@ namespace ArangoDBNetStandard.Serialization
         /// <param name="useCamelCasePropertyNames">Whether property names should be camel cased (camelCase).</param>
         /// <param name="ignoreNullValues">Whether null values should be ignored.</param>
         /// <returns></returns>
-        public virtual byte[] SerializeToJson<T>(
+        public virtual byte[] Serialize<T>(
             T item,
             bool useCamelCasePropertyNames,
             bool ignoreNullValues)

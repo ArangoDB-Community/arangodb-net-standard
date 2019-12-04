@@ -90,6 +90,7 @@ namespace ArangoDBNetStandard
         /// using the provided transport and serialization layers.
         /// </summary>
         /// <param name="transport">The ArangoDB transport layer implementation.</param>
+        /// <param name="serialization">The serialization layer implementation.</param>
         public ArangoDBClient(IApiClientTransport transport, IApiClientSerialization serialization)
         {
             _transport = transport;

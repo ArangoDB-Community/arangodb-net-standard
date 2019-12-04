@@ -9,7 +9,7 @@ namespace ArangoDBNetStandardTest.Serialization
     public class JsonNetApiClientSerializationTest
     {
         [Fact]
-        public void SerializeToJson_ShouldSucceed()
+        public void Serialize_ShouldSucceed()
         {
             var model = new TestModel()
             {
@@ -19,7 +19,7 @@ namespace ArangoDBNetStandardTest.Serialization
 
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.SerializeToJson(model, true, true);
+            byte[] jsonBytes = serialization.Serialize(model, true, true);
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -28,7 +28,7 @@ namespace ArangoDBNetStandardTest.Serialization
         }
 
         [Fact]
-        public void DeserializeJsonFromStream_ShouldSucceed()
+        public void DeserializeFromStream_ShouldSucceed()
         {
             // Deserializing should match both "camelCase" and "CamelCase"
 
@@ -39,7 +39,7 @@ namespace ArangoDBNetStandardTest.Serialization
 
             var serialization = new JsonNetApiClientSerialization();
 
-            TestModel model = serialization.DeserializeJsonFromStream<TestModel>(stream);
+            TestModel model = serialization.DeserializeFromStream<TestModel>(stream);
 
             Assert.Equal("myvalue", model.PropertyToCamelCase);
             Assert.Equal("something", model.NullPropertyToIgnore);
