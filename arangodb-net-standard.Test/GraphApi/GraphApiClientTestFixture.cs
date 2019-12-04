@@ -49,6 +49,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                         From = new string[] { "fromclx" },
                         To = new string[] { "toclx" },
                         Collection = "clx"
+                    },
+                    new EdgeDefinition
+                    {
+                        From = new string[] { "fromclx"},
+                        To = new string[] { "toclx" },
+                        Collection = nameof(GraphApiClientTest.PutEdgeDefinitionAsync_ShouldSucceed)
                     }
                 }
             });

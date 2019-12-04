@@ -1236,53 +1236,26 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task PutEdgeDefinitionAsync_ShouldSucceed()
         {
-            string edgeClx = nameof(PutEdgeDefinitionAsync_ShouldSucceed) + "_EdgeClx";
-
-            var createClxResponse = await _fixture.ArangoDBClient.Collection.PostCollectionAsync(
-                new PostCollectionBody()
-                {
-                    Name = edgeClx,
-                    Type = 3
-                });
-
-            Assert.Equal(edgeClx, createClxResponse.Name);
-
-            string graphName = nameof(PutEdgeDefinitionAsync_ShouldSucceed) + "_graph";
-
-            PostGraphResponse createGraphResponse = await _client.PostGraphAsync(new PostGraphBody()
-            {
-                Name = graphName,
-                EdgeDefinitions = new List<EdgeDefinition>()
-                {
-                    new EdgeDefinition()
-                    {
-                        Collection = edgeClx,
-                        From = new string[] { "FromCollection" },
-                        To = new string[] { "ToCollection" }
-                    }
-                }
-            });
-
-            Assert.Equal(HttpStatusCode.Accepted, createGraphResponse.Code);
-
-            var response = await _client.PutEdgeDefinitionAsync(graphName, edgeClx, new PutEdgeDefinitionBody
+            string edgeClx = nameof(PutEdgeDefinitionAsync_ShouldSucceed);
+            var response = await _client.PutEdgeDefinitionAsync(
+                _fixture.TestGraph,
+                edgeClx,
+                new PutEdgeDefinitionBody
             {
                 Collection = edgeClx,
-                To = new string[] { "ToClx" },
-                From = new string[] { "FromClx" }
-            }, new PutEdgeDefinitionQuery
-            {
-                WaitForSync = true
+                // (update is to swap the direction of from and to)
+                To = new string[] { "fromclx" },
+                From = new string[] { "toclx" }
             });
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
-            string beforeFromDefintion = createGraphResponse.Graph.EdgeDefinitions.FirstOrDefault().From.FirstOrDefault();
-            string afterFromDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().From.FirstOrDefault();
-            string beforeToDefintion = createGraphResponse.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
-            string afterToDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
-            Assert.NotEqual(beforeFromDefintion, afterFromDefinition);
-            Assert.NotEqual(beforeToDefintion, afterToDefinition);
+
+            var newEdgeDef = response.Graph.EdgeDefinitions.FirstOrDefault();
+            string afterFromDefinition = newEdgeDef.From.FirstOrDefault();
+            string afterToDefinition = newEdgeDef.To.FirstOrDefault();
+            Assert.NotEqual("fromclx", afterFromDefinition);
+            Assert.NotEqual("toclx", afterToDefinition);
         }
 
         [Fact]
