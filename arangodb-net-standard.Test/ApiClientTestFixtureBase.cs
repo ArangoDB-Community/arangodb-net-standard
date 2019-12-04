@@ -16,7 +16,7 @@ namespace ArangoDBNetStandardTest
 
         protected HttpApiTransport GetHttpTransport(string dbName)
         {
-            var transport = new HttpApiTransport(
+            var transport = HttpApiTransport.UsingBasicAuth(
                 new Uri("http://localhost:8529/"),
                 dbName,
                 "root",
@@ -27,8 +27,8 @@ namespace ArangoDBNetStandardTest
 
         protected ArangoDBClient GetArangoDBClient(string dbName)
         {
-            var httpClient = GetHttpTransport(dbName);
-            return new ArangoDBClient(httpClient);
+            var httpTransport = GetHttpTransport(dbName);
+            return new ArangoDBClient(httpTransport);
         }
 
         protected async Task DropDatabase(string dbName)

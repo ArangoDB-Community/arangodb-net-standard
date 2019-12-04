@@ -33,13 +33,30 @@ namespace ArangoDBNetStandard.Transport.Http
         }
 
         /// <summary>
-        /// Create <see cref="HttpApiTransport"/> using basic auth.
+        /// Get an instance of <see cref="HttpApiTransport"/> that uses no authentication.
+        /// </summary>
+        /// <param name="hostUri"></param>
+        /// <param name="dbName"></param>
+        /// <returns></returns>
+        public static HttpApiTransport UsingNoAuth(
+            Uri hostUri,
+            string dbName)
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "/_db/" + dbName + "/");
+
+            var transport = new HttpApiTransport(client);
+            return transport;
+        }
+
+        /// <summary>
+        /// Get an instance of <see cref="HttpApiTransport"/> that uses basic auth.
         /// </summary>
         /// <param name="hostUri"></param>
         /// <param name="dbName"></param>
         /// <param name="username"></param>
         /// <param name="passwd"></param>
-        public HttpApiTransport(
+        public static HttpApiTransport UsingBasicAuth(
             Uri hostUri,
             string dbName,
             string username,
@@ -47,12 +64,59 @@ namespace ArangoDBNetStandard.Transport.Http
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(hostUri.AbsoluteUri + "/_db/" + dbName + "/");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+
+            var transport = new HttpApiTransport(client);
+            transport.SetBasicAuth(username, passwd);
+
+            return transport;
+        }
+
+        /// <summary>
+        /// Get an instance of <see cref="HttpApiTransport"/> that uses
+        /// JWT-Token authentication.
+        /// </summary>
+        /// <param name="hostUri"></param>
+        /// <param name="dbName"></param>
+        /// <param name="jwtToken"></param>
+        /// <returns></returns>
+        public static HttpApiTransport UsingJwtAuth(
+            Uri hostUri,
+            string dbName,
+            string jwtToken)
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
+
+            var transport = new HttpApiTransport(client);
+            transport.SetJwtToken(jwtToken);
+
+            return transport;
+        }
+
+        /// <summary>
+        /// When using Basic auth, call this method to set the username and password
+        /// used in requests to ArangoDB.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="passwd"></param>
+        public void SetBasicAuth(string username, string passwd)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                 "Basic",
                 Convert.ToBase64String(
                     Encoding.ASCII.GetBytes($"{username}:{passwd}")));
+        }
 
-            _client = client;
+        /// <summary>
+        /// When using JWT authentication, call this method to refresh the JWT token
+        /// used in requests to ArangoDB.
+        /// </summary>
+        /// <param name="jwt"></param>
+        public void SetJwtToken(string jwt)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                   "bearer",
+                   jwt);
         }
 
         /// <summary>
