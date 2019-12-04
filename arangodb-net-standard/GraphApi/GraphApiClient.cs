@@ -40,10 +40,20 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="postGraphBody">The information of the graph to create.</param>
         /// <returns></returns>
-        public async Task<PostGraphResponse> PostGraphAsync(PostGraphBody postGraphBody)
+        public async Task<PostGraphResponse> PostGraphAsync(
+            PostGraphBody postGraphBody,
+            PostGraphQuery query = null)
         {
+            string uri = _graphApiPath;
+
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+
             var content = GetContent(postGraphBody, true, true);
-            using (var response = await _transport.PostAsync(_graphApiPath, content))
+
+            using (var response = await _transport.PostAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -549,9 +559,9 @@ namespace ArangoDBNetStandard.GraphApi
             PutEdgeDefinitionQuery query = null)
         {
             string uriString = _graphApiPath + "/" +
-                WebUtility.UrlEncode(graphName) + "/edge/" + 
+                WebUtility.UrlEncode(graphName) + "/edge/" +
                 WebUtility.UrlEncode(collectionName);
-                
+
             if (query != null)
             {
                 uriString += "?" + query.ToQueryString();
