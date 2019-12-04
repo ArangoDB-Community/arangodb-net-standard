@@ -23,7 +23,7 @@ namespace ArangoDBNetStandard
         protected async Task<ApiErrorException> GetApiErrorException(IApiClientResponse response)
         {
             var stream = await response.Content.ReadAsStreamAsync();
-            var error = _serialization.DeserializeJsonFromStream<ApiErrorResponse>(stream);
+            var error = _serialization.DeserializeFromStream<ApiErrorResponse>(stream);
             return new ApiErrorException(error);
         }
 
@@ -38,12 +38,12 @@ namespace ArangoDBNetStandard
 
         protected T DeserializeJsonFromStream<T>(Stream stream)
         {
-            return _serialization.DeserializeJsonFromStream<T>(stream);
+            return _serialization.DeserializeFromStream<T>(stream);
         }
 
         protected byte[] GetContent<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues)
         {
-            return _serialization.SerializeToJson<T>(
+            return _serialization.Serialize<T>(
                 item,
                 useCamelCasePropertyNames,
                 ignoreNullValues);
