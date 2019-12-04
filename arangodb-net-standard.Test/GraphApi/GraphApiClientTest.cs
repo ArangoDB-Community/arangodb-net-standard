@@ -33,7 +33,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.NotEmpty(graphsResult.Graphs);
 
             var graph = graphsResult.Graphs.First(x => x._key == _fixture.TestGraph);
-            Assert.Single(graph.EdgeDefinitions);
+            Assert.NotEmpty(graph.EdgeDefinitions);
             Assert.Empty(graph.OrphanCollections);
             Assert.Equal(1, graph.NumberOfShards);
             Assert.Equal(1, graph.ReplicationFactor);
@@ -90,7 +90,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var response = await _client.GetGraphAsync(_fixture.TestGraph);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal("_graphs/" + _fixture.TestGraph, response.Graph._id);
-            Assert.Single(response.Graph.EdgeDefinitions);
+            Assert.NotEmpty(response.Graph.EdgeDefinitions);
             Assert.Empty(response.Graph.OrphanCollections);
             Assert.Equal(1, response.Graph.NumberOfShards);
             Assert.Equal(1, response.Graph.ReplicationFactor);
@@ -1145,9 +1145,9 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
-        public async Task PuGraphEdgeAsync_ShouldSucceed()
+        public async Task PutGraphEdgeAsync_ShouldSucceed()
         {
-            string graphName = nameof(PuGraphEdgeAsync_ShouldSucceed);
+            string graphName = nameof(PutGraphEdgeAsync_ShouldSucceed);
             string fromClx = graphName + "_fromclx";
             string toClx = graphName + "_toclx";
             string edgeClx = graphName + "_edgeclx";
@@ -1236,53 +1236,27 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task PutEdgeDefinitionAsync_ShouldSucceed()
         {
-            string edgeClx = nameof(PutEdgeDefinitionAsync_ShouldSucceed) + "_EdgeClx";
-
-            var createClxResponse = await _fixture.ArangoDBClient.Collection.PostCollectionAsync(
-                new PostCollectionBody()
-                {
-                    Name = edgeClx,
-                    Type = 3
-                });
-
-            Assert.Equal(edgeClx, createClxResponse.Name);
-
-            string graphName = nameof(PutEdgeDefinitionAsync_ShouldSucceed) + "_graph";
-
-            PostGraphResponse createGraphResponse = await _client.PostGraphAsync(new PostGraphBody()
-            {
-                Name = graphName,
-                EdgeDefinitions = new List<EdgeDefinition>()
-                {
-                    new EdgeDefinition()
-                    {
-                        Collection = edgeClx,
-                        From = new string[] { "FromCollection" },
-                        To = new string[] { "ToCollection" }
-                    }
-                }
-            });
-
-            Assert.Equal(HttpStatusCode.Accepted, createGraphResponse.Code);
-
-            var response = await _client.PutEdgeDefinitionAsync(graphName, edgeClx, new PutEdgeDefinitionBody
+            var graphClient = _fixture.PutEdgeDefinitionAsync_ShouldSucceed_ArangoDBClient.Graph;
+            string edgeClx = nameof(PutEdgeDefinitionAsync_ShouldSucceed);
+            var response = await graphClient.PutEdgeDefinitionAsync(
+                _fixture.TestGraph,
+                edgeClx,
+                new PutEdgeDefinitionBody
             {
                 Collection = edgeClx,
-                To = new string[] { "ToClx" },
-                From = new string[] { "FromClx" }
-            }, new PutEdgeDefinitionQuery
-            {
-                WaitForSync = true
+                // (update is to swap the direction of from and to)
+                To = new string[] { "fromclx" },
+                From = new string[] { "toclx" }
             });
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
-            string beforeFromDefintion = createGraphResponse.Graph.EdgeDefinitions.FirstOrDefault().From.FirstOrDefault();
-            string afterFromDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().From.FirstOrDefault();
-            string beforeToDefintion = createGraphResponse.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
-            string afterToDefinition = response.Graph.EdgeDefinitions.FirstOrDefault().To.FirstOrDefault();
-            Assert.NotEqual(beforeFromDefintion, afterFromDefinition);
-            Assert.NotEqual(beforeToDefintion, afterToDefinition);
+
+            var newEdgeDef = response.Graph.EdgeDefinitions.FirstOrDefault();
+            string afterFromDefinition = newEdgeDef.From.FirstOrDefault();
+            string afterToDefinition = newEdgeDef.To.FirstOrDefault();
+            Assert.NotEqual("fromclx", afterFromDefinition);
+            Assert.NotEqual("toclx", afterToDefinition);
         }
 
         [Fact]

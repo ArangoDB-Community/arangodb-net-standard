@@ -8,7 +8,7 @@ namespace ArangoDBNetStandard.GraphApi
 
         public List<EdgeDefinition> EdgeDefinitions { get; set; }
 
-        public bool IsSmart { get; set; }
+        public bool? IsSmart { get; set; }
 
         public PostGraphOptions Options { get; set; }
     }

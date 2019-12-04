@@ -15,13 +15,14 @@ namespace ArangoDBNetStandardTest.GraphApi
 
         public string TestGraph { get; } = "TestGraph";
 
+        public ArangoDBClient PutEdgeDefinitionAsync_ShouldSucceed_ArangoDBClient { get; private set; }
+
         public override async Task InitializeAsync()
         {
             await base.InitializeAsync();
 
             string dbName = nameof(GraphApiClientTest);
             await CreateDatabase(dbName);
-
             ArangoDBClient = GetArangoDBClient(dbName);
 
             try
@@ -53,6 +54,26 @@ namespace ArangoDBNetStandardTest.GraphApi
                 }
             });
 
+            // A separate database is required as a workaround for a bug discovered
+            // in ArangoDB 3.4.6-3.4.8 (and possibly other versions), affecting Windows only.
+            // This is reportedly fixed in ArangoDB 3.5.3.
+            await CreateDatabase(nameof(GraphApiClientTest.PutEdgeDefinitionAsync_ShouldSucceed));
+            PutEdgeDefinitionAsync_ShouldSucceed_ArangoDBClient = GetArangoDBClient(
+                nameof(GraphApiClientTest.PutEdgeDefinitionAsync_ShouldSucceed));
+
+            await PutEdgeDefinitionAsync_ShouldSucceed_ArangoDBClient.Graph.PostGraphAsync(new PostGraphBody
+            {
+                Name = TestGraph,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { "fromclx"},
+                        To = new string[] { "toclx" },
+                        Collection = nameof(GraphApiClientTest.PutEdgeDefinitionAsync_ShouldSucceed)
+                    }
+                }
+            });
         }
     }
 }
