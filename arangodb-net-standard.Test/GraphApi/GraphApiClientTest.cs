@@ -212,6 +212,34 @@ namespace ArangoDBNetStandardTest.GraphApi
         }
 
         [Fact]
+        public async Task PostGraphAsync_ShouldSucceed_WhenWaitForSyncIsTrue()
+        {
+            string graphName = nameof(PostGraphAsync_ShouldSucceed_WhenWaitForSyncIsTrue);
+
+            var response = await _client.PostGraphAsync(new PostGraphBody
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { "fromclx" },
+                        To = new string[] { "toclx" },
+                        Collection = "clx"
+                    }
+                }
+            },
+            new PostGraphQuery()
+            {
+                WaitForSync = true
+            });
+
+            Assert.Equal(HttpStatusCode.Created, response.Code);
+            Assert.Single(response.Graph.EdgeDefinitions);
+            Assert.Equal(graphName, response.Graph.Name);
+        }
+
+        [Fact]
         public async Task PostGraphAsync_ShouldThrow_WhenGraphNameIsInvalid()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
