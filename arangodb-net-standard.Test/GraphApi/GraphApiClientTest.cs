@@ -214,7 +214,8 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task PostGraphAsync_ShouldSucceed_WhenWaitForSyncIsTrue()
         {
-            var graphName = nameof(PostGraphAsync_ShouldSucceed) + "_graph";
+            string graphName = nameof(PostGraphAsync_ShouldSucceed_WhenWaitForSyncIsTrue);
+
             var response = await _client.PostGraphAsync(new PostGraphBody
             {
                 Name = graphName,
