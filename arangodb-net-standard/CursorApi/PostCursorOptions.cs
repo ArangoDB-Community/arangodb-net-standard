@@ -59,7 +59,14 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         public bool? Stream { get; set; }
 
-        // optimizer.rules ?
+        /// <summary>
+        /// A list of to-be-included or to-be-excluded optimizer rules can be put 
+        /// into the <see cref="PostCursorOptionsOptimizer.Rules"/> attribute, 
+        /// telling the optimizer to include or exclude specific rules.
+        /// To disable a rule, prefix its name with a -, to enable a rule, prefix it with a +. 
+        /// There is also a pseudo-rule all, which will match all optimizer rules.
+        /// </summary>
+        public PostCursorOptionsOptimizer Optimizer { get; set; }
 
         /// <summary>
         /// If set to true or 1, then the additional query profiling information will be returned

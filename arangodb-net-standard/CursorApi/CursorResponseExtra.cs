@@ -2,10 +2,19 @@
 
 namespace ArangoDBNetStandard.CursorApi
 {
+    /// <summary>
+    /// Additional data relating to a query result cursor.
+    /// </summary>
     public class CursorResponseExtra
     {
+        /// <summary>
+        /// Query ID, can be used to fetch more results from a cursor or to delete a cursor.
+        /// </summary>
         public string Id { get; set; }
 
+        /// <summary>
+        /// Various stats related to the query.
+        /// </summary>
         public CursorResponseStats Stats { get; set; }
 
         /// <summary>
@@ -30,5 +39,10 @@ namespace ArangoDBNetStandard.CursorApi
         /// - "finalizing"
         /// </remarks>
         public Dictionary<string, double> Profile { get; set; }
+
+        /// <summary>
+        /// List of warnings related to the query.
+        /// </summary>
+        public IEnumerable<CursorResponseWarning> Warnings { get; set; }
     }
 }
