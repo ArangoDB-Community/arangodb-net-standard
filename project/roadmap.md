@@ -16,7 +16,7 @@ A tick indicates an item is implemented and has automated tests in place.
 #### Authentication
 
 - [X]	Basic authentication
-- [ ]	JWT authentication
+- [X]	JWT authentication
 
 #### Collections API
 
