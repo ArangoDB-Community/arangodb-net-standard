@@ -18,18 +18,26 @@ namespace ArangoDBNetStandard.Transport.Http
     /// </remarks>
     public class HttpApiTransport : IApiClientTransport
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
+        private HttpContentType _contentType;
+
+        private static readonly Dictionary<HttpContentType, string> _contentTypeMap =
+            new Dictionary<HttpContentType, string>
+            {
+                [HttpContentType.Json] = "application/json",
+                [HttpContentType.VPack] = "application/x-velocypack"
+            };
 
         /// <summary>
         /// Create <see cref="HttpApiTransport"/> from an existing <see cref="HttpClient"/> instance.
         /// </summary>
-        /// <param name="hostUri"></param>
-        /// <param name="dbName"></param>
-        /// <param name="username"></param>
-        /// <param name="passwd"></param>
-        public HttpApiTransport(HttpClient client)
+        /// <param name="client">Existing HTTP client instance.</param>
+        /// <param name="contentType">Content type to use in requests.
+        /// Used to set Content-Type and Accept HTTP headers.</param>
+        public HttpApiTransport(HttpClient client, HttpContentType contentType)
         {
             _client = client;
+            _contentType = contentType;
         }
 
         /// <summary>
@@ -37,15 +45,19 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="hostUri"></param>
         /// <param name="dbName"></param>
+        /// <param name="contentType">Content type to use in requests.
+        /// Used to set Content-Type and Accept HTTP headers.
+        /// Uses JSON content type by default.</param>
         /// <returns></returns>
         public static HttpApiTransport UsingNoAuth(
             Uri hostUri,
-            string dbName)
+            string dbName,
+            HttpContentType contentType = HttpContentType.Json)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "/_db/" + dbName + "/");
+            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
-            var transport = new HttpApiTransport(client);
+            var transport = new HttpApiTransport(client, contentType);
             return transport;
         }
 
@@ -56,16 +68,21 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="dbName"></param>
         /// <param name="username"></param>
         /// <param name="passwd"></param>
+        /// <param name="contentType">Content type to use in requests.
+        /// Used to set Content-Type and Accept HTTP headers.
+        /// Uses JSON content type by default.</param>
+        /// <returns></returns>
         public static HttpApiTransport UsingBasicAuth(
             Uri hostUri,
             string dbName,
             string username,
-            string passwd)
+            string passwd,
+            HttpContentType contentType = HttpContentType.Json)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "/_db/" + dbName + "/");
+            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
-            var transport = new HttpApiTransport(client);
+            var transport = new HttpApiTransport(client, contentType);
             transport.SetBasicAuth(username, passwd);
 
             return transport;
@@ -78,19 +95,47 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="hostUri"></param>
         /// <param name="dbName"></param>
         /// <param name="jwtToken"></param>
+        /// <param name="contentType">Content type to use in requests.
+        /// Used to set Content-Type and Accept HTTP headers.
+        /// Uses JSON content type by default.</param>
         /// <returns></returns>
         public static HttpApiTransport UsingJwtAuth(
             Uri hostUri,
             string dbName,
-            string jwtToken)
+            string jwtToken,
+            HttpContentType contentType = HttpContentType.Json)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
-            var transport = new HttpApiTransport(client);
+            var transport = new HttpApiTransport(client, contentType);
             transport.SetJwtToken(jwtToken);
 
             return transport;
+        }
+
+        /// <summary>
+        /// Make this <see cref="HttpApiTransport"/> instance use JSON content type
+        /// for Content-Type and Accept HTTP headers.
+        /// </summary>
+        public void UseJsonContentType()
+        {
+            _contentType = HttpContentType.Json;
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue(_contentTypeMap[_contentType]));
+        }
+
+        /// <summary>
+        /// Make this <see cref="HttpApiTransport"/> instance use VPack content type
+        /// for Content-Type and Accept HTTP headers.
+        /// </summary>
+        public void UseVPackContentType()
+        {
+            _contentType = HttpContentType.VPack;
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue(_contentTypeMap[_contentType]));
         }
 
         /// <summary>
@@ -142,6 +187,7 @@ namespace ArangoDBNetStandard.Transport.Http
             {
                 Content = new ByteArrayContent(content)
             };
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
             var response = await _client.SendAsync(request);
             return new HttpApiClientResponse(response);
         }
@@ -155,6 +201,7 @@ namespace ArangoDBNetStandard.Transport.Http
         public async Task<IApiClientResponse> PostAsync(string requestUri, byte[] content)
         {
             var httpContent = new ByteArrayContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
             var response = await _client.PostAsync(requestUri, httpContent);
             return new HttpApiClientResponse(response);
         }
@@ -168,6 +215,7 @@ namespace ArangoDBNetStandard.Transport.Http
         public async Task<IApiClientResponse> PutAsync(string requestUri, byte[] content)
         {
             var httpContent = new ByteArrayContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
             var response = await _client.PutAsync(requestUri, httpContent);
             return new HttpApiClientResponse(response);
         }
@@ -196,6 +244,7 @@ namespace ArangoDBNetStandard.Transport.Http
             {
                 Content = new ByteArrayContent(content)
             };
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
             var response = await _client.SendAsync(request);
             return new HttpApiClientResponse(response);
         }
@@ -204,9 +253,11 @@ namespace ArangoDBNetStandard.Transport.Http
         /// Send a HEAD request using <see cref="HttpClient"/>
         /// </summary>
         /// <param name="requestUri"></param>
-        /// <param name="headers"></param>
+        /// <param name="webHeaderCollection"></param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> HeadAsync(string requestUri, WebHeaderCollection webHeaderCollection = null)
+        public async Task<IApiClientResponse> HeadAsync(
+            string requestUri,
+            WebHeaderCollection webHeaderCollection = null)
         {
             var request = new HttpRequestMessage(HttpMethod.Head, requestUri);
 

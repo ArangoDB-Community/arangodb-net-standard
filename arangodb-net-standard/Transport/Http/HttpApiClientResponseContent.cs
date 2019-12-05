@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,8 @@ namespace ArangoDBNetStandard.Transport.Http
         {
             this.content = content;
         }
+
+        public HttpContentHeaders Headers => content.Headers;
 
         public async Task<Stream> ReadAsStreamAsync()
         {

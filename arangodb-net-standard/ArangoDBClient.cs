@@ -59,7 +59,7 @@ namespace ArangoDBNetStandard
         /// <param name="client"></param>
         public ArangoDBClient(HttpClient client)
         {
-            _transport = new HttpApiTransport(client);
+            _transport = new HttpApiTransport(client, HttpContentType.Json);
             Auth = new AuthApiClient(_transport);
             Cursor = new CursorApiClient(_transport);
             Database = new DatabaseApiClient(_transport);
