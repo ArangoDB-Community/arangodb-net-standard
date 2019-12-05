@@ -34,8 +34,106 @@ namespace ArangoDBNetStandardTest.CursorApi
                 new Dictionary<string, object> { ["testString"] = "robbery" });
 
             var result = response.Result;
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Equal("This is a robbery", result.First().MyProperty);
+        }
+
+        [Fact]
+        public async Task PostCursorAsync_ShouldSucceed_WhenQueryResultsInWarnings()
+        {
+            var response = await _cursorApi.PostCursorAsync<object>("RETURN 1 / 0");
+
+            Assert.Single(response.Result);
+            Assert.Null(response.Result.First());
+            Assert.NotEmpty(response.Extra.Warnings);
+            Assert.Equal(1562, response.Extra.Warnings.First().Code);
+            Assert.NotNull(response.Extra.Warnings.First().Message);
+        }
+
+        [Fact]
+        public async Task PostCursorAsync_ShouldSucceed_WhenUsingFullCountOption()
+        {
+            var response = await _cursorApi.PostCursorAsync<MyModel>(
+                "FOR doc IN [{ myProperty: CONCAT('This is a ', @testString) }] LIMIT 1 RETURN doc",
+                new Dictionary<string, object> { ["testString"] = "robbery" },
+                new PostCursorOptions
+                {
+                    FullCount = true
+                });
+
+            Assert.Single(response.Result);
+            Assert.Equal("This is a robbery", response.Result.First().MyProperty);
+            Assert.NotNull(response.Extra);
+            Assert.Equal(1, response.Extra.Stats.FullCount);
+        }
+
+        [Fact]
+        public async Task PostCursorAsync_ShouldSucceed_WhenUsingProfileOption1()
+        {
+            var response = await _cursorApi.PostCursorAsync<MyModel>(
+                "FOR doc IN [{ myProperty: CONCAT('This is a ', @testString) }] LIMIT 1 RETURN doc",
+                new Dictionary<string, object> { ["testString"] = "robbery" },
+                new PostCursorOptions
+                {
+                    Profile = 1
+                });
+
+            Assert.Single(response.Result);
+            Assert.Equal("This is a robbery", response.Result.First().MyProperty);
+            Assert.NotNull(response.Extra);
+
+            var profile = response.Extra.Profile;
+            Assert.NotNull(profile);
+            Assert.NotEqual(0, profile["executing"]);
+            Assert.NotEqual(0, profile["finalizing"]);
+            Assert.NotEqual(0, profile["initializing"]);
+            Assert.NotEqual(0, profile["instantiating plan"]);
+            Assert.NotEqual(0, profile["loading collections"]);
+            Assert.NotEqual(0, profile["optimizing ast"]);
+            Assert.NotEqual(0, profile["optimizing plan"]);
+            Assert.NotEqual(0, profile["parsing"]);
+
+            Assert.Null(response.Extra.Plan);
+        }
+
+        [Fact]
+        public async Task PostCursorAsync_ShouldSucceed_WhenUsingProfileOption2()
+        {
+            var response = await _cursorApi.PostCursorAsync<MyModel>(
+                "FOR doc IN [{ myProperty: CONCAT('This is a ', @testString) }] LIMIT 1 RETURN doc",
+                new Dictionary<string, object> { ["testString"] = "robbery" },
+                new PostCursorOptions
+                {
+                    Profile = 2
+                });
+
+            Assert.Single(response.Result);
+            Assert.Equal("This is a robbery", response.Result.First().MyProperty);
+            Assert.NotNull(response.Extra);
+
+            var profile = response.Extra.Profile;
+            Assert.NotNull(profile);
+            Assert.NotEqual(0, profile["executing"]);
+            Assert.NotEqual(0, profile["finalizing"]);
+            Assert.NotEqual(0, profile["initializing"]);
+            Assert.NotEqual(0, profile["instantiating plan"]);
+            Assert.NotEqual(0, profile["loading collections"]);
+            Assert.NotEqual(0, profile["optimizing ast"]);
+            Assert.NotEqual(0, profile["optimizing plan"]);
+            Assert.NotEqual(0, profile["parsing"]);
+
+            var plan = response.Extra.Plan;
+            Assert.NotNull(plan);
+            Assert.NotEmpty(plan.Nodes);
+            Assert.Empty(plan.Collections);
+            Assert.Empty(plan.Rules);
+            Assert.NotEmpty(plan.Variables);
+            Assert.NotEqual(0, plan.EstimatedCost);
+            Assert.NotEqual(0, plan.EstimatedNrItems);
+            Assert.True(plan.Initialize);
+            Assert.False(plan.IsModificationQuery);
+
+            Assert.NotNull(response.Extra.Stats.Nodes);
         }
 
         [Fact]

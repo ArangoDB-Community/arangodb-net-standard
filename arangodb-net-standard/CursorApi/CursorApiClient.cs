@@ -2,7 +2,6 @@
 using ArangoDBNetStandard.Transport;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.CursorApi
@@ -74,9 +73,14 @@ namespace ArangoDBNetStandard.CursorApi
             });
         }
 
-        public async Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorBody cursorRequest)
+        /// <summary>
+        /// Execute an AQL query, creating a cursor which can be used to page query results.
+        /// </summary>
+        /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
+        /// <returns></returns>
+        public async Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorBody postCursorBody)
         {
-            var content = GetContent(cursorRequest, true, true);
+            var content = GetContent(postCursorBody, true, true);
             using (var response = await _client.PostAsync(_cursorApiPath, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -107,6 +111,12 @@ namespace ArangoDBNetStandard.CursorApi
             }
         }
 
+        /// <summary>
+        /// Advances an existing query cursor and gets the next set of results.
+        /// </summary>
+        /// <typeparam name="T">Result type to deserialize to</typeparam>
+        /// <param name="cursorId">ID of the existing query cursor.</param>
+        /// <returns></returns>
         public async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId)
         {
             string uri = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
