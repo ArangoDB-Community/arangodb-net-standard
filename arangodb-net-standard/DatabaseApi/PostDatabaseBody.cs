@@ -6,6 +6,6 @@ namespace ArangoDBNetStandard.DatabaseApi
     {
         public string Name { get; set; }
 
-        public IList<DatabaseUser> Users { get; set; }
+        public IEnumerable<DatabaseUser> Users { get; set; }
     }
 }
