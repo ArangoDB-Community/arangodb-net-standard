@@ -636,8 +636,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// Updates the data of the specific edge in the collection.
         /// PATCH/_api/gharial/{graph}/edge/{collection}/{edge}
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="U"></typeparam>
+        /// <typeparam name="T">Type of the returned edge document, when ReturnOld or ReturnNew query params are used.</typeparam>
+        /// <typeparam name="U">Type of the patch object used to perform a partial update of the edge document.</typeparam>
         /// <param name="graphName"></param>
         /// <param name="collectionName"></param>
         /// <param name="edgeKey"></param>
