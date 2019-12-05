@@ -912,12 +912,12 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.GetVertexAsync<GetVertexMockModel>(graphName, vertex, "");
+                await _client.GetVertexAsync<GetVertexMockModel>(graphName, vertex, "12456");
             });
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+            Assert.Equal(1202, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
         }
 
         [Fact]
@@ -933,7 +933,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1202, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
+            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
         }
 
         [Fact]
