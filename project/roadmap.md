@@ -54,7 +54,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	PUT/_api/document/{collection} Replace documents
 - [X]	DELETE/_api/document/{document-handle} Removes a document
 - [X]	GET/_api/document/{document-handle} Read document
-- [ ]	HEAD/_api/document/{document-handle} Read document header
+- [X]	HEAD/_api/document/{document-handle} Read document header
 - [X]	PATCH/_api/document/{document-handle} Update document
 - [X]	PUT/_api/document/{document-handle} Replace document
 
