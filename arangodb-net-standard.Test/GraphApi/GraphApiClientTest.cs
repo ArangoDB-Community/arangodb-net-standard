@@ -1327,5 +1327,164 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1930, ex.ApiError.ErrorNum); // GRAPH_EDGE_COLLECTION_NOT_USED
         }
+
+        [Fact]
+        public async Task GetEdgeAsync_ShouldSucceed()
+        {
+            string graphName = nameof(GetEdgeAsync_ShouldSucceed);
+            string fromClx = graphName + "_fromclx";
+            string toClx = graphName + "_toclx";
+            string edgeClx = graphName + "_edgeclx";
+
+            // Create a new graph
+
+            await _fixture.ArangoDBClient.Graph.PostGraphAsync(new PostGraphBody
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { fromClx },
+                        To = new string[] { toClx },
+                        Collection = edgeClx
+                    }
+                }
+            });
+
+            // Create a document in the vertex collections
+
+            PostDocumentResponse<object> fromResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                fromClx,
+                new { myKey = "myValue" });
+
+            PostDocumentResponse<object> toResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                toClx,
+                new { myKey = "myValue" });
+
+            // Create the edge
+
+            var createdEdgeResponse = await _client.PostEdgeAsync(
+                graphName,
+                edgeClx,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "myValue"
+                },
+                new PostGraphEdgeQuery
+                {
+                    ReturnNew = true,
+                    WaitForSync = true
+                });
+
+            // Get the edge with collection name and _key
+
+            var response = await _client.GetEdgeAsync<Newtonsoft.Json.Linq.JObject>(
+                graphName,
+                edgeClx,
+                createdEdgeResponse.Edge._key);
+
+            Assert.NotNull(response.Edge);
+            Assert.Equal("myValue", response.Edge["myKey"].ToString());
+
+            // Get the edge with document-handle
+
+            response = await _client.GetEdgeAsync<Newtonsoft.Json.Linq.JObject>(
+                graphName,
+                createdEdgeResponse.Edge._id);
+
+            Assert.NotNull(response.Edge);
+            Assert.Equal("myValue", response.Edge["myKey"].ToString());
+        }
+
+        [Fact]
+        public async Task GetEdgeAsync_ShouldThrow_WhenEdgeWithRevisionIsNotFound()
+        {
+            string graphName = nameof(GetEdgeAsync_ShouldThrow_WhenEdgeWithRevisionIsNotFound);
+            string fromClx = graphName + "_fromclx";
+            string toClx = graphName + "_toclx";
+            string edgeClx = graphName + "_edgeclx";
+
+            // Create a new graph
+
+            await _fixture.ArangoDBClient.Graph.PostGraphAsync(new PostGraphBody
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { fromClx },
+                        To = new string[] { toClx },
+                        Collection = edgeClx
+                    }
+                }
+            });
+
+            // Create a document in the vertex collections
+
+            PostDocumentResponse<object> fromResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                fromClx,
+                new { myKey = "myValue" });
+
+            PostDocumentResponse<object> toResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                toClx,
+                new { myKey = "myValue" });
+
+            // Create the edge
+
+            var createdEdgeResponse = await _client.PostEdgeAsync(
+                graphName,
+                edgeClx,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "myValue"
+                },
+                new PostGraphEdgeQuery
+                {
+                    ReturnNew = true,
+                    WaitForSync = true
+                });
+
+            // Get the edge with a non-existing revision
+
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.GetEdgeAsync<Newtonsoft.Json.Linq.JObject>(
+                graphName,
+                edgeClx,
+                createdEdgeResponse.Edge._key,
+                new GetGraphEdgeQuery()
+                {
+                    Rev = "RevisionThatDoesNotExist"
+                });
+            });
+
+            Assert.Equal(HttpStatusCode.PreconditionFailed, exception.ApiError.Code);
+            Assert.Equal(1200, exception.ApiError.ErrorNum); // ERROR_ARANGO_CONFLICT
+        }
+
+        [Fact]
+        public async Task GetEdgeAsync_ShouldThrow_WhenGraphIsNotFound()
+        {
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.GetEdgeAsync<Newtonsoft.Json.Linq.JObject>(
+                    nameof(GetEdgeAsync_ShouldThrow_WhenGraphIsNotFound),
+                    "edgeClx",
+                    "0123456789");
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
     }
 }

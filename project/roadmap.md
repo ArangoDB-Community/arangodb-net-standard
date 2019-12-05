@@ -54,7 +54,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	PUT/_api/document/{collection} Replace documents
 - [X]	DELETE/_api/document/{document-handle} Removes a document
 - [X]	GET/_api/document/{document-handle} Read document
-- [ ]	HEAD/_api/document/{document-handle} Read document header
+- [X]	HEAD/_api/document/{document-handle} Read document header
 - [X]	PATCH/_api/document/{document-handle} Update document
 - [X]	PUT/_api/document/{document-handle} Replace document
 
@@ -67,7 +67,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	POST/_api/gharial/{graph}/edge Add edge definition
 - [X]	POST/_api/gharial/{graph}/edge/{collection} Create an edge
 - [X]	DELETE/_api/gharial/{graph}/edge/{collection}/{edge} Remove an edge
-- [ ]	GET/_api/gharial/{graph}/edge/{collection}/{edge} Get an edge
+- [X]	GET/_api/gharial/{graph}/edge/{collection}/{edge} Get an edge
 - [ ]	PATCH/_api/gharial/{graph}/edge/{collection}/{edge} Modify an edge
 - [X]	PUT/_api/gharial/{graph}/edge/{collection}/{edge} Replace an edge
 - [X]	DELETE/_api/gharial/{graph}/edge/{definition} Remove an edge definition from the graph
