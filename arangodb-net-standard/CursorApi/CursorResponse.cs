@@ -51,7 +51,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <summary>
         /// Result documents (might be empty if query has no results).
         /// </summary>
-        public IList<T> Result { get; set; }
+        public IEnumerable<T> Result { get; set; }
 
         /// <summary>
         /// ID of temporary cursor created on the server (optional).

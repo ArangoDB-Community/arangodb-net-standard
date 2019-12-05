@@ -34,8 +34,20 @@ namespace ArangoDBNetStandardTest.CursorApi
                 new Dictionary<string, object> { ["testString"] = "robbery" });
 
             var result = response.Result;
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Equal("This is a robbery", result.First().MyProperty);
+        }
+
+        [Fact]
+        public async Task PostCursorAsync_ShouldSucceed_WhenQueryResultsInWarnings()
+        {
+            var response = await _cursorApi.PostCursorAsync<object>("RETURN 1 / 0");
+
+            Assert.Single(response.Result);
+            Assert.Null(response.Result.First());
+            Assert.NotEmpty(response.Extra.Warnings);
+            Assert.Equal(1562, response.Extra.Warnings.First().Code);
+            Assert.NotNull(response.Extra.Warnings.First().Message);
         }
 
         [Fact]
@@ -49,7 +61,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                     FullCount = true
                 });
 
-            Assert.Equal(1, response.Result.Count);
+            Assert.Single(response.Result);
             Assert.Equal("This is a robbery", response.Result.First().MyProperty);
             Assert.NotNull(response.Extra);
             Assert.Equal(1, response.Extra.Stats.FullCount);
@@ -66,7 +78,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                     Profile = 1
                 });
 
-            Assert.Equal(1, response.Result.Count);
+            Assert.Single(response.Result);
             Assert.Equal("This is a robbery", response.Result.First().MyProperty);
             Assert.NotNull(response.Extra);
 
@@ -95,7 +107,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                     Profile = 2
                 });
 
-            Assert.Equal(1, response.Result.Count);
+            Assert.Single(response.Result);
             Assert.Equal("This is a robbery", response.Result.First().MyProperty);
             Assert.NotNull(response.Extra);
 
