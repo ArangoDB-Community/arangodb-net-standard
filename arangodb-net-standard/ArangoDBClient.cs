@@ -67,7 +67,6 @@ namespace ArangoDBNetStandard
             Collection = new CollectionApiClient(_transport);
             Transaction = new TransactionApiClient(_transport);
             Graph = new GraphApiClient(_transport);
-            Auth = new AuthApiClient(_transport);
         }
 
         /// <summary>

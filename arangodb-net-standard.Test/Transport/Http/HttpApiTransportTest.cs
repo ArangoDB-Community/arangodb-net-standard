@@ -30,7 +30,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
             {
                 var authClient = new AuthApiClient(transport);
 
-                var jwtTokenResponse = await authClient.GetJwtToken(
+                var jwtTokenResponse = await authClient.GetJwtTokenAsync(
                     new JwtTokenRequestBody
                     {
                         Username = _fixture.Username,
@@ -59,7 +59,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
             {
                 var authClient = new AuthApiClient(transport);
 
-                var jwtTokenResponse = await authClient.GetJwtToken(
+                var jwtTokenResponse = await authClient.GetJwtTokenAsync(
                     new JwtTokenRequestBody
                     {
                         Username = _fixture.Username,

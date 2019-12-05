@@ -21,7 +21,7 @@ namespace ArangoDBNetStandardTest.AuthApi
         [Fact]
         public async Task GetJwtToken_ShouldSucceed()
         {
-            JwtTokenResponse response = await _fixture.ArangoDBClient.Auth.GetJwtToken(
+            JwtTokenResponse response = await _fixture.ArangoDBClient.Auth.GetJwtTokenAsync(
                 new JwtTokenRequestBody
                 {
                     Username = _fixture.Username,
@@ -34,7 +34,7 @@ namespace ArangoDBNetStandardTest.AuthApi
         public async Task GetJwtToken_ShouldThrow_WhenWrongCredentialsUsed()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _fixture.ArangoDBClient.Auth.GetJwtToken(
+                await _fixture.ArangoDBClient.Auth.GetJwtTokenAsync(
                     new JwtTokenRequestBody
                     {
                         Username = _fixture.Username,
