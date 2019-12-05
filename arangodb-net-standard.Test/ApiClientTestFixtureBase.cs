@@ -17,11 +17,12 @@ namespace ArangoDBNetStandardTest
 
         private readonly List<HttpApiTransport> _transports = new List<HttpApiTransport>();
 
+        public string ArangoDbHost => Environment.GetEnvironmentVariable("ARANGO_HOST") ?? "localhost";
+
         protected HttpApiTransport GetHttpTransport(string dbName)
         {
-            string host = Environment.GetEnvironmentVariable("ARANGO_HOST") ?? "localhost";
             var transport = HttpApiTransport.UsingBasicAuth(
-                new Uri($"http://{host}:8529/"),
+                new Uri($"http://{ArangoDbHost}:8529/"),
                 dbName,
                 "root",
                 "root");

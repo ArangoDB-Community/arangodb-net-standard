@@ -23,7 +23,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
         public async Task SetJwt_ShouldSucceed()
         {
             string jwtToken = null;
-            string arangodbBaseUrl = "http://localhost:8529/";
+            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:8529/";
             using (var transport = HttpApiTransport.UsingNoAuth(
                     new Uri(arangodbBaseUrl),
                     nameof(HttpApiTransportTest)))
@@ -52,7 +52,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
         public async Task UsingJwtAuth_ShouldSucceed()
         {
             string jwtToken = null;
-            string arangodbBaseUrl = "http://localhost:8529/";
+            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:8529/";
             using (var transport = HttpApiTransport.UsingNoAuth(
                     new Uri(arangodbBaseUrl),
                     nameof(HttpApiTransportTest)))
