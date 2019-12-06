@@ -75,9 +75,9 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	GET/_api/gharial/{graph}/vertex List vertex collections
 - [X]	POST/_api/gharial/{graph}/vertex Add vertex collection
 - [X]	DELETE/_api/gharial/{graph}/vertex/{collection} Remove vertex collection
-- [ ]	POST/_api/gharial/{graph}/vertex/{collection} Create a vertex
-- [ ]	DELETE/_api/gharial/{graph}/vertex/{collection}/{vertex} Remove a vertex
-- [ ]	GET/_api/gharial/{graph}/vertex/{collection}/{vertex} Get a vertex
+- [X]	POST/_api/gharial/{graph}/vertex/{collection} Create a vertex
+- [X]	DELETE/_api/gharial/{graph}/vertex/{collection}/{vertex} Remove a vertex
+- [X]	GET/_api/gharial/{graph}/vertex/{collection}/{vertex} Get a vertex
 - [X]	PATCH/_api/gharial/{graph}/vertex/{collection}/{vertex} Update a vertex
 - [ ]	PUT/_api/gharial/{graph}/vertex/{collection}/{vertex} Replace a vertex
 
