@@ -319,12 +319,18 @@ namespace ArangoDBNetStandard.DocumentApi
         /// violated.
         /// PATCH/_api/document/{collection}
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Type of the patch object used to partially update documents.</typeparam>
+        /// <typeparam name="U">Type of the returned documents, only applies when
+        /// <see cref="PatchDocumentsQuery.ReturnNew"/> or <see cref="PatchDocumentsQuery.ReturnOld"/>
+        /// are used.</typeparam>
         /// <param name="collectionName"></param>
         /// <param name="patches"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(string collectionName, IList<T> patches, PatchDocumentsQuery query = null)
+        public async Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(
+            string collectionName,
+            IList<T> patches,
+            PatchDocumentsQuery query = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -352,14 +358,25 @@ namespace ArangoDBNetStandard.DocumentApi
         /// there.
         /// PATCH/_api/document/{document-handle}
         /// </summary>
+        /// <typeparam name="T">Type of the patch object used to partially update a document.</typeparam>
+        /// <typeparam name="U">Type of the returned document, only applies when
+        /// <see cref="PatchDocumentQuery.ReturnNew"/> or <see cref="PatchDocumentQuery.ReturnOld"/>
+        /// are used.</typeparam>
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(string collectionName, string documentKey, T body, PatchDocumentQuery query = null)
+        public async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
+            string collectionName,
+            string documentKey,
+            T body,
+            PatchDocumentQuery query = null)
         {
-            return await PatchDocumentAsync<T, U>(WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(documentKey), body, query);
+            string documentHandle = WebUtility.UrlEncode(collectionName) +
+                "/" + WebUtility.UrlEncode(documentKey);
+
+            return await PatchDocumentAsync<T, U>(documentHandle, body, query);
         }
 
         /// <summary>
@@ -371,11 +388,18 @@ namespace ArangoDBNetStandard.DocumentApi
         /// there.
         /// PATCH/_api/document/{document-handle}
         /// </summary>
+        /// <typeparam name="T">Type of the patch object used to partially update a document.</typeparam>
+        /// <typeparam name="U">Type of the returned document, only applies when
+        /// <see cref="PatchDocumentQuery.ReturnNew"/> or <see cref="PatchDocumentQuery.ReturnOld"/>
+        /// are used.</typeparam>
         /// <param name="documentId"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(string documentId, T body, PatchDocumentQuery query = null)
+        public async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
+            string documentId,
+            T body,
+            PatchDocumentQuery query = null)
         {
             ValidateDocumentId(documentId);
             string uriString = _docApiPath + "/" + documentId;
