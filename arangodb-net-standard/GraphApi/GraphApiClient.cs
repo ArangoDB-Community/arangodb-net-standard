@@ -158,14 +158,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName"></param>
         /// <returns></returns>
-        public async Task<GetGraphEdgeCollectionsResponse> GetEdgeCollectionsAsync(string graphName)
+        public async Task<GetEdgeCollectionsResponse> GetEdgeCollectionsAsync(string graphName)
         {
             using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge"))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetGraphEdgeCollectionsResponse>(stream);
+                    return DeserializeJsonFromStream<GetEdgeCollectionsResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -184,9 +184,9 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="body">The information of the edge definition.</param>
         /// <returns></returns>
-        public async Task<PostGraphEdgeDefinitionResponse> PostEdgeDefinitionAsync(
+        public async Task<PostEdgeDefinitionResponse> PostEdgeDefinitionAsync(
             string graphName,
-            PostGraphEdgeDefinitionBody body)
+            PostEdgeDefinitionBody body)
         {
             var content = GetContent(body, true, true);
 
@@ -197,7 +197,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostGraphEdgeDefinitionResponse>(stream);
+                    return DeserializeJsonFromStream<PostEdgeDefinitionResponse>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -343,11 +343,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edge">The edge to create.</param>
         /// <returns></returns>
-        public async Task<PostGraphEdgeResponse<T>> PostEdgeAsync<T>(
+        public async Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
             string graphName,
             string collectionName,
             T edge,
-            PostGraphEdgeQuery query = null)
+            PostEdgeQuery query = null)
         {
             var content = GetContent(edge, false, false);
 
@@ -364,7 +364,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostGraphEdgeResponse<T>>(stream);
+                    return DeserializeJsonFromStream<PostEdgeResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -379,11 +379,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey">The _key attribute of the edge.</param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public Task<GetGraphEdgeResponse<T>> GetEdgeAsync<T>(
+        public Task<GetEdgeResponse<T>> GetEdgeAsync<T>(
             string graphName,
             string collectionName,
             string edgeKey,
-            GetGraphEdgeQuery query = null)
+            GetEdgeQuery query = null)
         {
             return GetEdgeAsync<T>(
                 graphName,
@@ -400,10 +400,10 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeHandle">The document-handle of the edge document.</param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<GetGraphEdgeResponse<T>> GetEdgeAsync<T>(
+        public async Task<GetEdgeResponse<T>> GetEdgeAsync<T>(
             string graphName,
             string edgeHandle,
-            GetGraphEdgeQuery query = null)
+            GetEdgeQuery query = null)
         {
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + edgeHandle;
@@ -418,7 +418,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<GetGraphEdgeResponse<T>>(stream);
+                    return DeserializeJsonFromStream<GetEdgeResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -572,12 +572,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edge"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PutGraphEdgeResponse<T>> PutEdgeAsync<T>(
+        public async Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
             string graphName,
             string collectionName,
             string edgeKey,
             T edge,
-            PutGraphEdgeQuery query = null)
+            PutEdgeQuery query = null)
         {
             var content = GetContent(edge, false, false);
 
@@ -593,7 +593,7 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PutGraphEdgeResponse<T>>(stream);
+                    return DeserializeJsonFromStream<PutEdgeResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.GraphApi
     /// <summary>
     /// Represents query parameters used when creating a new graph edge.
     /// </summary>
-    public class PostGraphEdgeQuery
+    public class PostEdgeQuery
     {
         /// <summary>
         /// Whether the response should contain the complete new version of the document.

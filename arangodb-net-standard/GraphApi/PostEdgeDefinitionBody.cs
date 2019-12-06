@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.GraphApi
     /// <summary>
     /// Represents a request body to add an edge definition to a graph.
     /// </summary>
-    public class PostGraphEdgeDefinitionBody
+    public class PostEdgeDefinitionBody
     {
         /// <summary>
         /// One or many vertex collections that can contain target vertices.

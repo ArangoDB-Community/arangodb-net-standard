@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.GraphApi
     /// <summary>
     /// Represents query parameters used when fetching an edge in a graph.
     /// </summary>
-    public class GetGraphEdgeQuery
+    public class GetEdgeQuery
     {
         /// <summary>
         /// Must contain a revision.
