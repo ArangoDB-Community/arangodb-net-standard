@@ -671,5 +671,41 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Replaces the data of a vertex in the collection.
+        /// PUT/_api/gharial/{graph}/vertex/{collection}/{vertex}
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graphName"></param>
+        /// <param name="collectionName"></param>
+        /// <param name="key"></param>
+        /// <param name="vertex"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PutVertexResponse<T>> PutVertexAsync<T>(
+            string graphName,
+            string collectionName,
+            string key,
+            T vertex,
+            PutVertexQuery query = null)
+        {
+            string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
+               "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(key);
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            var content = GetContent(vertex, true, true);
+            using (var response = await _transport.PutAsync(uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PutVertexResponse<T>>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }
