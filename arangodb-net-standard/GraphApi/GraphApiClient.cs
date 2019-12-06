@@ -526,7 +526,10 @@ namespace ArangoDBNetStandard.GraphApi
         /// Updates the data of the specific vertex in the collection.
         /// PATCH/_api/gharial/{graph}/vertex/{collection}/{vertex}
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Type of the patch object</typeparam>
+        /// <typeparam name="U">Type of the returned document, only applies when
+        /// <see cref="PatchVertexQuery.ReturnNew"/> or <see cref="PatchVertexQuery.ReturnOld"/>
+        /// are used.</typeparam>
         /// <param name="graphName"></param>
         /// <param name="collectionName"></param>
         /// <param name="vertexKey"></param>
@@ -562,7 +565,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// Replaces the data of an edge in the collection.
         /// PUT /_api/gharial/{graph}/edge/{collection}/{edge}
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Type of the document used for the update.</typeparam>
         /// <param name="graphName"></param>
         /// <param name="collectionName"></param>
         /// <param name="edgeKey"></param>
