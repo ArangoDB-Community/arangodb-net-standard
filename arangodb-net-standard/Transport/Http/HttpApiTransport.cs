@@ -67,7 +67,7 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="hostUri"></param>
         /// <param name="dbName"></param>
         /// <param name="username"></param>
-        /// <param name="passwd"></param>
+        /// <param name="password"></param>
         /// <param name="contentType">Content type to use in requests.
         /// Used to set Content-Type and Accept HTTP headers.
         /// Uses JSON content type by default.</param>
@@ -76,14 +76,14 @@ namespace ArangoDBNetStandard.Transport.Http
             Uri hostUri,
             string dbName,
             string username,
-            string passwd,
+            string password,
             HttpContentType contentType = HttpContentType.Json)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
             var transport = new HttpApiTransport(client, contentType);
-            transport.SetBasicAuth(username, passwd);
+            transport.SetBasicAuth(username, password);
 
             return transport;
         }
@@ -143,13 +143,13 @@ namespace ArangoDBNetStandard.Transport.Http
         /// used in requests to ArangoDB.
         /// </summary>
         /// <param name="username"></param>
-        /// <param name="passwd"></param>
-        public void SetBasicAuth(string username, string passwd)
+        /// <param name="password"></param>
+        public void SetBasicAuth(string username, string password)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                 "Basic",
                 Convert.ToBase64String(
-                    Encoding.ASCII.GetBytes($"{username}:{passwd}")));
+                    Encoding.ASCII.GetBytes($"{username}:{password}")));
         }
 
         /// <summary>
