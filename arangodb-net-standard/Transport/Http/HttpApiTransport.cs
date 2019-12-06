@@ -43,7 +43,7 @@ namespace ArangoDBNetStandard.Transport.Http
             string dbName)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "/_db/" + dbName + "/");
+            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
             var transport = new HttpApiTransport(client);
             return transport;
@@ -63,7 +63,7 @@ namespace ArangoDBNetStandard.Transport.Http
             string passwd)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "/_db/" + dbName + "/");
+            client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
             var transport = new HttpApiTransport(client);
             transport.SetBasicAuth(username, passwd);
