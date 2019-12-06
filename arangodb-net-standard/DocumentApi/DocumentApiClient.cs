@@ -319,7 +319,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// violated.
         /// PATCH/_api/document/{collection}
         /// </summary>
-        /// <typeparam name="T">Type of the documents to patch.</typeparam>
+        /// <typeparam name="T">Type of the patch object used to partially update documents.</typeparam>
         /// <typeparam name="U">Type of the returned documents, only applies when
         /// <see cref="PatchDocumentsQuery.ReturnNew"/> or <see cref="PatchDocumentsQuery.ReturnOld"/>
         /// are used.</typeparam>
@@ -358,7 +358,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// there.
         /// PATCH/_api/document/{document-handle}
         /// </summary>
-        /// <typeparam name="T">Type of the document to patch.</typeparam>
+        /// <typeparam name="T">Type of the patch object used to partially update a document.</typeparam>
         /// <typeparam name="U">Type of the returned document, only applies when
         /// <see cref="PatchDocumentQuery.ReturnNew"/> or <see cref="PatchDocumentQuery.ReturnOld"/>
         /// are used.</typeparam>
@@ -388,7 +388,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// there.
         /// PATCH/_api/document/{document-handle}
         /// </summary>
-        /// <typeparam name="T">Type of the document to patch.</typeparam>
+        /// <typeparam name="T">Type of the patch object used to partially update a document.</typeparam>
         /// <typeparam name="U">Type of the returned document, only applies when
         /// <see cref="PatchDocumentQuery.ReturnNew"/> or <see cref="PatchDocumentQuery.ReturnOld"/>
         /// are used.</typeparam>
