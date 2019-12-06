@@ -1270,12 +1270,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                 _fixture.TestGraph,
                 edgeClx,
                 new PutEdgeDefinitionBody
-            {
-                Collection = edgeClx,
-                // (update is to swap the direction of from and to)
-                To = new string[] { "fromclx" },
-                From = new string[] { "toclx" }
-            });
+                {
+                    Collection = edgeClx,
+                    // (update is to swap the direction of from and to)
+                    To = new string[] { "fromclx" },
+                    From = new string[] { "toclx" }
+                });
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
@@ -1481,6 +1481,99 @@ namespace ArangoDBNetStandardTest.GraphApi
                     nameof(GetEdgeAsync_ShouldThrow_WhenGraphIsNotFound),
                     "edgeClx",
                     "0123456789");
+            });
+
+            Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
+            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task PatchEdgeAsync_ShouldSucceed()
+        {
+            string graphName = nameof(PatchEdgeAsync_ShouldSucceed);
+            string fromClx = graphName + "_fromclx";
+            string toClx = graphName + "_toclx";
+            string edgeClx = graphName + "_edgeclx";
+
+            // Create a new graph
+
+            await _fixture.ArangoDBClient.Graph.PostGraphAsync(new PostGraphBody
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { fromClx },
+                        To = new string[] { toClx },
+                        Collection = edgeClx
+                    }
+                }
+            });
+
+            // Create a document in the vertex collections
+
+            PostDocumentResponse<object> fromResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                fromClx,
+                new { myKey = "myValue" });
+
+            PostDocumentResponse<object> toResponse = await
+                _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
+                toClx,
+                new { myKey = "myValue" });
+
+            // Create the edge
+
+            var createEdgeResponse = await _client.PostEdgeAsync(
+                graphName,
+                edgeClx,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "myValue",
+                    value = 1
+                },
+                new PostGraphEdgeQuery
+                {
+                    ReturnNew = true,
+                    WaitForSync = true
+                });
+
+            var response = await _client.PatchEdgeAsync<PatchEdgeMockModel, object>(
+                graphName,
+                edgeClx,
+                createEdgeResponse.Edge._key,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "newValue"
+                }, new PatchEdgeQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
+            Assert.NotEqual(createEdgeResponse.New.myKey, response.New.myKey);
+            Assert.False(response.Error);
+            Assert.NotEqual(createEdgeResponse.Edge._rev, response.Edge._rev);
+            Assert.Equal(createEdgeResponse.New.value, response.New.value);
+            Assert.Equal(createEdgeResponse.New.value, response.Old.value);
+        }
+
+        [Fact]
+        public async Task PatchEdgeAsync_ShouldThrow_WhenGraphNotFound()
+        {
+            string graphName = nameof(PatchEdgeAsync_ShouldThrow_WhenGraphNotFound);
+
+            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _client.PatchEdgeAsync<PatchEdgeMockModel, object>(graphName, "edgeClx", "", new { });
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
