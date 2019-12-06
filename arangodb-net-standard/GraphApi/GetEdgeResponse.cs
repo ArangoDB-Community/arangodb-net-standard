@@ -6,7 +6,7 @@ namespace ArangoDBNetStandard.GraphApi
     /// Represents a response containing an edge in a graph.
     /// </summary>
     /// <typeparam name="T">The type of the edge document.</typeparam>
-    public class GetGraphEdgeResponse<T>
+    public class GetEdgeResponse<T>
     {
         /// <summary>
         /// Indicates whether an error occurred (false in this case).

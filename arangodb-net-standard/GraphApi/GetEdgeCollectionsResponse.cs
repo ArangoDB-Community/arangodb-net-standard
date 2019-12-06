@@ -3,7 +3,7 @@ using System.Net;
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class GetGraphEdgeCollectionsResponse
+    public class GetEdgeCollectionsResponse
     {
         public bool Error { get; set; }
 

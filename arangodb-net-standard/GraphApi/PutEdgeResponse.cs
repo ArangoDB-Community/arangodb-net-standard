@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class PutGraphEdgeResponse<T>
+    public class PutEdgeResponse<T>
     {
         public bool Error { get; set; }
 
@@ -12,6 +12,6 @@ namespace ArangoDBNetStandard.GraphApi
 
         public T New { get; set; }
 
-        public PutGraphEdgeResult Edge { get; set; }
+        public PutEdgeResult Edge { get; set; }
     }
 }
