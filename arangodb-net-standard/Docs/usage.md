@@ -146,7 +146,7 @@ await adb.Document.PutDocumentAsync(
 
 Any time an endpoint responds with an HTTP status code which is not a "success" code, an `ApiErrorException` will be thrown.  You may wish to wrap your API calls in a try/catch block, and catch `ApiErrorException` in certain circumstances.
 
-The `ApiErrorException` object contains the `ApiError` property, which will hold an instance of `ApiErrorRespons` with the following structure. ArangoDB has descriptions for the different `ErrorNum` values in their [online documentation](https://www.arangodb.com/docs/stable/appendix-error-codes.html).
+The `ApiErrorException` object contains the `ApiError` property, which will hold an instance of `ApiErrorResponse` with the following structure. ArangoDB has descriptions for the different `ErrorNum` values in their [online documentation](https://www.arangodb.com/docs/stable/appendix-error-codes.html).
 
 ```
 /// <summary>

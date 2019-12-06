@@ -11,8 +11,15 @@ using Xunit;
 
 namespace ArangoDBNetStandardTest.Docs
 {
-    public class UsageTest
+    public class UsageTest: IClassFixture<UsageTestFixture>
     {
+        private string _arangoDbHost;
+
+        public UsageTest(UsageTestFixture fixture)
+        {
+            _arangoDbHost = fixture.ArangoDbHost;
+        }
+
         class MyClass
         {
             public long ItemNumber { get; set; }
@@ -37,7 +44,7 @@ namespace ArangoDBNetStandardTest.Docs
         {
             // You must use the system database to create databases!
             using (var systemDbTransport = HttpApiTransport.UsingBasicAuth(
-                new Uri("http://localhost:8529/"),
+                new Uri($"http://{_arangoDbHost}:8529/"),
                 "_system",
                 "root",
                 "root"))
@@ -62,7 +69,7 @@ namespace ArangoDBNetStandardTest.Docs
 
             // Use our new database, with basic auth credentials for the user jlennon.
             var transport = HttpApiTransport.UsingBasicAuth(
-                new Uri("http://localhost:8529"),
+                new Uri($"http://{_arangoDbHost}:8529"),
                 "arangodb-net-standard",
                 "jlennon",
                 "yoko123");
@@ -126,7 +133,7 @@ namespace ArangoDBNetStandardTest.Docs
             finally
             {
                 using (var systemDbTransport = HttpApiTransport.UsingBasicAuth(
-                    new Uri("http://localhost:8529/"),
+                    new Uri($"http://{_arangoDbHost}:8529/"),
                     "_system",
                     "root",
                     "root"))
