@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.AuthApi;
+using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.Transport.Http;
 
@@ -17,6 +18,25 @@ namespace ArangoDBNetStandardTest.Transport.Http
         public HttpApiTransportTest(HttpApiTransportTestFixture fixture)
         {
             _fixture = fixture;
+        }
+
+        [Fact]
+        public async Task UseVpack_ShouldSucceed()
+        {
+            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:8529/";
+            using (var transport = HttpApiTransport.UsingBasicAuth(
+                new Uri(arangodbBaseUrl),
+                nameof(HttpApiTransportTest),
+                "root",
+                "root"))
+            {
+                transport.UseVPackContentType();
+                string docUrl = arangodbBaseUrl + "_db/" + nameof(HttpApiTransportTest) + $"/_admin/echo";
+                using (var response = await transport.GetAsync(docUrl))
+                {
+                    Assert.Equal("application/x-velocypack", response.Content.Headers.ContentType.MediaType);
+                }
+            }
         }
 
         [Fact]
