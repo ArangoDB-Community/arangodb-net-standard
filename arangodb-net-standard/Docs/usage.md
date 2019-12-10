@@ -6,7 +6,7 @@ The following examples can be read one after the other to form a complete workin
 
 ### Create a database
 
-```
+```csharp
 // You must use the _system database to create databases
 using (var systemDbTransport = HttpApiTransport.UsingBasicAuth(
     new Uri("http://localhost:8529/"),
@@ -39,7 +39,7 @@ In general, if you are connecting to the same database lots of times, you don't 
 
 ### Create a collection
 
-```
+```csharp
 // Use our new database, with basic auth credentials for the user jlennon.
 var transport = HttpApiTransport.UsingBasicAuth(
     new Uri("http://localhost:8529"),
@@ -61,7 +61,7 @@ await adb.Collection.PostCollectionAsync(
 
 ### Create documents
 
-```
+```csharp
 // Create document in the collection using anonymous type
 await adb.Document.PostDocumentAsync(
     "MyCollection",
@@ -86,7 +86,7 @@ The document object must not have any `_key` property if you expect ArangoDB to 
 
 `MyClass` has no `_key` property:
 
-```
+```csharp
 class MyClass
 {
     public long ItemNumber { get; set; }
@@ -97,7 +97,7 @@ class MyClass
 
  `MyClassDocument` is a subclass of `MyClass` which does define the `_key` property, along with `_id` and `_rev`.
 
-```
+```csharp
 class MyClassDocument: MyClass
 {
     public string _key { get; set; }
@@ -112,7 +112,7 @@ You may or may not find this pattern useful in your own application.
 
 ### Run an AQL query
 
-```
+```csharp
 // Run AQL query (create a query cursor)
 var response = await adb.Cursor.PostCursorAsync<MyClassDocument>(
     @"FOR doc IN MyCollection 
@@ -124,7 +124,7 @@ MyClassDocument item = response.Result.First();
 
 ### Patch a document
 
-```
+```csharp
 // Partially update document
 await adb.Document.PatchDocumentAsync<object, object>(
     "MyCollection",
@@ -134,7 +134,7 @@ await adb.Document.PatchDocumentAsync<object, object>(
 
 ### Replace a document
 
-```
+```csharp
 // Fully update document
 item.Description = "Some item with some more description";
 await adb.Document.PutDocumentAsync(
@@ -148,7 +148,7 @@ Any time an endpoint responds with an HTTP status code which is not a "success" 
 
 The `ApiErrorException` object contains the `ApiError` property, which will hold an instance of `ApiErrorResponse` with the following structure. ArangoDB has descriptions for the different `ErrorNum` values in their [online documentation](https://www.arangodb.com/docs/stable/appendix-error-codes.html).
 
-```
+```csharp
 /// <summary>
 /// ArangoDB API error model
 /// </summary>
