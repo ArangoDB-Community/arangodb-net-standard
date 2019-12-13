@@ -2,6 +2,7 @@
 using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.GraphApi;
+using ArangoDBNetStandard.GraphApi.Models;
 using ArangoDBNetStandardTest.GraphApi.Models;
 using System.Collections.Generic;
 using System.Linq;
