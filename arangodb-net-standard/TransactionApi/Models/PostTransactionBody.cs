@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.TransactionApi
+namespace ArangoDBNetStandard.TransactionApi.Models
 {
     /// <summary>
     /// Represents information required to make a transaction request to ArangoDB.

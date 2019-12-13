@@ -1,6 +1,6 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.DocumentApi.Models;
-using ArangoDBNetStandard.TransactionApi;
+using ArangoDBNetStandard.TransactionApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;

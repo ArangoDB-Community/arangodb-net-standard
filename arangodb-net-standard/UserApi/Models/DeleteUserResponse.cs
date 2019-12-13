@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.UserApi
+namespace ArangoDBNetStandard.UserApi.Models
 {
     public class DeleteUserResponse
     {

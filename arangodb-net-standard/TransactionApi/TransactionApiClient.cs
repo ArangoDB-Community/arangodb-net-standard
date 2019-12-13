@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
-using ArangoDBNetStandard.Serialization;
+﻿using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.TransactionApi.Models;
 using ArangoDBNetStandard.Transport;
+using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.TransactionApi
 {

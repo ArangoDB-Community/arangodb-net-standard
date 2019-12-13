@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.TransactionApi
+namespace ArangoDBNetStandard.TransactionApi.Models
 {
     /// <summary>
     /// Response from ArangoDB after executing a transaction.
