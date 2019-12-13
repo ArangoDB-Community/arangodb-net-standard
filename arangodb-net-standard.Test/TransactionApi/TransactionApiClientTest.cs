@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using ArangoDBNetStandard;
-using ArangoDBNetStandard.DocumentApi;
+﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.TransactionApi;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.TransactionApi

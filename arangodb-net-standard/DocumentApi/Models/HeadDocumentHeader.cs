@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.DocumentApi
+namespace ArangoDBNetStandard.DocumentApi.Models
 {
     public class HeadDocumentHeader
     {

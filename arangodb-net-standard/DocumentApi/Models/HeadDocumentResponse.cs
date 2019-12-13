@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
 
-namespace ArangoDBNetStandard.DocumentApi
+namespace ArangoDBNetStandard.DocumentApi.Models
 {
     public class HeadDocumentResponse
     {

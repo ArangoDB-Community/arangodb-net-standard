@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.DocumentApi
+namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
     /// Options used when calling ArangoDB POST document endpoint.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArangoDBNetStandard.DocumentApi
+namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
     /// Options used when calling ArangoDB PUT document endpoint.

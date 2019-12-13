@@ -1,4 +1,4 @@
-﻿namespace ArangoDBNetStandard.DocumentApi
+﻿namespace ArangoDBNetStandard.DocumentApi.Models
 {
     public class PatchDocumentsResponse<U> : DocumentBase
     {

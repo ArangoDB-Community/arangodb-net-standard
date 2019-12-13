@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.DocumentApi
+namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
     /// Response after posting multiple documents

@@ -1,4 +1,4 @@
-﻿namespace ArangoDBNetStandard.DocumentApi
+﻿namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
     /// Response after posting a single document

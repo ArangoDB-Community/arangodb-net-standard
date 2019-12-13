@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ArangoDBNetStandard.DocumentApi
+﻿namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
     /// Base model for POST document responses.

@@ -1,6 +1,6 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi.Models;
-using ArangoDBNetStandard.DocumentApi;
+using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.GraphApi;
 using ArangoDBNetStandardTest.GraphApi.Models;
 using System.Collections.Generic;

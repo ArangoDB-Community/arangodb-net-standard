@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.DocumentApi
 {

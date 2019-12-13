@@ -1,7 +1,7 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CollectionApi.Models;
-using ArangoDBNetStandard.DocumentApi;
+using ArangoDBNetStandard.DocumentApi.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
