@@ -4,7 +4,7 @@
 ### Miscellaneous
 
 - [X]	Readme
-- [ ]	Usage guide
+- [X]	Usage guide
 - [X]	License
 - [X]	Automated CI build
 - [ ]	Nuget package
