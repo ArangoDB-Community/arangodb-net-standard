@@ -274,7 +274,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
             var response = await _client.PostEdgeDefinitionAsync(
                 tempGraph,
-                new PostGraphEdgeDefinitionBody
+                new PostEdgeDefinitionBody
                 {
                     From = new string[] { "fromclxx" },
                     To = new string[] { "toclxx" },
@@ -297,7 +297,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             {
                 await _client.PostEdgeDefinitionAsync(
                     "boggus_graph",
-                    new PostGraphEdgeDefinitionBody
+                    new PostEdgeDefinitionBody
                     {
                         From = new string[] { "fromclxx" },
                         To = new string[] { "toclxx" },
@@ -711,7 +711,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     _to = toResponse._id,
                     myKey = "myValue"
                 },
-                new PostGraphEdgeQuery
+                new PostEdgeQuery
                 {
                     ReturnNew = true,
                     WaitForSync = true
@@ -791,7 +791,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     _to = toResponse._id,
                     myKey = "myValue"
                 },
-                new PostGraphEdgeQuery
+                new PostEdgeQuery
                 {
                     ReturnNew = true,
                     WaitForSync = true
@@ -1219,7 +1219,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     _to = toResponse._id,
                     myKey = "myValue"
                 },
-                new PostGraphEdgeQuery
+                new PostEdgeQuery
                 {
                     ReturnNew = true,
                     WaitForSync = true
@@ -1230,7 +1230,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 _from = fromResponse._id,
                 _to = toResponse._id,
                 myKey = "newValue"
-            }, new PutGraphEdgeQuery
+            }, new PutEdgeQuery
             {
                 ReturnNew = true,
                 ReturnOld = true,
@@ -1375,7 +1375,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     _to = toResponse._id,
                     myKey = "myValue"
                 },
-                new PostGraphEdgeQuery
+                new PostEdgeQuery
                 {
                     ReturnNew = true,
                     WaitForSync = true
@@ -1448,7 +1448,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     _to = toResponse._id,
                     myKey = "myValue"
                 },
-                new PostGraphEdgeQuery
+                new PostEdgeQuery
                 {
                     ReturnNew = true,
                     WaitForSync = true
@@ -1462,7 +1462,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 graphName,
                 edgeClx,
                 createdEdgeResponse.Edge._key,
-                new GetGraphEdgeQuery()
+                new GetEdgeQuery()
                 {
                     Rev = "RevisionThatDoesNotExist"
                 });
@@ -1535,7 +1535,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     myKey = "myValue",
                     value = 1
                 },
-                new PostGraphEdgeQuery
+                new PostEdgeQuery
                 {
                     ReturnNew = true,
                     WaitForSync = true

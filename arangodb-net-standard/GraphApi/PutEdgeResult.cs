@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.GraphApi
 {
-    public class PutGraphEdgeResult
+    public class PutEdgeResult
     {
         public string _id { get; set; }
 

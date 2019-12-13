@@ -6,7 +6,7 @@ namespace ArangoDBNetStandard.GraphApi
     /// Represents a response containing information about the graph
     /// and its new edge definition.
     /// </summary>
-    public class PostGraphEdgeDefinitionResponse
+    public class PostEdgeDefinitionResponse
     {
         /// <summary>
         /// The information about the modified graph.
