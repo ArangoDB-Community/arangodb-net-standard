@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.DatabaseApi
+namespace ArangoDBNetStandard.DatabaseApi.Models
 {
     public class DeleteDatabaseResponse
     {

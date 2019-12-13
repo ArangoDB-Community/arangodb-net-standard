@@ -1,4 +1,4 @@
-﻿namespace ArangoDBNetStandard.DatabaseApi
+﻿namespace ArangoDBNetStandard.DatabaseApi.Models
 {
     /// <summary>
     /// Represents information about the current database.

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.DatabaseApi
+namespace ArangoDBNetStandard.DatabaseApi.Models
 {
     public class PostDatabaseBody
     {

@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 
-namespace ArangoDBNetStandard.DatabaseApi
+namespace ArangoDBNetStandard.DatabaseApi.Models
 {
     /// <summary>
     /// Represents the content of the response returned
-    /// by an endpoint that gets the list of databases.
+    /// by an endpoint that creates a new database.
     /// </summary>
-    public class GetDatabasesResponse
+    public class PostDatabaseResponse
     {
         /// <summary>
         /// Indicates whether an error occurred (false in this case).
@@ -20,8 +19,8 @@ namespace ArangoDBNetStandard.DatabaseApi
         public HttpStatusCode Code { get; set; }
 
         /// <summary>
-        /// The list of databases.
+        /// Indicates that the database was created. Always true.
         /// </summary>
-        public IEnumerable<string> Result { get; set; }
+        public bool Result { get; set; }
     }
 }

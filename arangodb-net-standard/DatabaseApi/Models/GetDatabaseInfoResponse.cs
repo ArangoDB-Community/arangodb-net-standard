@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.DatabaseApi
+namespace ArangoDBNetStandard.DatabaseApi.Models
 {
     /// <summary>
     /// Represents a response containing information about the current database.
