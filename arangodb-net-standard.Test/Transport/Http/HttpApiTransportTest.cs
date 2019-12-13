@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.AuthApi;
-using ArangoDBNetStandard.CollectionApi;
+using ArangoDBNetStandard.AuthApi.Models;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.Transport.Http;
-
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.Transport.Http

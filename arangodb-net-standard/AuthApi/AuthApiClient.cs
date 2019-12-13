@@ -1,8 +1,6 @@
-﻿using ArangoDBNetStandard.Serialization;
+﻿using ArangoDBNetStandard.AuthApi.Models;
+using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.AuthApi

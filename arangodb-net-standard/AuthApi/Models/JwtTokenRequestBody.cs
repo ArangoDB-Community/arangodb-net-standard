@@ -1,4 +1,4 @@
-﻿namespace ArangoDBNetStandard.AuthApi
+﻿namespace ArangoDBNetStandard.AuthApi.Models
 {
     public class JwtTokenRequestBody
     {

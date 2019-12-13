@@ -1,9 +1,6 @@
 ﻿using ArangoDBNetStandard;
-using ArangoDBNetStandard.AuthApi;
-using System;
-using System.Collections.Generic;
+using ArangoDBNetStandard.AuthApi.Models;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
