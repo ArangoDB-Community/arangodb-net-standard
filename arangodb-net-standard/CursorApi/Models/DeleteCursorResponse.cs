@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.CursorApi
+namespace ArangoDBNetStandard.CursorApi.Models
 {
     /// <summary>
     /// Represents a response returned after deleting a cursor.

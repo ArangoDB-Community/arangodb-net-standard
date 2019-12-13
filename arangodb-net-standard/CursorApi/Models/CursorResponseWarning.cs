@@ -1,4 +1,4 @@
-﻿namespace ArangoDBNetStandard.CursorApi
+﻿namespace ArangoDBNetStandard.CursorApi.Models
 {
     public class CursorResponseWarning
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.CursorApi
+namespace ArangoDBNetStandard.CursorApi.Models
 {
     /// <summary>
     /// Additional data relating to a query result cursor.

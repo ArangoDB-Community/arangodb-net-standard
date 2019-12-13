@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.CursorApi
+namespace ArangoDBNetStandard.CursorApi.Models
 {
     public class PostCursorBody
     {

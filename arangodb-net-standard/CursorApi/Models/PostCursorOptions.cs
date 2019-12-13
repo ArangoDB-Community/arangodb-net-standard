@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ArangoDBNetStandard.CursorApi
+﻿namespace ArangoDBNetStandard.CursorApi.Models
 {
     public class PostCursorOptions
     {

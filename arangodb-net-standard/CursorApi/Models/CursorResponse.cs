@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 
-namespace ArangoDBNetStandard.CursorApi
+namespace ArangoDBNetStandard.CursorApi.Models
 {
     /// <summary>
     /// Response from ArangoDB when creating a new cursor.
