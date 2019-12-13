@@ -1,7 +1,7 @@
-﻿using System;
+﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard.CollectionApi.Models;
+using System;
 using System.Threading.Tasks;
-using ArangoDBNetStandard;
-using ArangoDBNetStandard.CollectionApi;
 
 namespace ArangoDBNetStandardTest.CollectionApi
 {

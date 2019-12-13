@@ -1,4 +1,4 @@
-﻿namespace ArangoDBNetStandard.CollectionApi
+﻿namespace ArangoDBNetStandard.CollectionApi.Models
 {
     public class CollectionKeyOptions
     {

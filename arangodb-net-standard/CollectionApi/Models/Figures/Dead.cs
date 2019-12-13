@@ -1,4 +1,4 @@
-﻿namespace ArangoDBNetStandard.CollectionApi.Figures
+﻿namespace ArangoDBNetStandard.CollectionApi.Models.Figures
 {
     public class Dead
     {

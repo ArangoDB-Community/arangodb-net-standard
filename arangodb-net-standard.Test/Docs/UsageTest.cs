@@ -1,11 +1,10 @@
 ﻿using ArangoDBNetStandard;
-using ArangoDBNetStandard.CollectionApi;
+using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.Transport.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 

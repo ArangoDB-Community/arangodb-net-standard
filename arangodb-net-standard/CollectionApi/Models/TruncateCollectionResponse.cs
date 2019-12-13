@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.CollectionApi
+namespace ArangoDBNetStandard.CollectionApi.Models
 {
     public class TruncateCollectionResponse
     {

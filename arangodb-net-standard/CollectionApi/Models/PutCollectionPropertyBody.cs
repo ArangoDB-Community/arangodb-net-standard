@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System.Net.Http;
-
-namespace ArangoDBNetStandard.CollectionApi
+﻿namespace ArangoDBNetStandard.CollectionApi.Models
 {
     public class PutCollectionPropertyBody
     {

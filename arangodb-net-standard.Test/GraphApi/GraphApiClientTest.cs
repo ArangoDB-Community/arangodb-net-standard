@@ -1,13 +1,13 @@
-﻿using System.Linq;
+﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard.CollectionApi.Models;
+using ArangoDBNetStandard.DocumentApi;
+using ArangoDBNetStandard.GraphApi;
+using ArangoDBNetStandardTest.GraphApi.Models;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
-using ArangoDBNetStandard.GraphApi;
-using System.Collections.Generic;
-using ArangoDBNetStandard;
-using ArangoDBNetStandard.CollectionApi;
-using ArangoDBNetStandard.DocumentApi;
-using ArangoDBNetStandardTest.GraphApi.Models;
 
 namespace ArangoDBNetStandardTest.GraphApi
 {

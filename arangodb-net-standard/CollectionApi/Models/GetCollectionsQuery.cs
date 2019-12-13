@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.CollectionApi
+namespace ArangoDBNetStandard.CollectionApi.Models
 {
     public class GetCollectionsQuery
     {

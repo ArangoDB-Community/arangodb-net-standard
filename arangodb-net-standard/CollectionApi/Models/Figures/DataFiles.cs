@@ -1,6 +1,6 @@
-﻿namespace ArangoDBNetStandard.CollectionApi.Figures
+﻿namespace ArangoDBNetStandard.CollectionApi.Models.Figures
 {
-    public class Compactors
+    public class DataFiles
     {
         public int FileSize { get; set; }
 

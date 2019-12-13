@@ -1,6 +1,6 @@
-﻿using ArangoDBNetStandard.CollectionApi.Figures;
+﻿using ArangoDBNetStandard.CollectionApi.Models.Figures;
 
-namespace ArangoDBNetStandard.CollectionApi
+namespace ArangoDBNetStandard.CollectionApi.Models
 {
     public class FiguresResult
     {

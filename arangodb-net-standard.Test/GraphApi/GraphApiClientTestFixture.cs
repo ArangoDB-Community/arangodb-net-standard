@@ -1,5 +1,5 @@
 ﻿using ArangoDBNetStandard;
-using ArangoDBNetStandard.CollectionApi;
+using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.GraphApi;
 using System;
 using System.Collections.Generic;
