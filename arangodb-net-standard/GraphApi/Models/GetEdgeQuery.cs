@@ -11,7 +11,7 @@
         /// </summary>
         public string Rev { get; set; }
 
-        public string ToQueryString()
+        internal string ToQueryString()
         {
             if (Rev != null)
             {

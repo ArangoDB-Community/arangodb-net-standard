@@ -17,7 +17,7 @@ namespace ArangoDBNetStandard.GraphApi.Models
         /// </summary>
         public bool? WaitForSync { get; set; }
 
-        public string ToQueryString()
+        internal string ToQueryString()
         {
             List<string> query = new List<string>();
             if (ReturnNew != null)

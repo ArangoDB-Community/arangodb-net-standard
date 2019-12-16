@@ -33,7 +33,7 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         /// Get the set of options in a format suited to a URL query string.
         /// </summary>
         /// <returns></returns>
-        public string ToQueryString()
+        internal string ToQueryString()
         {
             List<string> query = new List<string>();
             if (WaitForSync != null)
