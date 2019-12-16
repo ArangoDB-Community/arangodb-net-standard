@@ -6,7 +6,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
     {
         public bool? ExcludeSystem { get; set; }
 
-        public string ToQueryString()
+        internal string ToQueryString()
         {
             List<string> query = new List<string>();
             if (ExcludeSystem != null)

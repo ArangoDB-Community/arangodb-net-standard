@@ -8,7 +8,7 @@ namespace ArangoDBNetStandard.GraphApi.Models
 
         public bool? ReturnOld { get; set; }
 
-        public string ToQueryString()
+        internal string ToQueryString()
         {
             List<string> query = new List<string>();
             if (ReturnOld != null)
