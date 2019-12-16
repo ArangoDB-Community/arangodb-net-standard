@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
+using ArangoDBNetStandard.UserApi.Models;
 
 namespace ArangoDBNetStandard.UserApi
 {

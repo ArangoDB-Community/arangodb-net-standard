@@ -1,14 +1,12 @@
-﻿using System;
+﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard.DocumentApi;
+using ArangoDBNetStandard.DocumentApi.Models;
+using ArangoDBNetStandardTest.DocumentApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-
-using ArangoDBNetStandard;
-using ArangoDBNetStandard.CollectionApi;
-using ArangoDBNetStandard.DocumentApi;
-using ArangoDBNetStandardTest.DocumentApi.Models;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.DocumentApi

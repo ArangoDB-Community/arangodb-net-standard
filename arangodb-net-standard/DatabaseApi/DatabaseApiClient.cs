@@ -1,9 +1,7 @@
-﻿using ArangoDBNetStandard.Serialization;
+﻿using ArangoDBNetStandard.DatabaseApi.Models;
+using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.DatabaseApi

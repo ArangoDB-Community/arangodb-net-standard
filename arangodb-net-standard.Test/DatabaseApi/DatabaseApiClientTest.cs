@@ -1,5 +1,6 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.DatabaseApi;
+using ArangoDBNetStandard.DatabaseApi.Models;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;

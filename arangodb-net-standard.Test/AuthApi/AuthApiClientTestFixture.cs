@@ -1,8 +1,6 @@
 ﻿using ArangoDBNetStandard;
-using ArangoDBNetStandard.DatabaseApi;
-using System;
+using ArangoDBNetStandard.DatabaseApi.Models;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandardTest.AuthApi

@@ -1,6 +1,6 @@
 ﻿using ArangoDBNetStandard;
-using ArangoDBNetStandard.CollectionApi;
-using ArangoDBNetStandard.GraphApi;
+using ArangoDBNetStandard.CollectionApi.Models;
+using ArangoDBNetStandard.GraphApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

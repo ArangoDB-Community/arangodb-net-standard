@@ -1,7 +1,7 @@
-﻿using ArangoDBNetStandard.Serialization;
+﻿using ArangoDBNetStandard.CollectionApi.Models;
+using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.CollectionApi

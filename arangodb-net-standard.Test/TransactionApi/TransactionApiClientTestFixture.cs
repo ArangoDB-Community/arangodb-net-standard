@@ -1,5 +1,5 @@
 ﻿using ArangoDBNetStandard;
-using ArangoDBNetStandard.CollectionApi;
+using ArangoDBNetStandard.CollectionApi.Models;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandardTest.TransactionApi

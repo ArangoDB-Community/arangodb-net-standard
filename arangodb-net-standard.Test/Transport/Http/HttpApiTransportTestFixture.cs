@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard.DatabaseApi;
+﻿using ArangoDBNetStandard.DatabaseApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

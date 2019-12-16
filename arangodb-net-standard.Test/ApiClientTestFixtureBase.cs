@@ -1,5 +1,6 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.DatabaseApi;
+using ArangoDBNetStandard.DatabaseApi.Models;
 using ArangoDBNetStandard.Transport.Http;
 using ArangoDBNetStandard.UserApi;
 using System;

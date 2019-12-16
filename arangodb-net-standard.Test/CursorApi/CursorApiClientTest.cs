@@ -1,12 +1,9 @@
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CursorApi;
-using ArangoDBNetStandard.DatabaseApi;
-using System;
+using ArangoDBNetStandard.CursorApi.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
