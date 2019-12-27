@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.CollectionApi
 {
-    public class CollectionApiClient : ApiClientBase
+    /// <summary>
+    /// A client for interacting with ArangoDB Collections endpoints,
+    /// implementing <see cref="ICollectionApiClient"/>.
+    /// </summary>
+    public class CollectionApiClient : ApiClientBase, ICollectionApiClient
     {
         private IApiClientTransport _transport;
         private string _collectionApiPath = "_api/collection";

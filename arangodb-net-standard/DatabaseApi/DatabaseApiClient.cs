@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.DatabaseApi
 {
-    public class DatabaseApiClient : ApiClientBase
+    public class DatabaseApiClient : ApiClientBase, IDatabaseApiClient
     {
         private IApiClientTransport _client;
         private readonly string _databaseApiPath = "_api/database";

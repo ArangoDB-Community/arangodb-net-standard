@@ -8,7 +8,7 @@ namespace ArangoDBNetStandard.AuthApi
     /// <summary>
     /// ArangoDB authentication endpoints.
     /// </summary>
-    public class AuthApiClient: ApiClientBase
+    public class AuthApiClient : ApiClientBase, IAuthApiClient
     {
         private IApiClientTransport _client;
 

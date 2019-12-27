@@ -10,7 +10,7 @@ namespace ArangoDBNetStandard.DocumentApi
     /// <summary>
     /// Provides access to ArangoDB document API.
     /// </summary>
-    public class DocumentApiClient : ApiClientBase
+    public class DocumentApiClient : ApiClientBase, IDocumentApiClient
     {
         private readonly string _docApiPath = "_api/document";
         private IApiClientTransport _client;

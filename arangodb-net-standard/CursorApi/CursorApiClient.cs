@@ -10,7 +10,7 @@ namespace ArangoDBNetStandard.CursorApi
     /// <summary>
     /// ArangoDB Cursor API.
     /// </summary>
-    public class CursorApiClient : ApiClientBase
+    public class CursorApiClient : ApiClientBase, ICursorApiClient
     {
         private readonly string _cursorApiPath = "_api/cursor";
         private IApiClientTransport _client;
