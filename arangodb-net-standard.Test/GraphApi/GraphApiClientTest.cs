@@ -204,11 +204,16 @@ namespace ArangoDBNetStandardTest.GraphApi
                         To = new string[] { "toclx" },
                         Collection = "clx"
                     }
+                },
+                OrphanCollections = new List<string>()
+                {
+                    "myclx"
                 }
             });
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.Single(response.Graph.EdgeDefinitions);
+            Assert.Contains(response.Graph.OrphanCollections, x => x == "myclx");
             Assert.Equal(graphName, response.Graph.Name);
         }
 
@@ -1658,7 +1663,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     Name = "Bogus_Name"
                 });
-            });          
+            });
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
@@ -1675,7 +1680,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             {
                 Collection = vertexClx
             });
-            
+
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
