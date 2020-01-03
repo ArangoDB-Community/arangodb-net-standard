@@ -7,7 +7,7 @@ using ArangoDBNetStandard.UserApi.Models;
 
 namespace ArangoDBNetStandard.UserApi
 {
-    public class UserApiClient: ApiClientBase
+    public class UserApiClient : ApiClientBase, IUserApiClient
     {
         private IApiClientTransport _client;
         private readonly string _userApiPath = "_api/user";

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.GraphApi
 {
-    public class GraphApiClient : ApiClientBase
+    public class GraphApiClient : ApiClientBase, IGraphApiClient
     {
         private IApiClientTransport _transport;
         private readonly string _graphApiPath = "_api/gharial";
