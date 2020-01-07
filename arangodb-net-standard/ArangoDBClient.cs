@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CursorApi;
@@ -19,6 +20,11 @@ namespace ArangoDBNetStandard
     public class ArangoDBClient : IDisposable
     {
         private IApiClientTransport _transport;
+
+        /// <summary>
+        /// AQL user functions management API.
+        /// </summary>
+        public AqlFunctionApiClient AqlFunction { get; set; }
 
         public AuthApiClient Auth { get; private set; }
 
@@ -60,6 +66,7 @@ namespace ArangoDBNetStandard
         public ArangoDBClient(HttpClient client)
         {
             _transport = new HttpApiTransport(client, HttpContentType.Json);
+            AqlFunction = new AqlFunctionApiClient(_transport);
             Auth = new AuthApiClient(_transport);
             Cursor = new CursorApiClient(_transport);
             Database = new DatabaseApiClient(_transport);
@@ -80,6 +87,7 @@ namespace ArangoDBNetStandard
 
             var serialization = new JsonNetApiClientSerialization();
 
+            AqlFunction = new AqlFunctionApiClient(_transport, serialization);
             Auth = new AuthApiClient(_transport, serialization);
             Cursor = new CursorApiClient(_transport, serialization);
             Database = new DatabaseApiClient(_transport, serialization);
@@ -98,6 +106,7 @@ namespace ArangoDBNetStandard
         public ArangoDBClient(IApiClientTransport transport, IApiClientSerialization serialization)
         {
             _transport = transport;
+            AqlFunction = new AqlFunctionApiClient(_transport, serialization);
             Auth = new AuthApiClient(_transport, serialization);
             Cursor = new CursorApiClient(_transport, serialization);
             Database = new DatabaseApiClient(_transport, serialization);

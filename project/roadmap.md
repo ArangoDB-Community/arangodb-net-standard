@@ -85,6 +85,12 @@ A tick indicates an item is implemented and has automated tests in place.
 
 - [X]	POST/_api/transaction Execute transaction
 
+#### AQL User Functions API
+
+- [X]   POST /_api/aqlfunction
+- [X]   DELETE /_api/aqlfunction/{name}
+- [X]   GET /_api/aqlfunction
+
 ## Versions 1.1+
 
 ### Other API implementations
