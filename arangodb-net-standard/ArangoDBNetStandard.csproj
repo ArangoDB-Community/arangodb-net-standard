@@ -7,7 +7,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Actify-Inc/arangodb-net-standard</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Actify-Inc/arangodb-net-standard</RepositoryUrl>
-    <PackageTags>arangodb arango .net c# netstandard multimodel graph document database</PackageTags>
+    <PackageTags>arangodb-net-standard arangodb arango .net c# netstandard multimodel graph document database</PackageTags>
     <Version>1.0.0-alpha01</Version>
     <Company>Actify, Inc</Company>
   </PropertyGroup>
