@@ -10,7 +10,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
     /// A client to interact with ArangoDB HTTP API endpoints
     /// for AQL user functions management.
     /// </summary>
-    public class AqlFunctionApiClient : ApiClientBase
+    public class AqlFunctionApiClient : ApiClientBase, IAqlFunctionApiClient
     {
         private readonly IApiClientTransport _transport;
 
