@@ -109,3 +109,15 @@ For example, the following test method names could be used:
 
 - `GetCollections_ShouldSucceed()`
 - `GetCollections_ShouldThrow_WhenDatabaseIsOffline()`
+
+## Releases
+
+To create a new release, follow these steps:
+
+1. Pull branch for release from actify-inc repo.
+2. Check the version number in ./arangodb-net-standard/ArangoDBNetStandard.csproj file
+  - if the version number is incorrect, create a separate commit to change the version number, push it and get it merged before proceeding.
+3. Run `dotnet pack --configuration Release ./arangodb-net-standard/ArangoDBNetStandard.csproj`
+4. Upload the resultant nuget package via https://www.nuget.org/packages/manage/upload
+5. Tag the commit from which the package was produced, using the version string as the tag name. Put the nuget package URL as the tag "message": `git tag -a 1.0.0-alpha01 -m "https://www.nuget.org/packages/ArangoDBNetStandard/1.0.0-alpha01"`
+6. Run `git push upstream --tags` to push the tag up to github
