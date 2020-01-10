@@ -12,6 +12,7 @@ A consistent, comprehensive, minimal driver for the [ArangoDB REST API](https://
   * [Description](#description)
   * [Project Summary](#project-summary)
   * [Usage](#usage)
+    + [Installation](#installation)
     + [Quick Start](#quick-start)
       - [Create a database](#create-a-database)
       - [Create a collection](#create-a-collection)
@@ -46,6 +47,10 @@ In addition the library provides:
 - Consistent approach for each API endpoint
 
 ## Usage
+
+### Installation
+
+Install the latest release of [ArangoDBNetStandard on Nuget](https://www.nuget.org/packages/ArangoDBNetStandard).
 
 ### Quick Start
 
