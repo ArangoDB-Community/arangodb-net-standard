@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace ArangoDBNetStandard.Serialization
@@ -56,7 +59,7 @@ namespace ArangoDBNetStandard.Serialization
 
             if (useCamelCasePropertyNames)
             {
-                jsonSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                jsonSettings.ContractResolver = new CamelCasePropertyNamesExceptDictionaryContractResolver();
             }
 
             string json = JsonConvert.SerializeObject(item, jsonSettings);
