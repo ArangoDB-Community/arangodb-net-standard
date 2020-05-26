@@ -2,6 +2,8 @@
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.DocumentApi.Models;
+using ArangoDBNetStandard.Transport;
+using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -96,7 +98,6 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.Equal(2, response.Type); // 2 is document collection, 3 is edge collection
         }
 
-
         [Fact]
         public async Task PostCollectionAsync_ShouldSucceed_WhenEdgeCollection()
         {
@@ -112,6 +113,50 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.Equal("MyEdgeCollection", response.Name);
             Assert.Equal("traditional", response.KeyOptions.Type);
             Assert.Equal(3, response.Type); // 2 is document collection, 3 is edge collection
+        }
+
+        [Fact]
+        public async Task PostCollectionAsync_ShouldUseQueryParameter()
+        {
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(true);
+
+            string requestUri = null;
+
+            mockTransport.Setup(x => x.PostAsync(
+                It.IsAny<string>(),
+                It.IsAny<byte[]>()))
+                .Returns((string uri, byte[] content) =>
+                {
+                    requestUri = uri;
+                    return Task.FromResult(mockResponse.Object);
+                });
+
+            var apiClient = new CollectionApiClient(mockTransport.Object);
+
+            var response = await apiClient.PostCollectionAsync(
+                new PostCollectionBody
+                {
+                    Name = "MyCollection"
+                },
+                new PostCollectionQuery()
+                {
+                    EnforceReplicationFactor = true,
+                    WaitForSyncReplication = true
+                });
+
+            Assert.NotNull(requestUri);
+            Assert.Contains("enforceReplicationFactor=1", requestUri);
+            Assert.Contains("waitForSyncReplication=1", requestUri);
         }
 
         [Fact]
@@ -351,7 +396,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         {
             var putCollection = await _adb.Collection.PostCollectionAsync(new PostCollectionBody
             {
-                 Name = nameof(PutCollectionPropertyAsync_ShouldSucceed)
+                Name = nameof(PutCollectionPropertyAsync_ShouldSucceed)
             });
             var beforeResponse = await _collectionApi.GetCollectionPropertiesAsync(putCollection.Name);
 
