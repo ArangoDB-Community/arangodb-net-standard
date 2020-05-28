@@ -46,7 +46,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 uriString += "?" + options.ToQueryString();
             }
             var content = GetContent(body, true, true);
-            using (var response = await _transport.PostAsync(_collectionApiPath, content))
+            using (var response = await _transport.PostAsync(uriString, content))
             {
                 var stream = await response.Content.ReadAsStreamAsync();
                 if (response.IsSuccessStatusCode)
