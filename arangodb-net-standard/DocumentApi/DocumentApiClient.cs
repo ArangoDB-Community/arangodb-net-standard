@@ -100,6 +100,22 @@ namespace ArangoDBNetStandard.DocumentApi
         }
 
         /// <summary>
+        /// Replaces the document based on its Document ID with the one in
+        /// the body, provided there is such a document and no precondition is
+        /// violated.
+         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <param name="doc"></param>
+        /// <param name="opts"></param>
+        /// <returns></returns>
+        public Task<PostDocumentResponse<T>> PutDocumentAsync<T> (string collectionName, string documentKey, T doc, PutDocumentsQuery opts = null)
+        {
+            return PutDocumentAsync<T> ($"{WebUtility.UrlEncode (collectionName)}/{WebUtility.UrlEncode (documentKey)}", doc, opts);
+        }
+
+        /// <summary>
         /// Replace multiple documents.
         /// </summary>
         /// <typeparam name="T"></typeparam>
