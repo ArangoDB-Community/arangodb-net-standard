@@ -1,7 +1,7 @@
 ﻿namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
-    /// Base model for POST document responses.
+    /// Base model for POST, PATCH, DELETE document responses.
     /// </summary>
     public class DocumentBase
     {

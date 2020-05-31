@@ -1,7 +1,9 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.DocumentApi.Models;
+using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandardTest.DocumentApi.Models;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -377,7 +379,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var updateResponse = await _docClient.PutDocumentAsync(
                 response._id,
                 new { stuff = "new" },
-                new PutDocumentsQuery
+                new PutDocumentQuery
                 {
                     ReturnNew = true
                 });
@@ -390,6 +392,52 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
+        public async Task PutDocument_ShouldUseQueryParameters_WhenProvided()
+        {
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(true);
+
+            string requestUri = null;
+
+            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns((string uri, byte[] content) =>
+                {
+                    requestUri = uri;
+                    return Task.FromResult(mockResponse.Object);
+                });
+
+            var client = new DocumentApiClient(mockTransport.Object);
+
+            await client.PutDocumentAsync(
+                "mycollection/0123456789",
+                new { },
+                new PutDocumentQuery
+                {
+                    IgnoreRevs = true,
+                    ReturnOld = true,
+                    ReturnNew = true,
+                    Silent = true,
+                    WaitForSync = true
+                });
+
+            Assert.NotNull(requestUri);
+            Assert.Contains("ignoreRevs=true", requestUri);
+            Assert.Contains("returnOld=true", requestUri);
+            Assert.Contains("returnNew=true", requestUri);
+            Assert.Contains("silent=true", requestUri);
+            Assert.Contains("waitForSync=true", requestUri);
+        }
+
+        [Fact]
         public async Task PutDocument_ShouldThrow_WhenConflictingWriteAttempted_WithIgnoreRevsOptionFalse()
         {
             var doc1 = new { _key = "test", stuff = "test" };
@@ -398,7 +446,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var updateResponse1 = await _docClient.PutDocumentAsync(
                 response._id,
                 new { stuff = "new" },
-                new PutDocumentsQuery
+                new PutDocumentQuery
                 {
                     ReturnNew = true
                 });
@@ -412,7 +460,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     response._id,
                     // Use the initial rev value when updating, is out of sync
                     new { stuff = "more", response._rev },
-                    new PutDocumentsQuery
+                    new PutDocumentQuery
                     {
                         IgnoreRevs = false
                     }));

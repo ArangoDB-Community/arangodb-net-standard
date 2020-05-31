@@ -63,7 +63,7 @@ namespace ArangoDBNetStandard.DocumentApi
         Task<PostDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
             T doc,
-            PutDocumentsQuery opts = null);
+            PutDocumentQuery opts = null);
 
         /// <summary>
         /// Get an existing document.

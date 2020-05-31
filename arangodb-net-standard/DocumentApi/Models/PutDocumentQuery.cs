@@ -6,35 +6,41 @@ namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
     /// Options used when calling ArangoDB PUT document endpoint
-    /// to replace multiple document.
+    /// to replace one document.
     /// </summary>
-    public class PutDocumentsQuery
+    public class PutDocumentQuery
     {
         /// <summary>
-        /// Whether to wait until the new documents have been synced to disk.
+        /// Wait until document has been synced to disk.
         /// </summary>
         public bool? WaitForSync { get; set; }
 
         /// <summary>
         /// By default, or if this is set to true, the _rev attributes in
-        /// the given documents are ignored. If this is set to false, then
-        /// any _rev attribute given in a body document is taken as a
-        /// precondition. The document is only replaced if the current revision
-        /// is the one specified.
+        /// the given document is ignored. If this is set to false,
+        /// then the _rev attribute given in the body document is taken as a precondition.
+        /// The document is only replaced if the current revision is the one specified.
         /// </summary>
         public bool? IgnoreRevs { get; set; }
 
         /// <summary>
         /// Whether to return the complete previous revision of the changed
-        /// documents under <see cref="PostDocumentResponse{T}.Old"/>.
+        /// document under <see cref="PostDocumentResponse{T}.Old"/>.
         /// </summary>
         public bool? ReturnOld { get; set; }
 
         /// <summary>
         /// Whether to return the complete new revision of the changed
-        /// documents under <see cref="PostDocumentResponse{T}.New"/>.
+        /// document under <see cref="PostDocumentResponse{T}.New"/>.
         /// </summary>
         public bool? ReturnNew { get; set; }
+
+        /// <summary>
+        /// If set to true, an empty object will be returned as response.
+        /// No meta-data will be returned for the replaced document.
+        /// This option can be used to save some network traffic.
+        /// </summary>
+        public bool? Silent { get; set; }
 
         /// <summary>
         /// Get the set of options in a format suited to a URL query string.
@@ -42,7 +48,7 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         /// <returns></returns>
         internal string ToQueryString()
         {
-            List<string> query = new List<string>();
+            var query = new List<string>();
             if (WaitForSync != null)
             {
                 query.Add("waitForSync=" + WaitForSync.ToString().ToLower());
@@ -58,6 +64,10 @@ namespace ArangoDBNetStandard.DocumentApi.Models
             if (IgnoreRevs != null)
             {
                 query.Add("ignoreRevs=" + IgnoreRevs.ToString().ToLower());
+            }
+            if (Silent != null)
+            {
+                query.Add("silent=" + Silent.ToString().ToLower());
             }
             return string.Join("&", query);
         }

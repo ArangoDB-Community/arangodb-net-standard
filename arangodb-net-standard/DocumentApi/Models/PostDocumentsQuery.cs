@@ -3,7 +3,8 @@
 namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
-    /// Options used when calling ArangoDB POST document endpoint.
+    /// Options used when calling ArangoDB POST document endpoint
+    /// to create one or multiple documents.
     /// </summary>
     public class PostDocumentsQuery
     {
