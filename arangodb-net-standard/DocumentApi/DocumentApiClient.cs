@@ -198,6 +198,33 @@ namespace ArangoDBNetStandard.DocumentApi
         }
 
         /// <summary>
+        /// Get multiple documents
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="selectors"></param>
+        /// <returns></returns>
+
+        public async Task<List<T>> GetDocumentsAsync<T> (string collectionName, IList<string> selectors)
+        {
+            string uri = $"{_docApiPath}/{WebUtility.UrlEncode(collectionName)}?onlyget=true";
+
+            var content = GetContent(selectors, false, true);
+
+            using (var response = await _client.PutAsync (uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    var documents = DeserializeJsonFromStream <List <T>>(stream);
+                    return documents;
+                }
+                throw await GetApiErrorException (response);
+            }
+        }
+
+
+        /// <summary>
         /// Delete a document.
         /// </summary>
         /// <remarks>
