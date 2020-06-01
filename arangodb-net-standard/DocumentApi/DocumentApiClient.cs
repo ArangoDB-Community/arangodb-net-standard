@@ -197,16 +197,21 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
         /// in the returned <see cref="DeleteDocumentResponse{object}"/>. Its value will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentsQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// <see cref="DeleteDocumentQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string collectionName, string documentKey, DeleteDocumentsQuery query = null)
+        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
+            string collectionName,
+            string documentKey,
+            DeleteDocumentQuery query = null)
         {
-            return await DeleteDocumentAsync<object>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", query);
+            return await DeleteDocumentAsync<object>(
+                $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
+                query);
         }
 
         /// <summary>
@@ -215,15 +220,63 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
         /// in the returned <see cref="DeleteDocumentResponse{object}"/>. Its value will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentsQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// <see cref="DeleteDocumentQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="documentId"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(string documentId, DeleteDocumentsQuery query = null)
+        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
+            string documentId,
+            DeleteDocumentQuery query = null)
         {
             return await DeleteDocumentAsync<object>(documentId, query);
+        }
+
+        /// <summary>
+        /// Delete a document.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
+            string collectionName,
+            string documentKey,
+            DeleteDocumentQuery query = null)
+        {
+            return await DeleteDocumentAsync<T>(
+                $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
+                query);
+        }
+
+        /// <summary>
+        /// Delete a document based on its document ID.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
+            string documentId,
+            DeleteDocumentQuery query = null)
+        {
+            ValidateDocumentId(documentId);
+            string uri = _docApiPath + "/" + documentId;
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+            using (var response = await _client.DeleteAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    var responseModel = DeserializeJsonFromStream<DeleteDocumentResponse<T>>(stream);
+                    return responseModel;
+                }
+                throw await GetApiErrorException(response);
+            }
         }
 
         /// <summary>
@@ -243,45 +296,6 @@ namespace ArangoDBNetStandard.DocumentApi
         public async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(string collectionName, IList<string> selectors, DeleteDocumentsQuery query = null)
         {
             return await DeleteDocumentsAsync<object>(collectionName, selectors, query);
-        }
-
-        /// <summary>
-        /// Delete a document.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="collectionName"></param>
-        /// <param name="documentKey"></param>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string collectionName, string documentKey, DeleteDocumentsQuery query = null)
-        {
-            return await DeleteDocumentAsync<T>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", query);
-        }
-
-        /// <summary>
-        /// Delete a document based on its document ID.
-        /// </summary>
-        /// <param name="documentId"></param>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(string documentId, DeleteDocumentsQuery query = null)
-        {
-            ValidateDocumentId(documentId);
-            string uri = _docApiPath + "/" + documentId;
-            if (query != null)
-            {
-                uri += "?" + query.ToQueryString();
-            }
-            using (var response = await _client.DeleteAsync(uri))
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    var responseModel = DeserializeJsonFromStream<DeleteDocumentResponse<T>>(stream);
-                    return responseModel;
-                }
-                throw await GetApiErrorException(response);
-            }
         }
 
         /// <summary>

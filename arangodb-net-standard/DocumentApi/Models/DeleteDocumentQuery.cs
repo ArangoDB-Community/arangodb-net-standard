@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
-    /// Represents query parameters used when deleting multiple document.
+    /// Represents query parameters used when deleting a single document.
     /// </summary>
-    public class DeleteDocumentsQuery
+    public class DeleteDocumentQuery
     {
         /// <summary>
         /// Wait until deletion operation has been synced to disk.
@@ -17,12 +19,6 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         /// under the <see cref="DeleteDocumentResponse{T}.Old"/>.
         /// </summary>
         public bool? ReturnOld { get; set; }
-
-        /// <summary>
-        /// If set to true, ignore any _rev attribute in the selectors.
-        /// No revision check is performed.
-        /// </summary>
-        public bool? IgnoreRevs { get; set; }
 
         /// <summary>
         /// If set to true, an empty object will be returned as response.
@@ -41,10 +37,6 @@ namespace ArangoDBNetStandard.DocumentApi.Models
             if (ReturnOld != null)
             {
                 queryParams.Add("returnOld=" + ReturnOld.ToString().ToLower());
-            }
-            if (IgnoreRevs != null)
-            {
-                queryParams.Add("ignoreRevs=" + IgnoreRevs.ToString().ToLower());
             }
             if (Silent != null)
             {
