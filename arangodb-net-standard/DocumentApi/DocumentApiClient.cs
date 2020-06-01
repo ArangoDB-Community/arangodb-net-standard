@@ -130,7 +130,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="doc"></param>
         /// <param name="opts"></param>
         /// <returns></returns>
-        public async Task<PostDocumentResponse<T>> PutDocumentAsync<T>(string documentId, T doc, PutDocumentsQuery opts = null)
+        public async Task<PostDocumentResponse<T>> PutDocumentAsync<T>(
+            string documentId,
+            T doc,
+            PutDocumentQuery opts = null)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
