@@ -195,6 +195,29 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
+        public async Task DeleteDocuments_ShouldSucceed_WhenSilent()
+        {
+            var createResponse = await _docClient.PostDocumentsAsync(
+                _testCollection,
+                new object[] {
+                    new { testKey = "testValue" },
+                    new { testKey = "testValue" }
+                });
+
+            Assert.Equal(2, createResponse.Count);
+
+            var deleteResponse = await _docClient.DeleteDocumentsAsync(
+                _testCollection,
+                createResponse.Select(x => x._key).ToList(),
+                new DeleteDocumentsQuery()
+                {
+                    Silent = true
+                });
+
+            Assert.Empty(deleteResponse);
+        }
+
+        [Fact]
         public async Task DeleteDocuments_ShouldNotThrowButReportFailure_WhenSomeDocumentSelectorsAreInvalid()
         {
             var docs = new[] {
@@ -341,6 +364,23 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 Assert.Null(innerResponse.Old);
                 Assert.Equal("value", (string)innerResponse.New.test);
             }
+        }
+
+        [Fact]
+        public async Task PostDocuments_ShouldSucceed_WhenSilent()
+        {
+            var createResponse = await _docClient.PostDocumentsAsync(
+                _testCollection,
+                new object[] {
+                    new { testKey = "testValue" },
+                    new { testKey = "testValue" }
+                },
+                new PostDocumentsQuery()
+                {
+                    Silent = true
+                });
+
+            Assert.Empty(createResponse);
         }
 
         [Fact]

@@ -85,8 +85,15 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostDocumentsResponse<T>>(stream);
+                    if (query != null && query.Silent.HasValue && query.Silent.Value)
+                    {
+                        return PostDocumentsResponse<T>.Empty();
+                    }
+                    else
+                    {
+                        var stream = await response.Content.ReadAsStreamAsync();
+                        return DeserializeJsonFromStream<PostDocumentsResponse<T>>(stream);
+                    }
                 }
                 throw await GetApiErrorException(response);
             }
@@ -298,9 +305,15 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    var responseModel = DeserializeJsonFromStream<DeleteDocumentsResponse<T>>(stream);
-                    return responseModel;
+                    if (query != null && query.Silent.HasValue && query.Silent.Value)
+                    {
+                        return DeleteDocumentsResponse<T>.Empty();
+                    }
+                    else
+                    {
+                        var stream = await response.Content.ReadAsStreamAsync();
+                        return DeserializeJsonFromStream<DeleteDocumentsResponse<T>>(stream);
+                    }
                 }
                 throw await GetApiErrorException(response);
             }
