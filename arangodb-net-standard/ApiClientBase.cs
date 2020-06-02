@@ -31,8 +31,8 @@ namespace ArangoDBNetStandard
         {
             if (documentId.Split('/').Length != 2)
             {
-                throw new ArgumentException("A valid document ID has two parts, split by '/'. + " +
-                    "" + documentId + " is not a valid document ID. Maybe the document key was used by mistake?");
+                throw new ArgumentException("A valid document ID has two parts, split by '/'. \"" +
+                    documentId + "\" is not a valid document ID. Maybe the document key was used by mistake?");
             }
         }
 
