@@ -9,7 +9,5 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         public string ErrorMessage { get; set; }
 
         public int ErrorNum { get; set; }
-
-        public HttpStatusCode Code { get; set; }
     }
 }
