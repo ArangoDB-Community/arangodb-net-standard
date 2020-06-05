@@ -107,7 +107,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documents"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PostDocumentsResponse<T>> PutDocumentsAsync<T>(string collectionName, IList<T> documents, PutDocumentsQuery query = null)
+        public async Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
+            string collectionName,
+            IList<T> documents,
+            PutDocumentsQuery query = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -120,7 +123,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostDocumentsResponse<T>>(stream);
+                    return DeserializeJsonFromStream<PutDocumentsResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
@@ -137,7 +140,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="doc"></param>
         /// <param name="opts"></param>
         /// <returns></returns>
-        public async Task<PostDocumentResponse<T>> PutDocumentAsync<T>(
+        public async Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
             T doc,
             PutDocumentQuery opts = null)
@@ -154,7 +157,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PostDocumentResponse<T>>(stream);
+                    return DeserializeJsonFromStream<PutDocumentResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }
