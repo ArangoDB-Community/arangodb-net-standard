@@ -127,7 +127,6 @@ namespace ArangoDBNetStandardTest.CursorApi
             Assert.NotEmpty(plan.Variables);
             Assert.NotEqual(0, plan.EstimatedCost);
             Assert.NotEqual(0, plan.EstimatedNrItems);
-            Assert.True(plan.Initialize);
             Assert.False(plan.IsModificationQuery);
 
             Assert.NotNull(response.Extra.Stats.Nodes);
