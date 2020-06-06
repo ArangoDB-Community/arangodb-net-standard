@@ -10,6 +10,7 @@
     <PackageTags>arangodb-net-standard arangodb arango .net c# netstandard multimodel graph document database</PackageTags>
     <Version>1.0.0-alpha02</Version>
     <Company>Actify, Inc</Company>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
