@@ -16,7 +16,10 @@ namespace ArangoDBNetStandard.CursorApi.Models
 
         public long EstimatedNrItems { get; set; }
 
-        public bool Initialize { get; set; }
+        /// <summary>
+        /// This is not available from ArangoDB 3.6 onwards.
+        /// </summary>
+        public bool? Initialize { get; set; }
 
         public bool IsModificationQuery { get; set; }
     }
