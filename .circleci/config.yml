@@ -5,15 +5,15 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - "test-arangodb-3_4_9":
+      - "test-arangodb-3_4":
           requires:
             - build
-      - "test-arangodb-3_5_5":
+      - "test-arangodb-3_5":
           requires:
-            - "test-arangodb-3_4_9"
-      - "test-arangodb-3_6_4":
+            - "test-arangodb-3_4"
+      - "test-arangodb-3_6":
           requires:
-            - "test-arangodb-3_5_5"
+            - "test-arangodb-3_5"
 
 jobs:
   build:
@@ -35,7 +35,7 @@ jobs:
           paths:
             - arangodb-net-standard
 
-  "test-arangodb-3_4_9":
+  "test-arangodb-3_4":
     working_directory: ~/arangodb-net-standard
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
@@ -54,7 +54,7 @@ jobs:
           command:
             dotnet test
             
-  "test-arangodb-3_5_5":
+  "test-arangodb-3_5":
     working_directory: ~/arangodb-net-standard
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
@@ -73,7 +73,7 @@ jobs:
           command:
             dotnet test
 
-  "test-arangodb-3_6_4":
+  "test-arangodb-3_6":
     working_directory: ~/arangodb-net-standard
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
