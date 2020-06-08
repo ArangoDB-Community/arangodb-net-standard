@@ -44,7 +44,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documents"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        Task<PostDocumentsResponse<T>> PutDocumentsAsync<T>(
+        Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
            string collectionName,
            IList<T> documents,
            PutDocumentsQuery query = null);
@@ -60,7 +60,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="doc"></param>
         /// <param name="opts"></param>
         /// <returns></returns>
-        Task<PostDocumentResponse<T>> PutDocumentAsync<T>(
+        Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
             T doc,
             PutDocumentQuery opts = null);

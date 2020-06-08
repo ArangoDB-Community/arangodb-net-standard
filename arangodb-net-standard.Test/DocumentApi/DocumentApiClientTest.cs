@@ -407,7 +407,9 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             Assert.NotNull(response._rev);
             Assert.NotNull(updateResponse._rev);
+            Assert.NotNull(updateResponse._oldRev);
             Assert.NotEqual(response._rev, updateResponse._rev);
+            Assert.Equal(response._rev, updateResponse._oldRev);
         }
 
         [Fact]
@@ -526,11 +528,15 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             Assert.NotNull(response[0]._rev);
             Assert.NotNull(updateResponse[0]._rev);
+            Assert.NotNull(updateResponse[0]._oldRev);
             Assert.NotEqual(response[0]._rev, updateResponse[0]._rev);
+            Assert.Equal(response[0]._rev, updateResponse[0]._oldRev);
 
             Assert.NotNull(response[1]._rev);
             Assert.NotNull(updateResponse[1]._rev);
+            Assert.NotNull(updateResponse[1]._oldRev);
             Assert.NotEqual(response[1]._rev, updateResponse[1]._rev);
+            Assert.Equal(response[1]._rev, updateResponse[1]._oldRev);
         }
 
         [Fact]
