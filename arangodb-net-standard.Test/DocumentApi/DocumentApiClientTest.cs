@@ -412,6 +412,28 @@ namespace ArangoDBNetStandardTest.DocumentApi
             Assert.Equal(response._rev, updateResponse._oldRev);
         }
 
+        /// <summary>
+        /// Tests PutDocument overload accepting collection name + key instead of document id as parameter.
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task PutDocumentOverload_ShouldSucceed()
+        {
+            var doc1 = new { _key = "test", stuff = "test" };
+            var response = await _docClient.PostDocumentAsync(_testCollection, doc1);
+
+            var updateResponse = await _docClient.PutDocumentAsync(
+                _testCollection,
+                response._key,
+                new { stuff = "new" });
+
+            Assert.NotNull(response._rev);
+            Assert.NotNull(updateResponse._rev);
+            Assert.NotNull(updateResponse._oldRev);
+            Assert.NotEqual(response._rev, updateResponse._rev);
+            Assert.Equal(response._rev, updateResponse._oldRev);
+        }
+
         [Fact]
         public async Task PutDocument_ShouldSucceed_WhenNewDocumentIsReturned()
         {
