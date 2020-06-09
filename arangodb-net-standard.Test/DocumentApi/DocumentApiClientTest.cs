@@ -4,6 +4,7 @@ using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandardTest.DocumentApi.Models;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         /// <summary>
         /// Class used for testing document API.
         /// </summary>
+        [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
         public class MyTestClass : DocumentBase
         {
             public string Message { get; set; }
@@ -261,6 +263,31 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
                     Assert.Equal("second", doc.Message); // document is found, it was not deleted
                 });
+        }
+
+        [Fact]
+        public async Task GetDocuments_ShouldSucceed()
+        {
+            const int NUM_DOCS = 3;
+            var postDocResponses = new PostDocumentResponse<MyTestClass>[NUM_DOCS];
+            for (int i = 0; i < NUM_DOCS; i++)
+            {
+                var document = new MyTestClass { Message = "Test " + i };
+                postDocResponses[i] = await _docClient.PostDocumentAsync(_testCollection, document);
+            }
+
+            var getDocsResponse = await _docClient.GetDocumentsAsync<MyTestClass>(
+                _testCollection,
+                postDocResponses.Select(r => r._key).ToList());
+
+            Assert.Equal(NUM_DOCS, getDocsResponse.Count);
+            for (int i = 0; i < NUM_DOCS; i++)
+            {
+                var getDocResponse = getDocsResponse.FirstOrDefault(doc => doc._key == postDocResponses[i]._key);
+                Assert.NotNull(getDocResponse);
+                Assert.Equal(postDocResponses[i]._rev, getDocResponse._rev);
+                Assert.Equal(postDocResponses[i]._id, getDocResponse._id);
+            }
         }
 
         [Fact]
