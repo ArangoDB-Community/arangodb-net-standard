@@ -88,7 +88,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
         /// in the returned <see cref="DeleteDocumentResponse{object}"/>. Its value will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentsQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// <see cref="DeleteDocumentQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="collectionName"></param>
@@ -98,7 +98,7 @@ namespace ArangoDBNetStandard.DocumentApi
         Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string collectionName,
             string documentKey,
-            DeleteDocumentsQuery query = null);
+            DeleteDocumentQuery query = null);
 
         /// <summary>
         /// Delete a document based on its document ID.
@@ -106,7 +106,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
         /// in the returned <see cref="DeleteDocumentResponse{object}"/>. Its value will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentsQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// <see cref="DeleteDocumentQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="documentId"></param>
@@ -114,7 +114,30 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string documentId,
-            DeleteDocumentsQuery query = null);
+            DeleteDocumentQuery query = null);
+
+        /// <summary>
+        /// Delete a document.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
+          string collectionName,
+          string documentKey,
+          DeleteDocumentQuery query = null);
+
+        /// <summary>
+        /// Delete a document based on its document ID.
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
+          string documentId,
+          DeleteDocumentQuery query = null);
 
         /// <summary>
         /// Delete multiple documents based on the passed document selectors.
@@ -133,29 +156,6 @@ namespace ArangoDBNetStandard.DocumentApi
         Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(
           string collectionName,
           IList<string> selectors,
-          DeleteDocumentsQuery query = null);
-
-        /// <summary>
-        /// Delete a document.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="collectionName"></param>
-        /// <param name="documentKey"></param>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
-          string collectionName,
-          string documentKey,
-          DeleteDocumentsQuery query = null);
-
-        /// <summary>
-        /// Delete a document based on its document ID.
-        /// </summary>
-        /// <param name="documentId"></param>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
-          string documentId,
           DeleteDocumentsQuery query = null);
 
         /// <summary>

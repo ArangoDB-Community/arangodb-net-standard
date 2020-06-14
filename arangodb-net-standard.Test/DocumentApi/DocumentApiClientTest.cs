@@ -69,7 +69,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var response = await _docClient.PostDocumentAsync(_testCollection, document);
             Assert.NotNull(response._id);
 
-            var deleteResponse = await _docClient.DeleteDocumentAsync<MyTestClass>(response._id, new DeleteDocumentsQuery
+            var deleteResponse = await _docClient.DeleteDocumentAsync<MyTestClass>(response._id, new DeleteDocumentQuery
             {
                 ReturnOld = true
             });
@@ -83,6 +83,47 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 await _docClient.GetDocumentAsync<object>(response._id));
 
             Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found
+        }
+
+        [Fact]
+        public async Task DeleteDocument_ShouldUseQueryParameters_WhenProvided()
+        {
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(true);
+
+            string requestUri = null;
+
+            mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>()))
+                .Returns((string uri) =>
+                {
+                    requestUri = uri;
+                    return Task.FromResult(mockResponse.Object);
+                });
+
+            var client = new DocumentApiClient(mockTransport.Object);
+
+            await client.DeleteDocumentAsync(
+                "mycollection/0123456789",
+                new DeleteDocumentQuery
+                {
+                    ReturnOld = true,
+                    Silent = true,
+                    WaitForSync = true
+                });
+
+            Assert.NotNull(requestUri);
+            Assert.Contains("returnOld=true", requestUri);
+            Assert.Contains("silent=true", requestUri);
+            Assert.Contains("waitForSync=true", requestUri);
         }
 
         [Fact]
@@ -217,6 +258,50 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 });
 
             Assert.Empty(deleteResponse);
+        }
+
+        [Fact]
+        public async Task DeleteDocuments_ShouldUseQueryParameters_WhenProvided()
+        {
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(true);
+
+            string requestUri = null;
+
+            mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns((string uri, byte[] content) =>
+                {
+                    requestUri = uri;
+                    return Task.FromResult(mockResponse.Object);
+                });
+
+            var client = new DocumentApiClient(mockTransport.Object);
+
+            await client.DeleteDocumentsAsync(
+                "mycollection",
+                new List<string>() { "0123456789" },
+                new DeleteDocumentsQuery
+                {
+                    IgnoreRevs = true,
+                    ReturnOld = true,
+                    Silent = true,
+                    WaitForSync = true
+                });
+
+            Assert.NotNull(requestUri);
+            Assert.Contains("ignoreRevs=true", requestUri);
+            Assert.Contains("returnOld=true", requestUri);
+            Assert.Contains("silent=true", requestUri);
+            Assert.Contains("waitForSync=true", requestUri);
         }
 
         [Fact]
