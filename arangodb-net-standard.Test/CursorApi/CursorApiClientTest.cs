@@ -22,7 +22,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         {
             _cursorApi = fixture.ArangoDBClient.Cursor;
         }
-        
+
         [Fact]
         public async Task PostCursorAsync_ShouldSucceed()
         {
@@ -133,6 +133,21 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
+        public async Task PostCursorAsync_ShouldSucceed_WhenUsingOtherOptions()
+        {
+            var response = await _cursorApi.PostCursorAsync<MyModel>(
+                "FOR doc IN [{ myProperty: CONCAT('This is a ', @testString) }] LIMIT 1 RETURN doc",
+                new Dictionary<string, object> { ["testString"] = "robbery" },
+                new PostCursorOptions
+                {
+                    MaxRuntime = 10
+                });
+
+            Assert.Single(response.Result);
+            Assert.Equal("This is a robbery", response.Result.First().MyProperty);
+        }
+
+        [Fact]
         public async Task PostCursorAsync_ShouldThrow_WhenAqlIsNotValid()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
@@ -165,14 +180,14 @@ namespace ArangoDBNetStandardTest.CursorApi
             var nextResponse = await _cursorApi.PutCursorAsync<long>(response.Id);
             Assert.False(nextResponse.HasMore);
 
-            await Assert.ThrowsAsync<ApiErrorException>(async () => 
+            await Assert.ThrowsAsync<ApiErrorException>(async () =>
                 await _cursorApi.PutCursorAsync<long>(response.Id));
         }
 
         [Fact]
         public async Task PutCursorAsync_ShouldThrow_WhenCursorDoesNotExist()
         {
-            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () => 
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
                 await _cursorApi.PutCursorAsync<long>("nada"));
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
@@ -183,7 +198,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task DeleteCursorAsync_ShouldThrow_WhenCursorDoesNotExist()
         {
-            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () => 
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
                 await _cursorApi.DeleteCursorAsync("nada"));
 
             Assert.NotNull(ex.ApiError.ErrorMessage);

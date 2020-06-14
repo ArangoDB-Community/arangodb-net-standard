@@ -1,8 +1,10 @@
 ﻿namespace ArangoDBNetStandard.CursorApi.Models
 {
+    /// <summary>
+    /// Represents extra options for the AQL query.
+    /// </summary>
     public class PostCursorOptions
     {
-
         /// <summary>
         /// If set to true and the query contains a LIMIT clause,
         /// then the result will have an extra attribute with the
@@ -81,6 +83,14 @@
         /// is 60.0 (seconds). When the max time has been reached the query will be stopped.
         /// </summary>
         public double? SatelliteSyncWait { get; set; }
+
+        /// <summary>
+        /// The query has to be executed within the given runtime or it will be killed.
+        /// The value is specified in seconds. A value of 0 means no timeout will be enforced.
+        /// The default value is 0 (no timeout).
+        /// Available in ArangoDB 3.6 onwards.
+        /// </summary>
+        public double? MaxRuntime { get; set; }
 
         /// <summary>
         /// Transaction size limit in bytes. Honored by the RocksDB storage engine only.
