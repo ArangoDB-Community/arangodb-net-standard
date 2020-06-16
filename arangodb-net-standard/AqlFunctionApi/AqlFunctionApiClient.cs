@@ -12,9 +12,15 @@ namespace ArangoDBNetStandard.AqlFunctionApi
     /// </summary>
     public class AqlFunctionApiClient : ApiClientBase, IAqlFunctionApiClient
     {
-        private readonly IApiClientTransport _transport;
+        /// <summary>
+        /// The transport client used to communicate with the ArangoDB host.
+        /// </summary>
+        protected readonly IApiClientTransport _transport;
 
-        private readonly string _apiPath = "_api/aqlfunction";
+        /// <summary>
+        /// The root path of the API.
+        /// </summary>
+        protected readonly string _apiPath = "_api/aqlfunction";
 
         /// <summary>
         /// Create an instance of <see cref="AqlFunctionApiClient"/>
@@ -45,7 +51,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
         /// <returns></returns>
-        public async Task<PostAqlFunctionResponse> PostAqlFunctionAsync(PostAqlFunctionBody body)
+        public virtual async Task<PostAqlFunctionResponse> PostAqlFunctionAsync(PostAqlFunctionBody body)
         {
             var content = GetContent(body, true, true);
 
@@ -67,7 +73,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// <param name="name">The name of the function or function group (namespace).</param>
         /// <param name="query">The query parameters of the request.</param>
         /// <returns></returns>
-        public async Task<DeleteAqlFunctionResponse> DeleteAqlFunctionAsync(
+        public virtual async Task<DeleteAqlFunctionResponse> DeleteAqlFunctionAsync(
             string name,
             DeleteAqlFunctionQuery query = null)
         {
@@ -93,7 +99,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Get all registered AQL user functions.
         /// </summary>
         /// <returns></returns>
-        public async Task<GetAqlFunctionsResponse> GetAqlFunctionsAsync(GetAqlFunctionsQuery query = null)
+        public virtual async Task<GetAqlFunctionsResponse> GetAqlFunctionsAsync(GetAqlFunctionsQuery query = null)
         {
             string uri = _apiPath;
 

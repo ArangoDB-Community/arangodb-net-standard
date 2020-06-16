@@ -6,9 +6,20 @@ using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.DatabaseApi
 {
+    /// <summary>
+    /// A client for interacting with ArangoDB Databases endpoints,
+    /// implementing <see cref="IDatabaseApiClient"/>.
+    /// </summary>
     public class DatabaseApiClient : ApiClientBase, IDatabaseApiClient
     {
+        /// <summary>
+        /// The transport client used to communicate with the ArangoDB host.
+        /// </summary>
         private IApiClientTransport _client;
+
+        /// <summary>
+        /// The root path of the API.
+        /// </summary>
         private readonly string _databaseApiPath = "_api/database";
 
         /// <summary>
@@ -40,7 +51,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// </summary>
         /// <param name="request">The parameters required by this endpoint.</param>
         /// <returns></returns>
-        public async Task<PostDatabaseResponse> PostDatabaseAsync(PostDatabaseBody request)
+        public virtual async Task<PostDatabaseResponse> PostDatabaseAsync(PostDatabaseBody request)
         {
             var content = GetContent(request, true, true);
             using (var response = await _client.PostAsync(_databaseApiPath, content))
@@ -61,7 +72,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// </summary>
         /// <param name="databaseName"></param>
         /// <returns></returns>
-        public async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string databaseName)
+        public virtual async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string databaseName)
         {
             using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + WebUtility.UrlEncode(databaseName)))
             {
@@ -83,7 +94,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// available for the current user.
         /// </remarks>
         /// <returns></returns>
-        public async Task<GetDatabasesResponse> GetDatabasesAsync()
+        public virtual async Task<GetDatabasesResponse> GetDatabasesAsync()
         {
             using (var response = await _client.GetAsync(_databaseApiPath))
             {
@@ -100,7 +111,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// Retrieves the list of all databases the current user can access.
         /// </summary>
         /// <returns></returns>
-        public async Task<GetDatabasesResponse> GetUserDatabasesAsync()
+        public virtual async Task<GetDatabasesResponse> GetUserDatabasesAsync()
         {
             using (var response = await _client.GetAsync(_databaseApiPath + "/user"))
             {
@@ -117,7 +128,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// Retrieves information about the current database.
         /// </summary>
         /// <returns></returns>
-        public async Task<GetCurrentDatabaseInfoResponse> GetCurrentDatabaseInfoAsync()
+        public virtual async Task<GetCurrentDatabaseInfoResponse> GetCurrentDatabaseInfoAsync()
         {
             using (var response = await _client.GetAsync(_databaseApiPath + "/current"))
             {

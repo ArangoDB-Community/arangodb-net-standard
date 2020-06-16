@@ -10,7 +10,14 @@ namespace ArangoDBNetStandard.TransactionApi
     /// </summary>
     public class TransactionApiClient : ApiClientBase, ITransactionApiClient
     {
+        /// <summary>
+        /// The transport client used to communicate with the ArangoDB host.
+        /// </summary>
         private IApiClientTransport _client;
+
+        /// <summary>
+        /// The root path of the API.
+        /// </summary>
         private readonly string _transactionApiPath = "_api/transaction";
 
         /// <summary>
@@ -42,7 +49,8 @@ namespace ArangoDBNetStandard.TransactionApi
         /// <typeparam name="T">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="body">Object containing information to submit in the POST transaction request.</param>
         /// <returns>Response from ArangoDB after processing the request.</returns>
-        public async Task<PostTransactionResponse<T>> PostTransactionAsync<T>(PostTransactionBody body)
+        public virtual async Task<PostTransactionResponse<T>> PostTransactionAsync<T>(
+            PostTransactionBody body)
         {
             var content = GetContent(body, true, true);
             using (var response = await _client.PostAsync(_transactionApiPath, content))

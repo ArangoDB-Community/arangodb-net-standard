@@ -12,7 +12,14 @@ namespace ArangoDBNetStandard.DocumentApi
     /// </summary>
     public class DocumentApiClient : ApiClientBase, IDocumentApiClient
     {
+        /// <summary>
+        /// The root path of the API.
+        /// </summary>
         private readonly string _docApiPath = "_api/document";
+
+        /// <summary>
+        /// The transport client used to communicate with the ArangoDB host.
+        /// </summary>
         private IApiClientTransport _client;
 
         /// <summary>
@@ -46,7 +53,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="document"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PostDocumentResponse<T>> PostDocumentAsync<T>(string collectionName, T document, PostDocumentsQuery query = null)
+        public virtual async Task<PostDocumentResponse<T>> PostDocumentAsync<T>(
+            string collectionName,
+            T document,
+            PostDocumentsQuery query = null)
         {
             string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -73,7 +83,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documents"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(string collectionName, IList<T> documents, PostDocumentsQuery query = null)
+        public virtual async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(
+            string collectionName,
+            IList<T> documents,
+            PostDocumentsQuery query = null)
         {
             string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -107,7 +120,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documents"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
+        public virtual async Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
             string collectionName,
             IList<T> documents,
             PutDocumentsQuery query = null)
@@ -139,7 +152,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="doc"></param>
         /// <param name="opts"></param>
         /// <returns></returns>
-        public async Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
+        public virtual async Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
             T doc,
             PutDocumentQuery opts = null)
@@ -173,13 +186,16 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="doc"></param>
         /// <param name="opts"></param>
         /// <returns></returns>
-        public Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
+        public virtual Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string collectionName,
             string documentKey,
             T doc,
             PutDocumentQuery opts = null)
         {
-            return PutDocumentAsync<T>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", doc, opts);
+            return PutDocumentAsync<T>(
+                $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
+                doc,
+                opts);
         }
 
         /// <summary>
@@ -189,9 +205,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <returns></returns>
-        public async Task<T> GetDocumentAsync<T>(string collectionName, string documentKey)
+        public virtual async Task<T> GetDocumentAsync<T>(string collectionName, string documentKey)
         {
-            return await GetDocumentAsync<T>($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}");
+            return await GetDocumentAsync<T>(
+                $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}");
         }
 
         /// <summary>
@@ -200,7 +217,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
         /// <returns></returns>
-        public async Task<T> GetDocumentAsync<T>(string documentId)
+        public virtual async Task<T> GetDocumentAsync<T>(string documentId)
         {
             ValidateDocumentId(documentId);
             var response = await _client.GetAsync(_docApiPath + "/" + documentId);
@@ -220,7 +237,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName">Collection name</param>
         /// <param name="selectors">Document keys to fetch documents for</param>
         /// <returns></returns>
-        public async Task<List<T>> GetDocumentsAsync<T>(string collectionName, IList<string> selectors)
+        public virtual async Task<List<T>> GetDocumentsAsync<T>(string collectionName, IList<string> selectors)
         {
             string uri = $"{_docApiPath}/{WebUtility.UrlEncode(collectionName)}?onlyget=true";
 
@@ -251,7 +268,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
+        public virtual async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string collectionName,
             string documentKey,
             DeleteDocumentQuery query = null)
@@ -273,7 +290,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
+        public virtual async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string documentId,
             DeleteDocumentQuery query = null)
         {
@@ -288,7 +305,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
+        public virtual async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
             string collectionName,
             string documentKey,
             DeleteDocumentQuery query = null)
@@ -304,7 +321,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
+        public virtual async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
             string documentId,
             DeleteDocumentQuery query = null)
         {
@@ -332,15 +349,18 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </summary>
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
-        /// in the returned <see cref="DeleteDocumentsResponse{object}"/>. These will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentsQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// in the returned <see cref="DeleteDocumentsResponse{T}"/>. These will be <c>null</c> when 
+        /// <see cref="DeleteDocumentsQuery.ReturnOld"/> is either <c>false</c> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="collectionName"></param>
         /// <param name="selectors"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(string collectionName, IList<string> selectors, DeleteDocumentsQuery query = null)
+        public virtual async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(
+            string collectionName,
+            IList<string> selectors,
+            DeleteDocumentsQuery query = null)
         {
             return await DeleteDocumentsAsync<object>(collectionName, selectors, query);
         }
@@ -354,7 +374,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="selectors"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(string collectionName, IList<string> selectors, DeleteDocumentsQuery query = null)
+        public virtual async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(
+            string collectionName,
+            IList<string> selectors,
+            DeleteDocumentsQuery query = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -404,7 +427,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="patches"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(
+        public virtual async Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(
             string collectionName,
             IList<T> patches,
             PatchDocumentsQuery query = null)
@@ -444,7 +467,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
+        public virtual async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
             string collectionName,
             string documentKey,
             T body,
@@ -473,7 +496,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
+        public virtual async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
             string documentId,
             T body,
             PatchDocumentQuery query = null)
@@ -512,12 +535,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>
         /// <returns></returns>
-        public async Task<HeadDocumentResponse> HeadDocumentAsync(
+        public virtual async Task<HeadDocumentResponse> HeadDocumentAsync(
             string collectionName,
             string documentKey,
             HeadDocumentHeader headers = null)
         {
-            return await HeadDocumentAsync($"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", headers);
+            return await HeadDocumentAsync(
+                $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
+                headers);
         }
 
         /// <summary>
@@ -528,7 +553,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="headers">Object containing a dictionary of Header keys and values</param>
-        /// <exception cref="ArgumentException">Document ID is invalid.</exception>
+        /// <exception cref="System.ArgumentException">Document ID is invalid.</exception>
         /// <remarks>
         /// 200: is returned if the document was found. 
         /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
@@ -536,7 +561,9 @@ namespace ArangoDBNetStandard.DocumentApi
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>
         /// <returns></returns>
-        public async Task<HeadDocumentResponse> HeadDocumentAsync(string documentId, HeadDocumentHeader headers = null)
+        public virtual async Task<HeadDocumentResponse> HeadDocumentAsync(
+            string documentId,
+            HeadDocumentHeader headers = null)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
