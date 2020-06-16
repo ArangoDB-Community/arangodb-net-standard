@@ -8,7 +8,7 @@ namespace ArangoDBNetStandard.TransactionApi
     /// <summary>
     /// Provides access to ArangoDB transaction API.
     /// </summary>
-    public class TransactionApiClient: ApiClientBase
+    public class TransactionApiClient : ApiClientBase, ITransactionApiClient
     {
         private IApiClientTransport _client;
         private readonly string _transactionApiPath = "_api/transaction";
