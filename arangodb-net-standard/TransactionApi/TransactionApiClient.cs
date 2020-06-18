@@ -13,12 +13,12 @@ namespace ArangoDBNetStandard.TransactionApi
         /// <summary>
         /// The transport client used to communicate with the ArangoDB host.
         /// </summary>
-        private IApiClientTransport _client;
+        protected IApiClientTransport _client;
 
         /// <summary>
         /// The root path of the API.
         /// </summary>
-        private readonly string _transactionApiPath = "_api/transaction";
+        protected readonly string _transactionApiPath = "_api/transaction";
 
         /// <summary>
         /// Create an instance of <see cref="TransactionApiClient"/>

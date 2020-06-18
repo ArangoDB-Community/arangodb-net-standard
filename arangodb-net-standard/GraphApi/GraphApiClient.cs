@@ -15,12 +15,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <summary>
         /// The transport client used to communicate with the ArangoDB host.
         /// </summary>
-        private IApiClientTransport _transport;
+        protected IApiClientTransport _transport;
 
         /// <summary>
         /// The root path of the API.
         /// </summary>
-        private readonly string _graphApiPath = "_api/gharial";
+        protected readonly string _graphApiPath = "_api/gharial";
 
         /// <summary>
         /// Create an instance of <see cref="GraphApiClient"/>

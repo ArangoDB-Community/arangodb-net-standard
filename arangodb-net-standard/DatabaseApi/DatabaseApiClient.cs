@@ -15,12 +15,12 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <summary>
         /// The transport client used to communicate with the ArangoDB host.
         /// </summary>
-        private IApiClientTransport _client;
+        protected IApiClientTransport _client;
 
         /// <summary>
         /// The root path of the API.
         /// </summary>
-        private readonly string _databaseApiPath = "_api/database";
+        protected readonly string _databaseApiPath = "_api/database";
 
         /// <summary>
         /// Creates an instance of <see cref="DatabaseApiClient"/>

@@ -15,12 +15,12 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <summary>
         /// The root path of the API.
         /// </summary>
-        private readonly string _docApiPath = "_api/document";
+        protected readonly string _docApiPath = "_api/document";
 
         /// <summary>
         /// The transport client used to communicate with the ArangoDB host.
         /// </summary>
-        private IApiClientTransport _client;
+        protected IApiClientTransport _client;
 
         /// <summary>
         /// Creates an instance of <see cref="DocumentApiClient"/>
