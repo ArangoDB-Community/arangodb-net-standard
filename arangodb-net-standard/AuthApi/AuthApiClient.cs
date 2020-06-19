@@ -10,14 +10,28 @@ namespace ArangoDBNetStandard.AuthApi
     /// </summary>
     public class AuthApiClient : ApiClientBase, IAuthApiClient
     {
-        private IApiClientTransport _client;
+        /// <summary>
+        /// The transport client used to communicate with the ArangoDB host.
+        /// </summary>
+        protected IApiClientTransport _client;
 
+        /// <summary>
+        /// Create an instance of <see cref="AuthApiClient"/>
+        /// using the provided transport layer and the default JSON serialization.
+        /// </summary>
+        /// <param name="client"></param>
         public AuthApiClient(IApiClientTransport client)
             : base(new JsonNetApiClientSerialization())
         {
             _client = client;
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="AuthApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="serializer"></param>
         public AuthApiClient(IApiClientTransport client, IApiClientSerialization serializer)
             : base(serializer)
         {
@@ -30,7 +44,7 @@ namespace ArangoDBNetStandard.AuthApi
         /// <param name="username">The username of the user for whom to generate a JWT token.</param>
         /// <param name="password">The user's password.</param>
         /// <returns>Object containing the encoded JWT token value.</returns>
-        public async Task<JwtTokenResponse> GetJwtTokenAsync(string username, string password)
+        public virtual async Task<JwtTokenResponse> GetJwtTokenAsync(string username, string password)
         {
             return await GetJwtTokenAsync(new JwtTokenRequestBody
             {
@@ -44,7 +58,7 @@ namespace ArangoDBNetStandard.AuthApi
         /// </summary>
         /// <param name="body">Object containing username and password.</param>
         /// <returns>Object containing the encoded JWT token value.</returns>
-        public async Task<JwtTokenResponse> GetJwtTokenAsync(JwtTokenRequestBody body)
+        public virtual async Task<JwtTokenResponse> GetJwtTokenAsync(JwtTokenRequestBody body)
         {
             byte[] content = GetContent(body, true, false);
             using (var response = await _client.PostAsync("/_open/auth", content))

@@ -19,13 +19,19 @@ namespace ArangoDBNetStandard
     /// </summary>
     public class ArangoDBClient : IDisposable
     {
-        private IApiClientTransport _transport;
+        /// <summary>
+        /// The transport client used to communicate with the ArangoDB host.
+        /// </summary>
+        protected IApiClientTransport _transport;
 
         /// <summary>
         /// AQL user functions management API.
         /// </summary>
-        public AqlFunctionApiClient AqlFunction { get; set; }
+        public AqlFunctionApiClient AqlFunction { get; private set; }
 
+        /// <summary>
+        /// Auth API
+        /// </summary>
         public AuthApiClient Auth { get; private set; }
 
         /// <summary>

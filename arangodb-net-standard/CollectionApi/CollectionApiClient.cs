@@ -12,14 +12,21 @@ namespace ArangoDBNetStandard.CollectionApi
     /// </summary>
     public class CollectionApiClient : ApiClientBase, ICollectionApiClient
     {
-        private IApiClientTransport _transport;
-        private string _collectionApiPath = "_api/collection";
+        /// <summary>
+        /// The transport client used to communicate with the ArangoDB host.
+        /// </summary>
+        protected IApiClientTransport _transport;
+
+        /// <summary>
+        /// The root path of the API.
+        /// </summary>
+        protected string _collectionApiPath = "_api/collection";
 
         /// <summary>
         /// Creates an instance of <see cref="CollectionApiClient"/>
         /// using the provided transport layer and the default JSON serialization.
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="transport"></param>
         public CollectionApiClient(IApiClientTransport transport)
             : base(new JsonNetApiClientSerialization())
         {
@@ -38,7 +45,7 @@ namespace ArangoDBNetStandard.CollectionApi
             _transport = transport;
         }
 
-        public async Task<PostCollectionResponse> PostCollectionAsync(PostCollectionBody body, PostCollectionQuery options = null)
+        public virtual async Task<PostCollectionResponse> PostCollectionAsync(PostCollectionBody body, PostCollectionQuery options = null)
         {
             string uriString = _collectionApiPath;
             if (options != null)
@@ -57,7 +64,7 @@ namespace ArangoDBNetStandard.CollectionApi
             }
         }
 
-        public async Task<DeleteCollectionResponse> DeleteCollectionAsync(string collectionName)
+        public virtual async Task<DeleteCollectionResponse> DeleteCollectionAsync(string collectionName)
         {
             using (var response = await _transport.DeleteAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName)))
             {
@@ -76,7 +83,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName"></param>
         /// <returns></returns>
-        public async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName)
+        public virtual async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName)
         {
             using (var response = await _transport.PutAsync(
                 _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/truncate",
@@ -97,7 +104,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName"></param>
         /// <returns></returns>
-        public async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName)
+        public virtual async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName)
         {
             using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/count"))
             {
@@ -116,7 +123,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery query = null)
+        public virtual async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery query = null)
         {
             string uriString = _collectionApiPath;
             if (query != null)
@@ -159,7 +166,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName)
+        public virtual async Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName)
         {
             using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/properties"))
             {
@@ -177,9 +184,9 @@ namespace ArangoDBNetStandard.CollectionApi
         /// PUT /_api/collection/{collection-name}/rename
         /// </summary>
         /// <param name="collectionName"></param>
-        /// <param name="request"></param>
+        /// <param name="body"></param>
         /// <returns></returns>
-        public async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body)
+        public virtual async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body)
         {
             var content = GetContent(body, true, false);
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/rename", content))
@@ -200,7 +207,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName">Name of the collection</param>
         /// <returns></returns>
-        public async Task<GetCollectionRevisionResponse> GetCollectionRevisionAsync(string collectionName)
+        public virtual async Task<GetCollectionRevisionResponse> GetCollectionRevisionAsync(string collectionName)
         {
             using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/revision"))
             {
@@ -220,7 +227,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <param name="collectionName"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public async Task<PutCollectionPropertyResponse> PutCollectionPropertyAsync(string collectionName, PutCollectionPropertyBody body)
+        public virtual async Task<PutCollectionPropertyResponse> PutCollectionPropertyAsync(string collectionName, PutCollectionPropertyBody body)
         {
             var content = GetContent(body, true, true);
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/properties", content))
@@ -238,9 +245,9 @@ namespace ArangoDBNetStandard.CollectionApi
         /// Contains the number of documents and additional statistical information about the collection.
         /// GET/_api/collection/{collection-name}/figures
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="collectionName"></param>
         /// <returns></returns>
-        public async Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName)
+        public virtual async Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName)
         {
             using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/figures"))
             {
