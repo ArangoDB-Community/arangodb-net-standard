@@ -50,10 +50,9 @@ namespace ArangoDBNetStandard.DocumentApi
            PutDocumentsQuery query = null);
 
         /// <summary>
-        /// Replaces the document with handle <document-handle> with the one in
+        /// Replaces the document with the provided document ID with the one in
         /// the body, provided there is such a document and no precondition is
         /// violated.
-        /// PUT/_api/document/{document-handle}
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
@@ -62,6 +61,23 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
+            T doc,
+            PutDocumentQuery opts = null);
+
+        /// <summary>
+        /// Replaces the document based on its Document ID with the one in
+        /// the body, provided there is such a document and no precondition is
+        /// violated.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="documentKey"></param>
+        /// <param name="doc"></param>
+        /// <param name="opts"></param>
+        /// <returns></returns>
+        Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
+            string collectionName,
+            string documentKey,
             T doc,
             PutDocumentQuery opts = null);
 
@@ -81,6 +97,18 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <returns></returns>
         Task<T> GetDocumentAsync<T>(string documentId);
+
+        /// <summary>
+        /// Get multiple documents.
+        /// </summary>
+        /// <typeparam name="T">The type of the documents
+        /// deserialized from the response.</typeparam>
+        /// <param name="collectionName">Collection name</param>
+        /// <param name="selectors">Document keys to fetch documents for</param>
+        /// <returns></returns>
+        Task<List<T>> GetDocumentsAsync<T>(
+            string collectionName,
+            IList<string> selectors);
 
         /// <summary>
         /// Delete a document.

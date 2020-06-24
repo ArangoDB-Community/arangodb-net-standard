@@ -233,11 +233,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <summary>
         /// Get multiple documents.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of the documents
+        /// deserialized from the response.</typeparam>
         /// <param name="collectionName">Collection name</param>
         /// <param name="selectors">Document keys to fetch documents for</param>
         /// <returns></returns>
-        public virtual async Task<List<T>> GetDocumentsAsync<T>(string collectionName, IList<string> selectors)
+        public virtual async Task<List<T>> GetDocumentsAsync<T>(
+            string collectionName,
+            IList<string> selectors)
         {
             string uri = $"{_docApiPath}/{WebUtility.UrlEncode(collectionName)}?onlyget=true";
 
