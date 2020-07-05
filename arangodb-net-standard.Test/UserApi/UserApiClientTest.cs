@@ -1,5 +1,7 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.UserApi;
+using ArangoDBNetStandard.UserApi.Models;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -39,6 +41,48 @@ namespace ArangoDBNetStandardTest.UserApi
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1703, ex.ApiError.ErrorNum); // ERROR_USER_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task PostUserAsync_ShouldSucceed()
+        {
+            PostUserResponse postResponse = await _userClient.PostUserAsync(
+                new PostUserBody()
+                {
+                    User = _fixture.UsernameToCreate,
+                    Passwd = "password",
+                    Extra = new Dictionary<string, object>()
+                    {
+                        ["somedata"] = "here"
+                    }
+                });
+
+            Assert.False(postResponse.Error);
+            Assert.Equal(HttpStatusCode.Created, postResponse.Code);
+            Assert.Equal(_fixture.UsernameToCreate, postResponse.User);
+            Assert.True(postResponse.Active);
+            Assert.True(postResponse.Extra.ContainsKey("somedata"));
+            Assert.Equal("here", postResponse.Extra["somedata"].ToString());
+        }
+
+        [Fact]
+        public async Task PostUserAsync_ShouldThrow_WhenUserAlreadyExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _userClient.PostUserAsync(new PostUserBody()
+                {
+                    User = _fixture.UsernameExisting,
+                    Passwd = "password",
+                    Extra = new Dictionary<string, object>()
+                    {
+                        ["somedata"] = "here"
+                    }
+                }));
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.Conflict, ex.ApiError.Code);
+            Assert.NotNull(ex.ApiError.ErrorMessage);
+            Assert.Equal(1702, ex.ApiError.ErrorNum); // ERROR_USER_DUPLICATE
         }
     }
 }

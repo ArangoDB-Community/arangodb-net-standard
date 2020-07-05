@@ -1,5 +1,6 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.DatabaseApi.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandardTest.UserApi
@@ -13,10 +14,16 @@ namespace ArangoDBNetStandardTest.UserApi
 
         public string UsernameToDelete { get; private set; }
 
+        public string UsernameToCreate { get; private set; }
+
+        public string UsernameExisting { get; private set; }
+
         public UserApiClientTestFixture()
         {
             ArangoClient = GetArangoDBClient("_system");
-            UsernameToDelete = nameof(UserApiClientTestFixture);
+            UsernameToDelete = nameof(UserApiClientTestFixture) + "Delete";
+            UsernameToCreate = nameof(UserApiClientTestFixture) + "Post";
+            UsernameExisting = nameof(UserApiClientTestFixture) + "Existing";
         }
 
         public override async Task InitializeAsync()
@@ -30,8 +37,14 @@ namespace ArangoDBNetStandardTest.UserApi
                 new DatabaseUser()
                 {
                     Username = UsernameToDelete
+                },
+                new DatabaseUser()
+                {
+                    Username = UsernameExisting
                 }
             });
+
+            _users.Add(UsernameToCreate);
         }
     }
 }

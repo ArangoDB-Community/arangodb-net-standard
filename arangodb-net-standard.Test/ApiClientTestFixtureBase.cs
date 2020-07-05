@@ -13,8 +13,8 @@ namespace ArangoDBNetStandardTest
 {
     public abstract class ApiClientTestFixtureBase : IDisposable, IAsyncLifetime
     {
-        private List<string> _databases = new List<string>();
-        private List<string> _users = new List<string>();
+        protected readonly List<string> _databases = new List<string>();
+        protected readonly List<string> _users = new List<string>();
 
         private readonly List<HttpApiTransport> _transports = new List<HttpApiTransport>();
 
