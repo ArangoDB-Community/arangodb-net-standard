@@ -54,7 +54,7 @@ namespace ArangoDBNetStandard.UserApi
         /// <returns></returns>
         public virtual async Task<DeleteUserResponse> DeleteUserAsync(string username)
         {
-            string uri = _userApiPath + "/" + WebUtility.HtmlEncode(username);
+            string uri = _userApiPath + "/" + WebUtility.UrlEncode(username);
             using (var response = await _client.DeleteAsync(uri))
             {
                 if (response.IsSuccessStatusCode)
