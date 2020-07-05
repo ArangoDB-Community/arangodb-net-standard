@@ -72,14 +72,10 @@ namespace ArangoDBNetStandard
         public ArangoDBClient(HttpClient client)
         {
             _transport = new HttpApiTransport(client, HttpContentType.Json);
-            AqlFunction = new AqlFunctionApiClient(_transport);
-            Auth = new AuthApiClient(_transport);
-            Cursor = new CursorApiClient(_transport);
-            Database = new DatabaseApiClient(_transport);
-            Document = new DocumentApiClient(_transport);
-            Collection = new CollectionApiClient(_transport);
-            Transaction = new TransactionApiClient(_transport);
-            Graph = new GraphApiClient(_transport);
+
+            var serialization = new JsonNetApiClientSerialization();
+
+            InitializeApis(_transport, serialization);
         }
 
         /// <summary>
@@ -93,14 +89,7 @@ namespace ArangoDBNetStandard
 
             var serialization = new JsonNetApiClientSerialization();
 
-            AqlFunction = new AqlFunctionApiClient(_transport, serialization);
-            Auth = new AuthApiClient(_transport, serialization);
-            Cursor = new CursorApiClient(_transport, serialization);
-            Database = new DatabaseApiClient(_transport, serialization);
-            Document = new DocumentApiClient(_transport, serialization);
-            Collection = new CollectionApiClient(_transport, serialization);
-            Transaction = new TransactionApiClient(_transport, serialization);
-            Graph = new GraphApiClient(_transport, serialization);
+            InitializeApis(_transport, serialization);
         }
 
         /// <summary>
@@ -112,14 +101,8 @@ namespace ArangoDBNetStandard
         public ArangoDBClient(IApiClientTransport transport, IApiClientSerialization serialization)
         {
             _transport = transport;
-            AqlFunction = new AqlFunctionApiClient(_transport, serialization);
-            Auth = new AuthApiClient(_transport, serialization);
-            Cursor = new CursorApiClient(_transport, serialization);
-            Database = new DatabaseApiClient(_transport, serialization);
-            Document = new DocumentApiClient(_transport, serialization);
-            Collection = new CollectionApiClient(_transport, serialization);
-            Transaction = new TransactionApiClient(_transport, serialization);
-            Graph = new GraphApiClient(_transport, serialization);
+
+            InitializeApis(_transport, serialization);
         }
 
         /// <summary>
@@ -128,6 +111,20 @@ namespace ArangoDBNetStandard
         public void Dispose()
         {
             _transport.Dispose();
+        }
+
+        private void InitializeApis(
+            IApiClientTransport transport,
+            IApiClientSerialization serialization)
+        {
+            AqlFunction = new AqlFunctionApiClient(transport, serialization);
+            Auth = new AuthApiClient(transport, serialization);
+            Cursor = new CursorApiClient(transport, serialization);
+            Database = new DatabaseApiClient(transport, serialization);
+            Document = new DocumentApiClient(transport, serialization);
+            Collection = new CollectionApiClient(transport, serialization);
+            Transaction = new TransactionApiClient(transport, serialization);
+            Graph = new GraphApiClient(transport, serialization);
         }
     }
 }
