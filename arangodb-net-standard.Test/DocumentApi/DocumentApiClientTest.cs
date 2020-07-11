@@ -725,15 +725,16 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
-        public async Task PatchDocumentsAsync_ShouldRecordError_WhenDocumentDoesNotExist()
+        public async Task PatchDocumentsAsync_ShouldReturnError_WhenDocumentDoesNotExist()
         {
-            var response = await _docClient.PatchDocumentsAsync<object, PatchDocumentsMockModel>(_testCollection,
-                new[] {
-                    new { _key = "bogusDocument", value = 4 }
-                    }, null);
+            var response = await _docClient.PatchDocumentsAsync<object, PatchDocumentsMockModel>(
+                _testCollection,
+                new[] { new { _key = "bogusDocument", value = 4 } },
+                null);
 
             Assert.True(response[0].Error);
             Assert.Equal(1202, response[0].ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
+            Assert.NotNull(response[0].ErrorMessage);
         }
 
         [Fact]
