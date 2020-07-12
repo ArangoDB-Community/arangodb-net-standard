@@ -12,7 +12,7 @@
         public bool Error { get; set; }
 
         /// <summary>
-        /// Error message.
+        /// ArangoDB error message.
         /// </summary>
         public string ErrorMessage { get; set; }
 

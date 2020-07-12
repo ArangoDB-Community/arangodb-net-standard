@@ -1547,7 +1547,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     WaitForSync = true
                 });
 
-            var response = await _client.PatchEdgeAsync<PatchEdgeMockModel, object>(
+            var response = await _client.PatchEdgeAsync<object, PatchEdgeMockModel>(
                 graphName,
                 edgeClx,
                 createEdgeResponse.Edge._key,
@@ -1579,7 +1579,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _client.PatchEdgeAsync<PatchEdgeMockModel, object>(graphName, "edgeClx", "", new { });
+                await _client.PatchEdgeAsync<object, PatchEdgeMockModel>(graphName, "edgeClx", "", new { });
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);

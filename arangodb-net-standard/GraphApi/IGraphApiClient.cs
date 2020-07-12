@@ -297,19 +297,20 @@ namespace ArangoDBNetStandard.GraphApi
         /// Updates the data of the specific edge in the collection.
         /// PATCH/_api/gharial/{graph}/edge/{collection}/{edge}
         /// </summary>
-        /// <typeparam name="T">Type of the returned edge document, when ReturnOld or ReturnNew query params are used.</typeparam>
-        /// <typeparam name="U">Type of the patch object used to perform a partial update of the edge document.</typeparam>
+        /// <typeparam name="T">Type of the patch object used to perform a partial update of the edge document.</typeparam>
+        /// <typeparam name="U">Type of the returned edge document,
+        /// when <see cref="PatchEdgeQuery.ReturnOld"/> or <see cref="PatchEdgeQuery.ReturnNew"/> query params are used.</typeparam>
         /// <param name="graphName"></param>
         /// <param name="collectionName"></param>
         /// <param name="edgeKey"></param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        Task<PatchEdgeResponse<T>> PatchEdgeAsync<T, U>(
+        Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
           string graphName,
           string collectionName,
           string edgeKey,
-          U edge,
+          T edge,
           PatchEdgeQuery query = null);
 
         /// <summary>
