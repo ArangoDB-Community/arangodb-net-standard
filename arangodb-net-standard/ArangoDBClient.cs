@@ -11,6 +11,7 @@ using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.TransactionApi;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.Transport.Http;
+using ArangoDBNetStandard.UserApi;
 
 namespace ArangoDBNetStandard
 {
@@ -63,6 +64,11 @@ namespace ArangoDBNetStandard
         /// Graph API
         /// </summary>
         public GraphApiClient Graph { get; private set; }
+
+        /// <summary>
+        /// User management API.
+        /// </summary>
+        public UserApiClient User { get; private set; }
 
         /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
@@ -125,6 +131,7 @@ namespace ArangoDBNetStandard
             Collection = new CollectionApiClient(transport, serialization);
             Transaction = new TransactionApiClient(transport, serialization);
             Graph = new GraphApiClient(transport, serialization);
+            User = new UserApiClient(transport, serialization);
         }
     }
 }

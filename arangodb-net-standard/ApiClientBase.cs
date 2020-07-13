@@ -20,6 +20,11 @@ namespace ArangoDBNetStandard
             _serialization = serialization;
         }
 
+        /// <summary>
+        /// Gets an <see cref="ApiErrorException"/> from the provided error response.
+        /// </summary>
+        /// <param name="response">The error response from ArangoDB.</param>
+        /// <returns></returns>
         protected async Task<ApiErrorException> GetApiErrorException(IApiClientResponse response)
         {
             var stream = await response.Content.ReadAsStreamAsync();

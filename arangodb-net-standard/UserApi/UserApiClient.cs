@@ -47,6 +47,27 @@ namespace ArangoDBNetStandard.UserApi
         }
 
         /// <summary>
+        /// Create a new user. You need server access level Administrate
+        /// in order to execute this REST call.
+        /// </summary>
+        /// <exception cref="ApiErrorException">ArangoDB responded with an error.</exception>
+        /// <param name="body">The request body containing the user information.</param>
+        /// <returns></returns>
+        public async Task<PostUserResponse> PostUserAsync(PostUserBody body)
+        {
+            var content = GetContent(body, true, true);
+            using (var response = await _client.PostAsync(_userApiPath, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PostUserResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
         /// Delete a user permanently.
         /// You need Administrate for the server access level in order to execute this REST call.
         /// </summary>
@@ -54,7 +75,7 @@ namespace ArangoDBNetStandard.UserApi
         /// <returns></returns>
         public virtual async Task<DeleteUserResponse> DeleteUserAsync(string username)
         {
-            string uri = _userApiPath + "/" + WebUtility.HtmlEncode(username);
+            string uri = _userApiPath + "/" + WebUtility.UrlEncode(username);
             using (var response = await _client.DeleteAsync(uri))
             {
                 if (response.IsSuccessStatusCode)
