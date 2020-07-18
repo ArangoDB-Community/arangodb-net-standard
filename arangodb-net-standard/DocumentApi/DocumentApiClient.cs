@@ -430,7 +430,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="patches"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(
+        public virtual async Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
             string collectionName,
             IList<T> patches,
             PatchDocumentsQuery query = null)
@@ -446,7 +446,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<IList<PatchDocumentsResponse<U>>>(stream);
+                    return DeserializeJsonFromStream<PatchDocumentsResponse<U>>(stream);
                 }
                 throw await GetApiErrorException(response);
             }

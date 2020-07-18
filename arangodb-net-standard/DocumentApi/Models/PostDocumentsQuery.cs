@@ -21,7 +21,9 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         public bool? ReturnOld { get; set; }
 
         /// <summary>
-        /// TODO
+        /// If set to true, an empty object will be returned as response.
+        /// No meta-data will be returned for the created document.
+        /// This option can be used to save some network traffic.
         /// </summary>
         public bool? Silent { get; set; }
 
