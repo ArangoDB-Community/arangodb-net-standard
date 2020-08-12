@@ -28,8 +28,15 @@ namespace ArangoDBNetStandard
         protected async Task<ApiErrorException> GetApiErrorException(IApiClientResponse response)
         {
             var stream = await response.Content.ReadAsStreamAsync();
-            var error = _serialization.DeserializeFromStream<ApiErrorResponse>(stream);
-            return new ApiErrorException(error);
+            try
+            {
+                var error = _serialization.DeserializeFromStream<ApiErrorResponse>(stream);
+                return new ApiErrorException(error);
+            }
+            catch (Exception e)
+            {
+                throw new SerializationException($"An error occured while Deserializing an error response from Arango. See InnerException for more details.", e);
+            }
         }
 
         protected void ValidateDocumentId(string documentId)
@@ -43,15 +50,29 @@ namespace ArangoDBNetStandard
 
         protected T DeserializeJsonFromStream<T>(Stream stream)
         {
-            return _serialization.DeserializeFromStream<T>(stream);
+            try
+            {
+                return _serialization.DeserializeFromStream<T>(stream);
+            }
+            catch (Exception e)
+            {
+                throw new SerializationException($"An error occured while Deserializing the data response from Arango. See InnerException for more details.", e);
+            }
         }
 
         protected byte[] GetContent<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues)
         {
-            return _serialization.Serialize<T>(
-                item,
-                useCamelCasePropertyNames,
-                ignoreNullValues);
+            try
+            {
+                return _serialization.Serialize<T>(
+                    item,
+                    useCamelCasePropertyNames,
+                    ignoreNullValues);
+            }
+            catch (Exception e)
+            {
+                throw new SerializationException($"A serialization error occured while preparing a request for Arango. See InnerException for more details.", e);
+            }
         }
     }
 }

@@ -2,9 +2,14 @@ using ArangoDBNetStandard;
 using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.CursorApi.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
+using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Transport;
+using Moq;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.CursorApi
@@ -157,6 +162,57 @@ namespace ArangoDBNetStandardTest.CursorApi
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1203, ex.ApiError.ErrorNum);
+        }
+
+        [Fact]
+        public async Task PostCursorAsync_ShouldThrow_WhenErrorDeserializationFailed()
+        {
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            string mockJsonError = "{ errorNum: \"some_error\" }";
+
+            mockResponseContent.Setup(x => x.ReadAsStreamAsync())
+                .Returns(Task.FromResult<Stream>(
+                    new MemoryStream(Encoding.UTF8.GetBytes(mockJsonError))));
+
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(false);
+
+            mockTransport.Setup(x => x.PostAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<byte[]>()))
+                .Returns(Task.FromResult(mockResponse.Object));
+
+            var cursorApi = new CursorApiClient(mockTransport.Object);
+
+            var ex = await Assert.ThrowsAsync<SerializationException>(async () =>
+            {
+                await cursorApi.PostCursorAsync<object>("RETURN true");
+            });
+
+            Assert.NotNull(ex.Message);
+            Assert.Contains("while Deserializing an error response", ex.Message);
+            Assert.NotNull(ex.InnerException);
+        }
+
+        [Fact]
+        public async Task PostCursorAsync_ShouldThrowException_WhenResponseDeserializationFailed()
+        {
+            var ex = await Assert.ThrowsAsync<SerializationException>(async () =>
+            {
+                await _cursorApi.PostCursorAsync<int>("RETURN null");
+            });
+
+            Assert.NotNull(ex.Message);
+            Assert.Contains("while Deserializing the data response", ex.Message);
+            Assert.NotNull(ex.InnerException);
         }
 
         [Fact]
