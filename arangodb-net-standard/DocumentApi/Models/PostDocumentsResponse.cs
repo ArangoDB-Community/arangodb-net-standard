@@ -3,11 +3,14 @@
 namespace ArangoDBNetStandard.DocumentApi.Models
 {
     /// <summary>
-    /// Response after posting multiple documents
+    /// Represents the response for creating multiple documents.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of the deserialized new/old document object when requested.</typeparam>
     public class PostDocumentsResponse<T> : List<PostDocumentsDocumentResponse<T>>
     {
+        /// <summary>
+        /// Creates an instance of <see cref="PostDocumentsResponse{T}"/>.
+        /// </summary>
         public PostDocumentsResponse()
         {
         }
@@ -17,6 +20,11 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         {
         }
 
+        /// <summary>
+        /// Creates an empty response.
+        /// This is used when <see cref="PostDocumentsQuery.Silent"/> is true.
+        /// </summary>
+        /// <returns></returns>
         public static PostDocumentsResponse<T> Empty()
         {
             return new PostDocumentsResponse<T>(0);

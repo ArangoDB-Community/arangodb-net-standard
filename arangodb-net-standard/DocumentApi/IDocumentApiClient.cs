@@ -224,7 +224,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="patches"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        Task<IList<PatchDocumentsResponse<U>>> PatchDocumentsAsync<T, U>(
+        Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
           string collectionName,
           IList<T> patches,
           PatchDocumentsQuery query = null);

@@ -722,6 +722,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             Assert.NotEqual(postResponse[0]._rev, response[0]._rev);
             Assert.NotEqual(postResponse[0].New.Name, response[0].New.Name);
             Assert.Equal(postResponse[0].New.Name, response[0].Old.Name);
+            Assert.Equal(postResponse[0]._rev, response[0]._oldRev);
         }
 
         [Fact]
