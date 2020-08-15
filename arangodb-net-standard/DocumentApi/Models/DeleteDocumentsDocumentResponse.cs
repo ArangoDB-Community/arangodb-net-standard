@@ -1,13 +1,24 @@
-﻿using System.Net;
-
-namespace ArangoDBNetStandard.DocumentApi.Models
+﻿namespace ArangoDBNetStandard.DocumentApi.Models
 {
-    public class DeleteDocumentsDocumentResponse<T>: DeleteDocumentResponse<T>
+    /// <summary>
+    /// Represents the response for one document when deleting multiple document.
+    /// </summary>
+    /// <typeparam name="T">The type of the deserialized old document object when requested.</typeparam>
+    public class DeleteDocumentsDocumentResponse<T> : DeleteDocumentResponse<T>
     {
+        /// <summary>
+        /// Indicates whether an error occurred.
+        /// </summary>
         public bool Error { get; set; }
 
+        /// <summary>
+        /// ArangoDB error message.
+        /// </summary>
         public string ErrorMessage { get; set; }
 
+        /// <summary>
+        /// ArangoDB error number.
+        /// </summary>
         public int ErrorNum { get; set; }
     }
 }
