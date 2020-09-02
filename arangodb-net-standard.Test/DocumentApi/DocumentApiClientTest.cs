@@ -674,6 +674,81 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
+        public async Task PutDocumentsAsync_ShouldUseQueryParameters_WhenProvided()
+        {
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(true);
+
+            string requestUri = null;
+
+            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns((string uri, byte[] content) =>
+                {
+                    requestUri = uri;
+                    return Task.FromResult(mockResponse.Object);
+                });
+
+            var client = new DocumentApiClient(mockTransport.Object);
+
+            await client.PutDocumentsAsync<object>(
+                "mycollection",
+                new[]
+                {
+                    new { Value = 1, Name = "test1" }
+                },
+                new PutDocumentsQuery
+                {
+                    IgnoreRevs = true,
+                    ReturnOld = true,
+                    Silent = true,
+                    WaitForSync = true,
+                    ReturnNew = true
+                });
+
+            Assert.NotNull(requestUri);
+            Assert.Contains("ignoreRevs=true", requestUri);
+            Assert.Contains("returnOld=true", requestUri);
+            Assert.Contains("silent=true", requestUri);
+            Assert.Contains("waitForSync=true", requestUri);
+            Assert.Contains("returnNew=true", requestUri);
+        }
+
+        [Fact]
+        public async Task PutDocumentsAsync_ShouldSucceed_WhenSilent()
+        {
+            var postResponse = await _docClient.PostDocumentsAsync(
+                _testCollection,
+                new[]
+                {
+                    new { value = 1 },
+                    new { value = 2 }
+                });
+
+            var putResponse = await _docClient.PutDocumentsAsync(
+                _testCollection,
+                new[]
+                {
+                    new { postResponse[0]._key, value = 3 },
+                    new { postResponse[1]._key, value = 4 }
+                },
+                new PutDocumentsQuery()
+                {
+                    Silent = true
+                });
+
+            Assert.Empty(putResponse);
+        }
+
+        [Fact]
         public async Task PutDocuments_ShouldNotThrowButReturnError_WhenDocumentIsNotFound()
         {
             var response = await _docClient.PostDocumentsAsync(_testCollection,
@@ -753,7 +828,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             await client.PatchDocumentsAsync<object, object>(
                 "mycollection",
-                new[] {
+                new[]
+                {
                     new { Value = 1, Name = "test1" },
                     new { Value = 2, Name = "test2" },
                     new { Value = 3, Name = "test3" }
@@ -784,7 +860,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             var postResponse = await _docClient.PostDocumentsAsync(
                 _testCollection,
-                new[] {
+                new[]
+                {
                     new { Value = 1, Name = "test1" },
                     new { Value = 2, Name = "test2" },
                     new { Value = 3, Name = "test3" }
@@ -797,7 +874,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             var response = await _docClient.PatchDocumentsAsync<object, PatchDocumentsMockModel>(
                 _testCollection,
-                new[] {
+                new[]
+                {
                     new { postResponse[0]._key, Name = "test5" },
                     new { postResponse[1]._key, Name = "test4" }
                 },

@@ -135,8 +135,15 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PutDocumentsResponse<T>>(stream);
+                    if (query != null && query.Silent.HasValue && query.Silent.Value)
+                    {
+                        return PutDocumentsResponse<T>.Empty();
+                    }
+                    else
+                    {
+                        var stream = await response.Content.ReadAsStreamAsync();
+                        return DeserializeJsonFromStream<PutDocumentsResponse<T>>(stream);
+                    }
                 }
                 throw await GetApiErrorException(response);
             }
