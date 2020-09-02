@@ -408,9 +408,7 @@ namespace ArangoDBNetStandard.DocumentApi
 
         /// <summary>
         /// Partially updates documents, the documents to update are specified
-        /// by the _key attributes in the body objects.The body of the
-        /// request must contain a JSON array of document updates with the
-        /// attributes to patch(the patch documents). All attributes from the
+        /// by the _key attributes in the body objects. All attributes from the
         /// patch documents will be added to the existing documents if they do
         /// not yet exist, and overwritten in the existing documents if they do
         /// exist there.
@@ -420,7 +418,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// document in the body and its value does not match the revision of
         /// the corresponding document in the database, the precondition is
         /// violated.
-        /// PATCH/_api/document/{collection}
+        /// PATCH /_api/document/{collection}
         /// </summary>
         /// <typeparam name="T">Type of the patch object used to partially update documents.</typeparam>
         /// <typeparam name="U">Type of the returned documents, only applies when
@@ -445,8 +443,15 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    return DeserializeJsonFromStream<PatchDocumentsResponse<U>>(stream);
+                    if (query != null && query.Silent.HasValue && query.Silent.Value)
+                    {
+                        return PatchDocumentsResponse<U>.Empty();
+                    }
+                    else
+                    {
+                        var stream = await response.Content.ReadAsStreamAsync();
+                        return DeserializeJsonFromStream<PatchDocumentsResponse<U>>(stream);
+                    }
                 }
                 throw await GetApiErrorException(response);
             }
