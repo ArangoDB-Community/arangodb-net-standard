@@ -28,6 +28,11 @@
 
         public string SmartJoinAttribute { get; set; }
 
+        /// <summary>
+        /// The type of the collection as number.
+        ///   2: document collection (normal case)
+        ///   3: edges collection
+        /// </summary>
         public int? Type { get; set; }
 
         public bool? WaitForSync { get; set; }
