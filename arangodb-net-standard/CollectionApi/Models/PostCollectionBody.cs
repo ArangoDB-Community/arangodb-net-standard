@@ -28,6 +28,9 @@
 
         public string SmartJoinAttribute { get; set; }
 
+        /// <summary>
+        /// The type of the collection.
+        /// </summary>
         public CollectionType? Type { get; set; }
 
         public bool? WaitForSync { get; set; }
