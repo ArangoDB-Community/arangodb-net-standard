@@ -84,5 +84,113 @@ namespace ArangoDBNetStandardTest.UserApi
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1702, ex.ApiError.ErrorNum); // ERROR_USER_DUPLICATE
         }
+
+        [Fact]
+        public async Task PutUserAsync_ShouldSucceed()
+        {
+            PutUserResponse response = await _userClient.PutUserAsync(
+                _fixture.UsernameExisting,
+                new PutUserBody()
+                {
+                    Extra = new Dictionary<string, object>()
+                    {
+                        ["somedata"] = nameof(PutUserAsync_ShouldSucceed)
+                    }
+                });
+
+            Assert.False(response.Error);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(_fixture.UsernameExisting, response.User);
+            Assert.True(response.Active);
+            Assert.True(response.Extra.ContainsKey("somedata"));
+            Assert.Equal(nameof(PutUserAsync_ShouldSucceed), response.Extra["somedata"].ToString());
+        }
+
+        [Fact]
+        public async Task PutUserAsync_ShouldThrow_WhenUserDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _userClient.PutUserAsync(
+                    nameof(PutUserAsync_ShouldThrow_WhenUserDoesNotExist),
+                    new PutUserBody()
+                    {
+                        Extra = new Dictionary<string, object>()
+                    });
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.NotNull(ex.ApiError.ErrorMessage);
+            Assert.Equal(1703, ex.ApiError.ErrorNum); // ERROR_USER_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task PatchUserAsync_ShouldSucceed()
+        {
+            PatchUserResponse response = await _userClient.PatchUserAsync(
+                _fixture.UsernameExisting,
+                new PatchUserBody()
+                {
+                    Extra = new Dictionary<string, object>()
+                    {
+                        ["somedata"] = nameof(PatchUserAsync_ShouldSucceed)
+                    }
+                });
+
+            Assert.False(response.Error);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(_fixture.UsernameExisting, response.User);
+            Assert.True(response.Active);
+            Assert.True(response.Extra.ContainsKey("somedata"));
+            Assert.Equal(nameof(PatchUserAsync_ShouldSucceed), response.Extra["somedata"].ToString());
+        }
+
+        [Fact]
+        public async Task PatchUserAsync_ShouldThrow_WhenUserDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _userClient.PatchUserAsync(
+                    nameof(PatchUserAsync_ShouldThrow_WhenUserDoesNotExist),
+                    new PatchUserBody()
+                    {
+                        Extra = new Dictionary<string, object>()
+                    });
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.NotNull(ex.ApiError.ErrorMessage);
+            Assert.Equal(1703, ex.ApiError.ErrorNum); // ERROR_USER_NOT_FOUND
+        }
+
+        [Fact]
+        public async Task GetUserAsync_ShouldSucceed()
+        {
+            GetUserResponse response = await _userClient.GetUserAsync(
+                _fixture.UsernameExisting);
+
+            Assert.False(response.Error);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(_fixture.UsernameExisting, response.User);
+            Assert.True(response.Active);
+            Assert.NotNull(response.Extra);
+        }
+
+        [Fact]
+        public async Task GetUserAsync_ShouldThrow_WhenUserDoesNotExist()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _userClient.GetUserAsync(
+                    nameof(GetUserAsync_ShouldThrow_WhenUserDoesNotExist));
+            });
+
+            Assert.True(ex.ApiError.Error);
+            Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+            Assert.NotNull(ex.ApiError.ErrorMessage);
+            Assert.Equal(1703, ex.ApiError.ErrorNum); // ERROR_USER_NOT_FOUND
+        }
     }
 }
