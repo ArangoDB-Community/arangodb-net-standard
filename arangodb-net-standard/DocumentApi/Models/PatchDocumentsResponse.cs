@@ -22,7 +22,7 @@ namespace ArangoDBNetStandard.DocumentApi.Models
 
         /// <summary>
         /// Creates an empty response.
-        /// This is used when <see cref="PostDocumentsQuery.Silent"/> is true.
+        /// This is used when <see cref="PatchDocumentsQuery.Silent"/> is true.
         /// </summary>
         /// <returns></returns>
         public static PatchDocumentsResponse<T> Empty()
