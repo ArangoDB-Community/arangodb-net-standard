@@ -39,6 +39,12 @@ namespace ArangoDBNetStandard
             }
         }
 
+        /// <summary>
+        /// Checks whether the provided document ID is in the correct form
+        /// of "{collection}/{key}".
+        /// </summary>
+        /// <exception cref="ArgumentException">The document ID is invalid</exception>
+        /// <param name="documentId">The document ID to validate.</param>
         protected void ValidateDocumentId(string documentId)
         {
             if (documentId.Split('/').Length != 2)
