@@ -1,11 +1,9 @@
-﻿using System.Net;
-
-namespace ArangoDBNetStandard.UserApi.Models
+﻿namespace ArangoDBNetStandard.UserApi.Models
 {
-    public class DeleteUserResponse
+    /// <summary>
+    /// Represents a response returned after deleting a user.
+    /// </summary>
+    public class DeleteUserResponse : ResponseBase
     {
-        public bool Error { get; set; }
-
-        public HttpStatusCode Code { get; set; }
     }
 }
