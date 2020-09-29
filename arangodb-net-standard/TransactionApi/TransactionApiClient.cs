@@ -52,7 +52,7 @@ namespace ArangoDBNetStandard.TransactionApi
         public virtual async Task<PostTransactionResponse<T>> PostTransactionAsync<T>(
             PostTransactionBody body)
         {
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, ApiClientSerializationContentType.PostTransaction);
             using (var response = await _client.PostAsync(_transactionApiPath, content))
             {
                 var stream = await response.Content.ReadAsStreamAsync();

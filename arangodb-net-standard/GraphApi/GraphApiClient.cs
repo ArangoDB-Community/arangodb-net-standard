@@ -64,7 +64,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(postGraphBody, true, true);
+            var content = GetContent(postGraphBody, ApiClientSerializationContentType.PostGraph);
 
             using (var response = await _transport.PostAsync(uri, content))
             {
@@ -102,11 +102,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// <summary>
         /// Deletes an existing graph object by name.
         /// Optionally all collections not used by other
-        /// graphs can be deleted as well, using <see cref = "DeleteGraphQuery" ></ see >.
+        /// graphs can be deleted as well, using <see cref = "DeleteGraphQuery" ></see >.
         /// DELETE /_api/gharial/{graph-name}
         /// </summary>
         /// <param name="graphName"></param>
-        /// <param name="body"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public virtual async Task<DeleteGraphResponse> DeleteGraphAsync(string graphName, DeleteGraphQuery query = null)
         {
@@ -201,7 +201,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             PostEdgeDefinitionBody body)
         {
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, ApiClientSerializationContentType.PostEdgeDefinition);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge";
 
@@ -230,7 +230,7 @@ namespace ArangoDBNetStandard.GraphApi
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex";
 
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, ApiClientSerializationContentType.PostVertexCollection);
 
             using (var response = await _transport.PostAsync(uri, content))
             {
@@ -265,7 +265,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(vertex, false, false);
+            var content = GetContent(vertex, ApiClientSerializationContentType.PostVertex);
             using (var response = await _transport.PostAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -363,7 +363,7 @@ namespace ArangoDBNetStandard.GraphApi
             T edge,
             PostEdgeQuery query = null)
         {
-            var content = GetContent(edge, false, false);
+            var content = GetContent(edge, ApiClientSerializationContentType.PostEdge);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName);
@@ -497,6 +497,7 @@ namespace ArangoDBNetStandard.GraphApi
             }
         }
 
+        /// <summary>
         /// Gets a vertex from the given collection.
         /// GET/_api/gharial/{graph}/vertex/{collection}/{vertex}
         /// </summary>
@@ -662,7 +663,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(body, false, false);
+            var content = GetContent(body, ApiClientSerializationContentType.PatchVertex);
             using (var response = await _transport.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -725,7 +726,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(edge, false, false);
+            var content = GetContent(edge,ApiClientSerializationContentType.PutEdge);
             using (var response = await _transport.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -761,7 +762,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, ApiClientSerializationContentType.PutEdgeDefinition);
             using (var response = await _transport.PutAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -827,7 +828,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(edge, true, true);
+            var content = GetContent(edge, ApiClientSerializationContentType.PatchEdge);
             using (var response = await _transport.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -889,7 +890,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(vertex, true, true);
+            var content = GetContent(vertex, ApiClientSerializationContentType.PutVertex);
             using (var response = await _transport.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)

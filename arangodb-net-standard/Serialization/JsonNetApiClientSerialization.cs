@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 
 namespace ArangoDBNetStandard.Serialization
@@ -11,7 +7,7 @@ namespace ArangoDBNetStandard.Serialization
     /// <summary>
     /// Implements a <see cref="IApiClientSerialization"/> that uses Json.NET.
     /// </summary>
-    public class JsonNetApiClientSerialization : IApiClientSerialization
+    public class JsonNetApiClientSerialization : ApiClientSerialization
     {
         /// <summary>
         /// Deserializes the JSON structure contained by the specified stream
@@ -20,7 +16,7 @@ namespace ArangoDBNetStandard.Serialization
         /// <typeparam name="T">The type of the object to deserialize to.</typeparam>
         /// <param name="stream">The stream containing the JSON structure to deserialize.</param>
         /// <returns></returns>
-        public virtual T DeserializeFromStream<T>(Stream stream)
+        public override T DeserializeFromStream<T>(Stream stream)
         {
             if (stream == null || stream.CanRead == false)
             {
@@ -44,20 +40,16 @@ namespace ArangoDBNetStandard.Serialization
         /// </summary>
         /// <typeparam name="T">The type of the object to serialize.</typeparam>
         /// <param name="item">The object to serialize.</param>
-        /// <param name="useCamelCasePropertyNames">Whether property names should be camel cased (camelCase).</param>
-        /// <param name="ignoreNullValues">Whether null values should be ignored.</param>
+        /// <param name="serializationOptions"></param>
         /// <returns></returns>
-        public virtual byte[] Serialize<T>(
-            T item,
-            bool useCamelCasePropertyNames,
-            bool ignoreNullValues)
+        protected override byte[] SerializeItem<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
             var jsonSettings = new JsonSerializerSettings
             {
-                NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
+                NullValueHandling = serializationOptions.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
             };
 
-            if (useCamelCasePropertyNames)
+            if (serializationOptions.UseCamelCasePropertyNames)
             {
                 jsonSettings.ContractResolver = new CamelCasePropertyNamesExceptDictionaryContractResolver();
             }

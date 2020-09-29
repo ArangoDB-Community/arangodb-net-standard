@@ -22,7 +22,7 @@ namespace ArangoDBNetStandardTest.Serialization
 
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.Serialize(model, true, true);
+            byte[] jsonBytes = serialization.Serialize(model, ApiClientSerializationContentType.PostGraph);
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -42,7 +42,7 @@ namespace ArangoDBNetStandardTest.Serialization
             };
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.Serialize(body, true, true);
+            byte[] jsonBytes = serialization.Serialize(body, ApiClientSerializationContentType.PostCursor);
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -65,7 +65,7 @@ namespace ArangoDBNetStandardTest.Serialization
 
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.Serialize(body, true, true);
+            byte[] jsonBytes = serialization.Serialize(body, ApiClientSerializationContentType.PostTransaction);
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -88,7 +88,7 @@ namespace ArangoDBNetStandardTest.Serialization
             };
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.Serialize(body, true, true);
+            byte[] jsonBytes = serialization.Serialize(body, ApiClientSerializationContentType.PostCursor);
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -109,7 +109,7 @@ namespace ArangoDBNetStandardTest.Serialization
 
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.Serialize(body, true, true);
+            byte[] jsonBytes = serialization.Serialize(body, ApiClientSerializationContentType.PostTransaction);
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 

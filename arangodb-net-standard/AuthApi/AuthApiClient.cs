@@ -60,7 +60,7 @@ namespace ArangoDBNetStandard.AuthApi
         /// <returns>Object containing the encoded JWT token value.</returns>
         public virtual async Task<JwtTokenResponse> GetJwtTokenAsync(JwtTokenRequestBody body)
         {
-            byte[] content = GetContent(body, true, false);
+            byte[] content = GetContent(body, ApiClientSerializationContentType.GetJwtToken);
             using (var response = await _client.PostAsync("/_open/auth", content))
             {
                 if (response.IsSuccessStatusCode)

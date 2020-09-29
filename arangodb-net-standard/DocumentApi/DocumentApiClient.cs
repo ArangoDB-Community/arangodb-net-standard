@@ -63,7 +63,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(document, false, false);
+            var content = GetContent(document, ApiClientSerializationContentType.PostDocument);
             using (var response = await _client.PostAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -93,7 +93,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(documents, false, false);
+            var content = GetContent(documents, ApiClientSerializationContentType.PostDocuments);
             using (var response = await _client.PostAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -130,7 +130,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(documents, false, false);
+            var content = GetContent(documents, ApiClientSerializationContentType.PutDocuments);
             using (var response = await _client.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -170,7 +170,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + opts.ToQueryString();
             }
-            var content = GetContent(doc, false, false);
+            var content = GetContent(doc, ApiClientSerializationContentType.PutDocument);
             using (var response = await _client.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -251,7 +251,7 @@ namespace ArangoDBNetStandard.DocumentApi
         {
             string uri = $"{_docApiPath}/{WebUtility.UrlEncode(collectionName)}?onlyget=true";
 
-            var content = GetContent(selectors, false, true);
+            var content = GetContent(selectors, ApiClientSerializationContentType.GetDocuments);
 
             using (var response = await _client.PutAsync(uri, content))
             {
@@ -394,7 +394,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(selectors, false, false);
+            var content = GetContent(selectors, ApiClientSerializationContentType.DeleteDocuments);
             using (var response = await _client.DeleteAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -445,7 +445,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(patches, false, false);
+            var content = GetContent(patches, ApiClientSerializationContentType.PatchDocuments);
             using (var response = await _client.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -522,7 +522,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(body, false, false);
+            var content = GetContent(body, ApiClientSerializationContentType.PatchDocument);
             using (var response = await _client.PatchAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)

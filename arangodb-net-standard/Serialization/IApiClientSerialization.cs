@@ -22,9 +22,8 @@ namespace ArangoDBNetStandard.Serialization
         /// </summary>
         /// <typeparam name="T">The type of the object to serialize.</typeparam>
         /// <param name="item">The object to serialize.</param>
-        /// <param name="useCamelCasePropertyNames">Whether property names should be camel cased.</param>
-        /// <param name="ignoreNullValues">Whether null values should be ignored.</param>
+        /// <param name="contentType">The serialization content type.</param>
         /// <returns></returns>
-        byte[] Serialize<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues);
+        byte[] Serialize<T>(T item, ApiClientSerializationContentType contentType);
     }
 }
