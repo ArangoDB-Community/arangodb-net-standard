@@ -45,14 +45,16 @@ namespace ArangoDBNetStandard.CollectionApi
             _transport = transport;
         }
 
-        public virtual async Task<PostCollectionResponse> PostCollectionAsync(PostCollectionBody body, PostCollectionQuery options = null)
+        public virtual async Task<PostCollectionResponse> PostCollectionAsync(
+            PostCollectionBody body,
+            PostCollectionQuery options = null)
         {
             string uriString = _collectionApiPath;
             if (options != null)
             {
                 uriString += "?" + options.ToQueryString();
             }
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PostAsync(uriString, content))
             {
                 var stream = await response.Content.ReadAsStreamAsync();
@@ -189,7 +191,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public virtual async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body)
         {
-            var content = GetContent(body, true, false);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, false));
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/rename", content))
             {
                 if (response.IsSuccessStatusCode)
@@ -228,9 +230,11 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <param name="collectionName"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public virtual async Task<PutCollectionPropertyResponse> PutCollectionPropertyAsync(string collectionName, PutCollectionPropertyBody body)
+        public virtual async Task<PutCollectionPropertyResponse> PutCollectionPropertyAsync(
+            string collectionName,
+            PutCollectionPropertyBody body)
         {
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/properties", content))
             {
                 if (response.IsSuccessStatusCode)

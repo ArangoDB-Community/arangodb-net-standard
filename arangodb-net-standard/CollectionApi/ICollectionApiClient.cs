@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard.CollectionApi.Models;
+using ArangoDBNetStandard.Serialization;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.CollectionApi

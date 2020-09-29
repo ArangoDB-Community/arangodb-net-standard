@@ -55,7 +55,7 @@ namespace ArangoDBNetStandard.UserApi
         /// <returns></returns>
         public virtual async Task<PostUserResponse> PostUserAsync(PostUserBody body)
         {
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PostAsync(_userApiPath, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -78,7 +78,7 @@ namespace ArangoDBNetStandard.UserApi
         public virtual async Task<PutUserResponse> PutUserAsync(string username, PutUserBody body)
         {
             string uri = _userApiPath + '/' + username;
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -101,7 +101,7 @@ namespace ArangoDBNetStandard.UserApi
         public virtual async Task<PatchUserResponse> PatchUserAsync(string username, PatchUserBody body)
         {
             string uri = _userApiPath + '/' + username;
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -169,7 +169,7 @@ namespace ArangoDBNetStandard.UserApi
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName);
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -275,7 +275,7 @@ namespace ArangoDBNetStandard.UserApi
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName) + "/" +
                 WebUtility.UrlEncode(collectionName);
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)

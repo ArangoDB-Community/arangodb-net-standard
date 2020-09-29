@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard.GraphApi.Models;
+using ArangoDBNetStandard.Serialization;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.GraphApi
@@ -106,12 +107,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions"></param>
         /// <returns></returns>
         Task<PostVertexResponse<T>> PostVertexAsync<T>(
           string graphName,
           string collectionName,
           T vertex,
-          PostVertexQuery query = null);
+          PostVertexQuery query = null,
+          IApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Remove one edge definition from the graph. This will only remove the
@@ -158,12 +161,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edge">The edge to create.</param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions"></param>
         /// <returns></returns>
         Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
           string graphName,
           string collectionName,
           T edge,
-          PostEdgeQuery query = null);
+          PostEdgeQuery query = null,
+          IApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Gets an edge from the given graph using the edge collection and _key attribute.
@@ -292,13 +297,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions"></param>
         /// <returns></returns>
         Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
           string graphName,
           string collectionName,
           string vertexKey,
           T body,
-          PatchVertexQuery query = null);
+          PatchVertexQuery query = null,
+          IApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Updates the data of the specific vertex based on its document ID.
@@ -311,12 +318,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to update.</param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions"></param>
         /// <returns></returns>
         Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
           string graphName,
           string documentId,
           T body,
-          PatchVertexQuery query = null);
+          PatchVertexQuery query = null,
+          IApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Replaces the data of an edge in the collection.

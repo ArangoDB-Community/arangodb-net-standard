@@ -105,7 +105,7 @@ namespace ArangoDBNetStandardTest.Docs
             // Run AQL query (create a query cursor)
             var response = await adb.Cursor.PostCursorAsync<MyClassDocument>(
                 @"FOR doc IN MyCollection 
-                  FILTER doc.ItemNumber == 123456 
+                  FILTER doc.itemNumber == 123456 
                   RETURN doc");
 
             MyClassDocument item = response.Result.First();

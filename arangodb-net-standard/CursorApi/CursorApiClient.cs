@@ -57,6 +57,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cache"></param>
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
+        /// <param name="serializationOptions"></param>
         /// <returns></returns>
         public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
                 string query,
@@ -66,7 +67,8 @@ namespace ArangoDBNetStandard.CursorApi
                 long? batchSize = null,
                 bool? cache = null,
                 long? memoryLimit = null,
-                int? ttl = null)
+                int? ttl = null,
+                IApiClientSerializationOptions serializationOptions = null)
         {
             return await PostCursorAsync<T>(new PostCursorBody
             {
@@ -78,17 +80,20 @@ namespace ArangoDBNetStandard.CursorApi
                 Cache = cache,
                 MemoryLimit = memoryLimit,
                 Ttl = ttl
-            });
+            }, serializationOptions);
         }
 
         /// <summary>
         /// Execute an AQL query, creating a cursor which can be used to page query results.
         /// </summary>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
+        /// <param name="serializationOptions"></param>
         /// <returns></returns>
-        public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorBody postCursorBody)
+        public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
+            PostCursorBody postCursorBody, 
+            IApiClientSerializationOptions serializationOptions = null)
         {
-            var content = GetContent(postCursorBody, true, true);
+            var content = GetContent(postCursorBody, serializationOptions);
             using (var response = await _client.PostAsync(_cursorApiPath, content))
             {
                 if (response.IsSuccessStatusCode)

@@ -53,7 +53,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// <returns></returns>
         public virtual async Task<PostAqlFunctionResponse> PostAqlFunctionAsync(PostAqlFunctionBody body)
         {
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
 
             using (var response = await _transport.PostAsync(_apiPath, content))
             {
