@@ -52,5 +52,95 @@ namespace ArangoDBNetStandard.UserApi
         /// <param name="username">The name of the user.</param>
         /// <returns></returns>
         Task<DeleteUserResponse> DeleteUserAsync(string username);
+
+        /// <summary>
+        /// Sets the database access levels of a user for a given database.
+        /// You need the Administrate server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="body">The body of the request containing the access level.</param>
+        /// <returns></returns>
+        Task<PutAccessLevelResponse> PutDatabaseAccessLevelAsync(
+            string username,
+            string dbName,
+            PutAccessLevelBody body);
+
+        /// <summary>
+        /// Gets specific database access level for a user.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database to query.</param>
+        /// <param name="body">The body of the request containing the access level.</param>
+        /// <returns></returns>
+        Task<GetAccessLevelResponse> GetDatabaseAccessLevelAsync(
+            string username,
+            string dbName);
+
+        /// <summary>
+        /// Clears the database access levels of a user for a given database.
+        /// As consequence the default database access level is used.
+        /// If there is no defined default database access level, it defaults to 'No access'.
+        /// You need permission to the '_system' database in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <returns></returns>
+        Task<DeleteAccessLevelResponse> DeleteDatabaseAccessLevelAsync(
+            string username,
+            string dbName);
+
+        /// <summary>
+        /// Fetch the list of databases available to the specified user.
+        /// You need Administrate for the server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="query">Optional query parameters for the request.</param>
+        /// <returns></returns>
+        Task<GetAccessibleDatabasesResponse> GetAccessibleDatabasesAsync(
+            string username,
+            GetAccessibleDatabasesQuery query = null);
+
+        /// <summary>
+        /// Sets the collection access levels of a user for a given database.
+        /// You need the Administrate server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <param name="body">The body of the request containing the access level.</param>
+        /// <returns></returns>
+        Task<PutAccessLevelResponse> PutCollectionAccessLevelAsync(
+            string username,
+            string dbName,
+            string collectionName,
+            PutAccessLevelBody body);
+
+        /// <summary>
+        /// Gets specific collection access level of a user for a given database.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <returns></returns>
+        Task<GetAccessLevelResponse> GetCollectionAccessLevelAsync(
+            string username,
+            string dbName,
+            string collectionName);
+
+        /// <summary>
+        /// Clears the collection access levels of a user for a given database.
+        /// As consequence the default collection access level is used.
+        /// If there is no defined default database access level, it defaults to 'No access'.
+        /// You need permission to the '_system' database in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <returns></returns>
+        Task<DeleteAccessLevelResponse> DeleteCollectionAccessLevelAsync(
+            string username,
+            string dbName,
+            string collectionName);
     }
 }

@@ -153,5 +153,194 @@ namespace ArangoDBNetStandard.UserApi
                 throw await GetApiErrorException(response);
             }
         }
+
+        /// <summary>
+        /// Sets the database access levels of a user for a given database.
+        /// You need the Administrate server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="body">The body of the request containing the access level.</param>
+        /// <returns></returns>
+        public virtual async Task<PutAccessLevelResponse> PutDatabaseAccessLevelAsync(
+            string username,
+            string dbName,
+            PutAccessLevelBody body)
+        {
+            string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
+                + "/database/" + WebUtility.UrlEncode(dbName);
+            var content = GetContent(body, true, true);
+            using (var response = await _client.PutAsync(uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PutAccessLevelResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Gets specific database access level for a user.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database to query.</param>
+        /// <param name="body">The body of the request containing the access level.</param>
+        /// <returns></returns>
+        public virtual async Task<GetAccessLevelResponse> GetDatabaseAccessLevelAsync(
+            string username,
+            string dbName)
+        {
+            string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
+                + "/database/" + WebUtility.UrlEncode(dbName);
+            using (var response = await _client.GetAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetAccessLevelResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Clears the database access levels of a user for a given database.
+        /// As consequence the default database access level is used.
+        /// If there is no defined default database access level, it defaults to 'No access'.
+        /// You need permission to the '_system' database in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <returns></returns>
+        public virtual async Task<DeleteAccessLevelResponse> DeleteDatabaseAccessLevelAsync(
+            string username,
+            string dbName)
+        {
+            string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
+                + "/database/" + WebUtility.UrlEncode(dbName);
+            using (var response = await _client.DeleteAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteAccessLevelResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Fetch the list of databases available to the specified user.
+        /// You need Administrate for the server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="query">Optional query parameters for the request.</param>
+        /// <returns></returns>
+        public virtual async Task<GetAccessibleDatabasesResponse> GetAccessibleDatabasesAsync(
+            string username,
+            GetAccessibleDatabasesQuery query = null)
+        {
+            string uri = _userApiPath + "/" + WebUtility.UrlEncode(username) + "/database";
+            if (query != null)
+            {
+                uri += '?' + query.ToQueryString();
+            }
+            using (var response = await _client.GetAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetAccessibleDatabasesResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Sets the collection access levels of a user for a given database.
+        /// You need the Administrate server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <param name="body">The body of the request containing the access level.</param>
+        /// <returns></returns>
+        public virtual async Task<PutAccessLevelResponse> PutCollectionAccessLevelAsync(
+            string username,
+            string dbName,
+            string collectionName,
+            PutAccessLevelBody body)
+        {
+            string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
+                + "/database/" + WebUtility.UrlEncode(dbName) + "/" +
+                WebUtility.UrlEncode(collectionName);
+            var content = GetContent(body, true, true);
+            using (var response = await _client.PutAsync(uri, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<PutAccessLevelResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Gets specific collection access level of a user for a given database.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <returns></returns>
+        public virtual async Task<GetAccessLevelResponse> GetCollectionAccessLevelAsync(
+            string username,
+            string dbName,
+            string collectionName)
+        {
+            string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
+                + "/database/" + WebUtility.UrlEncode(dbName) + "/" +
+                WebUtility.UrlEncode(collectionName);
+            using (var response = await _client.GetAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetAccessLevelResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
+        /// Clears the collection access levels of a user for a given database.
+        /// As consequence the default collection access level is used.
+        /// If there is no defined default database access level, it defaults to 'No access'.
+        /// You need permission to the '_system' database in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <returns></returns>
+        public virtual async Task<DeleteAccessLevelResponse> DeleteCollectionAccessLevelAsync(
+            string username,
+            string dbName,
+            string collectionName)
+        {
+            string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
+                + "/database/" + WebUtility.UrlEncode(dbName) + "/" +
+                WebUtility.UrlEncode(collectionName);
+            using (var response = await _client.DeleteAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<DeleteAccessLevelResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
     }
 }

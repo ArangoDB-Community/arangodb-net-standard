@@ -5,9 +5,9 @@ namespace ArangoDBNetStandard.UserApi.Models
 {
     /// <summary>
     /// Represents a common response class with user information
-    /// returned after performing an operation.
+    /// returned after performing a user operation.
     /// </summary>
-    public class UserResponseBase
+    public class UserResponseBase : ResponseBase
     {
         /// <summary>
         /// The name of the user.
@@ -23,15 +23,5 @@ namespace ArangoDBNetStandard.UserApi.Models
         /// Object with arbitrary extra data about the user.
         /// </summary>
         public Dictionary<string, object> Extra { get; set; }
-
-        /// <summary>
-        /// Indicates whether an error occurred (false in this case).
-        /// </summary>
-        public bool Error { get; set; }
-
-        /// <summary>
-        /// The HTTP status code.
-        /// </summary>
-        public HttpStatusCode Code { get; set; }
     }
 }
