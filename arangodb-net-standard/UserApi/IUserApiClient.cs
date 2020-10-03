@@ -54,6 +54,14 @@ namespace ArangoDBNetStandard.UserApi
         Task<DeleteUserResponse> DeleteUserAsync(string username);
 
         /// <summary>
+        /// Fetches data about all users.
+        /// You need the Administrate server access level in order to execute this REST call.
+        /// Otherwise, you will only get information about yourself.
+        /// </summary>
+        /// <returns></returns>
+        Task<GetUsersResponse> GetUsersAsync();
+
+        /// <summary>
         /// Sets the database access levels of a user for a given database.
         /// You need the Administrate server access level in order to execute this REST call.
         /// </summary>
