@@ -102,13 +102,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <summary>
         /// Deletes an existing graph object by name.
         /// Optionally all collections not used by other
-        /// graphs can be deleted as well, using <see cref = "DeleteGraphQuery" ></ see >.
+        /// graphs can be deleted as well, using <see cref="DeleteGraphQuery"/>.
         /// DELETE /_api/gharial/{graph-name}
         /// </summary>
         /// <param name="graphName"></param>
-        /// <param name="body"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<DeleteGraphResponse> DeleteGraphAsync(string graphName, DeleteGraphQuery query = null)
+        public virtual async Task<DeleteGraphResponse> DeleteGraphAsync(
+            string graphName,
+            DeleteGraphQuery query = null)
         {
             string uriString = _graphApiPath + "/" + WebUtility.UrlEncode(graphName);
             if (query != null)
@@ -497,6 +499,7 @@ namespace ArangoDBNetStandard.GraphApi
             }
         }
 
+        /// <summary>
         /// Gets a vertex from the given collection.
         /// GET/_api/gharial/{graph}/vertex/{collection}/{vertex}
         /// </summary>

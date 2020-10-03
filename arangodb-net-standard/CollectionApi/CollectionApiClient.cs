@@ -121,7 +121,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// Get all collections.
         /// GET/_api/collection
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public virtual async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery query = null)
         {
@@ -161,10 +161,11 @@ namespace ArangoDBNetStandard.CollectionApi
             }
         }
 
+        /// <summary>
         /// Read properties of a collection.
         /// GET /_api/collection/{collection-name}/properties
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="collectionName"></param>
         /// <returns></returns>
         public virtual async Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName)
         {

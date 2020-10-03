@@ -14,7 +14,7 @@ namespace ArangoDBNetStandard.Transport.Http
     /// <remarks>
     /// Uses <see cref="HttpClient"/> under the hood. Note it is recommended to maintain a single
     /// instance of <see cref="HttpClient"/> per server host, for the lifetime of your application, without calling
-    /// <see cref="HttpApiTransport.Dispose"/> or using a <see cref="using"/> block.
+    /// <see cref="HttpApiTransport.Dispose"/> or using a <c>using</c> block.
     /// </remarks>
     public class HttpApiTransport : IApiClientTransport
     {
