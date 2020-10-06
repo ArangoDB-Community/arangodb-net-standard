@@ -270,8 +270,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </summary>
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
-        /// in the returned <see cref="DeleteDocumentResponse{object}"/>. Its value will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// in the returned <see cref="DeleteDocumentResponse{T}"/>. Its value will be <c>null</c> when 
+        /// <see cref="DeleteDocumentQuery.ReturnOld"/> is either <c>false</c> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="collectionName"></param>
@@ -293,8 +293,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </summary>
         /// <remarks>
         /// This method overload is provided as a convenience when the client does not care about the type of <see cref="DeleteDocumentResponse{T}.Old"/>
-        /// in the returned <see cref="DeleteDocumentResponse{object}"/>. Its value will be <see cref="null"/> when 
-        /// <see cref="DeleteDocumentQuery.ReturnOld"/> is either <see cref="false"/> or not set, so this overload is useful in the default case 
+        /// in the returned <see cref="DeleteDocumentResponse{T}"/>. Its value will be <c>null</c> when 
+        /// <see cref="DeleteDocumentQuery.ReturnOld"/> is either <c>false</c> or not set, so this overload is useful in the default case 
         /// when deleting documents.
         /// </remarks>
         /// <param name="documentId"></param>

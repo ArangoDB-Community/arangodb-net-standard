@@ -46,10 +46,11 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         Task<GetCollectionResponse> GetCollectionAsync(string collectionName);
 
+        /// <summary>
         /// Read properties of a collection.
         /// GET /_api/collection/{collection-name}/properties
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="collectionName"></param>
         /// <returns></returns>
         Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName);
 
@@ -58,7 +59,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// PUT /_api/collection/{collection-name}/rename
         /// </summary>
         /// <param name="collectionName"></param>
-        /// <param name="request"></param>
+        /// <param name="body"></param>
         /// <returns></returns>
         Task<RenameCollectionResponse> RenameCollectionAsync(
             string collectionName,
@@ -87,7 +88,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// Contains the number of documents and additional statistical information about the collection.
         /// GET/_api/collection/{collection-name}/figures
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="collectionName"></param>
         /// <returns></returns>
         Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName);
     }

@@ -13,6 +13,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// POST /_api/gharial
         /// </summary>
         /// <param name="postGraphBody">The information of the graph to create.</param>
+        /// <param name="query"></param>
         /// <returns></returns>
         Task<PostGraphResponse> PostGraphAsync(
           PostGraphBody postGraphBody,
@@ -32,11 +33,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// <summary>
         /// Deletes an existing graph object by name.
         /// Optionally all collections not used by other
-        /// graphs can be deleted as well, using <see cref = "DeleteGraphQuery" ></ see >.
+        /// graphs can be deleted as well, using <see cref="DeleteGraphQuery"/>.
         /// DELETE /_api/gharial/{graph-name}
         /// </summary>
         /// <param name="graphName"></param>
-        /// <param name="body"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         Task<DeleteGraphResponse> DeleteGraphAsync(
           string graphName,
@@ -55,7 +56,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// Lists all vertex collections within the given graph.
         /// GET /_api/gharial/{graph}/vertex
         /// </summary>
-        /// <param name="graph">The name of the graph.</param>
+        /// <param name="graphName">The name of the graph.</param>
         /// <returns></returns>
         Task<GetVertexCollectionsResponse> GetVertexCollectionsAsync(string graphName);
 
@@ -156,6 +157,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edge">The edge to create.</param>
+        /// <param name="query"></param>
         /// <returns></returns>
         Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
           string graphName,

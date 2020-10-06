@@ -186,7 +186,6 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database to query.</param>
-        /// <param name="body">The body of the request containing the access level.</param>
         /// <returns></returns>
         public virtual async Task<GetAccessLevelResponse> GetDatabaseAccessLevelAsync(
             string username,
