@@ -58,7 +58,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string collectionName,
             T document,
             PostDocumentsQuery query = null,
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -90,7 +90,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string collectionName,
             IList<T> documents,
             PostDocumentsQuery query = null,
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -129,7 +129,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string collectionName,
             IList<T> documents,
             PutDocumentsQuery query = null,
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -170,7 +170,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string documentId,
             T doc,
             PutDocumentQuery opts = null,
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
@@ -397,7 +397,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string collectionName,
             IList<string> selectors,
             DeleteDocumentsQuery query = null,
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -450,7 +450,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string collectionName,
             IList<T> patches,
             PatchDocumentsQuery query = null,
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -528,7 +528,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string documentId,
             T body,
             PatchDocumentQuery query = null,
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             ValidateDocumentId(documentId);
             string uriString = _docApiPath + "/" + documentId;

@@ -114,7 +114,7 @@ namespace ArangoDBNetStandard.GraphApi
           string collectionName,
           T vertex,
           PostVertexQuery query = null,
-          IApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Remove one edge definition from the graph. This will only remove the
@@ -168,7 +168,7 @@ namespace ArangoDBNetStandard.GraphApi
           string collectionName,
           T edge,
           PostEdgeQuery query = null,
-          IApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Gets an edge from the given graph using the edge collection and _key attribute.
@@ -305,7 +305,7 @@ namespace ArangoDBNetStandard.GraphApi
           string vertexKey,
           T body,
           PatchVertexQuery query = null,
-          IApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Updates the data of the specific vertex based on its document ID.
@@ -325,7 +325,7 @@ namespace ArangoDBNetStandard.GraphApi
           string documentId,
           T body,
           PatchVertexQuery query = null,
-          IApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Replaces the data of an edge in the collection.

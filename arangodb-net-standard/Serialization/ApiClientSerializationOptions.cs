@@ -1,18 +1,18 @@
 ﻿namespace ArangoDBNetStandard.Serialization
 {
     /// <summary>
-    /// The API client serilization options class.
+    /// The API client serialization options class.
     /// </summary>
-    public class ApiClientSerializationOptions : IApiClientSerializationOptions
+    public class ApiClientSerializationOptions
     {
         /// <summary>
-        /// Use camlel case if true, otherwise depends on
+        /// Use camel case if true, otherwise depends on
         /// the action will be implemented in the serializer.
         /// </summary>
         public bool UseCamelCasePropertyNames { get; }
         
         /// <summary>
-        /// True to ignore values, otherwise false.
+        /// True to ignore null values, otherwise false.
         /// </summary>
         public bool IgnoreNullValues { get; }
 

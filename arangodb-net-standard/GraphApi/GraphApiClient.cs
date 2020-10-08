@@ -262,7 +262,7 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             T vertex,
             PostVertexQuery query = null,
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
                 "/vertex/" + WebUtility.UrlEncode(collectionName);
@@ -368,7 +368,7 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             T edge,
             PostEdgeQuery query = null,
-            IApiClientSerializationOptions serializationOptions  = null)
+            ApiClientSerializationOptions serializationOptions  = null)
         {
             var content = GetContent(edge, serializationOptions);
 
@@ -634,7 +634,7 @@ namespace ArangoDBNetStandard.GraphApi
             string vertexKey,
             T body,
             PatchVertexQuery query = null,
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             return PatchVertexAsync<T, U>(
                 graphName,
@@ -663,7 +663,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T body,
             PatchVertexQuery query = null,
-            IApiClientSerializationOptions serializationOptions  = null)
+            ApiClientSerializationOptions serializationOptions  = null)
         {
             ValidateDocumentId(documentId);
 

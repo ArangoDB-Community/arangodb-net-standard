@@ -68,7 +68,7 @@ namespace ArangoDBNetStandard.CursorApi
                 bool? cache = null,
                 long? memoryLimit = null,
                 int? ttl = null,
-                IApiClientSerializationOptions serializationOptions = null)
+                ApiClientSerializationOptions serializationOptions = null)
         {
             return await PostCursorAsync<T>(new PostCursorBody
             {
@@ -91,7 +91,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <returns></returns>
         public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
             PostCursorBody postCursorBody, 
-            IApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             var content = GetContent(postCursorBody, serializationOptions);
             using (var response = await _client.PostAsync(_cursorApiPath, content))

@@ -66,11 +66,11 @@ namespace ArangoDBNetStandard
             }
         }
 
-        protected byte[] GetContent<T>(T item, IApiClientSerializationOptions options)
+        protected byte[] GetContent<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
             try
             {
-                return _serialization.Serialize(item, options);
+                return _serialization.Serialize(item, serializationOptions);
             }
             catch (Exception e)
             {

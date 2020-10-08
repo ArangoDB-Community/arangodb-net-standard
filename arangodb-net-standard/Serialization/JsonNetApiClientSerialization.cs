@@ -9,7 +9,10 @@ namespace ArangoDBNetStandard.Serialization
     /// </summary>
     public class JsonNetApiClientSerialization : ApiClientSerialization
     {
-        public override IApiClientSerializationOptions DefaultOptions => new ApiClientSerializationOptions(true, true);
+        /// <summary>
+        /// The default serialization options.
+        /// </summary>
+        protected override ApiClientSerializationOptions DefaultOptions => new ApiClientSerializationOptions(true, true);
 
         /// <summary>
         /// Deserializes the JSON structure contained by the specified stream
@@ -44,20 +47,20 @@ namespace ArangoDBNetStandard.Serialization
         /// <param name="options"></param>
         /// <returns></returns>
 
-        public override byte[] Serialize<T>(T item, IApiClientSerializationOptions options)
+        public override byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
             // When no options passed use the default.
-            if(options == null)
+            if(serializationOptions == null)
             {
-                options = DefaultOptions;
+                serializationOptions = DefaultOptions;
             }
 
             var jsonSettings = new JsonSerializerSettings
             {
-                NullValueHandling = options.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
+                NullValueHandling = serializationOptions.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
             };
 
-            if (options.UseCamelCasePropertyNames)
+            if (serializationOptions.UseCamelCasePropertyNames)
             {
                 jsonSettings.ContractResolver = new CamelCasePropertyNamesExceptDictionaryContractResolver();
             }

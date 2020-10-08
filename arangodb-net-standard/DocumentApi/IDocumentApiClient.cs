@@ -24,7 +24,7 @@ namespace ArangoDBNetStandard.DocumentApi
            string collectionName,
            T document,
            PostDocumentsQuery query = null,
-           IApiClientSerializationOptions serializationOptions = null);
+           ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Post multiple documents in a single request.
@@ -39,7 +39,7 @@ namespace ArangoDBNetStandard.DocumentApi
            string collectionName,
            IList<T> documents,
            PostDocumentsQuery query = null,
-           IApiClientSerializationOptions serializationOptions = null);
+           ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Replace multiple documents.
@@ -54,7 +54,7 @@ namespace ArangoDBNetStandard.DocumentApi
            string collectionName,
            IList<T> documents,
            PutDocumentsQuery query = null,
-           IApiClientSerializationOptions serializationOptions = null);
+           ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Replaces the document with the provided document ID with the one in
@@ -71,7 +71,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string documentId,
             T doc,
             PutDocumentQuery opts = null,
-            IApiClientSerializationOptions serializationOptions = null);
+            ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Replaces the document based on its Document ID with the one in
@@ -209,7 +209,7 @@ namespace ArangoDBNetStandard.DocumentApi
           string collectionName,
           IList<string> selectors,
           DeleteDocumentsQuery query = null,
-          IApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Partially updates documents, the documents to update are specified
@@ -239,7 +239,7 @@ namespace ArangoDBNetStandard.DocumentApi
           string collectionName,
           IList<T> patches,
           PatchDocumentsQuery query = null,
-          IApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Partially updates the document identified by document-handle.
@@ -286,7 +286,7 @@ namespace ArangoDBNetStandard.DocumentApi
           string documentId,
           T body,
           PatchDocumentQuery query = null,
-          IApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Like GET, but only returns the header fields and not the body. You

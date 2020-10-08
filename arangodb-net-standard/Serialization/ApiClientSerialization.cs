@@ -3,15 +3,15 @@
 namespace ArangoDBNetStandard.Serialization
 {
     /// <summary>
-    /// The Api client serilization abastract class.
-    /// Used as a base to implement custom serilizations.
+    /// The Api client serialization abastract class.
+    /// Used as a base to implement custom serialization.
     /// </summary>
     public abstract class ApiClientSerialization : IApiClientSerialization
     {
         /// <summary>
         /// The default serialization options.
         /// </summary>
-        public abstract IApiClientSerializationOptions DefaultOptions { get; }
+        protected virtual ApiClientSerializationOptions DefaultOptions => new ApiClientSerializationOptions(true, true);
 
         /// <summary>
         /// Deserializes the data structure contained by the specified stream
@@ -28,8 +28,9 @@ namespace ArangoDBNetStandard.Serialization
         /// </summary>
         /// <typeparam name="T">The type of the object to serialize.</typeparam>
         /// <param name="item">The object to serialize.</param>
-        /// <param name="options">The serialization content type.</param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
-        public abstract byte[] Serialize<T>(T item, IApiClientSerializationOptions options);
+        public abstract byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions);
     }
 }
