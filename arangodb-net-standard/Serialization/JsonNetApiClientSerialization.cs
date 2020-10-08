@@ -44,7 +44,8 @@ namespace ArangoDBNetStandard.Serialization
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
-        /// <param name="options"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
 
         public override byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions)
