@@ -633,15 +633,13 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             string vertexKey,
             T body,
-            PatchVertexQuery query = null,
-            ApiClientSerializationOptions serializationOptions = null)
+            PatchVertexQuery query = null)
         {
             return PatchVertexAsync<T, U>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey),
                 body,
-                query,
-                serializationOptions);
+                query);
         }
 
         /// <summary>
@@ -656,14 +654,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to update.</param>
         /// <param name="body"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
         /// <returns></returns>
         public virtual async Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
             string graphName,
             string documentId,
             T body,
-            PatchVertexQuery query = null,
-            ApiClientSerializationOptions serializationOptions  = null)
+            PatchVertexQuery query = null)
         {
             ValidateDocumentId(documentId);
 

@@ -297,15 +297,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
         /// <returns></returns>
         Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
           string graphName,
           string collectionName,
           string vertexKey,
           T body,
-          PatchVertexQuery query = null,
-          ApiClientSerializationOptions serializationOptions = null);
+          PatchVertexQuery query = null);
 
         /// <summary>
         /// Updates the data of the specific vertex based on its document ID.
@@ -324,8 +322,7 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string documentId,
           T body,
-          PatchVertexQuery query = null,
-          ApiClientSerializationOptions serializationOptions = null);
+          PatchVertexQuery query = null);
 
         /// <summary>
         /// Replaces the data of an edge in the collection.
