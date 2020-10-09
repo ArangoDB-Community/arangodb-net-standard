@@ -93,7 +93,7 @@ namespace ArangoDBNetStandard.CursorApi
             PostCursorBody postCursorBody, 
             ApiClientSerializationOptions serializationOptions = null)
         {
-            var content = GetContent(postCursorBody, serializationOptions);
+            var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PostAsync(_cursorApiPath, content))
             {
                 if (response.IsSuccessStatusCode)

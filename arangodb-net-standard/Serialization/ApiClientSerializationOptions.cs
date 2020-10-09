@@ -9,12 +9,12 @@
         /// Use camel case if true, otherwise depends on
         /// the action will be implemented in the serializer.
         /// </summary>
-        public bool UseCamelCasePropertyNames { get; }
+        public bool UseCamelCasePropertyNames { get; set; }
         
         /// <summary>
         /// True to ignore null values, otherwise false.
         /// </summary>
-        public bool IgnoreNullValues { get; }
+        public bool IgnoreNullValues { get; set; }
 
         /// <summary>
         /// 

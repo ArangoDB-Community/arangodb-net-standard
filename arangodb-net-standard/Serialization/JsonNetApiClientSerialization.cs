@@ -10,11 +10,6 @@ namespace ArangoDBNetStandard.Serialization
     public class JsonNetApiClientSerialization : ApiClientSerialization
     {
         /// <summary>
-        /// The default serialization options.
-        /// </summary>
-        protected override ApiClientSerializationOptions DefaultOptions => new ApiClientSerializationOptions(true, true);
-
-        /// <summary>
         /// Deserializes the JSON structure contained by the specified stream
         /// into an instance of the specified type.
         /// </summary>
@@ -51,7 +46,7 @@ namespace ArangoDBNetStandard.Serialization
         public override byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
             // When no options passed use the default.
-            if(serializationOptions == null)
+            if (serializationOptions == null)
             {
                 serializationOptions = DefaultOptions;
             }
