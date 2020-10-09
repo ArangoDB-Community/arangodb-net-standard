@@ -391,20 +391,18 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="selectors"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
         /// <returns></returns>
         public virtual async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(
             string collectionName,
             IList<string> selectors,
-            DeleteDocumentsQuery query = null,
-            ApiClientSerializationOptions serializationOptions = null)
+            DeleteDocumentsQuery query = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(selectors, serializationOptions);
+            var content = GetContent(selectors, new ApiClientSerializationOptions(false, false));
             using (var response = await _client.DeleteAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)

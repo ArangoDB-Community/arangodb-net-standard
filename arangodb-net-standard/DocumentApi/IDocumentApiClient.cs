@@ -208,8 +208,7 @@ namespace ArangoDBNetStandard.DocumentApi
         Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(
           string collectionName,
           IList<string> selectors,
-          DeleteDocumentsQuery query = null,
-          ApiClientSerializationOptions serializationOptions = null);
+          DeleteDocumentsQuery query = null);
 
         /// <summary>
         /// Partially updates documents, the documents to update are specified
