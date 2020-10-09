@@ -675,7 +675,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = GetContent(body, new ApiClientSerializationOptions(false, false));
             using (var response = await _transport.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -738,7 +738,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(edge, new ApiClientSerializationOptions(true, true));
+            var content = GetContent(edge, new ApiClientSerializationOptions(false,false));
             using (var response = await _transport.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
