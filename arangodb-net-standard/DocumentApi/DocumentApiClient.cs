@@ -52,7 +52,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="document"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostDocumentResponse<T>> PostDocumentAsync<T>(
             string collectionName,
@@ -84,7 +85,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documents"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(
             string collectionName,
@@ -123,7 +125,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documents"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
             string collectionName,
@@ -163,8 +166,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
         /// <param name="doc"></param>
-        /// <param name="opts"></param>
-        /// <param name="serializationOptions"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
@@ -442,7 +445,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="patches"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
             string collectionName,
@@ -520,7 +524,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
             string documentId,

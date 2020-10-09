@@ -255,7 +255,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostVertexResponse<T>> PostVertexAsync<T>(
             string graphName,
@@ -361,7 +362,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edge">The edge to create.</param>
         /// <param name="query">Optional query parameters of the request.</param>
-        /// <param name="serializationOptions"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
             string graphName,
@@ -626,7 +628,6 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions"></param>
         /// <returns></returns>
         public virtual Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
             string graphName,

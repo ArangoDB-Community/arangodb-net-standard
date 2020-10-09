@@ -57,8 +57,6 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cache"></param>
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
-        /// <param name="serializationOptions">The serialization options. When the value is null the
-        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
                 string query,
