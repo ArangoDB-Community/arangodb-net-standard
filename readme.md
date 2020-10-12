@@ -342,7 +342,9 @@ var docResponse = await adb.Document.PostDocumentAsync(
 
 ### Serialization
 
-ArangoDB-net-standard allows for alternative serializer implementations to be used by implementing the `IApiClientSerialization` interface. By default, all API clients will use the provided `JsonNetApiClientSerialization` which uses the Json.NET library. To use an alternative serialization implementation, pass an instance of `IApiClientSerialization` when instantiating any API client class or the `ArangoDBClient` class.
+ArangoDB-net-standard allows for alternative serializer implementations to be used by implementing the `IApiClientSerialization` interface or `ApiClientSerialization` abstract class. The abstract class provides an additional property for default serialization options to use as fallback when none are provided by the caller. See [Serialization Options](#serialization-options) section above.
+
+By default, all API clients will use the provided `JsonNetApiClientSerialization` which uses the Json.NET library. To use an alternative serialization implementation, pass an instance of `IApiClientSerialization` when instantiating any API client class or the `ArangoDBClient` class.
 
 In many cases we depend on the behaviour of Json.NET to automatically map JSON properties using `camelCase` to C# properties defined using `PascalCase` when deserializing. Any alternative serializer will need to mimic that behaviour in order to deserialize some ArangoDB JSON objects to their C# types.  For example, if using `System.Text.Json`, the option `PropertyNameCaseInsensitive = true` should be used.
 
