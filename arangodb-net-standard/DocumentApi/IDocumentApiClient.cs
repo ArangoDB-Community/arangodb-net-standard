@@ -193,8 +193,6 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="selectors"></param>
         /// <param name="query"></param>
-        /// <param name="serializationOptions">The serialization options. When the value is null the
-        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(
           string collectionName,
