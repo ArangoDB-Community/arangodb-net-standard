@@ -17,10 +17,11 @@ A consistent, comprehensive, minimal driver for the [ArangoDB REST API](https://
       - [Create a database](#create-a-database)
       - [Create a collection](#create-a-collection)
       - [Create documents](#create-documents)
-        * [Side note on document keys](#side-note-on-document-keys)
+      - [Side note on document keys](#side-note-on-document-keys)
       - [Run an AQL query](#run-an-aql-query)
       - [Patch a document](#patch-a-document)
       - [Replace a document](#replace-a-document)
+    + [Serialization Options](#serialization-options)
     + [API Errors](#api-errors)
     + [Project Conventions](#project-conventions)
       - [Overall project structure](#overall-project-structure)
@@ -132,35 +133,13 @@ await adb.Document.PostDocumentAsync(
     });
 ```
 
-##### Side note on document keys
+#### Side note on document keys
 
-The document object must not have any `_key` property if you expect ArangoDB to generate the document key for you. For our examples here, we've used a separate class for creating documents vs fetching them.
+The document object must not have any value against a property named `_key` if you expect ArangoDB to generate the document key for you. 
 
-`MyClass` has no `_key` property:
+The default serializer options specify that null values will be ignored, so if your class has a `_key` property, you can leave it as `null` when creating a new document.
 
-```csharp
-class MyClass
-{
-    public long ItemNumber { get; set; }
-
-    public string Description { get; set; }
-}
-```
-
- `MyClassDocument` is a subclass of `MyClass` which does define the `_key` property, along with `_id` and `_rev`.
-
-```csharp
-class MyClassDocument: MyClass
-{
-    public string _key { get; set; }
-
-    public string _id { get; set; }
-
-    public string _rev { get; set; }
-}
-```
-
-You may or may not find this pattern useful in your own application.
+If you change the serializer options so that `IgnoreNullValues` is `false` then you cannot create a new document using a class the specifies a property named `_key`, because the ArangoDB API will reject the request.
 
 #### Run an AQL query
 
@@ -192,6 +171,22 @@ item.Description = "Some item with some more description";
 await adb.Document.PutDocumentAsync(
     $"MyCollection/{item._key}",
     item);
+```
+
+### Serialization Options
+
+All API methods that support passing objects of user-specified data types have an optional method argument to pass in custom serialization options.  These options can be used to control the behaviour of the underlying serializer implementation.
+
+The options are passed as an instance of the `ApiClientSerializationOptions` class, which contains options for:
+
+- `boolean UseCamelCasePropertyNames`
+- `boolean IgnoreNullValues`
+
+In addition, the default options can be updated, which will affect all subsequent operations that use these options. To set default options, set them on the serializer implementation itself.  For example, if using the supplied `JsonNetApiClientSerialization`:
+
+```
+var serializer = new JsonNetApiClientSerialization();
+serializer.DefaultOptions.IgnoreNullValues = false;
 ```
 
 ### API Errors
@@ -349,7 +344,7 @@ var docResponse = await adb.Document.PostDocumentAsync(
 
 ArangoDB-net-standard allows for alternative serializer implementations to be used by implementing the `IApiClientSerialization` interface. By default, all API clients will use the provided `JsonNetApiClientSerialization` which uses the Json.NET library. To use an alternative serialization implementation, pass an instance of `IApiClientSerialization` when instantiating any API client class or the `ArangoDBClient` class.
 
-In many cases we depend on the behaviour of Json.NET to automatically map JSON properties using `camelCase` to C# properties defined using `PascalCase` when deserializing. Any alternative serializer will need to mimic that behaviour in order to deserialize some ArangoDB JSON objects to their C# types.
+In many cases we depend on the behaviour of Json.NET to automatically map JSON properties using `camelCase` to C# properties defined using `PascalCase` when deserializing. Any alternative serializer will need to mimic that behaviour in order to deserialize some ArangoDB JSON objects to their C# types.  For example, if using `System.Text.Json`, the option `PropertyNameCaseInsensitive = true` should be used.
 
 ## Contributing
 
