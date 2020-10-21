@@ -225,6 +225,7 @@ namespace ArangoDBNetStandardTest.CursorApi
             Assert.False(nextResponse.HasMore);
             Assert.Single(nextResponse.Result);
             Assert.Equal(1000, nextResponse.Result.First());
+            Assert.Equal(HttpStatusCode.OK, nextResponse.Code);
         }
 
         [Fact]
