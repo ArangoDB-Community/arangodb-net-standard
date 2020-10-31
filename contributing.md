@@ -27,6 +27,15 @@ To run tests, run:
 dotnet test
 ```
 
+You can set environment variables `ARANGO_HOST` and `ARANGO_PORT` to control the hostname and port of the ArangoDB instance used by the tests.
+
+Example on Windows:
+
+```
+set ARANGO_PORT=8530
+dotnet test
+```
+
 To generate a nuget package in the folder `arangodb-net-standard\bin\release`, run:
 
 ```

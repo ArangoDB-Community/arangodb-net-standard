@@ -20,10 +20,14 @@ namespace ArangoDBNetStandardTest
 
         public string ArangoDbHost => Environment.GetEnvironmentVariable("ARANGO_HOST") ?? "localhost";
 
+        public int ArangoDbPort => int.TryParse(
+            Environment.GetEnvironmentVariable("ARANGO_PORT"),
+            out int dbPort) ? dbPort : 8529;
+
         protected HttpApiTransport GetHttpTransport(string dbName)
         {
             var transport = HttpApiTransport.UsingBasicAuth(
-                new Uri($"http://{ArangoDbHost}:8529/"),
+                new Uri($"http://{ArangoDbHost}:{ArangoDbPort}/"),
                 dbName,
                 "root",
                 "root");
