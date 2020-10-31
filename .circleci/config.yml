@@ -81,9 +81,9 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
         environment:
-          ARANGO_HOST: adb3_6_4
-      - image: arangodb/arangodb:3.6.4
-        name: adb3_6_4
+          ARANGO_HOST: adb3_6_8
+      - image: arangodb/arangodb:3.6.8
+        name: adb3_6_8
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
