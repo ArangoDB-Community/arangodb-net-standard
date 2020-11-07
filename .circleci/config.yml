@@ -29,7 +29,7 @@ jobs:
       - run:
           name: Build
           command:
-            dotnet build
+            dotnet build -c Release
       - persist_to_workspace:
           root: ~/
           paths:
@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test
+            dotnet test -c Release
             
   "test-arangodb-3_5":
     working_directory: ~/arangodb-net-standard
@@ -71,7 +71,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test
+            dotnet test -c Release
 
   "test-arangodb-3_6":
     working_directory: ~/arangodb-net-standard
@@ -90,4 +90,4 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test
+            dotnet test -c Release
