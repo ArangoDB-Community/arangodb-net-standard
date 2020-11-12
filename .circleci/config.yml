@@ -93,7 +93,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test
+            dotnet test -c Release
 
   "test-arangodb-3_7":
     working_directory: ~/arangodb-net-standard
