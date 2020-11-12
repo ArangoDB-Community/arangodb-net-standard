@@ -52,18 +52,21 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="document"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostDocumentResponse<T>> PostDocumentAsync<T>(
             string collectionName,
             T document,
-            PostDocumentsQuery query = null)
+            PostDocumentsQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(document, false, false);
+            var content = GetContent(document, serializationOptions);
             using (var response = await _client.PostAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -82,18 +85,21 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documents"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(
             string collectionName,
             IList<T> documents,
-            PostDocumentsQuery query = null)
+            PostDocumentsQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(documents, false, false);
+            var content = GetContent(documents, serializationOptions);
             using (var response = await _client.PostAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -119,18 +125,21 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documents"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
             string collectionName,
             IList<T> documents,
-            PutDocumentsQuery query = null)
+            PutDocumentsQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(documents, false, false);
+            var content = GetContent(documents, serializationOptions);
             using (var response = await _client.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -157,12 +166,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
         /// <param name="doc"></param>
-        /// <param name="opts"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
             T doc,
-            PutDocumentQuery opts = null)
+            PutDocumentQuery opts = null,
+            ApiClientSerializationOptions serializationOptions = null)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
@@ -170,7 +181,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + opts.ToQueryString();
             }
-            var content = GetContent(doc, false, false);
+            var content = GetContent(doc, serializationOptions);
             using (var response = await _client.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -251,7 +262,7 @@ namespace ArangoDBNetStandard.DocumentApi
         {
             string uri = $"{_docApiPath}/{WebUtility.UrlEncode(collectionName)}?onlyget=true";
 
-            var content = GetContent(selectors, false, true);
+            var content = GetContent(selectors, new ApiClientSerializationOptions(false, true));
 
             using (var response = await _client.PutAsync(uri, content))
             {
@@ -394,7 +405,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(selectors, false, false);
+            var content = GetContent(selectors, new ApiClientSerializationOptions(false, false));
             using (var response = await _client.DeleteAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -434,18 +445,21 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="patches"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
             string collectionName,
             IList<T> patches,
-            PatchDocumentsQuery query = null)
+            PatchDocumentsQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(patches, false, false);
+            var content = GetContent(patches, serializationOptions);
             using (var response = await _client.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -510,11 +524,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
             string documentId,
             T body,
-            PatchDocumentQuery query = null)
+            PatchDocumentQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null)
         {
             ValidateDocumentId(documentId);
             string uriString = _docApiPath + "/" + documentId;
@@ -522,7 +539,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(body, false, false);
+            var content = GetContent(body, serializationOptions);
             using (var response = await _client.PatchAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)

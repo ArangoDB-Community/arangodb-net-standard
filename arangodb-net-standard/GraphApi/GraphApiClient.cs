@@ -2,6 +2,7 @@
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System;
+using System.Collections;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -64,7 +65,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(postGraphBody, true, true);
+            var content = GetContent(postGraphBody, new ApiClientSerializationOptions(true, true));
 
             using (var response = await _transport.PostAsync(uri, content))
             {
@@ -203,7 +204,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             PostEdgeDefinitionBody body)
         {
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge";
 
@@ -232,7 +233,7 @@ namespace ArangoDBNetStandard.GraphApi
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex";
 
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
 
             using (var response = await _transport.PostAsync(uri, content))
             {
@@ -254,12 +255,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostVertexResponse<T>> PostVertexAsync<T>(
             string graphName,
             string collectionName,
             T vertex,
-            PostVertexQuery query = null)
+            PostVertexQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
                 "/vertex/" + WebUtility.UrlEncode(collectionName);
@@ -267,7 +271,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(vertex, false, false);
+            var content = GetContent(vertex, serializationOptions);
             using (var response = await _transport.PostAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -358,14 +362,17 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edge">The edge to create.</param>
         /// <param name="query">Optional query parameters of the request.</param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
             string graphName,
             string collectionName,
             T edge,
-            PostEdgeQuery query = null)
+            PostEdgeQuery query = null,
+            ApiClientSerializationOptions serializationOptions  = null)
         {
-            var content = GetContent(edge, false, false);
+            var content = GetContent(edge, serializationOptions);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName);
@@ -665,7 +672,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(body, false, false);
+            var content = GetContent(body, new ApiClientSerializationOptions(false, false));
             using (var response = await _transport.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -728,7 +735,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(edge, false, false);
+            var content = GetContent(edge, new ApiClientSerializationOptions(false,false));
             using (var response = await _transport.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -764,7 +771,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PutAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -830,7 +837,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(edge, true, true);
+            var content = GetContent(edge, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -892,7 +899,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(vertex, true, true);
+            var content = GetContent(vertex, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)

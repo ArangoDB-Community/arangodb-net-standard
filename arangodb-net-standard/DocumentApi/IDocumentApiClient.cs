@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard.DocumentApi.Models;
+using ArangoDBNetStandard.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,11 +18,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="document"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<PostDocumentResponse<T>> PostDocumentAsync<T>(
            string collectionName,
            T document,
-           PostDocumentsQuery query = null);
+           PostDocumentsQuery query = null,
+           ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Post multiple documents in a single request.
@@ -30,11 +34,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documents"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(
            string collectionName,
            IList<T> documents,
-           PostDocumentsQuery query = null);
+           PostDocumentsQuery query = null,
+           ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Replace multiple documents.
@@ -43,11 +50,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documents"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
            string collectionName,
            IList<T> documents,
-           PutDocumentsQuery query = null);
+           PutDocumentsQuery query = null,
+           ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Replaces the document with the provided document ID with the one in
@@ -58,11 +68,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="doc"></param>
         /// <param name="opts"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
             T doc,
-            PutDocumentQuery opts = null);
+            PutDocumentQuery opts = null,
+            ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Replaces the document based on its Document ID with the one in
@@ -223,11 +236,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="patches"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
           string collectionName,
           IList<T> patches,
-          PatchDocumentsQuery query = null);
+          PatchDocumentsQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Partially updates the document identified by document-handle.
@@ -269,11 +285,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
           string documentId,
           T body,
-          PatchDocumentQuery query = null);
+          PatchDocumentQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Like GET, but only returns the header fields and not the body. You

@@ -66,14 +66,11 @@ namespace ArangoDBNetStandard
             }
         }
 
-        protected byte[] GetContent<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues)
+        protected byte[] GetContent<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
             try
             {
-                return _serialization.Serialize<T>(
-                    item,
-                    useCamelCasePropertyNames,
-                    ignoreNullValues);
+                return _serialization.Serialize(item, serializationOptions);
             }
             catch (Exception e)
             {
