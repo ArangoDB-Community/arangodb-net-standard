@@ -16,7 +16,7 @@ workflows:
             - "test-arangodb-3_5"
       - "test-arangodb-3_7":
           requires:
-            - "test-arangodb-3_6"
+            - build
 
 jobs:
   build:
