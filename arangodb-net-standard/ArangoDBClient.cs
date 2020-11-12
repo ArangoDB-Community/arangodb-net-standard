@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
 using ArangoDBNetStandard.CollectionApi;
@@ -18,7 +17,7 @@ namespace ArangoDBNetStandard
     /// <summary>
     /// Wrapper class providing access to the complete set of ArangoDB REST resources.
     /// </summary>
-    public class ArangoDBClient : IDisposable
+    public class ArangoDBClient : IArangoDBClient
     {
         /// <summary>
         /// The transport client used to communicate with the ArangoDB host.
