@@ -431,6 +431,26 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
+        public async Task PostDocument_ShouldSucceed_WhenNewDocIsReturnedWithDifferentType()
+        {
+            var doc = new PostDocumentMockModelNew
+            {
+                Message = "Hello"
+            };
+            var response = await _docClient.PostDocumentAsync<PostDocumentMockModelNew, PostDocumentMockModel>(
+                _testCollection,
+                doc,
+                new PostDocumentsQuery
+                {
+                    ReturnNew = true
+                });
+            Assert.Null(response.Old);
+            Assert.NotNull(response.New);
+            Assert.Equal(doc.Message, response.New.Message);
+            Assert.Equal(response._id, response.New._id);
+        }
+
+        [Fact]
         public async Task PostDocument_ShouldFail_WhenDocumentIsInvalid()
         {
             var doc = new { test = 123, _key = "Spaces are not allowed in keys" };
