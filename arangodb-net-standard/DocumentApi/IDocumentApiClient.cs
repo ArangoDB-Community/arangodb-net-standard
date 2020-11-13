@@ -14,7 +14,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <summary>
         /// Post a single document.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of the post object used to record a new document.</typeparam>
         /// <param name="collectionName"></param>
         /// <param name="document"></param>
         /// <param name="query"></param>
@@ -22,6 +22,26 @@ namespace ArangoDBNetStandard.DocumentApi
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<PostDocumentResponse<T>> PostDocumentAsync<T>(
+           string collectionName,
+           T document,
+           PostDocumentsQuery query = null,
+           ApiClientSerializationOptions serializationOptions = null);
+
+        /// <summary>
+        /// Post a single document with the possibility to specify a different type
+        /// for the new document object returned in the response.
+        /// </summary>
+        /// <typeparam name="T">The type of the post object used to record a new document.</typeparam>
+        /// <typeparam name="U">Type of the returned document, only applies when
+        /// <see cref="PostDocumentsQuery.ReturnNew"/> or <see cref="PostDocumentsQuery.ReturnOld"/>
+        /// are used.</typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="document"></param>
+        /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <returns></returns>
+        Task<PostDocumentResponse<U>> PostDocumentAsync<T, U>(
            string collectionName,
            T document,
            PostDocumentsQuery query = null,
