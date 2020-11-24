@@ -36,12 +36,11 @@ namespace ArangoDBNetStandardTest.GraphApi
             var graph = graphsResult.Graphs.First(x => x._key == _fixture.TestGraph);
             Assert.NotEmpty(graph.EdgeDefinitions);
             Assert.Empty(graph.OrphanCollections);
-            Assert.Equal(1, graph.NumberOfShards);
-            Assert.Equal(1, graph.ReplicationFactor);
-            Assert.False(graph.IsSmart);
             Assert.Equal(_fixture.TestGraph, graph._key);
             Assert.Equal("_graphs/" + _fixture.TestGraph, graph._id);
             Assert.NotNull(graph._rev);
+
+            // check smart properties once tests can run on enterprise edition
         }
 
         [Fact]
@@ -93,12 +92,11 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal("_graphs/" + _fixture.TestGraph, response.Graph._id);
             Assert.NotEmpty(response.Graph.EdgeDefinitions);
             Assert.Empty(response.Graph.OrphanCollections);
-            Assert.Equal(1, response.Graph.NumberOfShards);
-            Assert.Equal(1, response.Graph.ReplicationFactor);
-            Assert.False(response.Graph.IsSmart);
             Assert.Equal(_fixture.TestGraph, response.Graph._key);
             Assert.Equal("_graphs/" + _fixture.TestGraph, response.Graph._id);
             Assert.NotNull(response.Graph._rev);
+
+            // check smart properties once tests can run on enterprise edition
         }
 
         [Fact]
@@ -292,7 +290,6 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(tempGraph, response.Graph.Name);
             Assert.Equal("_graphs/" + tempGraph, response.Graph._id);
             Assert.NotNull(response.Graph._rev);
-            Assert.False(response.Graph.IsSmart);
             Assert.Empty(response.Graph.OrphanCollections);
         }
 

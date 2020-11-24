@@ -10,9 +10,10 @@
         /// It is required if creating a SmartGraph.
         /// Every vertex in this SmartGraph has to have this attribute.
         /// Cannot be modified later.
+        /// (Enterprise Edition only).
         /// </summary>
         /// <remarks>
-        /// Only has effect in Enterprise Edition.
+        /// (cluster only)
         /// </remarks>
         public string SmartGraphAttribute { get; set; }
 
@@ -20,11 +21,18 @@
         /// The number of shards that is used for every collection within this graph.
         /// Cannot be modified later.
         /// </summary>
+        /// <remarks>
+        /// (cluster only)
+        /// </remarks>
         public int NumberOfShards { get; set; }
 
         /// <summary>
-        /// The replication factor used when initially creating collections for this graph.
+        /// The replication factor used when initially creating collections for this graph
+        /// (Enterprise Edition only).
         /// </summary>
+        /// <remarks>
+        /// (cluster only)
+        /// </remarks>
         public int ReplicationFactor { get; set; }
     }
 }

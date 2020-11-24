@@ -51,6 +51,9 @@ namespace ArangoDBNetStandard.GraphApi
         /// Creates a new graph in the graph module.
         /// POST /_api/gharial
         /// </summary>
+        /// <remarks>
+        /// The creation of a graph requires the name of the graph and a definition of its edges.
+        /// </remarks>
         /// <param name="postGraphBody">The information of the graph to create.</param>
         /// <param name="query">Optional query parameters of the request.</param>
         /// <returns></returns>
@@ -370,7 +373,7 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             T edge,
             PostEdgeQuery query = null,
-            ApiClientSerializationOptions serializationOptions  = null)
+            ApiClientSerializationOptions serializationOptions = null)
         {
             var content = GetContent(edge, serializationOptions);
 
@@ -735,7 +738,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(edge, new ApiClientSerializationOptions(false,false));
+            var content = GetContent(edge, new ApiClientSerializationOptions(false, false));
             using (var response = await _transport.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
