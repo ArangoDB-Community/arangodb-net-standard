@@ -37,9 +37,13 @@ namespace ArangoDBNetStandard.GraphApi.Models
         public string SmartGraphAttribute { get; set; }
 
         /// <summary>
-        /// The replication factor used for every new collection in the graph.
+        /// The replication factor used for every new collection in the graph (Enterprise Edition only).
         /// </summary>
-        public int ReplicationFactor { get; set; }
+        /// <remarks>
+        /// Returned only in a cluster setup since ArangoDB 3.7,
+        /// as this property is not meaningful in a single server.
+        /// </remarks>
+        public int? ReplicationFactor { get; set; }
 
         /// <summary>
         /// A list of additional vertex collections.
@@ -50,12 +54,20 @@ namespace ArangoDBNetStandard.GraphApi.Models
         /// <summary>
         /// Number of shards created for every new collection in the graph.
         /// </summary>
-        public int NumberOfShards { get; set; }
+        /// <remarks>
+        /// Returned only in a cluster setup since ArangoDB 3.7,
+        /// as this property is not meaningful in a single server.
+        /// </remarks>
+        public int? NumberOfShards { get; set; }
 
         /// <summary>
         /// Indicates whether the graph is a SmartGraph (Enterprise Edition only).
         /// </summary>
-        public bool IsSmart { get; set; }
+        /// <remarks>
+        /// Returned only in a cluster setup since ArangoDB 3.7,
+        /// as this property is not meaningful in a single server.
+        /// </remarks>
+        public bool? IsSmart { get; set; }
 
         /// <summary>
         /// A list of definitions for the relations of the graph.

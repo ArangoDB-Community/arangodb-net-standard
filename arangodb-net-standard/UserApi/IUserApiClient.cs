@@ -16,6 +16,130 @@ namespace ArangoDBNetStandard.UserApi
         /// <returns></returns>
         Task<PostUserResponse> PostUserAsync(PostUserBody body);
 
+        /// <summary>
+        /// Replace an existing user.
+        /// You need server access level Administrate in order to execute this REST call.
+        /// Additionally, a user can change his/her own data.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="body">The user information used for to replace operation.</param>
+        /// <returns></returns>
+        Task<PutUserResponse> PutUserAsync(string username, PutUserBody body);
+
+        /// <summary>
+        /// Partially update an existing user.
+        /// You need server access level Administrate in order to execute this REST call.
+        /// Additionally, a user can change his/her own data.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="body">The user information used for to replace operation.</param>
+        /// <returns></returns>
+        Task<PatchUserResponse> PatchUserAsync(string username, PatchUserBody body);
+
+        /// <summary>
+        /// Fetches data about the specified user.
+        /// You can fetch information about yourself or you need the Administrate
+        /// server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <returns></returns>
+        Task<GetUserResponse> GetUserAsync(string username);
+
+        /// <summary>
+        /// Delete a user permanently.
+        /// You need Administrate for the server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <returns></returns>
         Task<DeleteUserResponse> DeleteUserAsync(string username);
+
+        /// <summary>
+        /// Sets the database access levels of a user for a given database.
+        /// You need the Administrate server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="body">The body of the request containing the access level.</param>
+        /// <returns></returns>
+        Task<PutAccessLevelResponse> PutDatabaseAccessLevelAsync(
+            string username,
+            string dbName,
+            PutAccessLevelBody body);
+
+        /// <summary>
+        /// Gets specific database access level for a user.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database to query.</param>
+        /// <returns></returns>
+        Task<GetAccessLevelResponse> GetDatabaseAccessLevelAsync(
+            string username,
+            string dbName);
+
+        /// <summary>
+        /// Clears the database access levels of a user for a given database.
+        /// As consequence the default database access level is used.
+        /// If there is no defined default database access level, it defaults to 'No access'.
+        /// You need permission to the '_system' database in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <returns></returns>
+        Task<DeleteAccessLevelResponse> DeleteDatabaseAccessLevelAsync(
+            string username,
+            string dbName);
+
+        /// <summary>
+        /// Fetch the list of databases available to the specified user.
+        /// You need Administrate for the server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="query">Optional query parameters for the request.</param>
+        /// <returns></returns>
+        Task<GetAccessibleDatabasesResponse> GetAccessibleDatabasesAsync(
+            string username,
+            GetAccessibleDatabasesQuery query = null);
+
+        /// <summary>
+        /// Sets the collection access levels of a user for a given database.
+        /// You need the Administrate server access level in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <param name="body">The body of the request containing the access level.</param>
+        /// <returns></returns>
+        Task<PutAccessLevelResponse> PutCollectionAccessLevelAsync(
+            string username,
+            string dbName,
+            string collectionName,
+            PutAccessLevelBody body);
+
+        /// <summary>
+        /// Gets specific collection access level of a user for a given database.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <returns></returns>
+        Task<GetAccessLevelResponse> GetCollectionAccessLevelAsync(
+            string username,
+            string dbName,
+            string collectionName);
+
+        /// <summary>
+        /// Clears the collection access levels of a user for a given database.
+        /// As consequence the default collection access level is used.
+        /// If there is no defined default database access level, it defaults to 'No access'.
+        /// You need permission to the '_system' database in order to execute this REST call.
+        /// </summary>
+        /// <param name="username">The name of the user.</param>
+        /// <param name="dbName">The name of the database.</param>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <returns></returns>
+        Task<DeleteAccessLevelResponse> DeleteCollectionAccessLevelAsync(
+            string username,
+            string dbName,
+            string collectionName);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard.CursorApi.Models;
+using ArangoDBNetStandard.Serialization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,7 +38,8 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
         /// <returns></returns>
-        Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorBody postCursorBody);
+        Task<CursorResponse<T>> PostCursorAsync<T>(
+            PostCursorBody postCursorBody);
 
         /// <summary>
         /// Deletes an existing cursor and frees the resources associated with it.

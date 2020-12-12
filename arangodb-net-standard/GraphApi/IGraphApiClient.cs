@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard.GraphApi.Models;
+using ArangoDBNetStandard.Serialization;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.GraphApi
@@ -13,6 +14,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// POST /_api/gharial
         /// </summary>
         /// <param name="postGraphBody">The information of the graph to create.</param>
+        /// <param name="query"></param>
         /// <returns></returns>
         Task<PostGraphResponse> PostGraphAsync(
           PostGraphBody postGraphBody,
@@ -32,11 +34,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// <summary>
         /// Deletes an existing graph object by name.
         /// Optionally all collections not used by other
-        /// graphs can be deleted as well, using <see cref = "DeleteGraphQuery" ></ see >.
+        /// graphs can be deleted as well, using <see cref="DeleteGraphQuery"/>.
         /// DELETE /_api/gharial/{graph-name}
         /// </summary>
         /// <param name="graphName"></param>
-        /// <param name="body"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         Task<DeleteGraphResponse> DeleteGraphAsync(
           string graphName,
@@ -55,7 +57,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// Lists all vertex collections within the given graph.
         /// GET /_api/gharial/{graph}/vertex
         /// </summary>
-        /// <param name="graph">The name of the graph.</param>
+        /// <param name="graphName">The name of the graph.</param>
         /// <returns></returns>
         Task<GetVertexCollectionsResponse> GetVertexCollectionsAsync(string graphName);
 
@@ -105,12 +107,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<PostVertexResponse<T>> PostVertexAsync<T>(
           string graphName,
           string collectionName,
           T vertex,
-          PostVertexQuery query = null);
+          PostVertexQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Remove one edge definition from the graph. This will only remove the
@@ -156,12 +161,16 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edge">The edge to create.</param>
+        /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
           string graphName,
           string collectionName,
           T edge,
-          PostEdgeQuery query = null);
+          PostEdgeQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Gets an edge from the given graph using the edge collection and _key attribute.
@@ -209,6 +218,21 @@ namespace ArangoDBNetStandard.GraphApi
           string edgeKey,
           DeleteEdgeQuery query = null);
 
+        /// <summary>
+        /// Removes an edge based on its document ID.
+        /// </summary>
+        /// <typeparam name="T">The type of the edge that is returned in
+        /// <see cref="DeleteEdgeResponse{T}.Old"/> if requested.</typeparam>
+        /// <param name="graphName">The name of the graph.</param>
+        /// <param name="documentId">The document ID of the edge to delete.</param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
+          string graphName,
+          string documentId,
+          DeleteEdgeQuery query = null);
+
+        /// <summary>
         /// Gets a vertex from the given collection.
         /// GET/_api/gharial/{graph}/vertex/{collection}/{vertex}
         /// </summary>
@@ -224,6 +248,18 @@ namespace ArangoDBNetStandard.GraphApi
           GetVertexQuery query = null);
 
         /// <summary>
+        /// Gets a vertex based on its document ID.
+        /// </summary>
+        /// <param name="graphName">The name of the graph to get the vertex from.</param>
+        /// <param name="documentId">The document ID of the vertex to retrieve.</param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<GetVertexResponse<T>> GetVertexAsync<T>(
+          string graphName,
+          string documentId,
+          GetVertexQuery query = null);
+
+        /// <summary>
         /// Removes a vertex from the collection.
         /// DELETE/_api/gharial/{graph}/vertex/{collection}/{vertex}
         /// </summary>
@@ -236,6 +272,18 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string collectionName,
           string vertexKey,
+          DeleteVertexQuery query = null);
+
+        /// <summary>
+        /// Removes a vertex based on its document ID.
+        /// </summary>
+        /// <param name="graphName">The name of the graph to delete the vertex from.</param>
+        /// <param name="documentId">The document ID of the vertex to delete.</param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
+          string graphName,
+          string documentId,
           DeleteVertexQuery query = null);
 
         /// <summary>
@@ -260,6 +308,24 @@ namespace ArangoDBNetStandard.GraphApi
           PatchVertexQuery query = null);
 
         /// <summary>
+        /// Updates the data of the specific vertex based on its document ID.
+        /// </summary>
+        /// <typeparam name="T">Type of the patch object</typeparam>
+        /// <typeparam name="U">Type of the returned document, only applies when
+        /// <see cref="PatchVertexQuery.ReturnNew"/> or <see cref="PatchVertexQuery.ReturnOld"/>
+        /// are used.</typeparam>
+        /// <param name="graphName">The name of the graph in which to update the vertex.</param>
+        /// <param name="documentId">The document ID of the vertex to update.</param>
+        /// <param name="body"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
+          string graphName,
+          string documentId,
+          T body,
+          PatchVertexQuery query = null);
+
+        /// <summary>
         /// Replaces the data of an edge in the collection.
         /// PUT /_api/gharial/{graph}/edge/{collection}/{edge}
         /// </summary>
@@ -274,6 +340,21 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string collectionName,
           string edgeKey,
+          T edge,
+          PutEdgeQuery query = null);
+
+        /// <summary>
+        /// Replaces the data of an edge based on its document ID.
+        /// </summary>
+        /// <typeparam name="T">Type of the document used for the update.</typeparam>
+        /// <param name="graphName">The name of the graph in which to replace the edge.</param>
+        /// <param name="documentId">The document ID of the edge to replace.</param>
+        /// <param name="edge"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
+          string graphName,
+          string documentId,
           T edge,
           PutEdgeQuery query = null);
 
@@ -300,9 +381,9 @@ namespace ArangoDBNetStandard.GraphApi
         /// <typeparam name="T">Type of the patch object used to perform a partial update of the edge document.</typeparam>
         /// <typeparam name="U">Type of the returned edge document,
         /// when <see cref="PatchEdgeQuery.ReturnOld"/> or <see cref="PatchEdgeQuery.ReturnNew"/> query params are used.</typeparam>
-        /// <param name="graphName"></param>
-        /// <param name="collectionName"></param>
-        /// <param name="edgeKey"></param>
+        /// <param name="graphName">The name of the graph in which to update the edge.</param>
+        /// <param name="collectionName">The name of the edge collection.</param>
+        /// <param name="edgeKey">The document key of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -310,6 +391,23 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string collectionName,
           string edgeKey,
+          T edge,
+          PatchEdgeQuery query = null);
+
+        /// <summary>
+        /// Updates the data of the specific edge based on its document ID.
+        /// </summary>
+        /// <typeparam name="T">Type of the patch object used to perform a partial update of the edge document.</typeparam>
+        /// <typeparam name="U">Type of the returned edge document,
+        /// when <see cref="PatchEdgeQuery.ReturnOld"/> or <see cref="PatchEdgeQuery.ReturnNew"/> query params are used.</typeparam>
+        /// <param name="graphName">The name of the graph in which to update the edge.</param>
+        /// <param name="documentId">The document ID of the edge to update.</param>
+        /// <param name="edge"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
+          string graphName,
+          string documentId,
           T edge,
           PatchEdgeQuery query = null);
 
@@ -328,6 +426,21 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string collectionName,
           string key,
+          T vertex,
+          PutVertexQuery query = null);
+
+        /// <summary>
+        /// Replaces the data of a vertex based on its document ID.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graphName">The name of the graph in which to replace the vertex.</param>
+        /// <param name="documentId">The document ID of the vertex to replace.</param>
+        /// <param name="vertex"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<PutVertexResponse<T>> PutVertexAsync<T>(
+          string graphName,
+          string documentId,
           T vertex,
           PutVertexQuery query = null);
     }

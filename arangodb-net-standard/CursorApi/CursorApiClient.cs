@@ -86,9 +86,10 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
         /// <returns></returns>
-        public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(PostCursorBody postCursorBody)
+        public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
+            PostCursorBody postCursorBody)
         {
-            var content = GetContent(postCursorBody, true, true);
+            var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PostAsync(_cursorApiPath, content))
             {
                 if (response.IsSuccessStatusCode)

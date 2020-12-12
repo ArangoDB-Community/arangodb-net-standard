@@ -3,10 +3,16 @@
 namespace ArangoDBNetStandard.Serialization
 {
     /// <summary>
-    /// Defines a serialization layer used for the content in transport.
+    /// The Api client serialization abastract class.
+    /// Used as a base to implement custom serialization.
     /// </summary>
-    public interface IApiClientSerialization
+    public abstract class ApiClientSerialization : IApiClientSerialization
     {
+        /// <summary>
+        /// The default serialization options.
+        /// </summary>
+        public virtual ApiClientSerializationOptions DefaultOptions => new ApiClientSerializationOptions(false, true);
+
         /// <summary>
         /// Deserializes the data structure contained by the specified stream
         /// into an instance of the specified type.
@@ -14,7 +20,7 @@ namespace ArangoDBNetStandard.Serialization
         /// <typeparam name="T">The type of the object to deserialize to.</typeparam>
         /// <param name="stream">The stream containing the JSON structure to deserialize.</param>
         /// <returns></returns>
-        T DeserializeFromStream<T>(Stream stream);
+        public abstract T DeserializeFromStream<T>(Stream stream);
 
         /// <summary>
         /// Serializes the specified object to a sequence of bytes,
@@ -25,6 +31,6 @@ namespace ArangoDBNetStandard.Serialization
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
-        byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions);
+        public abstract byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions);
     }
 }

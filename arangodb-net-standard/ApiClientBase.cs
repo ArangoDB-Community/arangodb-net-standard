@@ -39,6 +39,12 @@ namespace ArangoDBNetStandard
             }
         }
 
+        /// <summary>
+        /// Checks whether the provided document ID is in the correct form
+        /// of "{collection}/{key}".
+        /// </summary>
+        /// <exception cref="ArgumentException">The document ID is invalid</exception>
+        /// <param name="documentId">The document ID to validate.</param>
         protected void ValidateDocumentId(string documentId)
         {
             if (documentId.Split('/').Length != 2)
@@ -60,14 +66,11 @@ namespace ArangoDBNetStandard
             }
         }
 
-        protected byte[] GetContent<T>(T item, bool useCamelCasePropertyNames, bool ignoreNullValues)
+        protected byte[] GetContent<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
             try
             {
-                return _serialization.Serialize<T>(
-                    item,
-                    useCamelCasePropertyNames,
-                    ignoreNullValues);
+                return _serialization.Serialize(item, serializationOptions);
             }
             catch (Exception e)
             {

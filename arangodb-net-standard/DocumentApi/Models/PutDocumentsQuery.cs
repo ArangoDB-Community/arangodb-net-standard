@@ -26,15 +26,22 @@ namespace ArangoDBNetStandard.DocumentApi.Models
 
         /// <summary>
         /// Whether to return the complete previous revision of the changed
-        /// documents under <see cref="PostDocumentResponse{T}.Old"/>.
+        /// documents in the result.
         /// </summary>
         public bool? ReturnOld { get; set; }
 
         /// <summary>
         /// Whether to return the complete new revision of the changed
-        /// documents under <see cref="PostDocumentResponse{T}.New"/>.
+        /// documents in the result.
         /// </summary>
         public bool? ReturnNew { get; set; }
+
+        /// <summary>
+        /// If set to true, an empty object will be returned as response.
+        /// No meta-data will be returned for the created document.
+        /// This option can be used to save some network traffic.
+        /// </summary>
+        public bool? Silent { get; set; }
 
         /// <summary>
         /// Get the set of options in a format suited to a URL query string.
@@ -58,6 +65,10 @@ namespace ArangoDBNetStandard.DocumentApi.Models
             if (IgnoreRevs != null)
             {
                 query.Add("ignoreRevs=" + IgnoreRevs.ToString().ToLower());
+            }
+            if (Silent != null)
+            {
+                query.Add("silent=" + Silent.ToString().ToLower());
             }
             return string.Join("&", query);
         }

@@ -431,6 +431,26 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
+        public async Task PostDocument_ShouldSucceed_WhenNewDocIsReturnedWithDifferentType()
+        {
+            var doc = new PostDocumentMockModelNew
+            {
+                Message = "Hello"
+            };
+            var response = await _docClient.PostDocumentAsync<PostDocumentMockModelNew, PostDocumentMockModel>(
+                _testCollection,
+                doc,
+                new PostDocumentsQuery
+                {
+                    ReturnNew = true
+                });
+            Assert.Null(response.Old);
+            Assert.NotNull(response.New);
+            Assert.Equal(doc.Message, response.New.Message);
+            Assert.Equal(response._id, response.New._id);
+        }
+
+        [Fact]
         public async Task PostDocument_ShouldFail_WhenDocumentIsInvalid()
         {
             var doc = new { test = 123, _key = "Spaces are not allowed in keys" };
@@ -674,6 +694,81 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
+        public async Task PutDocumentsAsync_ShouldUseQueryParameters_WhenProvided()
+        {
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(true);
+
+            string requestUri = null;
+
+            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns((string uri, byte[] content) =>
+                {
+                    requestUri = uri;
+                    return Task.FromResult(mockResponse.Object);
+                });
+
+            var client = new DocumentApiClient(mockTransport.Object);
+
+            await client.PutDocumentsAsync<object>(
+                "mycollection",
+                new[]
+                {
+                    new { Value = 1, Name = "test1" }
+                },
+                new PutDocumentsQuery
+                {
+                    IgnoreRevs = true,
+                    ReturnOld = true,
+                    Silent = true,
+                    WaitForSync = true,
+                    ReturnNew = true
+                });
+
+            Assert.NotNull(requestUri);
+            Assert.Contains("ignoreRevs=true", requestUri);
+            Assert.Contains("returnOld=true", requestUri);
+            Assert.Contains("silent=true", requestUri);
+            Assert.Contains("waitForSync=true", requestUri);
+            Assert.Contains("returnNew=true", requestUri);
+        }
+
+        [Fact]
+        public async Task PutDocumentsAsync_ShouldSucceed_WhenSilent()
+        {
+            var postResponse = await _docClient.PostDocumentsAsync(
+                _testCollection,
+                new[]
+                {
+                    new { value = 1 },
+                    new { value = 2 }
+                });
+
+            var putResponse = await _docClient.PutDocumentsAsync(
+                _testCollection,
+                new[]
+                {
+                    new { postResponse[0]._key, value = 3 },
+                    new { postResponse[1]._key, value = 4 }
+                },
+                new PutDocumentsQuery()
+                {
+                    Silent = true
+                });
+
+            Assert.Empty(putResponse);
+        }
+
+        [Fact]
         public async Task PutDocuments_ShouldNotThrowButReturnError_WhenDocumentIsNotFound()
         {
             var response = await _docClient.PostDocumentsAsync(_testCollection,
@@ -723,6 +818,93 @@ namespace ArangoDBNetStandardTest.DocumentApi
             Assert.NotEqual(postResponse[0].New.Name, response[0].New.Name);
             Assert.Equal(postResponse[0].New.Name, response[0].Old.Name);
             Assert.Equal(postResponse[0]._rev, response[0]._oldRev);
+        }
+
+        [Fact]
+        public async Task PatchDocumentsAsync_ShouldUseQueryParameters_WhenProvided()
+        {
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(true);
+
+            string requestUri = null;
+
+            mockTransport.Setup(x => x.PatchAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns((string uri, byte[] content) =>
+                {
+                    requestUri = uri;
+                    return Task.FromResult(mockResponse.Object);
+                });
+
+            var client = new DocumentApiClient(mockTransport.Object);
+
+            await client.PatchDocumentsAsync<object, object>(
+                "mycollection",
+                new[]
+                {
+                    new { Value = 1, Name = "test1" },
+                    new { Value = 2, Name = "test2" },
+                    new { Value = 3, Name = "test3" }
+                },
+                new PatchDocumentsQuery
+                {
+                    IgnoreRevs = true,
+                    ReturnOld = true,
+                    Silent = true,
+                    WaitForSync = true,
+                    KeepNull = true,
+                    MergeObjects = true,
+                    ReturnNew = true
+                });
+
+            Assert.NotNull(requestUri);
+            Assert.Contains("ignoreRevs=true", requestUri);
+            Assert.Contains("returnOld=true", requestUri);
+            Assert.Contains("silent=true", requestUri);
+            Assert.Contains("waitForSync=true", requestUri);
+            Assert.Contains("keepNull=true", requestUri);
+            Assert.Contains("mergeObjects=true", requestUri);
+            Assert.Contains("returnNew=true", requestUri);
+        }
+
+        [Fact]
+        public async Task PatchDocumentsAsync_ShouldSucceed_WhenSilent()
+        {
+            var postResponse = await _docClient.PostDocumentsAsync(
+                _testCollection,
+                new[]
+                {
+                    new { Value = 1, Name = "test1" },
+                    new { Value = 2, Name = "test2" },
+                    new { Value = 3, Name = "test3" }
+                },
+                new PostDocumentsQuery
+                {
+                    ReturnNew = true,
+                    WaitForSync = true
+                });
+
+            var response = await _docClient.PatchDocumentsAsync<object, PatchDocumentsMockModel>(
+                _testCollection,
+                new[]
+                {
+                    new { postResponse[0]._key, Name = "test5" },
+                    new { postResponse[1]._key, Name = "test4" }
+                },
+                new PatchDocumentsQuery
+                {
+                    Silent = true
+                });
+
+            Assert.Empty(response);
         }
 
         [Fact]

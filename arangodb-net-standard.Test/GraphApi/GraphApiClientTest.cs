@@ -36,12 +36,11 @@ namespace ArangoDBNetStandardTest.GraphApi
             var graph = graphsResult.Graphs.First(x => x._key == _fixture.TestGraph);
             Assert.NotEmpty(graph.EdgeDefinitions);
             Assert.Empty(graph.OrphanCollections);
-            Assert.Equal(1, graph.NumberOfShards);
-            Assert.Equal(1, graph.ReplicationFactor);
-            Assert.False(graph.IsSmart);
             Assert.Equal(_fixture.TestGraph, graph._key);
             Assert.Equal("_graphs/" + _fixture.TestGraph, graph._id);
             Assert.NotNull(graph._rev);
+
+            // check smart properties once tests can run on enterprise edition
         }
 
         [Fact]
@@ -93,12 +92,11 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal("_graphs/" + _fixture.TestGraph, response.Graph._id);
             Assert.NotEmpty(response.Graph.EdgeDefinitions);
             Assert.Empty(response.Graph.OrphanCollections);
-            Assert.Equal(1, response.Graph.NumberOfShards);
-            Assert.Equal(1, response.Graph.ReplicationFactor);
-            Assert.False(response.Graph.IsSmart);
             Assert.Equal(_fixture.TestGraph, response.Graph._key);
             Assert.Equal("_graphs/" + _fixture.TestGraph, response.Graph._id);
             Assert.NotNull(response.Graph._rev);
+
+            // check smart properties once tests can run on enterprise edition
         }
 
         [Fact]
@@ -292,7 +290,6 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(tempGraph, response.Graph.Name);
             Assert.Equal("_graphs/" + tempGraph, response.Graph._id);
             Assert.NotNull(response.Graph._rev);
-            Assert.False(response.Graph.IsSmart);
             Assert.Empty(response.Graph.OrphanCollections);
         }
 
@@ -786,7 +783,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 toClx,
                 new { myKey = "myValue" });
 
-            // Create the edge
+            // Create the edges
 
             var createEdgeResponse = await _client.PostEdgeAsync(
                 graphName,
@@ -802,12 +799,28 @@ namespace ArangoDBNetStandardTest.GraphApi
                     ReturnNew = true,
                     WaitForSync = true
                 });
-            // Delete edge
+
+            var createEdgeResponse2 = await _client.PostEdgeAsync(
+                graphName,
+                edgeClx,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "myValue"
+                },
+                new PostEdgeQuery
+                {
+                    ReturnNew = true,
+                    WaitForSync = true
+                });
+
+            // Delete edge with document ID
+
             DeleteEdgeResponse<DeleteGraphEdgeMockModel> response =
                 await _client.DeleteEdgeAsync<DeleteGraphEdgeMockModel>(
                     graphName,
-                    edgeClx,
-                    createEdgeResponse.Edge._key,
+                    createEdgeResponse.Edge._id,
                     new DeleteEdgeQuery
                     {
                         ReturnOld = true,
@@ -816,6 +829,23 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
+            Assert.True(response.Removed);
+            Assert.False(response.Error);
+
+            // Delete edge with collection name and key
+
+            response = await _client.DeleteEdgeAsync<DeleteGraphEdgeMockModel>(
+                   graphName,
+                   edgeClx,
+                   createEdgeResponse2.Edge._key,
+                   new DeleteEdgeQuery
+                   {
+                       ReturnOld = true,
+                       WaitForSync = true
+                   });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(createEdgeResponse2.New.myKey, response.Old.myKey);
             Assert.True(response.Removed);
             Assert.False(response.Error);
         }
@@ -863,7 +893,21 @@ namespace ArangoDBNetStandardTest.GraphApi
                 Name = clxToAdd + "_vtx"
             });
 
-            var response = await _client.GetVertexAsync<GetVertexMockModel>(graphName, clxToAdd, createVtxResponse.Vertex._key);
+            var response = await _client.GetVertexAsync<GetVertexMockModel>(
+                graphName,
+                createVtxResponse.Vertex._id);
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.False(response.Error);
+            Assert.NotNull(response.Vertex);
+            Assert.Equal(clxToAdd + "_vtx", response.Vertex.Name);
+            Assert.Equal(createVtxResponse.Vertex._key, response.Vertex._key);
+            Assert.Equal(createVtxResponse.Vertex._id, response.Vertex._id);
+
+            response = await _client.GetVertexAsync<GetVertexMockModel>(
+                graphName,
+                clxToAdd,
+                createVtxResponse.Vertex._key);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -966,6 +1010,8 @@ namespace ArangoDBNetStandardTest.GraphApi
                     Collection = clxToAdd
                 });
 
+            // Create vertex
+
             var vertexProperty = clxToAdd + "_vtx";
 
             var createVtxResponse = await _client.PostVertexAsync(graphName, clxToAdd, new
@@ -975,11 +1021,36 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.Equal(HttpStatusCode.Accepted, createVtxResponse.Code);
 
-            var response = await _client.DeleteVertexAsync<DeleteVertexMockModel>(graphName, clxToAdd, createVtxResponse.Vertex._key, new DeleteVertexQuery
+            var createVtxResponse2 = await _client.PostVertexAsync(graphName, clxToAdd, new
             {
-                ReturnOld = true,
-                WaitForSync = true
+                Name = vertexProperty
             });
+
+            Assert.Equal(HttpStatusCode.Accepted, createVtxResponse2.Code);
+
+            var response = await _client.DeleteVertexAsync<DeleteVertexMockModel>(
+                graphName,
+                createVtxResponse.Vertex._id,
+                new DeleteVertexQuery
+                {
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.False(response.Error);
+            Assert.True(response.Removed);
+            Assert.Equal(vertexProperty, response.Old.Name);
+
+            response = await _client.DeleteVertexAsync<DeleteVertexMockModel>(
+                graphName,
+                clxToAdd,
+                createVtxResponse2.Vertex._key,
+                new DeleteVertexQuery
+                {
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -1090,15 +1161,46 @@ namespace ArangoDBNetStandardTest.GraphApi
                 WaitForSync = true
             });
 
-            var response = await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(graphName, clxToAdd, createVtxResponse.Vertex._key, new
-            {
-                Name = clxToAdd + "_vtx_2"
-            }, new PatchVertexQuery
-            {
-                ReturnNew = true,
-                ReturnOld = true,
-                WaitForSync = true
-            });
+            // Patch with document ID
+
+            var response = await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(
+                graphName,
+                createVtxResponse.Vertex._id,
+                new
+                {
+                    Name = clxToAdd + "_vtx_2"
+                },
+                new PatchVertexQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.False(response.Error);
+            Assert.NotNull(response.Vertex);
+            Assert.NotEqual(createVtxResponse.Vertex._rev, response.Vertex._rev);
+            Assert.NotEqual(createVtxResponse.Vertex._rev, response.New._rev);
+            Assert.NotEqual(createVtxResponse.New.Name, response.New.Name);
+            Assert.Equal(createVtxResponse.New.Value, response.New.Value);
+
+            // Patch with collection name and document key
+
+            response = await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(
+                graphName,
+                clxToAdd,
+                createVtxResponse.Vertex._key,
+                new
+                {
+                    Name = clxToAdd + "_vtx_3"
+                },
+                new PatchVertexQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -1231,20 +1333,53 @@ namespace ArangoDBNetStandardTest.GraphApi
                     WaitForSync = true
                 });
 
-            var response = await _client.PutEdgeAsync(graphName, edgeClx, createEdgeResponse.Edge._key, new
-            {
-                _from = fromResponse._id,
-                _to = toResponse._id,
-                myKey = "newValue"
-            }, new PutEdgeQuery
-            {
-                ReturnNew = true,
-                ReturnOld = true,
-                WaitForSync = true
-            });
+            // Put with document ID
+
+            var response = await _client.PutEdgeAsync(
+                graphName,
+                createEdgeResponse.Edge._id,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "newValue"
+                },
+                new PutEdgeQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
+            Assert.NotEqual(createEdgeResponse.New.myKey, response.New.myKey);
+            Assert.False(response.Error);
+            Assert.NotEqual(response.Edge._rev, createEdgeResponse.Edge._rev);
+
+            string previousValue = response.New.myKey;
+
+            // Put with collection name and document key
+
+            response = await _client.PutEdgeAsync(
+                graphName,
+                edgeClx,
+                createEdgeResponse.Edge._key,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "newValue2"
+                },
+                new PutEdgeQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(previousValue, response.Old.myKey);
             Assert.NotEqual(createEdgeResponse.New.myKey, response.New.myKey);
             Assert.False(response.Error);
             Assert.NotEqual(response.Edge._rev, createEdgeResponse.Edge._rev);
@@ -1547,10 +1682,11 @@ namespace ArangoDBNetStandardTest.GraphApi
                     WaitForSync = true
                 });
 
+            // Patch with document ID
+
             var response = await _client.PatchEdgeAsync<object, PatchEdgeMockModel>(
                 graphName,
-                edgeClx,
-                createEdgeResponse.Edge._key,
+                createEdgeResponse.Edge._id,
                 new
                 {
                     _from = fromResponse._id,
@@ -1565,6 +1701,34 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
+            Assert.NotEqual(createEdgeResponse.New.myKey, response.New.myKey);
+            Assert.False(response.Error);
+            Assert.NotEqual(createEdgeResponse.Edge._rev, response.Edge._rev);
+            Assert.Equal(createEdgeResponse.New.value, response.New.value);
+            Assert.Equal(createEdgeResponse.New.value, response.Old.value);
+
+            string previousValue = response.New.myKey;
+
+            // Patch with collection name and document key
+
+            response = await _client.PatchEdgeAsync<object, PatchEdgeMockModel>(
+                graphName,
+                edgeClx,
+                createEdgeResponse.Edge._key,
+                new
+                {
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "newValue2"
+                }, new PatchEdgeQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.Equal(previousValue, response.Old.myKey);
             Assert.NotEqual(createEdgeResponse.New.myKey, response.New.myKey);
             Assert.False(response.Error);
             Assert.NotEqual(createEdgeResponse.Edge._rev, response.Edge._rev);
@@ -1608,26 +1772,58 @@ namespace ArangoDBNetStandardTest.GraphApi
                     Collection = vertexClx
                 });
 
-            var beforeVertexClxVtx = vertexClx + "_vtx";
-            var afterVertexClxVtx = vertexClx + "_vtx_2";
+            string initialValue = vertexClx + "_vtx";
+            string putValue = vertexClx + "_vtx_2";
 
             var createVertexResponse = await _client.PostVertexAsync(graphName, vertexClx, new
             {
-                Name = beforeVertexClxVtx
+                Name = initialValue
             });
-            var response = await _client.PutVertexAsync(graphName, vertexClx, createVertexResponse.Vertex._key, new PutVertexMockModel
-            {
-                Name = afterVertexClxVtx
-            }, new PutVertexQuery
-            {
-                ReturnNew = true,
-                ReturnOld = true,
-                WaitForSync = true
-            });
+
+            // Put with document ID
+
+            var response = await _client.PutVertexAsync(
+                graphName,
+                createVertexResponse.Vertex._id,
+                new PutVertexMockModel
+                {
+                    Name = putValue
+                },
+                new PutVertexQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
-            Assert.Equal(afterVertexClxVtx, response.New.Name);
+            Assert.Equal(putValue, response.New.Name);
+            Assert.NotEqual(response.New.Name, response.Old.Name);
+            Assert.NotEqual(createVertexResponse.Vertex._rev, response.Vertex._rev);
+
+            // Put with collection name and document key
+
+            putValue = vertexClx + "_vtx_3";
+
+            response = await _client.PutVertexAsync(
+                graphName,
+                vertexClx,
+                createVertexResponse.Vertex._key,
+                new PutVertexMockModel
+                {
+                    Name = putValue
+                },
+                new PutVertexQuery
+                {
+                    ReturnNew = true,
+                    ReturnOld = true,
+                    WaitForSync = true
+                });
+
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.False(response.Error);
+            Assert.Equal(putValue, response.New.Name);
             Assert.NotEqual(response.New.Name, response.Old.Name);
             Assert.NotEqual(createVertexResponse.Vertex._rev, response.Vertex._rev);
         }

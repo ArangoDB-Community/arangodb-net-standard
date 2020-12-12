@@ -1,6 +1,8 @@
 ﻿using ArangoDBNetStandard.GraphApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
+using System;
+using System.Collections;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -49,6 +51,9 @@ namespace ArangoDBNetStandard.GraphApi
         /// Creates a new graph in the graph module.
         /// POST /_api/gharial
         /// </summary>
+        /// <remarks>
+        /// The creation of a graph requires the name of the graph and a definition of its edges.
+        /// </remarks>
         /// <param name="postGraphBody">The information of the graph to create.</param>
         /// <param name="query">Optional query parameters of the request.</param>
         /// <returns></returns>
@@ -63,7 +68,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(postGraphBody, true, true);
+            var content = GetContent(postGraphBody, new ApiClientSerializationOptions(true, true));
 
             using (var response = await _transport.PostAsync(uri, content))
             {
@@ -101,13 +106,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <summary>
         /// Deletes an existing graph object by name.
         /// Optionally all collections not used by other
-        /// graphs can be deleted as well, using <see cref = "DeleteGraphQuery" ></ see >.
+        /// graphs can be deleted as well, using <see cref="DeleteGraphQuery"/>.
         /// DELETE /_api/gharial/{graph-name}
         /// </summary>
         /// <param name="graphName"></param>
-        /// <param name="body"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<DeleteGraphResponse> DeleteGraphAsync(string graphName, DeleteGraphQuery query = null)
+        public virtual async Task<DeleteGraphResponse> DeleteGraphAsync(
+            string graphName,
+            DeleteGraphQuery query = null)
         {
             string uriString = _graphApiPath + "/" + WebUtility.UrlEncode(graphName);
             if (query != null)
@@ -200,7 +207,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             PostEdgeDefinitionBody body)
         {
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge";
 
@@ -229,7 +236,7 @@ namespace ArangoDBNetStandard.GraphApi
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex";
 
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
 
             using (var response = await _transport.PostAsync(uri, content))
             {
@@ -251,12 +258,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostVertexResponse<T>> PostVertexAsync<T>(
             string graphName,
             string collectionName,
             T vertex,
-            PostVertexQuery query = null)
+            PostVertexQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
                 "/vertex/" + WebUtility.UrlEncode(collectionName);
@@ -264,7 +274,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(vertex, false, false);
+            var content = GetContent(vertex, serializationOptions);
             using (var response = await _transport.PostAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -355,14 +365,17 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edge">The edge to create.</param>
         /// <param name="query">Optional query parameters of the request.</param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         public virtual async Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
             string graphName,
             string collectionName,
             T edge,
-            PostEdgeQuery query = null)
+            PostEdgeQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null)
         {
-            var content = GetContent(edge, false, false);
+            var content = GetContent(edge, serializationOptions);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName);
@@ -448,14 +461,39 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey">The _key attribute of the edge.</param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
+        public virtual Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
             string graphName,
             string collectionName,
             string edgeKey,
             DeleteEdgeQuery query = null)
         {
+            return DeleteEdgeAsync<T>(
+                graphName,
+                WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
+                query);
+
+        }
+
+        /// <summary>
+        /// Removes an edge based on its document ID.
+        /// </summary>
+        /// <exception cref="ArgumentException">Provided document ID is invalid.</exception>
+        /// <typeparam name="T">The type of the edge that is returned in
+        /// <see cref="DeleteEdgeResponse{T}.Old"/> if requested.</typeparam>
+        /// <param name="graphName">The name of the graph.</param>
+        /// <param name="documentId">The document ID of the edge to delete.</param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual async Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
+            string graphName,
+            string documentId,
+            DeleteEdgeQuery query = null)
+        {
+            ValidateDocumentId(documentId);
+
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
-                "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
+                "/edge/" + documentId;
+
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
@@ -471,6 +509,7 @@ namespace ArangoDBNetStandard.GraphApi
             }
         }
 
+        /// <summary>
         /// Gets a vertex from the given collection.
         /// GET/_api/gharial/{graph}/vertex/{collection}/{vertex}
         /// </summary>
@@ -479,14 +518,36 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<GetVertexResponse<T>> GetVertexAsync<T>(
+        public virtual Task<GetVertexResponse<T>> GetVertexAsync<T>(
             string graphName,
             string collectionName,
             string vertexKey,
             GetVertexQuery query = null)
         {
+            return GetVertexAsync<T>(
+                graphName,
+                WebUtility.UrlEncode(collectionName) + "/" + vertexKey,
+                query);
+        }
+
+        /// <summary>
+        /// Gets a vertex based on its document ID.
+        /// </summary>
+        /// <exception cref="ArgumentException">Provided document ID is invalid.</exception>
+        /// <param name="graphName">The name of the graph to get the vertex from.</param>
+        /// <param name="documentId">The document ID of the vertex to retrieve.</param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual async Task<GetVertexResponse<T>> GetVertexAsync<T>(
+          string graphName,
+          string documentId,
+          GetVertexQuery query = null)
+        {
+            ValidateDocumentId(documentId);
+
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
-                "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" + vertexKey;
+                "/vertex/" + documentId;
+
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
@@ -511,19 +572,41 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
+        public virtual Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
             string graphName,
             string collectionName,
             string vertexKey,
             DeleteVertexQuery query = null)
         {
+            return DeleteVertexAsync<T>(
+                graphName,
+                WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey),
+                query);
+        }
+
+        /// <summary>
+        /// Removes a vertex based on its document ID.
+        /// </summary>
+        /// <exception cref="ArgumentException">Provided document ID is invalid.</exception>
+        /// <param name="graphName">The name of the graph to delete the vertex from.</param>
+        /// <param name="documentId">The document ID of the vertex to delete.</param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual async Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
+            string graphName,
+            string documentId,
+            DeleteVertexQuery query = null)
+        {
+            ValidateDocumentId(documentId);
+
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
-                "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" +
-                WebUtility.UrlEncode(vertexKey);
+                "/vertex/" + documentId;
+
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
             }
+
             using (var response = await _transport.DeleteAsync(uri))
             {
                 if (response.IsSuccessStatusCode)
@@ -549,20 +632,50 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
+        public virtual Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
             string graphName,
             string collectionName,
             string vertexKey,
             T body,
             PatchVertexQuery query = null)
         {
+            return PatchVertexAsync<T, U>(
+                graphName,
+                WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey),
+                body,
+                query);
+        }
+
+        /// <summary>
+        /// Updates the data of the specific vertex based on its document ID.
+        /// </summary>
+        /// <exception cref="ArgumentException">Provided document ID is invalid.</exception>
+        /// <typeparam name="T">Type of the patch object</typeparam>
+        /// <typeparam name="U">Type of the returned document, only applies when
+        /// <see cref="PatchVertexQuery.ReturnNew"/> or <see cref="PatchVertexQuery.ReturnOld"/>
+        /// are used.</typeparam>
+        /// <param name="graphName">The name of the graph in which to update the vertex.</param>
+        /// <param name="documentId">The document ID of the vertex to update.</param>
+        /// <param name="body"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual async Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
+            string graphName,
+            string documentId,
+            T body,
+            PatchVertexQuery query = null)
+        {
+            ValidateDocumentId(documentId);
+
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
-                "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey);
+                "/vertex/" + documentId;
+
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(body, false, false);
+
+            var content = GetContent(body, new ApiClientSerializationOptions(false, false));
             using (var response = await _transport.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -585,22 +698,47 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edge"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
+        public virtual Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
             string graphName,
             string collectionName,
             string edgeKey,
             T edge,
             PutEdgeQuery query = null)
         {
-            var content = GetContent(edge, false, false);
+            return PutEdgeAsync<T>(
+                graphName,
+                WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
+                edge,
+                query);
+        }
+
+        /// <summary>
+        /// Replaces the data of an edge based on its document ID.
+        /// </summary>
+        /// <exception cref="ArgumentException">Provided document ID is invalid.</exception>
+        /// <typeparam name="T">Type of the document used for the update.</typeparam>
+        /// <param name="graphName">The name of the graph in which to replace the edge.</param>
+        /// <param name="documentId">The document ID of the edge to replace.</param>
+        /// <param name="edge"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual async Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
+            string graphName,
+            string documentId,
+            T edge,
+            PutEdgeQuery query = null)
+        {
+            ValidateDocumentId(documentId);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
-                "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
+                "/edge/" + documentId;
 
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
             }
+
+            var content = GetContent(edge, new ApiClientSerializationOptions(false, false));
             using (var response = await _transport.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -636,7 +774,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(body, true, true);
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PutAsync(uriString, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -655,29 +793,54 @@ namespace ArangoDBNetStandard.GraphApi
         /// <typeparam name="T">Type of the patch object used to perform a partial update of the edge document.</typeparam>
         /// <typeparam name="U">Type of the returned edge document,
         /// when <see cref="PatchEdgeQuery.ReturnOld"/> or <see cref="PatchEdgeQuery.ReturnNew"/> query params are used.</typeparam>
-        /// <param name="graphName"></param>
-        /// <param name="collectionName"></param>
-        /// <param name="edgeKey"></param>
+        /// <param name="graphName">The name of the graph in which to update the edge.</param>
+        /// <param name="collectionName">The name of the edge collection.</param>
+        /// <param name="edgeKey">The document key of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
+        public virtual Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
             string graphName,
             string collectionName,
             string edgeKey,
             T edge,
             PatchEdgeQuery query = null)
         {
-            var content = GetContent(edge, true, true);
+            return PatchEdgeAsync<T, U>(
+                graphName,
+                WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
+                edge,
+                query);
+        }
+
+        /// <summary>
+        /// Updates the data of the specific edge based on its document ID.
+        /// </summary>
+        /// <typeparam name="T">Type of the patch object used to perform a partial update of the edge document.</typeparam>
+        /// <typeparam name="U">Type of the returned edge document,
+        /// when <see cref="PatchEdgeQuery.ReturnOld"/> or <see cref="PatchEdgeQuery.ReturnNew"/> query params are used.</typeparam>
+        /// <param name="graphName">The name of the graph in which to update the edge.</param>
+        /// <param name="documentId">The document ID of the edge to update.</param>
+        /// <param name="edge"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual async Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
+            string graphName,
+            string documentId,
+            T edge,
+            PatchEdgeQuery query = null)
+        {
+            ValidateDocumentId(documentId);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
-                "/edge/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey);
+                "/edge/" + documentId;
 
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
             }
 
+            var content = GetContent(edge, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PatchAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
@@ -700,20 +863,46 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertex"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<PutVertexResponse<T>> PutVertexAsync<T>(
+        public virtual Task<PutVertexResponse<T>> PutVertexAsync<T>(
             string graphName,
             string collectionName,
             string key,
             T vertex,
             PutVertexQuery query = null)
         {
+            return PutVertexAsync<T>(
+                graphName,
+                WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(key),
+                vertex,
+                query);
+        }
+
+        /// <summary>
+        /// Replaces the data of a vertex based on its document ID.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="graphName">The name of the graph in which to replace the vertex.</param>
+        /// <param name="documentId">The document ID of the vertex to replace.</param>
+        /// <param name="vertex"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual async Task<PutVertexResponse<T>> PutVertexAsync<T>(
+            string graphName,
+            string documentId,
+            T vertex,
+            PutVertexQuery query = null)
+        {
+            ValidateDocumentId(documentId);
+
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
-               "/vertex/" + WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(key);
+               "/vertex/" + documentId;
+
             if (query != null)
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(vertex, true, true);
+
+            var content = GetContent(vertex, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PutAsync(uri, content))
             {
                 if (response.IsSuccessStatusCode)
