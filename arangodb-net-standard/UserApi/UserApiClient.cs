@@ -155,6 +155,26 @@ namespace ArangoDBNetStandard.UserApi
         }
 
         /// <summary>
+        /// Fetches data about all users.
+        /// You need the Administrate server access level in order to execute this REST call.
+        /// Otherwise, you will only get information about yourself.
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<GetUsersResponse> GetUsersAsync()
+        {
+            string uri = _userApiPath;
+            using (var response = await _client.GetAsync(uri))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    return DeserializeJsonFromStream<GetUsersResponse>(stream);
+                }
+                throw await GetApiErrorException(response);
+            }
+        }
+
+        /// <summary>
         /// Sets the database access levels of a user for a given database.
         /// You need the Administrate server access level in order to execute this REST call.
         /// </summary>

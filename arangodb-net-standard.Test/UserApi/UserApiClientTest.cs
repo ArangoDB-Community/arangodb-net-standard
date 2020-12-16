@@ -199,6 +199,23 @@ namespace ArangoDBNetStandardTest.UserApi
         }
 
         [Fact]
+        public async Task GetUsersAsync_ShouldSucceed()
+        {
+            GetUsersResponse response = await _userClient.GetUsersAsync();
+
+            Assert.False(response.Error);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+            Assert.NotNull(response.Result);
+            Assert.True(response.Result.Count() > 0);
+            Assert.Contains(response.Result, x => x.User == _fixture.UsernameExisting);
+
+            foreach (AvailableUser user in response.Result)
+            {
+                Assert.False(string.IsNullOrEmpty(user.User));
+            }
+        }
+
+        [Fact]
         public async Task PutDatabaseAccessLevelAsync_ShouldSucceed()
         {
             PutAccessLevelResponse response =
