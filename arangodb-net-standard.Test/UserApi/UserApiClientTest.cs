@@ -207,6 +207,7 @@ namespace ArangoDBNetStandardTest.UserApi
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.NotNull(response.Result);
             Assert.True(response.Result.Count() > 0);
+            Assert.Contains(response.Result, x => x.User == _fixture.UsernameExisting);
 
             foreach (AvailableUser user in response.Result)
             {
