@@ -61,12 +61,6 @@ namespace ArangoDBNetStandard.Serialization
             if (serializationOptions.UseStringEnumConversion)
             {
                 var stringEnumConverter = new StringEnumConverter();
-                // We assume the UseCamelCasePropertyNames option
-                // should also be applied to string-serialized enums
-                if (serializationOptions.UseCamelCasePropertyNames)
-                {
-                    stringEnumConverter.NamingStrategy = new CamelCaseNamingStrategy();
-                }
                 jsonSettings.Converters.Add(stringEnumConverter);
             }
 
