@@ -71,7 +71,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.NotNull(response.Id);
             Assert.Equal("MyCollection", response.Name);
             Assert.Equal("traditional", response.KeyOptions.Type);
-            Assert.Equal(2, response.Type); // 2 is document collection, 3 is edge collection
+            Assert.Equal(CollectionType.Document, response.Type);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.Equal("MyCollectionWithKeyOptions", response.Name);
             Assert.Equal("autoincrement", response.KeyOptions.Type);
             Assert.False(response.KeyOptions.AllowUserKeys);
-            Assert.Equal(2, response.Type); // 2 is document collection, 3 is edge collection
+            Assert.Equal(CollectionType.Document, response.Type); // 2 is document collection, 3 is edge collection
         }
 
         [Fact]
@@ -105,14 +105,14 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 new PostCollectionBody
                 {
                     Name = "MyEdgeCollection",
-                    Type = 3
+                    Type = CollectionType.Edge
                 });
 
             Assert.False(response.Error);
             Assert.NotNull(response.Id);
             Assert.Equal("MyEdgeCollection", response.Name);
             Assert.Equal("traditional", response.KeyOptions.Type);
-            Assert.Equal(3, response.Type); // 2 is document collection, 3 is edge collection
+            Assert.Equal(CollectionType.Edge, response.Type); // 2 is document collection, 3 is edge collection
         }
 
         [Fact]
@@ -213,7 +213,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.False(result.Error);
             Assert.NotNull(result.Id);
             Assert.NotNull(result.GloballyUniqueId);
-            Assert.Equal(2, result.Type);
+            Assert.Equal(CollectionType.Document, result.Type);
             Assert.Equal(3, result.Status);
             Assert.False(result.IsSystem);
             Assert.Equal(_testCollection, result.Name);
@@ -239,7 +239,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.False(response.IsSystem);
             Assert.Equal(3, response.Status);
             Assert.Equal("loaded", response.StatusString);
-            Assert.Equal(2, response.Type);
+            Assert.Equal(CollectionType.Document, response.Type);
             Assert.False(response.WaitForSync);
             Assert.NotNull(response.GloballyUniqueId);
             Assert.NotNull(response.Id);
@@ -304,7 +304,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             // Assert.NotNull(response.ObjectId);
             Assert.False(response.IsSystem);
             Assert.Equal(3, response.Status);
-            Assert.Equal(2, response.Type);
+            Assert.Equal(CollectionType.Document, response.Type);
         }
 
         [Fact]

@@ -28,7 +28,7 @@
 
         public string SmartJoinAttribute { get; set; }
 
-        public int? Type { get; set; }
+        public CollectionType? Type { get; set; }
 
         public bool? WaitForSync { get; set; }
     }

@@ -11,23 +11,74 @@ namespace ArangoDBNetStandardTest.Serialization
 {
     public class JsonNetApiClientSerializationTest
     {
+
         [Fact]
         public void Serialize_ShouldSucceed()
         {
             var model = new TestModel()
             {
                 NullPropertyToIgnore = null,
-                PropertyToCamelCase = "myvalue"
+                PropertyToCamelCase = "myvalue",
+                EnumToConvertToString = TestModel.Number.Two
             };
 
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.Serialize(model, new ApiClientSerializationOptions(true, true));
+            // Perform serialize with camel case option
+            byte[] jsonBytesWithCamelCase = serialization.Serialize(model, 
+                new ApiClientSerializationOptions(true, true, true));
+            string jsonStringWithCamelCase = Encoding.UTF8.GetString(jsonBytesWithCamelCase);
 
+            // Perform serialize without camel case option
+            byte[] jsonBytesWithoutCamelCase = serialization.Serialize(model,
+                new ApiClientSerializationOptions(false, true, true));
+            string jsonStringWithoutCamelCase = Encoding.UTF8.GetString(jsonBytesWithoutCamelCase);
+
+            // standard property with and without camelCase
+            Assert.Contains("propertyToCamelCase", jsonStringWithCamelCase);
+            Assert.Contains("PropertyToCamelCase", jsonStringWithoutCamelCase);
+
+            // Null property should be ignored in both cases
+            // (ignore case is important to make sure we don't miss the string 
+            // if it is using different casing than we checked for)
+            Assert.DoesNotContain(
+                "nullPropertyToIgnore",
+                jsonStringWithCamelCase,
+                System.StringComparison.OrdinalIgnoreCase);
+
+            Assert.DoesNotContain("nullPropertyToIgnore", 
+                jsonStringWithoutCamelCase,
+                System.StringComparison.OrdinalIgnoreCase);
+
+            // We expect enum conversion to string, as well as camelCase
+            Assert.Contains("enumToConvertToString", jsonStringWithCamelCase);
+
+            // We expect enum conversion to string, but not camelCase
+            Assert.Contains("EnumToConvertToString", jsonStringWithoutCamelCase);
+        }
+
+        [Fact]
+        public void Serialize_ShouldSucceed_WhenUsingDefaultOptions()
+        {
+            var model = new TestModel()
+            {
+                NullPropertyToIgnore = null,
+                PropertyToCamelCase = "myvalue",
+                EnumToConvertToString = TestModel.Number.Two
+            };
+            var serialization = new JsonNetApiClientSerialization();
+
+            // Perform serialize with default options 
+            // i.e. camelCase: false, ignoreNull: true, stringEnum: false
+            byte[] jsonBytes = serialization.Serialize(model, null);
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
-            Assert.Contains("propertyToCamelCase", jsonString);
-            Assert.DoesNotContain("nullPropertyToIgnore", jsonString);
+            Assert.Contains("PropertyToCamelCase", jsonString);
+            Assert.DoesNotContain(
+                "NullPropetyToIgnore",
+                jsonString,
+                System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("EnumToConvertToString", jsonString);
         }
 
         [Fact]

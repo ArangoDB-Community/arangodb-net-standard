@@ -24,6 +24,6 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         public string Name { get; set; }
         public int Status { get; set; }
         public string StatusString { get; set; }
-        public int Type { get; set; }
+        public CollectionType Type { get; set; }
     }
 }

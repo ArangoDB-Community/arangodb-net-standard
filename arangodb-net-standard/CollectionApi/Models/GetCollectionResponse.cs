@@ -8,7 +8,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public HttpStatusCode Code { get; set; }
 
-        public int Type { get; set; }
+        public CollectionType Type { get; set; }
 
         public bool IsSystem { get; set; }
 

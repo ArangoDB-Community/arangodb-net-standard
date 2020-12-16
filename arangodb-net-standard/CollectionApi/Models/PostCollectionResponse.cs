@@ -10,7 +10,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public bool WaitForSync { get; set; }
 
-        public int Type { get; set; }
+        public CollectionType Type { get; set; }
 
         public int Status { get; set; }
 

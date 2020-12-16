@@ -14,7 +14,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public int Status { get; set; }
 
-        public int Type { get; set; }
+        public CollectionType Type { get; set; }
 
         public bool IsSystem { get; set; }
 
