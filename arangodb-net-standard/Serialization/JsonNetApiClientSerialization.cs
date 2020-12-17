@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using System.IO;
 using System.Text;
 
@@ -55,6 +57,12 @@ namespace ArangoDBNetStandard.Serialization
             {
                 NullValueHandling = serializationOptions.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
             };
+
+            if (serializationOptions.UseStringEnumConversion)
+            {
+                var stringEnumConverter = new StringEnumConverter();
+                jsonSettings.Converters.Add(stringEnumConverter);
+            }
 
             if (serializationOptions.UseCamelCasePropertyNames)
             {

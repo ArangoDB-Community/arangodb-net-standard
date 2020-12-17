@@ -121,7 +121,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostCollectionBody()
                 {
                     Name = edgeClx,
-                    Type = 3
+                    Type = CollectionType.Edge
                 });
 
             Assert.Equal(edgeClx, createClxResponse.Name);
@@ -486,7 +486,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostCollectionBody()
                 {
                     Name = edgeClx,
-                    Type = 3
+                    Type = CollectionType.Edge
                 });
 
             Assert.Equal(edgeClx, createClxResponse.Name);
