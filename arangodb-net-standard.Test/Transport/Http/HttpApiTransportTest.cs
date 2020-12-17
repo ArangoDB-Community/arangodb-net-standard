@@ -21,7 +21,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
         [Fact]
         public async Task UseVpack_ShouldSucceed()
         {
-            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:8529/";
+            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:{_fixture.ArangoDbPort}/";
             using (var transport = HttpApiTransport.UsingBasicAuth(
                 new Uri(arangodbBaseUrl),
                 nameof(HttpApiTransportTest),
@@ -41,7 +41,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
         public async Task SetJwt_ShouldSucceed()
         {
             string jwtToken = null;
-            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:8529/";
+            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:{_fixture.ArangoDbPort}/";
             using (var transport = HttpApiTransport.UsingNoAuth(
                     new Uri(arangodbBaseUrl),
                     nameof(HttpApiTransportTest)))
@@ -70,7 +70,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
         public async Task UsingJwtAuth_ShouldSucceed()
         {
             string jwtToken = null;
-            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:8529/";
+            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:{_fixture.ArangoDbPort}/";
             using (var transport = HttpApiTransport.UsingNoAuth(
                     new Uri(arangodbBaseUrl),
                     nameof(HttpApiTransportTest)))
