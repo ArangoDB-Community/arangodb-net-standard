@@ -44,12 +44,14 @@ namespace ArangoDBNetStandard.TransactionApi
         }
 
         /// <summary>
-        /// POST a transaction to ArangoDB.
+        /// POST a js-transaction to ArangoDB.
         /// </summary>
+        /// <remarks>
+        /// https://www.arangodb.com/docs/stable/http/transaction-js-transaction.html
+        /// </remarks>
         /// <typeparam name="T">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="body">Object containing information to submit in the POST transaction request.</param>
         /// <returns>Response from ArangoDB after processing the request.</returns>
-        /// <remarks>https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html</remarks>
         public virtual async Task<PostTransactionResponse<T>> PostTransactionAsync<T>(
             PostTransactionBody body)
         {

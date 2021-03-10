@@ -149,21 +149,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName">The name of the collection.</param>
         /// <returns>
-        /// The result is an object describing the collection with the following attributes:
-        ///   id: The identifier of the collection.
-        ///   name: The name of the collection.
-        ///   status: The status of the collection as number.
-        ///      1: new born collection
-        ///      2: unloaded
-        ///      3: loaded
-        ///      4: in the process of being unloaded
-        ///      5: deleted
-        ///      6: loading
-        ///      ?: Every other status indicates a corrupted collection.
-        ///   type: The type of the collection as number.
-        ///      2: document collection (normal case)
-        ///      3: edges collection
-        ///   isSystem: If true then the collection is a system collection.
+        /// The result is an object describing the collection.
         /// </returns>
         public async Task<GetCollectionResponse> GetCollectionAsync(string collectionName)
         {
