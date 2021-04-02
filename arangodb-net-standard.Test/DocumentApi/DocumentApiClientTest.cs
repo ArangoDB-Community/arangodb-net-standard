@@ -14,7 +14,7 @@ using Xunit;
 
 namespace ArangoDBNetStandardTest.DocumentApi
 {
-    public class DocumentApiClientTest : IClassFixture<DocumentApiClientTestFixture>
+    public class DocumentApiClientTest : IClassFixture<DocumentApiClientTestFixture>, IAsyncLifetime
     {
         /// <summary>
         /// Class used for testing document API.
@@ -36,11 +36,17 @@ namespace ArangoDBNetStandardTest.DocumentApi
             _adb = fixture.ArangoDBClient;
             _docClient = _adb.Document;
             _testCollection = fixture.TestCollection;
+        }
 
+        public async Task InitializeAsync()
+        {
             // Truncate TestCollection before each test
-            _adb.Collection.TruncateCollectionAsync(fixture.TestCollection)
-                .GetAwaiter()
-                .GetResult();
+            await _adb.Collection.TruncateCollectionAsync(_testCollection);
+        }
+
+        public Task DisposeAsync()
+        {
+            return Task.CompletedTask;
         }
 
         [Fact]
@@ -149,12 +155,15 @@ namespace ArangoDBNetStandardTest.DocumentApi
         [Fact]
         public async Task DeleteDocuments_ShouldSucceed()
         {
-            var docs = new[] {
+            var docTasks = new[] {
                 new Dictionary<string, object> { ["Message"] = "first" },
                 new Dictionary<string, object> { ["Message"] = "second" }
             }
-            .Select(item => _docClient.PostDocumentAsync(_testCollection, item).GetAwaiter().GetResult())
+            .Select(item => _docClient.PostDocumentAsync(_testCollection, item))
             .ToList();
+
+            PostDocumentResponse<Dictionary<string, object>>[] docs =
+                await Task.WhenAll(docTasks);
 
             Assert.Collection(docs,
                 (item) => Assert.NotNull(item._id),
@@ -186,12 +195,15 @@ namespace ArangoDBNetStandardTest.DocumentApi
         [Fact]
         public async Task DeleteDocuments_ShouldSucceed_WhenOldDocumentOptionIsSelected()
         {
-            var docs = new[] {
+            var docTasks = new[] {
                 new Dictionary<string, object> { ["Message"] = "first" },
                 new Dictionary<string, object> { ["Message"] = "second" }
             }
-            .Select(item => _docClient.PostDocumentAsync(_testCollection, item).GetAwaiter().GetResult())
+            .Select(item => _docClient.PostDocumentAsync(_testCollection, item))
             .ToList();
+
+            PostDocumentResponse<Dictionary<string, object>>[] docs =
+                await Task.WhenAll(docTasks);
 
             Assert.Collection(docs,
                 (item) => Assert.NotNull(item._id),
@@ -307,12 +319,15 @@ namespace ArangoDBNetStandardTest.DocumentApi
         [Fact]
         public async Task DeleteDocuments_ShouldNotThrowButReportFailure_WhenSomeDocumentSelectorsAreInvalid()
         {
-            var docs = new[] {
+            var docTasks = new[] {
                 new Dictionary<string, object> { ["Message"] = "first" },
                 new Dictionary<string, object> { ["Message"] = "second" }
             }
-            .Select(item => _docClient.PostDocumentAsync(_testCollection, item).GetAwaiter().GetResult())
+            .Select(item => _docClient.PostDocumentAsync(_testCollection, item))
             .ToList();
+
+            PostDocumentResponse<Dictionary<string, object>>[] docs =
+                await Task.WhenAll(docTasks);
 
             Assert.Collection(docs,
                 (item) => Assert.NotNull(item._id),
