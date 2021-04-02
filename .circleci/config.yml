@@ -22,7 +22,7 @@ jobs:
   build:
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
     steps:
       - checkout
       - run:
@@ -41,7 +41,7 @@ jobs:
   "test-arangodb-3_4":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
         environment:
           ARANGO_HOST: adb3_4_9
       - image: arangodb:3.4.9
@@ -60,7 +60,7 @@ jobs:
   "test-arangodb-3_5":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
         environment:
           ARANGO_HOST: adb3_5_5
       - image: arangodb:3.5.5
@@ -79,7 +79,7 @@ jobs:
   "test-arangodb-3_6":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
         environment:
           ARANGO_HOST: adb3_6_8
       - image: arangodb/arangodb:3.6.8
@@ -98,7 +98,7 @@ jobs:
   "test-arangodb-3_7":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
         environment:
           ARANGO_HOST: adb3_7_3
       - image: arangodb/arangodb:3.7.3
