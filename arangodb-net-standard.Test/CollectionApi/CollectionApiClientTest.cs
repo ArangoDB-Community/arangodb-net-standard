@@ -12,7 +12,7 @@ using Xunit;
 
 namespace ArangoDBNetStandardTest.CollectionApi
 {
-    public class CollectionApiClientTest : IClassFixture<CollectionApiClientTestFixture>
+    public class CollectionApiClientTest : IClassFixture<CollectionApiClientTestFixture>, IAsyncLifetime
     {
         private CollectionApiClient _collectionApi;
         private ArangoDBClient _adb;
@@ -24,10 +24,18 @@ namespace ArangoDBNetStandardTest.CollectionApi
             _collectionApi = _adb.Collection;
             _testCollection = fixture.TestCollection;
 
+
+        }
+
+        public async Task InitializeAsync()
+        {
             // Truncate TestCollection before each test
-            _collectionApi.TruncateCollectionAsync(fixture.TestCollection)
-                .GetAwaiter()
-                .GetResult();
+            await _collectionApi.TruncateCollectionAsync(_testCollection);
+        }
+
+        public Task DisposeAsync()
+        {
+            return Task.CompletedTask;
         }
 
         [Fact]
