@@ -144,11 +144,13 @@ namespace ArangoDBNetStandard.CollectionApi
         }
 
         /// <summary>
-        /// Gets the requested collection.
+        /// Return information about the requested collection.
         /// GET/_api/collection/{collection-name}
         /// </summary>
-        /// <param name="collectionName"></param>
-        /// <returns></returns>
+        /// <param name="collectionName">The name of the collection.</param>
+        /// <returns>
+        /// The result is an object describing the collection.
+        /// </returns>
         public async Task<GetCollectionResponse> GetCollectionAsync(string collectionName)
         {
             using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName)))
