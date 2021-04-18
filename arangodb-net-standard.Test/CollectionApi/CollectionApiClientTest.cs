@@ -112,15 +112,33 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var response = await _collectionApi.PostCollectionAsync(
                 new PostCollectionBody
                 {
-                    Name = "MyEdgeCollection",
+                    Name = nameof(PostCollectionAsync_ShouldSucceed_WhenEdgeCollection),
                     Type = CollectionType.Edge
                 });
 
             Assert.False(response.Error);
             Assert.NotNull(response.Id);
-            Assert.Equal("MyEdgeCollection", response.Name);
+            Assert.Equal(
+                nameof(PostCollectionAsync_ShouldSucceed_WhenEdgeCollection),
+                response.Name);
             Assert.Equal("traditional", response.KeyOptions.Type);
             Assert.Equal(CollectionType.Edge, response.Type); // 2 is document collection, 3 is edge collection
+        }
+
+        [Fact]
+        public async Task PostCollectionAsync_ShouldSucceed_WhenSharding()
+        {
+            var response = await _collectionApi.PostCollectionAsync(
+                new PostCollectionBody
+                {
+                    Name = nameof(PostCollectionAsync_ShouldSucceed_WhenSharding),
+                    NumberOfShards = 4,
+                    ShardKeys = new string[] { "country" },
+                    ReplicationFactor = 2
+                });
+
+            Assert.False(response.Error);
+            Assert.NotNull(response.Id);
         }
 
         [Fact]
