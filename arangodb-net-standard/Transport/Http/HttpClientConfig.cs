@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Linq;
 
 namespace ArangoDBNetStandard.Transport.Http
 {
@@ -81,9 +80,11 @@ namespace ArangoDBNetStandard.Transport.Http
         {
             HttpClient client;
             var key = string.Join(";", _key);
-            if (!_pool.TryGetValue(key, out client)) {
-                client = Create();
-                _pool[key] = client;
+            lock (_pool) {
+                if (!_pool.TryGetValue(key, out client)) {
+                    client = Create();
+                    _pool[key] = client;
+                }
             }
             return client;
         }

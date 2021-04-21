@@ -21,7 +21,7 @@ namespace ArangoDBNetStandard.Transport.Http
         private readonly HttpClientConfig _clientConfig;
 
         /// <summary>
-        /// Create <see cref="HttpApiTransport"/> from an existing <see cref="HttpClient"/> instance.
+        /// Create <see cref="HttpApiTransport"/> from an existing <see cref="HttpClientConfig"/> instance.
         /// </summary>
         /// <param name="clientConfig">Existing HTTP client configuration instance.</param>
         /// <param name="contentType">Content type to use in requests.

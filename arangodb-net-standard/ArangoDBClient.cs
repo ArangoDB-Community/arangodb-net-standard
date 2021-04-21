@@ -71,7 +71,7 @@ namespace ArangoDBNetStandard
 
         /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
-        /// <see cref="HttpClient"/> instance, using the default JSON serialization.
+        /// <see cref="HttpClientConfig"/> instance, using the default JSON serialization.
         /// </summary>
         /// <param name="clientConfig"></param>
         public ArangoDBClient(HttpClientConfig clientConfig)
