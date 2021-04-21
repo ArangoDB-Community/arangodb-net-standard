@@ -76,7 +76,7 @@ namespace ArangoDBNetStandard.Transport.Http
 
         static Dictionary<string, HttpClient> _pool = new Dictionary<string, HttpClient>();
 
-        public HttpClient Build()
+        internal HttpClient Build()
         {
             HttpClient client;
             var key = string.Join(";", _key);
