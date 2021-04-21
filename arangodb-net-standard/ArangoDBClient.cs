@@ -73,10 +73,10 @@ namespace ArangoDBNetStandard
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
         /// <see cref="HttpClient"/> instance, using the default JSON serialization.
         /// </summary>
-        /// <param name="client"></param>
-        public ArangoDBClient(HttpClient client)
+        /// <param name="clientConfig"></param>
+        public ArangoDBClient(HttpClientConfig clientConfig)
         {
-            _transport = new HttpApiTransport(client, HttpContentType.Json);
+            _transport = new HttpApiTransport(clientConfig, HttpContentType.Json);
 
             var serialization = new JsonNetApiClientSerialization();
 
