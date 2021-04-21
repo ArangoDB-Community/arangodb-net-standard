@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -74,19 +75,11 @@ namespace ArangoDBNetStandard.Transport.Http
             _key["auth"] = $"jwt,{jwt}";
         }
 
-        static Dictionary<string, HttpClient> _pool = new Dictionary<string, HttpClient>();
+        static ConcurrentDictionary<string, HttpClient> _pool = new ConcurrentDictionary<string, HttpClient>();
 
         internal HttpClient Build()
         {
-            HttpClient client;
-            var key = string.Join(";", _key);
-            lock (_pool) {
-                if (!_pool.TryGetValue(key, out client)) {
-                    client = Create();
-                    _pool[key] = client;
-                }
-            }
-            return client;
+            return _pool.GetOrAdd(string.Join(";", _key), _ => Create());
         }
     }
 }
