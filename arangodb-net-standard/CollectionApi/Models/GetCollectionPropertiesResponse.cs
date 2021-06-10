@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 
 namespace ArangoDBNetStandard.CollectionApi.Models
 {
@@ -47,7 +48,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// which document attributes are used to determine the target shard for documents.
         /// This option is meaningless in a single server setup.
         /// </summary>
-        public string ShardKeys { get; set; }
+        public IEnumerable<string> ShardKeys { get; set; }
 
         /// <summary>
         /// In a cluster, this attribute determines how many copies

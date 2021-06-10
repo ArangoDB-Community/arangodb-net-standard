@@ -1,4 +1,6 @@
-﻿namespace ArangoDBNetStandard.CollectionApi.Models
+﻿using System.Collections.Generic;
+
+namespace ArangoDBNetStandard.CollectionApi.Models
 {
     public class PostCollectionBody
     {
@@ -93,7 +95,7 @@
         /// Values of shard key attributes cannot be changed once set.
         /// This option is meaningless in a single server setup.
         /// </summary>
-        public string ShardKeys { get; set; }
+        public IEnumerable<string> ShardKeys { get; set; }
 
         /// <summary>
         /// This attribute specifies the name of the sharding strategy to use for the collection.
