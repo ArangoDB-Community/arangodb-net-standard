@@ -32,74 +32,93 @@ namespace ArangoDBNetStandardTest.TransactionApi
         /// Tests that the stream transaction gets aborted successfully.
         /// </summary>
         [Fact]
+        [Trait("Transactions", "Stream")]
         public async Task AbortTransaction_ShouldSucceed()
         {
+            // Begin a new transaction.
             var beginTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
                 new StreamTransactionBody
                 {
                     Collections = new PostTransactionRequestCollections
                     {
-                        Write = new[] { "TestCollection2" },
+                        Write = new[] { "TestCollection1" },
                     },
                 });
 
-            var dummyCollectionUpdate = await _adb.Document.PostDocumentAsync(
-                "TestCollection2",
-                new
-                {
-                    _key = "names",
-                    value = new[] { "world", "love" },
-                });
-
             // Abort the transaction.
-            var result =
+            var abortTransaction =
                 await _adb.Transaction.AbortTransaction<StreamTransactionResult>(beginTransaction.Result.Id);
 
             // Check for the correct transaction status.
-            Assert.Equal(StreamTransactionStatus.Aborted, result.Result.Status);
+            Assert.Equal(StreamTransactionStatus.Aborted, abortTransaction.Result.Status);
+        }
 
-            // Check the collection is not updated yet.
+        /// <summary>
+        /// Test that an exception is thrown when trying to abort a transaction that has already been committed.
+        /// </summary>
+        /// <exception cref="ApiErrorException">With ErrorNum 1653 if the transaction cannot be aborted.</exception>
+        [Fact]
+        [Trait("Transactions", "Stream")]
+        public async Task AbortTransaction_ShouldThrowException_WhenTheTransactionCannotBeAborted()
+        {
+            // Begin a new transaction to create a document.
+            var beginTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
+                new StreamTransactionBody
+                {
+                    Collections = new PostTransactionRequestCollections
+                    {
+                        Write = new[] { "TestCollection1" },
+                    },
+                });
+
+            // Commit the transaction.
+            await _adb.Transaction.CommitTransaction<StreamTransactionResult>(beginTransaction.Result.Id);
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _adb.Document.GetDocumentAsync<object>(dummyCollectionUpdate._id);
+                // Abort the transaction with the same transaction Id.
+                await _adb.Transaction.AbortTransaction<object>(beginTransaction.Result.Id);
             });
 
-            Assert.Equal(1202, ex.ApiError.ErrorNum);
+            // Check for the correct error number.
+            Assert.Equal(1653, ex.ApiError.ErrorNum);
+        }
+
+        /// <summary>
+        /// Test that an exception is thrown when trying to abort a transaction that does not exist.
+        /// </summary>
+        /// <exception cref="ApiErrorException">With ErrorNum 10 if the transaction is not found.</exception>
+        [Fact]
+        [Trait("Transactions", "Stream")]
+        public async Task AbortTransaction_ShouldThrowException_WhenTheTransactionIsNotFound()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _adb.Transaction.AbortTransaction<object>("Some Bogus Transaction Id");
+            });
+
+            // Check for the correct error number.
+            Assert.Equal(10, ex.ApiError.ErrorNum);
         }
 
         /// <summary>
         /// Tests that when the existing collections are used to begin a transaction, the stream transaction is running.
         /// </summary>
         [Fact]
+        [Trait("Transactions", "Stream")]
         public async Task BeginTransaction_ShouldSucceed()
         {
-            var result = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
+            // Begin a transaction.
+            var beginTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
                 new StreamTransactionBody
                 {
                     Collections = new PostTransactionRequestCollections
                     {
-                        Write = new[] { "TestCollection2" },
+                        Write = new[] { "TestCollection1" },
                     },
                 });
 
             // Check for the correct transaction status.
-            Assert.Equal(StreamTransactionStatus.Running, result.Result.Status);
-
-            var dummyCollectionUpdate = await _adb.Document.PostDocumentAsync(
-            "TestCollection2",
-            new
-            {
-                _key = "names",
-                value = new[] { "world", "love" },
-            });
-
-            // Check the collection is not updated yet.
-            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-            {
-                await _adb.Document.GetDocumentAsync<object>(dummyCollectionUpdate._id);
-            });
-
-            Assert.Equal(1202, ex.ApiError.ErrorNum);
+            Assert.Equal(StreamTransactionStatus.Running, beginTransaction.Result.Status);
         }
 
         /// <summary>
@@ -107,6 +126,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
         /// </summary>
         /// <exception cref="ApiErrorException">With ErrorNum 1203 if the collection is not found.</exception>
         [Fact]
+        [Trait("Transactions", "Stream")]
         public async Task BeginTransaction_ShouldThrowException_WhenReferring_To_A_NonExisting_Collection()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
@@ -115,20 +135,120 @@ namespace ArangoDBNetStandardTest.TransactionApi
                     Collections = new PostTransactionRequestCollections
                     {
                         Read = new[] { "SomeCollection" },
-                        Write = new[] { "TestCollection2" },
+                        Write = new[] { "TestCollection1" },
                     },
                 }));
 
+            // Check for the correct error number.
             Assert.Equal(1203, ex.ApiError.ErrorNum);
+        }
+
+        /// <summary>
+        /// Tests that when there is no transaction body, the stream transaction does not begin.
+        /// </summary>
+        /// <exception cref="ApiErrorException">With ErrorNum 10 if the transaction body is missing.</exception>
+        [Fact]
+        [Trait("Transactions", "Stream")]
+        public async Task BeginTransaction_ShouldThrowException_WhenTransactionBodyIsMissing()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+                await _adb.Transaction.BeginTransaction<object>(null)
+            );
+
+            // Check for the correct error number.
+            Assert.Equal(10, ex.ApiError.ErrorNum);
         }
 
         /// <summary>
         /// Tests that the stream transaction gets committed successfully.
         /// </summary>
         [Fact]
+        [Trait("Transactions", "Stream")]
         public async Task CommitTransaction_ShouldSucceed()
         {
+            // Begin a new transaction.
             var beginTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
+                new StreamTransactionBody
+                {
+                    Collections = new PostTransactionRequestCollections
+                    {
+                        Write = new[] { "TestCollection1" },
+                    },
+                });
+
+            // Commit the transaction.
+            var result = await _adb.Transaction.CommitTransaction<StreamTransactionResult>(beginTransaction.Result.Id);
+
+            // Check for the correct transaction status.
+            Assert.Equal(StreamTransactionStatus.Committed, result.Result.Status);
+        }
+
+        /// <summary>
+        /// Test that an exception is thrown when trying to commit a transaction that has already been aborted.
+        /// </summary>
+        /// <exception cref="ApiErrorException">With ErrorNum 1653 if the transaction cannot be committed.</exception>
+        [Fact]
+        [Trait("Transactions", "Stream")]
+        public async Task CommitTransaction_ShouldThrowException_WhenTheTransactionCannotBeCommitted()
+        {
+            // Begin a new transaction to create a document.
+            var beginTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
+                new StreamTransactionBody
+                {
+                    Collections = new PostTransactionRequestCollections
+                    {
+                        Write = new[] { "TestCollection1" },
+                    },
+                });
+
+            // Abort the transaction.
+            await _adb.Transaction.AbortTransaction<StreamTransactionResult>(beginTransaction.Result.Id);
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                // Commit the transaction with the same transaction Id.
+                await _adb.Transaction.CommitTransaction<object>(beginTransaction.Result.Id);
+            });
+
+            // Check for the correct error number.
+            Assert.Equal(1653, ex.ApiError.ErrorNum);
+        }
+
+        /// <summary>
+        /// Test that an exception is thrown when trying to commit a transaction that does not exist.
+        /// </summary>
+        /// <exception cref="ApiErrorException">With ErrorNum 10 if the transaction is not found.</exception>
+        [Fact]
+        [Trait("Transactions", "Stream")]
+        public async Task CommitTransaction_ShouldThrowException_WhenTheTransactionIsNotFound()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _adb.Transaction.CommitTransaction<object>("Some Bogus Transaction Id");
+            });
+
+            // Check for the correct error number.
+            Assert.Equal(10, ex.ApiError.ErrorNum);
+        }
+
+        /// <summary>
+        /// Tests that all running transactions are returned successfully.
+        /// </summary>
+        [Fact]
+        [Trait("Transactions", "Stream")]
+        public async Task GetAllRunningTransactions_ShouldSucceed()
+        {
+            // Begin the first transaction.
+            var firstTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
+                new StreamTransactionBody
+                {
+                    Collections = new PostTransactionRequestCollections
+                    {
+                        Write = new[] { "TestCollection1" },
+                    },
+                });
+
+            // Begin the second transaction.
+            var secondTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
                 new StreamTransactionBody
                 {
                     Collections = new PostTransactionRequestCollections
@@ -136,60 +256,6 @@ namespace ArangoDBNetStandardTest.TransactionApi
                         Write = new[] { "TestCollection2" },
                     },
                 });
-
-            var dummyCollectionUpdate = await _adb.Document.PostDocumentAsync(
-                    "TestCollection2",
-                    new
-                    {
-                        _key = "names",
-                        value = new[] { "world", "love" },
-                    });
-
-            // Check the collection is not updated yet.
-            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-            {
-                await _adb.Document.GetDocumentAsync<object>(dummyCollectionUpdate._id);
-            });
-
-            Assert.Equal(1202, ex.ApiError.ErrorNum);
-
-            // Commit a transaction.
-            var result =
-                await _adb.Transaction.CommitTransaction<StreamTransactionResult>(beginTransaction.Result.Id);
-
-            // Check for the correct transaction status.
-            Assert.Equal(StreamTransactionStatus.Committed, result.Result.Status);
-
-            // Check that the collection is now updated.
-            var latestCollectionUpdate = await _adb.Document.GetDocumentAsync<object>(dummyCollectionUpdate._id);
-
-            // Check that the document exists.
-            Assert.NotNull(latestCollectionUpdate);
-        }
-
-        /// <summary>
-        /// Tests that all running transactions are returned successfully.
-        /// </summary>
-        [Fact]
-        public async Task GetAllRunningTransactions_ShouldSucceed()
-        {
-            var firstTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
-                    new StreamTransactionBody
-                    {
-                        Collections = new PostTransactionRequestCollections
-                        {
-                            Write = new[] { "TestCollection1" },
-                        },
-                    });
-
-            var secondTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
-                    new StreamTransactionBody
-                    {
-                        Collections = new PostTransactionRequestCollections
-                        {
-                            Write = new[] { "TestCollection2" },
-                        },
-                    });
 
             // Get all running transactions.
             var result = await _adb.Transaction.GetAllRunningTransactions();
@@ -200,19 +266,36 @@ namespace ArangoDBNetStandardTest.TransactionApi
         }
 
         /// <summary>
+        /// Tests that when there are no running transactions, an empty list of <see cref="Transaction"/> is returned.
+        /// </summary>
+        [Fact]
+        [Trait("Transactions", "Stream")]
+        public async Task GetAllRunningTransactions_ShouldSucceed_WhenThereAreNoRunningTransactions()
+        {
+            // Get all running transactions.
+            var result = await _adb.Transaction.GetAllRunningTransactions();
+
+            // Check for all the running transactions.
+            Assert.NotNull(result);
+            Assert.Empty(result.Transactions);
+        }
+
+        /// <summary>
         /// Tests that the status of a transaction is returned successfully.
         /// </summary>
         [Fact]
+        [Trait("Transactions", "Stream")]
         public async Task GetTransactionStatus_ShouldSucceed()
         {
+            // Begin the transaction.
             var firstTransaction = await _adb.Transaction.BeginTransaction<StreamTransactionResult>(
-                        new StreamTransactionBody
-                        {
-                            Collections = new PostTransactionRequestCollections
-                            {
-                                Write = new[] { "TestCollection1" },
-                            },
-                        });
+                new StreamTransactionBody
+                {
+                    Collections = new PostTransactionRequestCollections
+                    {
+                        Write = new[] { "TestCollection1" },
+                    },
+                });
 
             // Get the transaction status.
             var transaction =
@@ -220,6 +303,23 @@ namespace ArangoDBNetStandardTest.TransactionApi
 
             // Check for the correct transaction status.
             Assert.Equal(firstTransaction.Result.Status, transaction.Result.Status);
+        }
+
+        /// <summary>
+        /// Test that an exception is thrown when trying to get the status of a transaction that does not exist.
+        /// </summary>
+        /// <exception cref="ApiErrorException">With ErrorNum 10 if the transaction is not found.</exception>
+        [Fact]
+        [Trait("Transactions", "Stream")]
+        public async Task GetTransactionStatus_ShouldThrowException_WhenTheTransctionIdIsNotFound()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _adb.Transaction.GetTransactionStatus<object>("Some Bogus Transaction Id");
+            });
+
+            // Check for the correct error number.
+            Assert.Equal(10, ex.ApiError.ErrorNum);
         }
 
         /// <summary>

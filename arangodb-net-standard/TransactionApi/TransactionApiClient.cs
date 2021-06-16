@@ -90,6 +90,10 @@ namespace ArangoDBNetStandard.TransactionApi
         /// </remarks>
         /// <typeparam name="TStreamTransactionResult">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="transactionId">The transaction identifier.</param>
+        /// <exception cref="ApiErrorException">
+        /// With ErrorNum 1653 if the transaction cannot be aborted.
+        /// With ErrorNum 10 if the transaction is not found.
+        /// </exception>
         /// <returns>Response from ArangoDB after aborting a transaction.</returns>
         public virtual async Task<PostTransactionResponse<TStreamTransactionResult>>
             AbortTransaction<TStreamTransactionResult>(string transactionId)
@@ -116,6 +120,10 @@ namespace ArangoDBNetStandard.TransactionApi
         /// </remarks>
         /// <typeparam name="TStreamTransactionResult">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="body">Object containing information to submit in the POST stream transaction request.</param>
+        /// <exception cref="ApiErrorException">
+        /// With ErrorNum 10 if the <paramref name="body"/> is missing or malformed.
+        /// With ErrorNum 1203 if the <paramref name="body"/> contains an unknown collection.
+        /// </exception>
         /// <returns>Response from ArangoDB after beginning a transaction.</returns>
         public virtual async Task<PostTransactionResponse<TStreamTransactionResult>>
             BeginTransaction<TStreamTransactionResult>(StreamTransactionBody body)
@@ -142,6 +150,10 @@ namespace ArangoDBNetStandard.TransactionApi
         /// </remarks>
         /// <typeparam name="TStreamTransactionResult">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="transactionId">The transaction identifier.</param>
+        /// <exception cref="ApiErrorException">
+        /// With ErrorNum 1653 if the transaction cannot be committed.
+        /// With ErrorNum 10 if the transaction is not found.
+        /// </exception>
         /// <returns>Response from ArangoDB after committing a transaction.</returns>
         public virtual async Task<PostTransactionResponse<TStreamTransactionResult>>
             CommitTransaction<TStreamTransactionResult>(string transactionId)
@@ -190,6 +202,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// </remarks>
         /// <typeparam name="TStreamTransactionResult">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="transactionId">The transaction identifier.</param>
+        /// <exception cref="ApiErrorException">With ErrorNum 10 if the transaction is not found.</exception>
         /// <returns>Response from ArangoDB with the status of a transaction.</returns>
         public virtual async Task<PostTransactionResponse<TStreamTransactionResult>>
             GetTransactionStatus<TStreamTransactionResult>(string transactionId)

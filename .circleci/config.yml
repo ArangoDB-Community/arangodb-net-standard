@@ -55,7 +55,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release
+            dotnet test -c Release --filter Transactions!=Stream
             
   "test-arangodb-3_5":
     working_directory: ~/arangodb-net-standard
