@@ -12,55 +12,49 @@ namespace ArangoDBNetStandard.TransactionApi
         /// Abort a stream transaction by DELETE.
         /// </summary>
         /// /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#abort-transaction.
+        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#abort-transaction
         /// </remarks>
-        /// <typeparam name="TStreamTransactionResult">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <exception cref="ApiErrorException">
         /// With ErrorNum 1653 if the transaction cannot be aborted.
         /// With ErrorNum 10 if the transaction is not found.
         /// </exception>
         /// <returns>Response from ArangoDB after aborting a transaction.</returns>
-        Task<PostTransactionResponse<TStreamTransactionResult>> AbortTransaction<TStreamTransactionResult>(
-            string transactionId);
+        Task<StreamTransactionResponse> AbortTransaction(string transactionId);
 
         /// <summary>
         /// Begin a stream transaction by POST.
         /// </summary>
         /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#begin-a-transaction.
+        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#begin-a-transaction
         /// </remarks>
-        /// <typeparam name="TStreamTransactionResult">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="body">Object containing information to submit in the POST stream transaction request.</param>
         /// <exception cref="ApiErrorException">
         /// With ErrorNum 10 if the <paramref name="body"/> is missing or malformed.
         /// With ErrorNum 1203 if the <paramref name="body"/> contains an unknown collection.
         /// </exception>
         /// <returns>Response from ArangoDB after beginning a transaction.</returns>
-        Task<PostTransactionResponse<TStreamTransactionResult>> BeginTransaction<TStreamTransactionResult>(
-            StreamTransactionBody body);
+        Task<StreamTransactionResponse> BeginTransaction(StreamTransactionBody body);
 
         /// <summary>
         /// Commit a transaction by PUT.
         /// </summary>
         /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#commit-transaction.
+        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#commit-transaction
         /// </remarks>
-        /// <typeparam name="TStreamTransactionResult">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <exception cref="ApiErrorException">
         /// With ErrorNum 1653 if the transaction cannot be committed.
         /// With ErrorNum 10 if the transaction is not found.
         /// </exception>
         /// <returns>Response from ArangoDB after committing a transaction.</returns>
-        Task<PostTransactionResponse<TStreamTransactionResult>> CommitTransaction<TStreamTransactionResult>(
-            string transactionId);
+        Task<StreamTransactionResponse> CommitTransaction(string transactionId);
 
         /// <summary>
         /// Get currently running transactions.
         /// </summary>
         /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#get-currently-running-transactions.
+        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#get-currently-running-transactions
         /// </remarks>
         /// <returns>Response from ArangoDB with all running transactions.</returns>
         Task<StreamTransactions> GetAllRunningTransactions();
@@ -69,14 +63,12 @@ namespace ArangoDBNetStandard.TransactionApi
         /// Get the status of a transaction.
         /// </summary>
         /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#get-transaction-status.
+        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#get-transaction-status
         /// </remarks>
-        /// <typeparam name="TStreamTransactionResult">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <exception cref="ApiErrorException">With ErrorNum 10 if the transaction is not found.</exception>
         /// <returns>Response from ArangoDB with the status of a transaction.</returns>
-        Task<PostTransactionResponse<TStreamTransactionResult>> GetTransactionStatus<TStreamTransactionResult>(
-            string transactionId);
+        Task<StreamTransactionResponse> GetTransactionStatus(string transactionId);
 
         /// <summary>
         /// POST a transaction to ArangoDB.
