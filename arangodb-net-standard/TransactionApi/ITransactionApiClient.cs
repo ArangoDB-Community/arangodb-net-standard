@@ -12,7 +12,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// Abort a stream transaction by DELETE.
         /// </summary>
         /// /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#abort-transaction
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#abort-transaction
         /// </remarks>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <exception cref="ApiErrorException">
@@ -26,7 +26,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// Begin a stream transaction by POST.
         /// </summary>
         /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#begin-a-transaction
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#begin-a-transaction
         /// </remarks>
         /// <param name="body">Object containing information to submit in the POST stream transaction request.</param>
         /// <exception cref="ApiErrorException">
@@ -40,7 +40,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// Commit a transaction by PUT.
         /// </summary>
         /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#commit-transaction
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#commit-transaction
         /// </remarks>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <exception cref="ApiErrorException">
@@ -54,7 +54,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// Get currently running transactions.
         /// </summary>
         /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#get-currently-running-transactions
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#get-currently-running-transactions
         /// </remarks>
         /// <returns>Response from ArangoDB with all running transactions.</returns>
         Task<StreamTransactions> GetAllRunningTransactions();
@@ -63,7 +63,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// Get the status of a transaction.
         /// </summary>
         /// <remarks>
-        /// https://www.arangodb.com/docs/3.6/http/transaction-stream-transaction.html#get-transaction-status
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#get-transaction-status
         /// </remarks>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <exception cref="ApiErrorException">With ErrorNum 10 if the transaction is not found.</exception>

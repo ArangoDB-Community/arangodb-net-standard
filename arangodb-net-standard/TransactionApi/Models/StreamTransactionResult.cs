@@ -1,7 +1,7 @@
 ﻿namespace ArangoDBNetStandard.TransactionApi.Models
 {
     /// <summary>
-    /// Result from ArangoDB after beginning a Stream transaction.
+    /// Result from ArangoDB after performing a Stream transaction operation.
     /// </summary>
     public class StreamTransactionResult
     {
