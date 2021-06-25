@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi.Models;
 using System.Threading.Tasks;
 
@@ -18,11 +18,11 @@ namespace ArangoDBNetStandardTest.TransactionApi
 
         public override async Task InitializeAsync()
         {
-            await base.InitializeAsync();
+            await base.InitializeAsync().ConfigureAwait(false);
 
             string dbName = nameof(TransactionApiClientTest);
 
-            await CreateDatabase(dbName);
+            await CreateDatabase(dbName).ConfigureAwait(false);
 
             ArangoDBClient = GetArangoDBClient(dbName);
 
@@ -34,7 +34,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
                 ArangoDBClient.Collection.PostCollectionAsync(new PostCollectionBody
                 {
                     Name = TestCollection2
-                }));
+                })).ConfigureAwait(false);
         }
 
     }

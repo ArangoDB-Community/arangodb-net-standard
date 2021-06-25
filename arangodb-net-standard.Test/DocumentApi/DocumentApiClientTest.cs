@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Transport;
@@ -41,7 +41,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task InitializeAsync()
         {
             // Truncate TestCollection before each test
-            await _adb.Collection.TruncateCollectionAsync(_testCollection);
+            await _adb.Collection.TruncateCollectionAsync(_testCollection).ConfigureAwait(false);
         }
 
         public Task DisposeAsync()
@@ -53,17 +53,17 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task DeleteDocument_ShouldSucceed()
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
-            var response = await _docClient.PostDocumentAsync(_testCollection, document);
+            var response = await _docClient.PostDocumentAsync(_testCollection, document).ConfigureAwait(false);
             Assert.NotNull(response._id);
 
-            var deleteResponse = await _docClient.DeleteDocumentAsync(response._id);
+            var deleteResponse = await _docClient.DeleteDocumentAsync(response._id).ConfigureAwait(false);
             Assert.Null(deleteResponse.Old); // we didn't request `Old` so it should be null
             Assert.Equal(response._id, deleteResponse._id);
             Assert.Equal(response._key, deleteResponse._key);
             Assert.Equal(response._rev, deleteResponse._rev);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _docClient.GetDocumentAsync<object>(response._id));
+                await _docClient.GetDocumentAsync<object>(response._id)).ConfigureAwait(false);
 
             Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found
         }
@@ -72,13 +72,13 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task DeleteDocument_ShouldSucceed_WhenOldDocumentOptionIsRequested()
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["Message"] = "Hello" };
-            var response = await _docClient.PostDocumentAsync(_testCollection, document);
+            var response = await _docClient.PostDocumentAsync(_testCollection, document).ConfigureAwait(false);
             Assert.NotNull(response._id);
 
             var deleteResponse = await _docClient.DeleteDocumentAsync<MyTestClass>(response._id, new DeleteDocumentQuery
             {
                 ReturnOld = true
-            });
+            }).ConfigureAwait(false);
             Assert.NotNull(deleteResponse.Old); // we requested `Old`, it should not be null
             Assert.Equal(response._id, deleteResponse._id);
             Assert.Equal(response._key, deleteResponse._key);
@@ -86,7 +86,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             Assert.Equal("Hello", deleteResponse.Old.Message);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _docClient.GetDocumentAsync<object>(response._id));
+                await _docClient.GetDocumentAsync<object>(response._id)).ConfigureAwait(false);
 
             Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found
         }
@@ -124,7 +124,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     ReturnOld = true,
                     Silent = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.NotNull(requestUri);
             Assert.Contains("returnOld=true", requestUri);
@@ -136,11 +136,11 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task DeleteDocument_ShouldThrow_WhenDocumentNotFound()
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
-            var response = await _docClient.PostDocumentAsync(_testCollection, document);
+            var response = await _docClient.PostDocumentAsync(_testCollection, document).ConfigureAwait(false);
             Assert.NotNull(response._id);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _docClient.DeleteDocumentAsync("TestCollection/abc123"));
+                await _docClient.DeleteDocumentAsync("TestCollection/abc123")).ConfigureAwait(false);
 
             Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum);
         }
@@ -149,7 +149,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task DeleteDocument_ShouldThrow_WhenDocumentIdNotValid()
         {
             await Assert.ThrowsAsync<ArgumentException>(async () =>
-                await _docClient.DeleteDocumentAsync("NotAValidID"));
+                await _docClient.DeleteDocumentAsync("NotAValidID")).ConfigureAwait(false);
         }
 
         [Fact]
@@ -163,13 +163,13 @@ namespace ArangoDBNetStandardTest.DocumentApi
             .ToList();
 
             PostDocumentResponse<Dictionary<string, object>>[] docs =
-                await Task.WhenAll(docTasks);
+                await Task.WhenAll(docTasks).ConfigureAwait(false);
 
             Assert.Collection(docs,
                 (item) => Assert.NotNull(item._id),
                 (item) => Assert.NotNull(item._id));
 
-            var response = await _docClient.DeleteDocumentsAsync(_testCollection, docs.Select(d => d._id).ToList());
+            var response = await _docClient.DeleteDocumentsAsync(_testCollection, docs.Select(d => d._id).ToList()).ConfigureAwait(false);
             Assert.Collection(response,
                 (item) => Assert.NotNull(item._id),
                 (item) => Assert.NotNull(item._id));
@@ -179,14 +179,14 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 async (item) =>
                 {
                     var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                        await _docClient.GetDocumentAsync<object>(item._id));
+                        await _docClient.GetDocumentAsync<object>(item._id)).ConfigureAwait(false);
 
                     Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
                 },
                 async (item) =>
                 {
                     var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                        await _docClient.GetDocumentAsync<object>(item._id));
+                        await _docClient.GetDocumentAsync<object>(item._id)).ConfigureAwait(false);
 
                     Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
                 });
@@ -203,7 +203,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             .ToList();
 
             PostDocumentResponse<Dictionary<string, object>>[] docs =
-                await Task.WhenAll(docTasks);
+                await Task.WhenAll(docTasks).ConfigureAwait(false);
 
             Assert.Collection(docs,
                 (item) => Assert.NotNull(item._id),
@@ -215,7 +215,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new DeleteDocumentsQuery
                 {
                     ReturnOld = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Collection(response,
                 (item) =>
@@ -236,14 +236,14 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 async (item) =>
                 {
                     var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                        await _docClient.GetDocumentAsync<object>(item._id));
+                        await _docClient.GetDocumentAsync<object>(item._id)).ConfigureAwait(false);
 
                     Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
                 },
                 async (item) =>
                 {
                     var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                        await _docClient.GetDocumentAsync<object>(item._id));
+                        await _docClient.GetDocumentAsync<object>(item._id)).ConfigureAwait(false);
 
                     Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
                 });
@@ -257,7 +257,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new object[] {
                     new { testKey = "testValue" },
                     new { testKey = "testValue" }
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(2, createResponse.Count);
 
@@ -267,7 +267,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new DeleteDocumentsQuery()
                 {
                     Silent = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Empty(deleteResponse);
         }
@@ -307,7 +307,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     ReturnOld = true,
                     Silent = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.NotNull(requestUri);
             Assert.Contains("ignoreRevs=true", requestUri);
@@ -327,7 +327,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             .ToList();
 
             PostDocumentResponse<Dictionary<string, object>>[] docs =
-                await Task.WhenAll(docTasks);
+                await Task.WhenAll(docTasks).ConfigureAwait(false);
 
             Assert.Collection(docs,
                 (item) => Assert.NotNull(item._id),
@@ -336,7 +336,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var ids = docs.Select(d => d._id).ToList();
             ids[1] = "nonsense";
 
-            var response = await _docClient.DeleteDocumentsAsync(_testCollection, ids);
+            var response = await _docClient.DeleteDocumentsAsync(_testCollection, ids).ConfigureAwait(false);
             Assert.Collection(response,
                 // First result succeeds
                 (item) => Assert.NotNull(item._id),
@@ -353,13 +353,13 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 async (item) =>
                 {
                     var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                        await _docClient.GetDocumentAsync<object>(item._id));
+                        await _docClient.GetDocumentAsync<object>(item._id)).ConfigureAwait(false);
 
                     Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum); // document not found)
                 },
                 async (item) =>
                 {
-                    var doc = await _docClient.GetDocumentAsync<MyTestClass>(item._id);
+                    var doc = await _docClient.GetDocumentAsync<MyTestClass>(item._id).ConfigureAwait(false);
 
                     Assert.Equal("second", doc.Message); // document is found, it was not deleted
                 });
@@ -373,12 +373,12 @@ namespace ArangoDBNetStandardTest.DocumentApi
             for (int i = 0; i < NUM_DOCS; i++)
             {
                 var document = new MyTestClass { Message = "Test " + i };
-                postDocResponses[i] = await _docClient.PostDocumentAsync(_testCollection, document);
+                postDocResponses[i] = await _docClient.PostDocumentAsync(_testCollection, document).ConfigureAwait(false);
             }
 
             var getDocsResponse = await _docClient.GetDocumentsAsync<MyTestClass>(
                 _testCollection,
-                postDocResponses.Select(r => r._key).ToList());
+                postDocResponses.Select(r => r._key).ToList()).ConfigureAwait(false);
 
             Assert.Equal(NUM_DOCS, getDocsResponse.Count);
             for (int i = 0; i < NUM_DOCS; i++)
@@ -394,10 +394,10 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task GetDocument_ShouldSucceed()
         {
             var document = new Dictionary<string, object> { ["Message"] = "value" };
-            var response = await _docClient.PostDocumentAsync(_testCollection, document);
+            var response = await _docClient.PostDocumentAsync(_testCollection, document).ConfigureAwait(false);
             Assert.NotNull(response._id);
 
-            var newDoc = await _docClient.GetDocumentAsync<MyTestClass>(response._id);
+            var newDoc = await _docClient.GetDocumentAsync<MyTestClass>(response._id).ConfigureAwait(false);
 
             Assert.NotNull(response._rev);
             Assert.Equal(response._rev, newDoc._rev);
@@ -408,7 +408,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task GetDocument_ShouldThrow_WhenDocumentDoesNotExist()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _docClient.GetDocumentAsync<object>("TestCollection/123"));
+                await _docClient.GetDocumentAsync<object>("TestCollection/123")).ConfigureAwait(false);
 
             Assert.Equal(NOT_FOUND_NUM, ex.ApiError.ErrorNum);
         }
@@ -417,14 +417,14 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task GetDocument_ShouldThrow_WhenDocumentIdNotValid()
         {
             await Assert.ThrowsAsync<ArgumentException>(async () =>
-               await _docClient.GetDocumentAsync<object>("123"));
+               await _docClient.GetDocumentAsync<object>("123")).ConfigureAwait(false);
         }
 
         [Fact]
         public async Task PostDocument_ShouldSucceed()
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
-            var response = await _docClient.PostDocumentAsync(_testCollection, document);
+            var response = await _docClient.PostDocumentAsync(_testCollection, document).ConfigureAwait(false);
             Assert.False(string.IsNullOrWhiteSpace(response._id));
             Assert.False(string.IsNullOrWhiteSpace(response._key));
             Assert.False(string.IsNullOrWhiteSpace(response._rev));
@@ -439,7 +439,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var response = await _docClient.PostDocumentAsync(_testCollection, doc, new PostDocumentsQuery
             {
                 ReturnNew = true
-            });
+            }).ConfigureAwait(false);
             Assert.Null(response.Old);
             Assert.NotNull(response.New);
             Assert.Equal(123, (int)response.New.test);
@@ -458,7 +458,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new PostDocumentsQuery
                 {
                     ReturnNew = true
-                });
+                }).ConfigureAwait(false);
             Assert.Null(response.Old);
             Assert.NotNull(response.New);
             Assert.Equal(doc.Message, response.New.Message);
@@ -470,7 +470,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             var doc = new { test = 123, _key = "Spaces are not allowed in keys" };
             ApiErrorException ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _docClient.PostDocumentAsync(_testCollection, doc));
+                await _docClient.PostDocumentAsync(_testCollection, doc)).ConfigureAwait(false);
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
         }
@@ -480,7 +480,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             var document1 = new { test = "value" };
             var document2 = new { test = "value" };
-            PostDocumentsResponse<dynamic> response = await _docClient.PostDocumentsAsync(_testCollection, new dynamic[] { document1, document2 });
+            PostDocumentsResponse<dynamic> response = await _docClient.PostDocumentsAsync(_testCollection, new dynamic[] { document1, document2 }).ConfigureAwait(false);
             Assert.Equal(2, response.Count);
             foreach (var innerResponse in response)
             {
@@ -500,7 +500,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var response = await _docClient.PostDocumentsAsync(_testCollection, new dynamic[] { document1, document2 }, new PostDocumentsQuery
             {
                 ReturnNew = true
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(2, response.Count);
             foreach (var innerResponse in response)
             {
@@ -525,7 +525,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new PostDocumentsQuery()
                 {
                     Silent = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Empty(createResponse);
         }
@@ -535,7 +535,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             dynamic document1 = new { _key = "spaces are not allowed in keys" };
             dynamic document2 = new { test = "value" };
-            var response = await _docClient.PostDocumentsAsync(_testCollection, new dynamic[] { document1, document2 });
+            var response = await _docClient.PostDocumentsAsync(_testCollection, new dynamic[] { document1, document2 }).ConfigureAwait(false);
 
             Assert.Equal(2, response.Count);
             Assert.True(response[0].Error);
@@ -546,11 +546,11 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task PutDocument_ShouldSucceed()
         {
             var doc1 = new { _key = "test", stuff = "test" };
-            var response = await _docClient.PostDocumentAsync(_testCollection, doc1);
+            var response = await _docClient.PostDocumentAsync(_testCollection, doc1).ConfigureAwait(false);
 
             var updateResponse = await _docClient.PutDocumentAsync(
                 response._id,
-                new { stuff = "new" });
+                new { stuff = "new" }).ConfigureAwait(false);
 
             Assert.NotNull(response._rev);
             Assert.NotNull(updateResponse._rev);
@@ -567,12 +567,12 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task PutDocumentOverload_ShouldSucceed()
         {
             var doc1 = new { _key = "test", stuff = "test" };
-            var response = await _docClient.PostDocumentAsync(_testCollection, doc1);
+            var response = await _docClient.PostDocumentAsync(_testCollection, doc1).ConfigureAwait(false);
 
             var updateResponse = await _docClient.PutDocumentAsync(
                 _testCollection,
                 response._key,
-                new { stuff = "new" });
+                new { stuff = "new" }).ConfigureAwait(false);
 
             Assert.NotNull(response._rev);
             Assert.NotNull(updateResponse._rev);
@@ -585,7 +585,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task PutDocument_ShouldSucceed_WhenNewDocumentIsReturned()
         {
             var doc1 = new { _key = "test", stuff = "test" };
-            var response = await _docClient.PostDocumentAsync(_testCollection, doc1);
+            var response = await _docClient.PostDocumentAsync(_testCollection, doc1).ConfigureAwait(false);
 
             var updateResponse = await _docClient.PutDocumentAsync(
                 response._id,
@@ -593,7 +593,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new PutDocumentQuery
                 {
                     ReturnNew = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.NotNull(response._rev);
             Assert.NotNull(updateResponse._rev);
@@ -638,7 +638,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     ReturnNew = true,
                     Silent = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.NotNull(requestUri);
             Assert.Contains("ignoreRevs=true", requestUri);
@@ -652,7 +652,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task PutDocument_ShouldThrow_WhenConflictingWriteAttempted_WithIgnoreRevsOptionFalse()
         {
             var doc1 = new { _key = "test", stuff = "test" };
-            var response = await _docClient.PostDocumentAsync(_testCollection, doc1);
+            var response = await _docClient.PostDocumentAsync(_testCollection, doc1).ConfigureAwait(false);
 
             var updateResponse1 = await _docClient.PutDocumentAsync(
                 response._id,
@@ -660,7 +660,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new PutDocumentQuery
                 {
                     ReturnNew = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.NotNull(response._rev);
             Assert.NotNull(updateResponse1._rev);
@@ -674,7 +674,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     new PutDocumentQuery
                     {
                         IgnoreRevs = false
-                    }));
+                    })).ConfigureAwait(false);
 
             Assert.Equal(1200, ex.ApiError.ErrorNum); // 1200: ERROR_ARANGO_CONFLICT
         }
@@ -686,14 +686,14 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new[] {
                     new { value = 1 },
                     new { value = 2 }
-                });
+                }).ConfigureAwait(false);
 
             var updateResponse = await _docClient.PutDocumentsAsync(_testCollection,
                 new[]
                 {
                     new { response[0]._key, value = 3 },
                     new { response[1]._key, value = 4 }
-                });
+                }).ConfigureAwait(false);
 
             Assert.NotNull(response[0]._rev);
             Assert.NotNull(updateResponse[0]._rev);
@@ -747,7 +747,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     Silent = true,
                     WaitForSync = true,
                     ReturnNew = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.NotNull(requestUri);
             Assert.Contains("ignoreRevs=true", requestUri);
@@ -766,7 +766,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 {
                     new { value = 1 },
                     new { value = 2 }
-                });
+                }).ConfigureAwait(false);
 
             var putResponse = await _docClient.PutDocumentsAsync(
                 _testCollection,
@@ -778,7 +778,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new PutDocumentsQuery()
                 {
                     Silent = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Empty(putResponse);
         }
@@ -790,14 +790,14 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new[] {
                     new { value = 1 },
                     new { value = 2 }
-                });
+                }).ConfigureAwait(false);
 
             var updateResponse = await _docClient.PutDocumentsAsync(_testCollection,
                 new[]
                 {
                     new { _key = "nonsense", value = 3 },
                     new { response[1]._key, value = 4 }
-                });
+                }).ConfigureAwait(false);
 
             Assert.True(updateResponse[0].Error);
             Assert.Equal(NOT_FOUND_NUM, updateResponse[0].ErrorNum);
@@ -815,7 +815,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                {
                    ReturnNew = true,
                    WaitForSync = true
-               });
+               }).ConfigureAwait(false);
 
             var response = await _docClient.PatchDocumentsAsync<object, PatchDocumentsMockModel>(_testCollection,
                 new[] {
@@ -826,7 +826,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                         ReturnNew = true,
                         WaitForSync = true,
                         ReturnOld = true
-                    });
+                    }).ConfigureAwait(false);
 
             Assert.Equal(2, response.Count);
             Assert.NotEqual(postResponse[0]._rev, response[0]._rev);
@@ -878,7 +878,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     KeepNull = true,
                     MergeObjects = true,
                     ReturnNew = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.NotNull(requestUri);
             Assert.Contains("ignoreRevs=true", requestUri);
@@ -905,7 +905,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 {
                     ReturnNew = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             var response = await _docClient.PatchDocumentsAsync<object, PatchDocumentsMockModel>(
                 _testCollection,
@@ -917,7 +917,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new PatchDocumentsQuery
                 {
                     Silent = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Empty(response);
         }
@@ -928,7 +928,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var response = await _docClient.PatchDocumentsAsync<object, PatchDocumentsMockModel>(
                 _testCollection,
                 new[] { new { _key = "bogusDocument", value = 4 } },
-                null);
+                null).ConfigureAwait(false);
 
             Assert.True(response[0].Error);
             Assert.Equal(1202, response[0].ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
@@ -947,7 +947,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             var response = await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
             {
@@ -958,7 +958,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 ReturnNew = true,
                 ReturnOld = true,
                 WaitForSync = true
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(addDocResponse[0]._rev, response._oldRev);
             Assert.NotEqual(addDocResponse[0]._rev, response._rev);
@@ -980,7 +980,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             var response = await _docClient.PatchDocumentAsync<object, PatchDocumentMockModel>(_testCollection, addDocResponse[0]._key, new
             {
@@ -992,7 +992,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 ReturnOld = true,
                 WaitForSync = true,
                 Silent = true
-            });
+            }).ConfigureAwait(false);
 
             Assert.Null(response.Old);
             Assert.Null(response.New);
@@ -1009,7 +1009,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 new[] {
                     new { value = 1 },
                     new { value = 2 }
-                });
+                }).ConfigureAwait(false);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
@@ -1021,7 +1021,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 {
                     WaitForSync = true
                 });
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
             Assert.Equal(1221, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_KEY_BAD
         }
@@ -1036,7 +1036,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     _key = 1351.3,
                     bogusProp = "bogusProp"
                 });
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
@@ -1045,8 +1045,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task ReadDocumentHeaderAsync_ShouldSucceed()
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
-            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
-            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key);
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document).ConfigureAwait(false);
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
         }
@@ -1055,11 +1055,11 @@ namespace ArangoDBNetStandardTest.DocumentApi
         public async Task ReadDocumentHeaderAsync_ShouldReturnNotModified_WhenIfNoneMatchIsGivenAndVersionIsTheSame()
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
-            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document).ConfigureAwait(false);
             var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
             {
                 IfNoneMatch = docResponse._rev
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotModified, response.Code);
             Assert.Equal($"\"{docResponse._rev}\"", response.Etag.Tag);
@@ -1070,17 +1070,17 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
             // create the doc
-            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
+            var docResponse = await _docClient.PostDocumentAsync(_testCollection, document).ConfigureAwait(false);
             // Change the revision
             var updateDocResponse = await _docClient.PutDocumentAsync($"{_testCollection}/{docResponse._key}", new Dictionary<string, object>
             {
                 ["key"] = "newValue"
-            });
+            }).ConfigureAwait(false);
             // check if revision has changed
             var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
             {
                 IfMatch = docResponse._rev
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.PreconditionFailed, response.Code);
             Assert.NotEqual($"\"{docResponse._rev}\"", response.Etag.Tag);
@@ -1089,7 +1089,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         [Fact]
         public async Task ReadDocumentHeaderAsync_ShouldReturnNotFound_WhenCollectionDoesNotExist()
         {
-            var response = await _docClient.HeadDocumentAsync("bogusCollection", "123456");
+            var response = await _docClient.HeadDocumentAsync("bogusCollection", "123456").ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, response.Code);
         }

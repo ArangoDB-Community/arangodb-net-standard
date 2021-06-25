@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.GraphApi.Models;
 using System;
@@ -19,10 +19,10 @@ namespace ArangoDBNetStandardTest.GraphApi
 
         public override async Task InitializeAsync()
         {
-            await base.InitializeAsync();
+            await base.InitializeAsync().ConfigureAwait(false);
 
             string dbName = nameof(GraphApiClientTest);
-            await CreateDatabase(dbName);
+            await CreateDatabase(dbName).ConfigureAwait(false);
             ArangoDBClient = GetArangoDBClient(dbName);
 
             try
@@ -31,7 +31,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     new PostCollectionBody
                     {
                         Name = TestCollection
-                    });
+                    }).ConfigureAwait(false);
             }
             catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
             {
@@ -52,12 +52,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                         Collection = "clx"
                     }
                 }
-            });
+            }).ConfigureAwait(false);
 
             // A separate database is required as a workaround for a bug discovered
             // in ArangoDB 3.4.6-3.4.8 (and possibly other versions), affecting Windows only.
             // This is reportedly fixed in ArangoDB 3.5.3.
-            await CreateDatabase(nameof(GraphApiClientTest.PutEdgeDefinitionAsync_ShouldSucceed));
+            await CreateDatabase(nameof(GraphApiClientTest.PutEdgeDefinitionAsync_ShouldSucceed)).ConfigureAwait(false);
             PutEdgeDefinitionAsync_ShouldSucceed_ArangoDBClient = GetArangoDBClient(
                 nameof(GraphApiClientTest.PutEdgeDefinitionAsync_ShouldSucceed));
 
@@ -73,7 +73,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                         Collection = nameof(GraphApiClientTest.PutEdgeDefinitionAsync_ShouldSucceed)
                     }
                 }
-            });
+            }).ConfigureAwait(false);
         }
     }
 }

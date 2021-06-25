@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard;
 using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.TransactionApi.Models;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
                 {
                     _key = "names",
                      value = new[] { "world", "love" }
-                });
+                }).ConfigureAwait(false);
 
             var result = await _adb.Transaction.PostTransactionAsync<List<DocumentBase>>(new PostTransactionBody
             {
@@ -47,12 +47,12 @@ namespace ArangoDBNetStandardTest.TransactionApi
                     Read = new[] { "TestCollection2" },
                     Write = new[] { "TestCollection1" }
                 }
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(2, result.Result.Count);
 
-            var doc1 = await _adb.Document.GetDocumentAsync<dynamic>(result.Result[0]._id);
-            var doc2 = await _adb.Document.GetDocumentAsync<dynamic>(result.Result[1]._id);
+            var doc1 = await _adb.Document.GetDocumentAsync<dynamic>(result.Result[0]._id).ConfigureAwait(false);
+            var doc2 = await _adb.Document.GetDocumentAsync<dynamic>(result.Result[1]._id).ConfigureAwait(false);
 
             Assert.Equal("Hello, world", (string)doc1.message);
             Assert.Equal("Hello, love", (string)doc2.message);
@@ -69,7 +69,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
                     {
                         Write = new[] { "test" }
                     }
-                }));
+                })).ConfigureAwait(false);
             Assert.Equal(10, ex.ApiError.ErrorNum);
         }
 
@@ -80,7 +80,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
                 await _adb.Transaction.PostTransactionAsync<object>(new PostTransactionBody
                 {
                     Action = "function (params) { console.log('This is a test'); }"
-                }));
+                })).ConfigureAwait(false);
             Assert.Equal(10, ex.ApiError.ErrorNum);
         }
     }

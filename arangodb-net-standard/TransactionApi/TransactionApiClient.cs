@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.TransactionApi.Models;
 using ArangoDBNetStandard.Transport;
 using System.Threading.Tasks;
@@ -56,9 +56,9 @@ namespace ArangoDBNetStandard.TransactionApi
             PostTransactionBody body)
         {
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _client.PostAsync(_transactionApiPath, content))
+            using (var response = await _client.PostAsync(_transactionApiPath, content).ConfigureAwait(false))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     return DeserializeJsonFromStream<PostTransactionResponse<T>>(stream);

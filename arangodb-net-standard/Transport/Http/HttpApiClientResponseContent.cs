@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -21,12 +21,12 @@ namespace ArangoDBNetStandard.Transport.Http
 
         public async Task<Stream> ReadAsStreamAsync()
         {
-            return await content.ReadAsStreamAsync();
+            return await content.ReadAsStreamAsync().ConfigureAwait(false);
         }
 
         public async Task<string> ReadAsStringAsync()
         {
-            return await content.ReadAsStringAsync();
+            return await content.ReadAsStringAsync().ConfigureAwait(false);
         }
     }
 }

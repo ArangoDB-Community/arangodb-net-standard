@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard.AuthApi.Models;
+using ArangoDBNetStandard.AuthApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Threading.Tasks;
@@ -50,7 +50,7 @@ namespace ArangoDBNetStandard.AuthApi
             {
                 Username = username,
                 Password = password
-            });
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -62,14 +62,14 @@ namespace ArangoDBNetStandard.AuthApi
             JwtTokenRequestBody body)
         {
             byte[] content = GetContent(body, new ApiClientSerializationOptions(true, false));
-            using (var response = await _client.PostAsync("/_open/auth", content))
+            using (var response = await _client.PostAsync("/_open/auth", content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<JwtTokenResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
     }

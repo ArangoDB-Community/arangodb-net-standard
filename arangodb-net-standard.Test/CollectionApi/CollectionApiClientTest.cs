@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.DocumentApi.Models;
@@ -30,7 +30,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         public async Task InitializeAsync()
         {
             // Truncate TestCollection before each test
-            await _collectionApi.TruncateCollectionAsync(_testCollection);
+            await _collectionApi.TruncateCollectionAsync(_testCollection).ConfigureAwait(false);
         }
 
         public Task DisposeAsync()
@@ -48,12 +48,12 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 new PostCollectionBody
                 {
                     Name = clx
-                });
+                }).ConfigureAwait(false);
             string clxId = createResponse.Id;
             Assert.False(createResponse.Error);
             Assert.NotNull(clxId);
 
-            var deleteResponse = await _collectionApi.DeleteCollectionAsync(clx);
+            var deleteResponse = await _collectionApi.DeleteCollectionAsync(clx).ConfigureAwait(false);
             Assert.False(deleteResponse.Error);
             Assert.Equal(clxId, deleteResponse.Id);
         }
@@ -62,7 +62,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         public async Task DeleteCollectionAsync_ShouldThrow_WhenCollectionDoesNotExist()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _collectionApi.DeleteCollectionAsync("NotACollection"));
+                await _collectionApi.DeleteCollectionAsync("NotACollection")).ConfigureAwait(false);
             Assert.Equal(1203, ex.ApiError.ErrorNum);
         }
 
@@ -73,7 +73,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 new PostCollectionBody
                 {
                     Name = "MyCollection"
-                });
+                }).ConfigureAwait(false);
 
             Assert.False(response.Error);
             Assert.NotNull(response.Id);
@@ -96,7 +96,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                         Offset = 1,
                         Type = "autoincrement"
                     }
-                });
+                }).ConfigureAwait(false);
 
             Assert.False(response.Error);
             Assert.NotNull(response.Id);
@@ -114,7 +114,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 {
                     Name = nameof(PostCollectionAsync_ShouldSucceed_WhenEdgeCollection),
                     Type = CollectionType.Edge
-                });
+                }).ConfigureAwait(false);
 
             Assert.False(response.Error);
             Assert.NotNull(response.Id);
@@ -135,7 +135,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                     NumberOfShards = 4,
                     ShardKeys = new string[] { "country" },
                     ReplicationFactor = 2
-                });
+                }).ConfigureAwait(false);
 
             Assert.False(response.Error);
             Assert.NotNull(response.Id);
@@ -178,7 +178,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 {
                     EnforceReplicationFactor = true,
                     WaitForSyncReplication = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.NotNull(requestUri);
             Assert.Contains("enforceReplicationFactor=1", requestUri);
@@ -192,11 +192,11 @@ namespace ArangoDBNetStandardTest.CollectionApi
             {
                 Name = "MyOneAndOnlyCollection"
             };
-            await _collectionApi.PostCollectionAsync(request);
+            await _collectionApi.PostCollectionAsync(request).ConfigureAwait(false);
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _collectionApi.PostCollectionAsync(request);
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(1207, ex.ApiError.ErrorNum);
         }
 
@@ -210,7 +210,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _collectionApi.PostCollectionAsync(request);
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(1208, ex.ApiError.ErrorNum);
         }
 
@@ -220,16 +220,16 @@ namespace ArangoDBNetStandardTest.CollectionApi
             // add a document
             var response = await _adb.Document.PostDocumentAsync<object>(
                 _testCollection,
-                new { test = 123 });
+                new { test = 123 }).ConfigureAwait(false);
             Assert.NotNull(response._id);
 
             // truncate collection
-            var result = await _collectionApi.TruncateCollectionAsync(_testCollection);
+            var result = await _collectionApi.TruncateCollectionAsync(_testCollection).ConfigureAwait(false);
 
             // count documents in collection, should be zero
             int count = (await _adb.Cursor.PostCursorAsync<int>(
                 query: "RETURN COUNT(@@clx)",
-                bindVars: new Dictionary<string, object> { ["@clx"] = _testCollection }))
+                bindVars: new Dictionary<string, object> { ["@clx"] = _testCollection }).ConfigureAwait(false))
                 .Result
                 .First();
 
@@ -249,7 +249,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         public async Task TruncateCollectionAsync_ShouldThrow_WhenCollectionDoesNotExist()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _collectionApi.TruncateCollectionAsync("NotACollection"));
+                await _collectionApi.TruncateCollectionAsync("NotACollection")).ConfigureAwait(false);
 
             Assert.Equal(1203, ex.ApiError.ErrorNum);
         }
@@ -257,8 +257,8 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionCountAsync_ShouldSucceed()
         {
-            var newDoc = await _adb.Document.PostDocumentAsync(_testCollection, new PostDocumentsQuery());
-            var response = await _collectionApi.GetCollectionCountAsync(_testCollection);
+            var newDoc = await _adb.Document.PostDocumentAsync(_testCollection, new PostDocumentsQuery()).ConfigureAwait(false);
+            var response = await _collectionApi.GetCollectionCountAsync(_testCollection).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -272,14 +272,14 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.NotNull(response.KeyOptions);
             Assert.False(response.WaitForSync);
             Assert.Equal(1, response.Count);
-            await _adb.Document.DeleteDocumentAsync(newDoc._id);
+            await _adb.Document.DeleteDocumentAsync(newDoc._id).ConfigureAwait(false);
         }
 
         [Fact]
         public async Task GetCollectionCountAsync_ShouldThrow_WhenCollectionDoesNotExist()
         {
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _collectionApi.GetCollectionCountAsync("bogusCollection"));
+                await _collectionApi.GetCollectionCountAsync("bogusCollection")).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
 
@@ -289,7 +289,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var response = await _collectionApi.GetCollectionsAsync(new GetCollectionsQuery
             {
                 ExcludeSystem = true // System adds 9 collections that we don't need to test
-            });
+            }).ConfigureAwait(false);
             Assert.NotEmpty(response.Result);
             var collectionExists = response.Result.Where(x => x.Name == _testCollection);
 
@@ -301,7 +301,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionAsync_ShouldSucceed()
         {
-            var collection = await _collectionApi.GetCollectionAsync(_testCollection);
+            var collection = await _collectionApi.GetCollectionAsync(_testCollection).ConfigureAwait(false);
 
             Assert.Equal(_testCollection, collection.Name);
         }
@@ -312,7 +312,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _collectionApi.GetCollectionAsync("MyWrongCollection");
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
         }
@@ -320,7 +320,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionPropertiesAsync_ShouldSucceed()
         {
-            var response = await _collectionApi.GetCollectionPropertiesAsync(_testCollection);
+            var response = await _collectionApi.GetCollectionPropertiesAsync(_testCollection).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.NotNull(response.KeyOptions);
@@ -343,11 +343,11 @@ namespace ArangoDBNetStandardTest.CollectionApi
                     new PostCollectionBody
                     {
                         Name = initialClx
-                    });
+                    }).ConfigureAwait(false);
             var response = await _collectionApi.RenameCollectionAsync(initialClx, new RenameCollectionBody
             {
                 Name = renamedClx
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(renamedClx, response.Name);
             Assert.False(response.IsSystem);
@@ -364,7 +364,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 {
                     Name = "testingCollection"
                 });
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1203, exception.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
@@ -378,7 +378,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 {
                     Name = "Bad Collection Name"
                 });
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(1208, exception.ApiError.ErrorNum); // Arango Illegal Name
         }
 
@@ -391,14 +391,14 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 {
                     Name = "testingCollection"
                 });
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(1203, exception.ApiError.ErrorNum); // Arango Data Source Not Found
         }
 
         [Fact]
         public async Task GetCollectionRevisionAsync_ShouldSucceed()
         {
-            var response = await _collectionApi.GetCollectionRevisionAsync(_testCollection);
+            var response = await _collectionApi.GetCollectionRevisionAsync(_testCollection).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(_testCollection, response.Name);
             Assert.NotNull(response.Id);
@@ -413,7 +413,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _collectionApi.GetCollectionRevisionAsync("bogusCollection");
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
 
@@ -423,14 +423,14 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var putCollection = await _adb.Collection.PostCollectionAsync(new PostCollectionBody
             {
                 Name = nameof(PutCollectionPropertyAsync_ShouldSucceed)
-            });
-            var beforeResponse = await _collectionApi.GetCollectionPropertiesAsync(putCollection.Name);
+            }).ConfigureAwait(false);
+            var beforeResponse = await _collectionApi.GetCollectionPropertiesAsync(putCollection.Name).ConfigureAwait(false);
 
             var body = new PutCollectionPropertyBody
             {
                 WaitForSync = !beforeResponse.WaitForSync
             };
-            var response = await _collectionApi.PutCollectionPropertyAsync(putCollection.Name, body);
+            var response = await _collectionApi.PutCollectionPropertyAsync(putCollection.Name, body).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.NotEqual(beforeResponse.WaitForSync, response.WaitForSync);
@@ -447,7 +447,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _collectionApi.PutCollectionPropertyAsync("bogusCollection", body);
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1203, exception.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
@@ -456,7 +456,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task GetCollectionFiguresAsync_ShouldSucceed()
         {
-            var response = await _collectionApi.GetCollectionFiguresAsync(_testCollection);
+            var response = await _collectionApi.GetCollectionFiguresAsync(_testCollection).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.NotNull(response.Figures);
         }
@@ -467,7 +467,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _collectionApi.GetCollectionFiguresAsync("bogusCollection");
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
     }

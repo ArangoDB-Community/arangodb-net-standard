@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard.CursorApi.Models;
+using ArangoDBNetStandard.CursorApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Collections.Generic;
@@ -78,7 +78,7 @@ namespace ArangoDBNetStandard.CursorApi
                 Cache = cache,
                 MemoryLimit = memoryLimit,
                 Ttl = ttl
-            });
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -90,14 +90,14 @@ namespace ArangoDBNetStandard.CursorApi
             PostCursorBody postCursorBody)
         {
             var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
-            using (var response = await _client.PostAsync(_cursorApiPath, content))
+            using (var response = await _client.PostAsync(_cursorApiPath, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<CursorResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -109,14 +109,14 @@ namespace ArangoDBNetStandard.CursorApi
         /// <returns></returns>
         public virtual async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId)
         {
-            using (var response = await _client.DeleteAsync(_cursorApiPath + "/" + WebUtility.UrlEncode(cursorId)))
+            using (var response = await _client.DeleteAsync(_cursorApiPath + "/" + WebUtility.UrlEncode(cursorId)).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<DeleteCursorResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -129,14 +129,14 @@ namespace ArangoDBNetStandard.CursorApi
         public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId)
         {
             string uri = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
-            using (var response = await _client.PutAsync(uri, new byte[0]))
+            using (var response = await _client.PutAsync(uri, new byte[0]).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PutCursorResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
     }

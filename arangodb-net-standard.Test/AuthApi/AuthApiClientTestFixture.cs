@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard;
 using ArangoDBNetStandard.DatabaseApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,7 +24,7 @@ namespace ArangoDBNetStandardTest.AuthApi
                     Passwd = Password,
                     Active = true
                 }
-            });
+            }).ConfigureAwait(false);
 
             ArangoDBClient = GetArangoDBClient(DbName);
         }

@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.GraphApi;
@@ -27,7 +27,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         public async Task GetGraphsAsync_ShouldSucceed()
         {
             // get the list of graphs
-            var graphsResult = await _fixture.ArangoDBClient.Graph.GetGraphsAsync();
+            var graphsResult = await _fixture.ArangoDBClient.Graph.GetGraphsAsync().ConfigureAwait(false);
 
             // test result
             Assert.Equal(HttpStatusCode.OK, graphsResult.Code);
@@ -58,12 +58,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                         Collection = "clx"
                     }
                 }
-            });
+            }).ConfigureAwait(false);
             var query = new DeleteGraphQuery
             {
                 DropCollections = false
             };
-            var response = await _client.DeleteGraphAsync("temp_graph", query);
+            var response = await _client.DeleteGraphAsync("temp_graph", query).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.True(response.Removed);
             Assert.False(response.Error);
@@ -78,7 +78,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     DropCollections = false
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -87,7 +87,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task GetGraphAsync_ShouldSucceed()
         {
-            var response = await _client.GetGraphAsync(_fixture.TestGraph);
+            var response = await _client.GetGraphAsync(_fixture.TestGraph).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal("_graphs/" + _fixture.TestGraph, response.Graph._id);
             Assert.NotEmpty(response.Graph.EdgeDefinitions);
@@ -105,7 +105,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.GetGraphAsync("bogus_graph");
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
         }
@@ -122,7 +122,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     Name = edgeClx,
                     Type = CollectionType.Edge
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(edgeClx, createClxResponse.Name);
 
@@ -142,11 +142,11 @@ namespace ArangoDBNetStandardTest.GraphApi
                         To = new string[] { "ToCollection" }
                     }
                 }
-            });
+            }).ConfigureAwait(false);
 
             // List the vertex collections
 
-            GetVertexCollectionsResponse response = await _client.GetVertexCollectionsAsync(graphName);
+            GetVertexCollectionsResponse response = await _client.GetVertexCollectionsAsync(graphName).ConfigureAwait(false);
 
             Assert.Equal(2, response.Collections.Count());
             Assert.Contains("FromCollection", response.Collections);
@@ -159,7 +159,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.GetVertexCollectionsAsync("GraphThatDoesNotExist");
-            });
+            }).ConfigureAwait(false);
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -170,7 +170,7 @@ namespace ArangoDBNetStandardTest.GraphApi
         [Fact]
         public async Task GetEdgeCollectionsAsync_ShouldSucceed()
         {
-            var response = await _client.GetEdgeCollectionsAsync(_fixture.TestGraph);
+            var response = await _client.GetEdgeCollectionsAsync(_fixture.TestGraph).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.NotEmpty(response.Collections);
             Assert.False(response.Error);
@@ -182,7 +182,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.GetEdgeCollectionsAsync("bogus_graph");
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
         }
@@ -207,7 +207,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     "myclx"
                 }
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.Single(response.Graph.EdgeDefinitions);
@@ -236,7 +236,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             new PostGraphQuery()
             {
                 WaitForSync = true
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Created, response.Code);
             Assert.Single(response.Graph.EdgeDefinitions);
@@ -261,7 +261,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     }
                 }
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
             Assert.Equal(1221, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_KEY_BAD
@@ -275,7 +275,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             {
                 Name = tempGraph,
                 EdgeDefinitions = new List<EdgeDefinition>()
-            });
+            }).ConfigureAwait(false);
             var response = await _client.PostEdgeDefinitionAsync(
                 tempGraph,
                 new PostEdgeDefinitionBody
@@ -283,7 +283,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     From = new string[] { "fromclxx" },
                     To = new string[] { "toclxx" },
                     Collection = "clxx"
-                });
+                }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
             Assert.Single(response.Graph.EdgeDefinitions);
@@ -306,7 +306,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                         To = new string[] { "toclxx" },
                         Collection = "clxx"
                     });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -323,7 +323,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             // Add a vertex collection
 
@@ -334,7 +334,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = clxToAdd
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
@@ -355,7 +355,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     Collection = "VertexCollectionThatShouldNotBeCreated"
                 });
-            });
+            }).ConfigureAwait(false);
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -375,7 +375,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             // Add a vertex collection
 
@@ -386,12 +386,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = clxToAdd
-                });
+                }).ConfigureAwait(false);
 
             var response = await _client.PostVertexAsync<object>(graphName, clxToAdd, new
             {
                 Name = clxToAdd + "_vtx"
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
@@ -407,7 +407,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.PostVertexAsync(graphName, vertex, new { });
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -424,13 +424,13 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
             string vertex = nameof(PostVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound) + "_vtx";
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.PostVertexAsync(graphName, vertex, new { });
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -448,7 +448,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             // Add a vertex collection
 
@@ -459,7 +459,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = clxToAdd
-                });
+                }).ConfigureAwait(false);
             var propertyName = clxToAdd + "_vtx";
 
             var response = await _client.PostVertexAsync(graphName, clxToAdd, new
@@ -469,7 +469,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             {
                 ReturnNew = true,
                 WaitForSync = true
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Created, response.Code);
             Assert.False(response.Error);
@@ -487,7 +487,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     Name = edgeClx,
                     Type = CollectionType.Edge
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(edgeClx, createClxResponse.Name);
 
@@ -505,7 +505,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                         To = new string[] { "ToPutCollection" }
                     }
                 }
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, createGraphResponse.Code);
 
@@ -513,12 +513,12 @@ namespace ArangoDBNetStandardTest.GraphApi
             {
                 WaitForSync = false,
                 DropCollections = true
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.Empty(response.Graph.EdgeDefinitions);
 
-            var getAfterResponse = await _client.GetEdgeCollectionsAsync(graphName);
+            var getAfterResponse = await _client.GetEdgeCollectionsAsync(graphName).ConfigureAwait(false);
 
             var collectionFound = getAfterResponse.Collections.Where(x => x == edgeClx).FirstOrDefault();
 
@@ -535,7 +535,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     WaitForSync = false,
                     DropCollections = true
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1930, ex.ApiError.ErrorNum); // GRAPH_EDGE_COLLECTION_NOT_USED
@@ -551,7 +551,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     WaitForSync = false,
                     DropCollections = true
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1924, ex.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -568,7 +568,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             // Add a vertex collection
 
@@ -579,12 +579,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = clxToDelete
-                });
+                }).ConfigureAwait(false);
 
             var response = await _client.DeleteVertexCollectionAsync(graphName, clxToDelete, new DeleteVertexCollectionQuery
             {
                 DropCollection = false
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
@@ -600,7 +600,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.DeleteVertexCollectionAsync(graphName, clxToDelete);
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -616,14 +616,14 @@ namespace ArangoDBNetStandardTest.GraphApi
                new PostGraphBody()
                {
                    Name = graphName
-               });
+               }).ConfigureAwait(false);
 
             string clxToDelete = nameof(DeleteVertexCollectionAsync_ShouldThrow_WhenVertexIsNotFound);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.DeleteVertexCollectionAsync(graphName, clxToDelete);
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
@@ -641,7 +641,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             // Add a vertex collection
 
@@ -652,17 +652,17 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = clxToDelete
-                });
+                }).ConfigureAwait(false);
 
             var response = await _client.DeleteVertexCollectionAsync(graphName, clxToDelete, new DeleteVertexCollectionQuery
             {
                 DropCollection = true
-            });
+            }).ConfigureAwait(false);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _fixture.ArangoDBClient.Collection.GetCollectionAsync(clxToDelete);
-            });
+            }).ConfigureAwait(false);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
         }
@@ -689,19 +689,19 @@ namespace ArangoDBNetStandardTest.GraphApi
                         Collection = edgeClx
                     }
                 }
-            });
+            }).ConfigureAwait(false);
 
             // Create a document in the vertex collections
 
             PostDocumentResponse<object> fromResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 fromClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             PostDocumentResponse<object> toResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 toClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             // Create the edge
 
@@ -718,7 +718,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     ReturnNew = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Created, response.Code);
             Assert.False(response.Error);
@@ -741,7 +741,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     myKey = "myValue"
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -769,19 +769,19 @@ namespace ArangoDBNetStandardTest.GraphApi
                         Collection = edgeClx
                     }
                 }
-            });
+            }).ConfigureAwait(false);
 
             // Create a document in the vertex collections
 
             PostDocumentResponse<object> fromResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 fromClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             PostDocumentResponse<object> toResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 toClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             // Create the edges
 
@@ -798,7 +798,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     ReturnNew = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             var createEdgeResponse2 = await _client.PostEdgeAsync(
                 graphName,
@@ -813,7 +813,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     ReturnNew = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             // Delete edge with document ID
 
@@ -825,7 +825,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     {
                         ReturnOld = true,
                         WaitForSync = true
-                    });
+                    }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
@@ -842,7 +842,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                    {
                        ReturnOld = true,
                        WaitForSync = true
-                   });
+                   }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(createEdgeResponse2.New.myKey, response.Old.myKey);
@@ -858,7 +858,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.DeleteEdgeAsync<object>(graphName, "edgeClx", "");
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -875,7 +875,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             // Add a vertex collection
 
@@ -886,16 +886,16 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = clxToAdd
-                });
+                }).ConfigureAwait(false);
 
             var createVtxResponse = await _client.PostVertexAsync<object>(graphName, clxToAdd, new
             {
                 Name = clxToAdd + "_vtx"
-            });
+            }).ConfigureAwait(false);
 
             var response = await _client.GetVertexAsync<GetVertexMockModel>(
                 graphName,
-                createVtxResponse.Vertex._id);
+                createVtxResponse.Vertex._id).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -907,7 +907,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             response = await _client.GetVertexAsync<GetVertexMockModel>(
                 graphName,
                 clxToAdd,
-                createVtxResponse.Vertex._key);
+                createVtxResponse.Vertex._key).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -927,13 +927,13 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
             string vertex = nameof(GetVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound) + "_vtx";
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.GetVertexAsync<GetVertexMockModel>(graphName, vertex, "12345");
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -950,7 +950,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
             string vertex = nameof(GetVertexAsync_ShouldThrow_WhenVertexIsNotFound) + "_vtx";
 
             PostVertexCollectionResponse createvertexClxresponse = await _client.PostVertexCollectionAsync(
@@ -958,12 +958,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = vertex
-                });
+                }).ConfigureAwait(false);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.GetVertexAsync<GetVertexMockModel>(graphName, vertex, "12456");
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -979,7 +979,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.GetVertexAsync<GetVertexMockModel>(graphName, vertex, "12345");
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -997,7 +997,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             // Add a vertex collection
 
@@ -1008,7 +1008,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = clxToAdd
-                });
+                }).ConfigureAwait(false);
 
             // Create vertex
 
@@ -1017,14 +1017,14 @@ namespace ArangoDBNetStandardTest.GraphApi
             var createVtxResponse = await _client.PostVertexAsync(graphName, clxToAdd, new
             {
                 Name = vertexProperty
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, createVtxResponse.Code);
 
             var createVtxResponse2 = await _client.PostVertexAsync(graphName, clxToAdd, new
             {
                 Name = vertexProperty
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, createVtxResponse2.Code);
 
@@ -1035,7 +1035,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -1050,7 +1050,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -1067,7 +1067,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.DeleteVertexAsync<object>(graphName, vertex, "12345");
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -1083,14 +1083,14 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             string vertex = nameof(DeleteVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound) + "_vtx";
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.DeleteVertexAsync<object>(graphName, vertex, "12345");
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -1106,7 +1106,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             string vertexClx = nameof(DeleteVertexAsync_ShouldThrow_WhenVertexIsNotFound) + "_vtxClx";
 
@@ -1115,12 +1115,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = vertexClx
-                });
+                }).ConfigureAwait(false);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.DeleteVertexAsync<object>(graphName, vertexClx, "12345");
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -1138,7 +1138,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             // Add a vertex collection
 
@@ -1149,7 +1149,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = clxToAdd
-                });
+                }).ConfigureAwait(false);
 
             var createVtxResponse = await _client.PostVertexAsync(graphName, clxToAdd, new
             {
@@ -1159,7 +1159,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             {
                 ReturnNew = true,
                 WaitForSync = true
-            });
+            }).ConfigureAwait(false);
 
             // Patch with document ID
 
@@ -1175,7 +1175,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -1200,7 +1200,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -1220,7 +1220,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(graphName, vertex, "12345", new { });
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -1237,13 +1237,13 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
             string vertex = nameof(PatchVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound) + "_vtx";
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(graphName, vertex, "12345", new { });
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -1260,7 +1260,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
             string vertexClx = nameof(PatchVertexAsync_ShouldThrow_WhenVertexIsNotFound) + "_vtxClx";
 
             PostVertexCollectionResponse createvertexClxresponse = await _client.PostVertexCollectionAsync(
@@ -1268,12 +1268,12 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = vertexClx
-                });
+                }).ConfigureAwait(false);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.PatchVertexAsync<dynamic, PatchVertexMockModel>(graphName, vertexClx, "12345", new { });
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -1302,19 +1302,19 @@ namespace ArangoDBNetStandardTest.GraphApi
                         Collection = edgeClx
                     }
                 }
-            });
+            }).ConfigureAwait(false);
 
             // Create a document in the vertex collections
 
             PostDocumentResponse<object> fromResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 fromClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             PostDocumentResponse<object> toResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 toClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             // Create the edge
 
@@ -1331,7 +1331,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     ReturnNew = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             // Put with document ID
 
@@ -1349,7 +1349,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
@@ -1376,7 +1376,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(previousValue, response.Old.myKey);
@@ -1396,7 +1396,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     myKey = "myValue"
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -1416,7 +1416,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     // (update is to swap the direction of from and to)
                     To = new string[] { "fromclx" },
                     From = new string[] { "toclx" }
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
             Assert.False(response.Error);
@@ -1443,7 +1443,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     WaitForSync = false
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1924, ex.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -1463,7 +1463,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     WaitForSync = false
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1930, ex.ApiError.ErrorNum); // GRAPH_EDGE_COLLECTION_NOT_USED
@@ -1491,19 +1491,19 @@ namespace ArangoDBNetStandardTest.GraphApi
                         Collection = edgeClx
                     }
                 }
-            });
+            }).ConfigureAwait(false);
 
             // Create a document in the vertex collections
 
             PostDocumentResponse<object> fromResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 fromClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             PostDocumentResponse<object> toResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 toClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             // Create the edge
 
@@ -1520,14 +1520,14 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     ReturnNew = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             // Get the edge with collection name and _key
 
             var response = await _client.GetEdgeAsync<Newtonsoft.Json.Linq.JObject>(
                 graphName,
                 edgeClx,
-                createdEdgeResponse.Edge._key);
+                createdEdgeResponse.Edge._key).ConfigureAwait(false);
 
             Assert.NotNull(response.Edge);
             Assert.Equal("myValue", response.Edge["myKey"].ToString());
@@ -1536,7 +1536,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             response = await _client.GetEdgeAsync<Newtonsoft.Json.Linq.JObject>(
                 graphName,
-                createdEdgeResponse.Edge._id);
+                createdEdgeResponse.Edge._id).ConfigureAwait(false);
 
             Assert.NotNull(response.Edge);
             Assert.Equal("myValue", response.Edge["myKey"].ToString());
@@ -1564,19 +1564,19 @@ namespace ArangoDBNetStandardTest.GraphApi
                         Collection = edgeClx
                     }
                 }
-            });
+            }).ConfigureAwait(false);
 
             // Create a document in the vertex collections
 
             PostDocumentResponse<object> fromResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 fromClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             PostDocumentResponse<object> toResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 toClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             // Create the edge
 
@@ -1593,7 +1593,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     ReturnNew = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             // Get the edge with a non-existing revision
 
@@ -1607,7 +1607,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     Rev = "RevisionThatDoesNotExist"
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.PreconditionFailed, exception.ApiError.Code);
             Assert.Equal(1200, exception.ApiError.ErrorNum); // ERROR_ARANGO_CONFLICT
@@ -1622,7 +1622,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     nameof(GetEdgeAsync_ShouldThrow_WhenGraphIsNotFound),
                     "edgeClx",
                     "0123456789");
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -1650,19 +1650,19 @@ namespace ArangoDBNetStandardTest.GraphApi
                         Collection = edgeClx
                     }
                 }
-            });
+            }).ConfigureAwait(false);
 
             // Create a document in the vertex collections
 
             PostDocumentResponse<object> fromResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 fromClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             PostDocumentResponse<object> toResponse = await
                 _fixture.ArangoDBClient.Document.PostDocumentAsync<object>(
                 toClx,
-                new { myKey = "myValue" });
+                new { myKey = "myValue" }).ConfigureAwait(false);
 
             // Create the edge
 
@@ -1680,7 +1680,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     ReturnNew = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             // Patch with document ID
 
@@ -1697,7 +1697,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(createEdgeResponse.New.myKey, response.Old.myKey);
@@ -1725,7 +1725,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.Equal(previousValue, response.Old.myKey);
@@ -1744,7 +1744,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _client.PatchEdgeAsync<object, PatchEdgeMockModel>(graphName, "edgeClx", "", new { });
-            });
+            }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
             Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
@@ -1759,7 +1759,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostGraphBody()
                 {
                     Name = graphName
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.Accepted, createGraphResponse.Code);
 
@@ -1770,7 +1770,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 new PostVertexCollectionBody()
                 {
                     Collection = vertexClx
-                });
+                }).ConfigureAwait(false);
 
             string initialValue = vertexClx + "_vtx";
             string putValue = vertexClx + "_vtx_2";
@@ -1778,7 +1778,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             var createVertexResponse = await _client.PostVertexAsync(graphName, vertexClx, new
             {
                 Name = initialValue
-            });
+            }).ConfigureAwait(false);
 
             // Put with document ID
 
@@ -1794,7 +1794,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -1819,7 +1819,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                     ReturnNew = true,
                     ReturnOld = true,
                     WaitForSync = true
-                });
+                }).ConfigureAwait(false);
 
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
@@ -1838,7 +1838,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     Name = "Bogus_Name"
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -1851,7 +1851,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             string graphName = nameof(PutVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound);
             string vertexClx = nameof(PutVertexAsync_ShouldThrow_WhenVertexCollectionIsNotFound);
 
-            await _client.PostGraphAsync(new PostGraphBody { Name = graphName });
+            await _client.PostGraphAsync(new PostGraphBody { Name = graphName }).ConfigureAwait(false);
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
@@ -1859,7 +1859,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     Name = "Bogus_Name"
                 });
-            });
+            }).ConfigureAwait(false);
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
@@ -1871,11 +1871,11 @@ namespace ArangoDBNetStandardTest.GraphApi
             string graphName = nameof(PutVertexAsync_ShouldThrow_WhenGraphIsNotFound);
             string vertexClx = nameof(PutVertexAsync_ShouldThrow_WhenGraphIsNotFound);
 
-            await _client.PostGraphAsync(new PostGraphBody { Name = graphName });
+            await _client.PostGraphAsync(new PostGraphBody { Name = graphName }).ConfigureAwait(false);
             await _client.PostVertexCollectionAsync(graphName, new PostVertexCollectionBody
             {
                 Collection = vertexClx
-            });
+            }).ConfigureAwait(false);
 
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
@@ -1884,7 +1884,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 {
                     Name = "Bogus_Name"
                 });
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);

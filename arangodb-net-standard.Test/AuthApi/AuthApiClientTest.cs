@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard;
 using ArangoDBNetStandard.AuthApi.Models;
 using System.Net;
 using System.Threading.Tasks;
@@ -23,7 +23,7 @@ namespace ArangoDBNetStandardTest.AuthApi
                 {
                     Username = _fixture.Username,
                     Password = _fixture.Password
-                });
+                }).ConfigureAwait(false);
             Assert.NotNull(response.Jwt);
         }
 
@@ -36,7 +36,7 @@ namespace ArangoDBNetStandardTest.AuthApi
                     {
                         Username = _fixture.Username,
                         Password = "wrongpw"
-                    }));
+                    })).ConfigureAwait(false);
 
             Assert.NotNull(ex.ApiError);
             Assert.True(ex.ApiError.Error);

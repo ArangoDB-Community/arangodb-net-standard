@@ -1,4 +1,4 @@
-﻿using ArangoDBNetStandard.DocumentApi.Models;
+using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Collections.Generic;
@@ -94,14 +94,14 @@ namespace ArangoDBNetStandard.DocumentApi
                 uriString += "?" + query.ToQueryString();
             }
             var content = GetContent(document, serializationOptions);
-            using (var response = await _client.PostAsync(uriString, content))
+            using (var response = await _client.PostAsync(uriString, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PostDocumentResponse<U>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -127,7 +127,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 uriString += "?" + query.ToQueryString();
             }
             var content = GetContent(documents, serializationOptions);
-            using (var response = await _client.PostAsync(uriString, content))
+            using (var response = await _client.PostAsync(uriString, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -137,11 +137,11 @@ namespace ArangoDBNetStandard.DocumentApi
                     }
                     else
                     {
-                        var stream = await response.Content.ReadAsStreamAsync();
+                        var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                         return DeserializeJsonFromStream<PostDocumentsResponse<T>>(stream);
                     }
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -167,7 +167,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 uri += "?" + query.ToQueryString();
             }
             var content = GetContent(documents, serializationOptions);
-            using (var response = await _client.PutAsync(uri, content))
+            using (var response = await _client.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -177,11 +177,11 @@ namespace ArangoDBNetStandard.DocumentApi
                     }
                     else
                     {
-                        var stream = await response.Content.ReadAsStreamAsync();
+                        var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                         return DeserializeJsonFromStream<PutDocumentsResponse<T>>(stream);
                     }
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -209,14 +209,14 @@ namespace ArangoDBNetStandard.DocumentApi
                 uri += "?" + opts.ToQueryString();
             }
             var content = GetContent(doc, serializationOptions);
-            using (var response = await _client.PutAsync(uri, content))
+            using (var response = await _client.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PutDocumentResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -253,7 +253,7 @@ namespace ArangoDBNetStandard.DocumentApi
         public virtual async Task<T> GetDocumentAsync<T>(string collectionName, string documentKey)
         {
             return await GetDocumentAsync<T>(
-                $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}");
+                $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -265,14 +265,14 @@ namespace ArangoDBNetStandard.DocumentApi
         public virtual async Task<T> GetDocumentAsync<T>(string documentId)
         {
             ValidateDocumentId(documentId);
-            var response = await _client.GetAsync(_docApiPath + "/" + documentId);
+            var response = await _client.GetAsync(_docApiPath + "/" + documentId).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 var document = DeserializeJsonFromStream<T>(stream);
                 return document;
             }
-            throw await GetApiErrorException(response);
+            throw await GetApiErrorException(response).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -291,15 +291,15 @@ namespace ArangoDBNetStandard.DocumentApi
 
             var content = GetContent(selectors, new ApiClientSerializationOptions(false, true));
 
-            using (var response = await _client.PutAsync(uri, content))
+            using (var response = await _client.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     var documents = DeserializeJsonFromStream<List<T>>(stream);
                     return documents;
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -323,7 +323,7 @@ namespace ArangoDBNetStandard.DocumentApi
         {
             return await DeleteDocumentAsync<object>(
                 $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
-                query);
+                query).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -342,7 +342,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string documentId,
             DeleteDocumentQuery query = null)
         {
-            return await DeleteDocumentAsync<object>(documentId, query);
+            return await DeleteDocumentAsync<object>(documentId, query).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace ArangoDBNetStandard.DocumentApi
         {
             return await DeleteDocumentAsync<T>(
                 $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
-                query);
+                query).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -379,15 +379,15 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _client.DeleteAsync(uri))
+            using (var response = await _client.DeleteAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     var responseModel = DeserializeJsonFromStream<DeleteDocumentResponse<T>>(stream);
                     return responseModel;
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -410,7 +410,7 @@ namespace ArangoDBNetStandard.DocumentApi
             IList<string> selectors,
             DeleteDocumentsQuery query = null)
         {
-            return await DeleteDocumentsAsync<object>(collectionName, selectors, query);
+            return await DeleteDocumentsAsync<object>(collectionName, selectors, query).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -433,7 +433,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 uri += "?" + query.ToQueryString();
             }
             var content = GetContent(selectors, new ApiClientSerializationOptions(false, false));
-            using (var response = await _client.DeleteAsync(uri, content))
+            using (var response = await _client.DeleteAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -443,11 +443,11 @@ namespace ArangoDBNetStandard.DocumentApi
                     }
                     else
                     {
-                        var stream = await response.Content.ReadAsStreamAsync();
+                        var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                         return DeserializeJsonFromStream<DeleteDocumentsResponse<T>>(stream);
                     }
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -487,7 +487,7 @@ namespace ArangoDBNetStandard.DocumentApi
                 uri += "?" + query.ToQueryString();
             }
             var content = GetContent(patches, serializationOptions);
-            using (var response = await _client.PatchAsync(uri, content))
+            using (var response = await _client.PatchAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -497,11 +497,11 @@ namespace ArangoDBNetStandard.DocumentApi
                     }
                     else
                     {
-                        var stream = await response.Content.ReadAsStreamAsync();
+                        var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                         return DeserializeJsonFromStream<PatchDocumentsResponse<U>>(stream);
                     }
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -532,7 +532,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string documentHandle = WebUtility.UrlEncode(collectionName) +
                 "/" + WebUtility.UrlEncode(documentKey);
 
-            return await PatchDocumentAsync<T, U>(documentHandle, body, query);
+            return await PatchDocumentAsync<T, U>(documentHandle, body, query).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -567,14 +567,14 @@ namespace ArangoDBNetStandard.DocumentApi
                 uriString += "?" + query.ToQueryString();
             }
             var content = GetContent(body, serializationOptions);
-            using (var response = await _client.PatchAsync(uriString, content))
+            using (var response = await _client.PatchAsync(uriString, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PatchDocumentResponse<U>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -601,7 +601,7 @@ namespace ArangoDBNetStandard.DocumentApi
         {
             return await HeadDocumentAsync(
                 $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
-                headers);
+                headers).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -635,7 +635,7 @@ namespace ArangoDBNetStandard.DocumentApi
             {
                 headerCollection = headers.ToWebHeaderCollection();
             }
-            using (var response = await _client.HeadAsync(uri, headerCollection))
+            using (var response = await _client.HeadAsync(uri, headerCollection).ConfigureAwait(false))
             {
                 return new HeadDocumentResponse
                 {
