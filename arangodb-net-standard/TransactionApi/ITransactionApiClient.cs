@@ -1,5 +1,5 @@
-﻿using ArangoDBNetStandard.TransactionApi.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using ArangoDBNetStandard.TransactionApi.Models;
 
 namespace ArangoDBNetStandard.TransactionApi
 {
@@ -8,6 +8,68 @@ namespace ArangoDBNetStandard.TransactionApi
     /// </summary>
     public interface ITransactionApiClient
     {
+        /// <summary>
+        /// Abort a stream transaction by DELETE.
+        /// </summary>
+        /// /// <remarks>
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#abort-transaction
+        /// </remarks>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <exception cref="ApiErrorException">
+        /// With ErrorNum 1653 if the transaction cannot be aborted.
+        /// With ErrorNum 10 if the transaction is not found.
+        /// </exception>
+        /// <returns>Response from ArangoDB after aborting a transaction.</returns>
+        Task<StreamTransactionResponse> AbortTransaction(string transactionId);
+
+        /// <summary>
+        /// Begin a stream transaction by POST.
+        /// </summary>
+        /// <remarks>
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#begin-a-transaction
+        /// </remarks>
+        /// <param name="body">Object containing information to submit in the POST stream transaction request.</param>
+        /// <exception cref="ApiErrorException">
+        /// With ErrorNum 10 if the <paramref name="body"/> is missing or malformed.
+        /// With ErrorNum 1203 if the <paramref name="body"/> contains an unknown collection.
+        /// </exception>
+        /// <returns>Response from ArangoDB after beginning a transaction.</returns>
+        Task<StreamTransactionResponse> BeginTransaction(StreamTransactionBody body);
+
+        /// <summary>
+        /// Commit a transaction by PUT.
+        /// </summary>
+        /// <remarks>
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#commit-transaction
+        /// </remarks>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <exception cref="ApiErrorException">
+        /// With ErrorNum 1653 if the transaction cannot be committed.
+        /// With ErrorNum 10 if the transaction is not found.
+        /// </exception>
+        /// <returns>Response from ArangoDB after committing a transaction.</returns>
+        Task<StreamTransactionResponse> CommitTransaction(string transactionId);
+
+        /// <summary>
+        /// Get currently running transactions.
+        /// </summary>
+        /// <remarks>
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#get-currently-running-transactions
+        /// </remarks>
+        /// <returns>Response from ArangoDB with all running transactions.</returns>
+        Task<StreamTransactions> GetAllRunningTransactions();
+
+        /// <summary>
+        /// Get the status of a transaction.
+        /// </summary>
+        /// <remarks>
+        /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#get-transaction-status
+        /// </remarks>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <exception cref="ApiErrorException">With ErrorNum 10 if the transaction is not found.</exception>
+        /// <returns>Response from ArangoDB with the status of a transaction.</returns>
+        Task<StreamTransactionResponse> GetTransactionStatus(string transactionId);
+
         /// <summary>
         /// POST a transaction to ArangoDB.
         /// </summary>
