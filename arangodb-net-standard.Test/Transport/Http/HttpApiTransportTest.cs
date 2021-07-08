@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.AuthApi;
 using ArangoDBNetStandard.AuthApi.Models;
 using ArangoDBNetStandard.DatabaseApi;
@@ -30,7 +30,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
             {
                 transport.UseVPackContentType();
                 string docUrl = arangodbBaseUrl + "_db/" + nameof(HttpApiTransportTest) + $"/_admin/echo";
-                using (var response = await transport.GetAsync(docUrl).ConfigureAwait(false))
+                using (var response = await transport.GetAsync(docUrl))
                 {
                     Assert.Equal("application/x-velocypack", response.Content.Headers.ContentType.MediaType);
                 }
@@ -53,7 +53,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
                     {
                         Username = _fixture.Username,
                         Password = _fixture.Password
-                    }).ConfigureAwait(false);
+                    });
 
                 jwtToken = jwtTokenResponse.Jwt;
 
@@ -61,7 +61,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
                 transport.SetJwtToken(jwtToken);
                 var databaseApi = new DatabaseApiClient(transport);
 
-                var userDatabasesResponse = await databaseApi.GetUserDatabasesAsync().ConfigureAwait(false);
+                var userDatabasesResponse = await databaseApi.GetUserDatabasesAsync();
                 Assert.NotEmpty(userDatabasesResponse.Result);
             }
         }
@@ -82,7 +82,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
                     {
                         Username = _fixture.Username,
                         Password = _fixture.Password
-                    }).ConfigureAwait(false);
+                    });
 
                 jwtToken = jwtTokenResponse.Jwt;
 
@@ -90,7 +90,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
 
                 // Not authorized, should throw.
                 var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                    await databaseApi.GetCurrentDatabaseInfoAsync()).ConfigureAwait(false);
+                    await databaseApi.GetCurrentDatabaseInfoAsync());
             }
 
             // Use token in a new transport created via `UsingJwtAuth`.
@@ -100,7 +100,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
                 jwtToken))
             {
                 var databaseApi = new DatabaseApiClient(transport);
-                var userDatabasesResponse = await databaseApi.GetUserDatabasesAsync().ConfigureAwait(false);
+                var userDatabasesResponse = await databaseApi.GetUserDatabasesAsync();
                 Assert.NotEmpty(userDatabasesResponse.Result);
             }
         }

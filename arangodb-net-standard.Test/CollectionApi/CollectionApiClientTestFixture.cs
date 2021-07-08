@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi.Models;
 using System;
 using System.Threading.Tasks;
@@ -17,11 +17,11 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
         public override async Task InitializeAsync()
         {
-            await base.InitializeAsync().ConfigureAwait(false);
+            await base.InitializeAsync();
 
             string dbName = nameof(CollectionApiClientTestFixture);
 
-            await CreateDatabase(dbName).ConfigureAwait(false);
+            await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
             try
@@ -30,7 +30,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                     new PostCollectionBody
                     {
                         Name = TestCollection
-                    }).ConfigureAwait(false);
+                    });
             }
             catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
             {

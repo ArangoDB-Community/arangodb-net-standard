@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandardTest.CursorApi
@@ -13,11 +13,11 @@ namespace ArangoDBNetStandardTest.CursorApi
 
         public override async Task InitializeAsync()
         {
-            await base.InitializeAsync().ConfigureAwait(false);
+            await base.InitializeAsync();
 
             string dbName = nameof(CursorApiClientTest);
 
-            await CreateDatabase(dbName).ConfigureAwait(false);
+            await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
         }

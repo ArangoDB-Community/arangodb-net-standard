@@ -1,4 +1,4 @@
-using ArangoDBNetStandard.AqlFunctionApi;
+﻿using ArangoDBNetStandard.AqlFunctionApi;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandardTest.AqlFunctionApi
@@ -12,11 +12,11 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
 
         public override async Task InitializeAsync()
         {
-            await base.InitializeAsync().ConfigureAwait(false);
+            await base.InitializeAsync();
 
             string dbName = nameof(AqlFunctionApiClientTestFixture);
 
-            await CreateDatabase(dbName).ConfigureAwait(false);
+            await CreateDatabase(dbName);
 
             AqlFunctionClient = GetArangoDBClient(dbName).AqlFunction;
         }

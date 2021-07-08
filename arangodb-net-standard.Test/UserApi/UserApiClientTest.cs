@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.UserApi;
 using ArangoDBNetStandard.UserApi.Models;
@@ -29,7 +29,7 @@ namespace ArangoDBNetStandardTest.UserApi
         public async Task DeleteUserAsync_ShouldSucceed()
         {
             var deleteResponse = await _userClient.DeleteUserAsync(
-                _fixture.UsernameToDelete).ConfigureAwait(false);
+                _fixture.UsernameToDelete);
 
             Assert.False(deleteResponse.Error);
             Assert.Equal(HttpStatusCode.Accepted, deleteResponse.Code);
@@ -40,7 +40,7 @@ namespace ArangoDBNetStandardTest.UserApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
                 await _userClient.DeleteUserAsync(
-                    nameof(DeleteUserAsync_ShouldThrow_WhenUserDoesNotExist))).ConfigureAwait(false);
+                    nameof(DeleteUserAsync_ShouldThrow_WhenUserDoesNotExist)));
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -60,7 +60,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     {
                         ["somedata"] = "here"
                     }
-                }).ConfigureAwait(false);
+                });
 
             Assert.False(postResponse.Error);
             Assert.Equal(HttpStatusCode.Created, postResponse.Code);
@@ -82,7 +82,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     {
                         ["somedata"] = "here"
                     }
-                })).ConfigureAwait(false);
+                }));
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.Conflict, ex.ApiError.Code);
@@ -101,7 +101,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     {
                         ["somedata"] = nameof(PutUserAsync_ShouldSucceed)
                     }
-                }).ConfigureAwait(false);
+                });
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -122,7 +122,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     {
                         Extra = new Dictionary<string, object>()
                     });
-            }).ConfigureAwait(false);
+            });
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -141,7 +141,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     {
                         ["somedata"] = nameof(PatchUserAsync_ShouldSucceed)
                     }
-                }).ConfigureAwait(false);
+                });
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -162,7 +162,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     {
                         Extra = new Dictionary<string, object>()
                     });
-            }).ConfigureAwait(false);
+            });
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -174,7 +174,7 @@ namespace ArangoDBNetStandardTest.UserApi
         public async Task GetUserAsync_ShouldSucceed()
         {
             GetUserResponse response = await _userClient.GetUserAsync(
-                _fixture.UsernameExisting).ConfigureAwait(false);
+                _fixture.UsernameExisting);
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -190,7 +190,7 @@ namespace ArangoDBNetStandardTest.UserApi
             {
                 await _userClient.GetUserAsync(
                     nameof(GetUserAsync_ShouldThrow_WhenUserDoesNotExist));
-            }).ConfigureAwait(false);
+            });
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -201,7 +201,7 @@ namespace ArangoDBNetStandardTest.UserApi
         [Fact]
         public async Task GetUsersAsync_ShouldSucceed()
         {
-            GetUsersResponse response = await _userClient.GetUsersAsync().ConfigureAwait(false);
+            GetUsersResponse response = await _userClient.GetUsersAsync();
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -225,7 +225,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     new PutAccessLevelBody()
                     {
                         Grant = "rw"
-                    }).ConfigureAwait(false);
+                    });
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -245,7 +245,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     {
                         Grant = "rw"
                     });
-            }).ConfigureAwait(false);
+            });
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -259,7 +259,7 @@ namespace ArangoDBNetStandardTest.UserApi
             GetAccessLevelResponse response =
                 await _userClient.GetDatabaseAccessLevelAsync(
                     _fixture.UsernameExisting,
-                    _fixture.TestDbName).ConfigureAwait(false);
+                    _fixture.TestDbName);
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -305,7 +305,7 @@ namespace ArangoDBNetStandardTest.UserApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await client.GetDatabaseAccessLevelAsync("", "");
-            }).ConfigureAwait(false);
+            });
 
             // Assert
 
@@ -321,7 +321,7 @@ namespace ArangoDBNetStandardTest.UserApi
             DeleteAccessLevelResponse response =
                 await _userClient.DeleteDatabaseAccessLevelAsync(
                     _fixture.UsernameToRemoveAccess,
-                    _fixture.TestDbName).ConfigureAwait(false);
+                    _fixture.TestDbName);
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
@@ -335,7 +335,7 @@ namespace ArangoDBNetStandardTest.UserApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _userClient.DeleteDatabaseAccessLevelAsync(username, "_system");
-            }).ConfigureAwait(false);
+            });
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -347,7 +347,7 @@ namespace ArangoDBNetStandardTest.UserApi
         public async Task GetAccessibleDatabasesAsync_ShouldSucceed()
         {
             GetAccessibleDatabasesResponse response =
-                await _userClient.GetAccessibleDatabasesAsync(_fixture.UsernameExisting).ConfigureAwait(false);
+                await _userClient.GetAccessibleDatabasesAsync(_fixture.UsernameExisting);
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -387,7 +387,7 @@ namespace ArangoDBNetStandardTest.UserApi
             await client.GetAccessibleDatabasesAsync("", new GetAccessibleDatabasesQuery()
             {
                 Full = true
-            }).ConfigureAwait(false);
+            });
 
             Assert.NotNull(requestUri);
             Assert.Contains("full=true", requestUri);
@@ -402,7 +402,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     new GetAccessibleDatabasesQuery()
                     {
                         Full = true
-                    }).ConfigureAwait(false);
+                    });
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -425,7 +425,7 @@ namespace ArangoDBNetStandardTest.UserApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _userClient.GetAccessibleDatabasesAsync(username);
-            }).ConfigureAwait(false);
+            });
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -444,7 +444,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     new PutAccessLevelBody()
                     {
                         Grant = "rw"
-                    }).ConfigureAwait(false);
+                    });
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -465,7 +465,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     {
                         Grant = "rw"
                     });
-            }).ConfigureAwait(false);
+            });
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
@@ -480,7 +480,7 @@ namespace ArangoDBNetStandardTest.UserApi
                 await _userClient.GetCollectionAccessLevelAsync(
                     _fixture.UsernameExisting,
                     _fixture.TestDbName,
-                    _fixture.CollectionNameToSetAccess).ConfigureAwait(false);
+                    _fixture.CollectionNameToSetAccess);
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -526,7 +526,7 @@ namespace ArangoDBNetStandardTest.UserApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await client.GetCollectionAccessLevelAsync("", "", "");
-            }).ConfigureAwait(false);
+            });
 
             // Assert
 
@@ -543,7 +543,7 @@ namespace ArangoDBNetStandardTest.UserApi
                 await _userClient.DeleteCollectionAccessLevelAsync(
                     _fixture.UsernameToRemoveAccess,
                     _fixture.TestDbName,
-                    _fixture.CollectionNameToRemoveAccess).ConfigureAwait(false);
+                    _fixture.CollectionNameToRemoveAccess);
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.Accepted, response.Code);
@@ -560,7 +560,7 @@ namespace ArangoDBNetStandardTest.UserApi
                     username,
                     _fixture.TestDbName,
                     _fixture.CollectionNameToRemoveAccess);
-            }).ConfigureAwait(false);
+            });
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);

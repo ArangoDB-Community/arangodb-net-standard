@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DatabaseApi.Models;
@@ -64,7 +64,7 @@ namespace ArangoDBNetStandardTest.Docs
                                 Passwd = "yoko123"
                             }
                         }
-                    }).ConfigureAwait(false);
+                    });
             }
 
             // Use our new database, with basic auth credentials for the user jlennon.
@@ -83,7 +83,7 @@ namespace ArangoDBNetStandardTest.Docs
                     Name = "MyCollection"
                     // A whole heap of other options exist to define key options, 
                     // sharding options, etc
-                }).ConfigureAwait(false);
+                });
 
             // Create document in the collection using anonymous type
             await adb.Document.PostDocumentAsync(
@@ -91,7 +91,7 @@ namespace ArangoDBNetStandardTest.Docs
                 new
                 {
                     MyProperty = "Value"
-                }).ConfigureAwait(false);
+                });
 
             // Create document in the collection using strong type
             await adb.Document.PostDocumentAsync(
@@ -100,13 +100,13 @@ namespace ArangoDBNetStandardTest.Docs
                 {
                     ItemNumber = 123456,
                     Description = "Some item"
-                }).ConfigureAwait(false);
+                });
 
             // Run AQL query (create a query cursor)
             var response = await adb.Cursor.PostCursorAsync<MyClassDocument>(
                 @"FOR doc IN MyCollection 
                   FILTER doc.ItemNumber == 123456 
-                  RETURN doc").ConfigureAwait(false);
+                  RETURN doc");
 
             MyClassDocument item = response.Result.First();
 
@@ -114,13 +114,13 @@ namespace ArangoDBNetStandardTest.Docs
             await adb.Document.PatchDocumentAsync<object, object>(
                 "MyCollection",
                 item._key,
-                new { Description = "More description" }).ConfigureAwait(false);
+                new { Description = "More description" });
 
             // Fully update document
             item.Description = "Some item with some more description";
             await adb.Document.PutDocumentAsync(
                 $"MyCollection/{item._key}",
-                item).ConfigureAwait(false);
+                item);
         }
 
         [Fact]
@@ -128,7 +128,7 @@ namespace ArangoDBNetStandardTest.Docs
         {
             try
             {
-                await QuickStartDoc().ConfigureAwait(false);
+                await QuickStartDoc();
             }
             finally
             {
@@ -142,7 +142,7 @@ namespace ArangoDBNetStandardTest.Docs
 
                     try
                     {
-                        await systemDb.DeleteDatabaseAsync("arangodb-net-standard").ConfigureAwait(false);
+                        await systemDb.DeleteDatabaseAsync("arangodb-net-standard");
                     }
                     catch (ApiErrorException ex)
                     {

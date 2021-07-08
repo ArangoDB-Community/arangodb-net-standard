@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.DatabaseApi.Models;
 using System;
@@ -41,7 +41,7 @@ namespace ArangoDBNetStandardTest.UserApi
 
         public override async Task InitializeAsync()
         {
-            await base.InitializeAsync().ConfigureAwait(false);
+            await base.InitializeAsync();
 
             await CreateDatabase(TestDbName, new DatabaseUser[]
             {
@@ -57,19 +57,19 @@ namespace ArangoDBNetStandardTest.UserApi
                 {
                     Username = UsernameToRemoveAccess
                 }
-            }).ConfigureAwait(false);
+            });
 
             var dbClient = GetArangoDBClient(TestDbName);
 
             await dbClient.Collection.PostCollectionAsync(new PostCollectionBody()
             {
                 Name = CollectionNameToSetAccess
-            }).ConfigureAwait(false);
+            });
 
             await dbClient.Collection.PostCollectionAsync(new PostCollectionBody()
             {
                 Name = CollectionNameToRemoveAccess
-            }).ConfigureAwait(false);
+            });
 
             _users.Add(UsernameToCreate);
         }

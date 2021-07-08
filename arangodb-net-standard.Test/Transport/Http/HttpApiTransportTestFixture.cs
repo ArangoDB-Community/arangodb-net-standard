@@ -1,4 +1,4 @@
-using ArangoDBNetStandard.DatabaseApi.Models;
+﻿using ArangoDBNetStandard.DatabaseApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,7 +11,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
 
         public override async Task InitializeAsync()
         {
-            await base.InitializeAsync().ConfigureAwait(false);
+            await base.InitializeAsync();
             await CreateDatabase(
                 nameof(HttpApiTransportTest),
                 new List<DatabaseUser>
@@ -21,7 +21,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
                         Username = Username,
                         Passwd = Password
                     }
-                }).ConfigureAwait(false);
+                });
         }
     }
 }

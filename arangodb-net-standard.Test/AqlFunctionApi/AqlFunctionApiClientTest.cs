@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.AqlFunctionApi.Models;
 using System.Net;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
                     Name = fullName,
                     Code = "function (celsius) { return celsius * 1.8 + 32; }",
                     IsDeterministic = true
-                }).ConfigureAwait(false);
+                });
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.Created, response.Code);
@@ -52,7 +52,7 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
                         Code = "function (celsius) { return celsius * 1.8 + 32; }",
                         IsDeterministic = true
                     });
-            }).ConfigureAwait(false);
+            });
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -77,7 +77,7 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
                         Name = fullName,
                         Code = "function (celsius) { return celsius * 1.8 + 32; }",
                         IsDeterministic = true
-                    }).ConfigureAwait(false);
+                    });
 
             DeleteAqlFunctionResponse deleteResponse =
                 await _fixture.AqlFunctionClient.DeleteAqlFunctionAsync(
@@ -85,7 +85,7 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
                     new DeleteAqlFunctionQuery()
                     {
                         Group = true
-                    }).ConfigureAwait(false);
+                    });
 
             Assert.False(deleteResponse.Error);
             Assert.Equal(HttpStatusCode.OK, deleteResponse.Code);
@@ -103,7 +103,7 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
                     {
                         Group = true
                     });
-            }).ConfigureAwait(false);
+            });
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -128,14 +128,14 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
                         Name = fullName,
                         Code = "function (celsius) { return celsius * 1.8 + 32; }",
                         IsDeterministic = true
-                    }).ConfigureAwait(false);
+                    });
 
             GetAqlFunctionsResponse getResponse =
                 await _fixture.AqlFunctionClient.GetAqlFunctionsAsync(
                     new GetAqlFunctionsQuery()
                     {
                         Namespace = groupName
-                    }).ConfigureAwait(false);
+                    });
 
             Assert.False(getResponse.Error);
             Assert.Equal(HttpStatusCode.OK, getResponse.Code);

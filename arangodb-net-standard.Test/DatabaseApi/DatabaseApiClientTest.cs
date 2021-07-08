@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DatabaseApi.Models;
 using System.Linq;
@@ -29,9 +29,9 @@ namespace ArangoDBNetStandardTest.DatabaseApi
                 new PostDatabaseBody()
                 {
                     Name = nameof(PostDatabaseAsync_ShouldSucceed)
-                }).ConfigureAwait(false);
+                });
 
-            await _fixture.DatabaseClientSystem.DeleteDatabaseAsync(nameof(PostDatabaseAsync_ShouldSucceed)).ConfigureAwait(false);
+            await _fixture.DatabaseClientSystem.DeleteDatabaseAsync(nameof(PostDatabaseAsync_ShouldSucceed));
 
             Assert.False(result.Error);
             Assert.Equal(HttpStatusCode.Created, result.Code);
@@ -47,7 +47,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
                 {
                     Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseUsedIsNotSystem)
                 });
-            }).ConfigureAwait(false);
+            });
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -61,7 +61,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
             await _fixture.DatabaseClientSystem.PostDatabaseAsync(new PostDatabaseBody()
             {
                 Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist)
-            }).ConfigureAwait(false);
+            });
 
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
@@ -69,10 +69,10 @@ namespace ArangoDBNetStandardTest.DatabaseApi
                 {
                     Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist)
                 });
-            }).ConfigureAwait(false);
+            });
 
             await _fixture.DatabaseClientSystem.DeleteDatabaseAsync(
-                nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist)).ConfigureAwait(false);
+                nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseToCreateAlreadyExist));
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -89,7 +89,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
                 {
                     Name = nameof(PostDatabaseAsync_ShouldThrow_WhenDatabaseUsedDoesNotExist)
                 });
-            }).ConfigureAwait(false);
+            });
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -100,7 +100,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task ListDatabasesAsync_ShouldSucceed()
         {
-            GetDatabasesResponse result = await _fixture.DatabaseClientSystem.GetDatabasesAsync().ConfigureAwait(false);
+            GetDatabasesResponse result = await _fixture.DatabaseClientSystem.GetDatabasesAsync();
 
             Assert.False(result.Error);
             Assert.Equal(HttpStatusCode.OK, result.Code);
@@ -113,7 +113,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _fixture.DatabaseClientOther.GetDatabasesAsync();
-            }).ConfigureAwait(false);
+            });
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -127,7 +127,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _fixture.DatabaseClientNonExistent.GetDatabasesAsync();
-            }).ConfigureAwait(false);
+            });
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -138,7 +138,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task ListUserDatabasesAsync_ShouldSucceed()
         {
-            GetDatabasesResponse result = await _fixture.DatabaseClientOther.GetUserDatabasesAsync().ConfigureAwait(false);
+            GetDatabasesResponse result = await _fixture.DatabaseClientOther.GetUserDatabasesAsync();
 
             Assert.False(result.Error);
             Assert.Equal(HttpStatusCode.OK, result.Code);
@@ -151,7 +151,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _fixture.DatabaseClientNonExistent.GetDatabasesAsync();
-            }).ConfigureAwait(false);
+            });
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -163,7 +163,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         public async Task GetCurrentDatabaseInfoAsync_ShouldSucceed()
         {
             GetCurrentDatabaseInfoResponse response =
-                await _fixture.DatabaseClientSystem.GetCurrentDatabaseInfoAsync().ConfigureAwait(false);
+                await _fixture.DatabaseClientSystem.GetCurrentDatabaseInfoAsync();
 
             Assert.False(response.Error);
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -183,7 +183,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _fixture.DatabaseClientNonExistent.GetDatabasesAsync();
-            }).ConfigureAwait(false);
+            });
 
             ApiErrorResponse apiError = ex.ApiError;
 
@@ -194,7 +194,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         [Fact]
         public async Task DeleteDatabaseAsync_ShouldSucceed()
         {
-            var response = await _systemClient.DeleteDatabaseAsync(_fixture.DeletableDatabase).ConfigureAwait(false);
+            var response = await _systemClient.DeleteDatabaseAsync(_fixture.DeletableDatabase);
             Assert.Equal(HttpStatusCode.OK, response.Code);
             Assert.False(response.Error);
             Assert.True(response.Result);
@@ -206,7 +206,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _systemClient.DeleteDatabaseAsync("bogusDatabase");
-            }).ConfigureAwait(false);
+            });
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1228, ex.ApiError.ErrorNum); // ARANGO_DATABASE_NOT_FOUND
         }

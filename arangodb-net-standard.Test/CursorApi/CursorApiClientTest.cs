@@ -33,7 +33,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         {
             var response = await _cursorApi.PostCursorAsync<MyModel>(
                 "RETURN { MyProperty: CONCAT('This is a ', @testString) }",
-                new Dictionary<string, object> { ["testString"] = "robbery" }).ConfigureAwait(false);
+                new Dictionary<string, object> { ["testString"] = "robbery" });
 
             var result = response.Result;
             Assert.Single(result);
@@ -43,7 +43,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task PostCursorAsync_ShouldSucceed_WhenQueryResultsInWarnings()
         {
-            var response = await _cursorApi.PostCursorAsync<object>("RETURN 1 / 0").ConfigureAwait(false);
+            var response = await _cursorApi.PostCursorAsync<object>("RETURN 1 / 0");
 
             Assert.Single(response.Result);
             Assert.Null(response.Result.First());
@@ -61,7 +61,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 new PostCursorOptions
                 {
                     FullCount = true
-                }).ConfigureAwait(false);
+                });
 
             Assert.Single(response.Result);
             Assert.Equal("This is a robbery", response.Result.First().MyProperty);
@@ -78,7 +78,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 new PostCursorOptions
                 {
                     Profile = 1
-                }).ConfigureAwait(false);
+                });
 
             Assert.Single(response.Result);
             Assert.Equal("This is a robbery", response.Result.First().MyProperty);
@@ -107,7 +107,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 new PostCursorOptions
                 {
                     Profile = 2
-                }).ConfigureAwait(false);
+                });
 
             Assert.Single(response.Result);
             Assert.Equal("This is a robbery", response.Result.First().MyProperty);
@@ -146,7 +146,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 new PostCursorOptions
                 {
                     MaxRuntime = 10
-                }).ConfigureAwait(false);
+                });
 
             Assert.Single(response.Result);
             Assert.Equal("This is a robbery", response.Result.First().MyProperty);
@@ -158,7 +158,7 @@ namespace ArangoDBNetStandardTest.CursorApi
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
                 await _cursorApi.PostCursorAsync<MyModel>("RETURN blah");
-            }).ConfigureAwait(false);
+            });
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1203, ex.ApiError.ErrorNum);
@@ -195,7 +195,7 @@ namespace ArangoDBNetStandardTest.CursorApi
             var ex = await Assert.ThrowsAsync<SerializationException>(async () =>
             {
                 await cursorApi.PostCursorAsync<object>("RETURN true");
-            }).ConfigureAwait(false);
+            });
 
             Assert.NotNull(ex.Message);
             Assert.Contains("while Deserializing an error response", ex.Message);
@@ -208,7 +208,7 @@ namespace ArangoDBNetStandardTest.CursorApi
             var ex = await Assert.ThrowsAsync<SerializationException>(async () =>
             {
                 await _cursorApi.PostCursorAsync<int>("RETURN null");
-            }).ConfigureAwait(false);
+            });
 
             Assert.NotNull(ex.Message);
             Assert.Contains("while Deserializing the data response", ex.Message);
@@ -218,10 +218,10 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task PutCursorAsync_ShouldSucceed()
         {
-            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i").ConfigureAwait(false);
+            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
             Assert.True(response.HasMore);
 
-            var nextResponse = await _cursorApi.PutCursorAsync<long>(response.Id).ConfigureAwait(false);
+            var nextResponse = await _cursorApi.PutCursorAsync<long>(response.Id);
             Assert.False(nextResponse.HasMore);
             Assert.Single(nextResponse.Result);
             Assert.Equal(1000, nextResponse.Result.First());
@@ -231,21 +231,21 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task PutCursorAsync_ShouldThrow_WhenCursorIsExhausted()
         {
-            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i").ConfigureAwait(false);
+            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
             Assert.True(response.HasMore);
 
-            var nextResponse = await _cursorApi.PutCursorAsync<long>(response.Id).ConfigureAwait(false);
+            var nextResponse = await _cursorApi.PutCursorAsync<long>(response.Id);
             Assert.False(nextResponse.HasMore);
 
             await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _cursorApi.PutCursorAsync<long>(response.Id)).ConfigureAwait(false);
+                await _cursorApi.PutCursorAsync<long>(response.Id));
         }
 
         [Fact]
         public async Task PutCursorAsync_ShouldThrow_WhenCursorDoesNotExist()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _cursorApi.PutCursorAsync<long>("nada")).ConfigureAwait(false);
+                await _cursorApi.PutCursorAsync<long>("nada"));
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1600, ex.ApiError.ErrorNum);
@@ -256,7 +256,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         public async Task DeleteCursorAsync_ShouldThrow_WhenCursorDoesNotExist()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _cursorApi.DeleteCursorAsync("nada")).ConfigureAwait(false);
+                await _cursorApi.DeleteCursorAsync("nada"));
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1600, ex.ApiError.ErrorNum);
@@ -266,10 +266,10 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task DeleteCursorAsync_ShouldSucceed()
         {
-            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i").ConfigureAwait(false);
+            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
             Assert.True(response.HasMore);
 
-            var deleteResponse = await _cursorApi.DeleteCursorAsync(response.Id).ConfigureAwait(false);
+            var deleteResponse = await _cursorApi.DeleteCursorAsync(response.Id);
         }
     }
 }

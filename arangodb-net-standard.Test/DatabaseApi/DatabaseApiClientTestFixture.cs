@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.DatabaseApi;
 
@@ -34,13 +34,13 @@ namespace ArangoDBNetStandardTest.DatabaseApi
 
         public override async Task InitializeAsync()
         {
-            await base.InitializeAsync().ConfigureAwait(false);
+            await base.InitializeAsync();
 
             string dbName = nameof(DatabaseApiClientTestFixture);
 
-            await CreateDatabase(dbName).ConfigureAwait(false);
+            await CreateDatabase(dbName);
 
-            await CreateDatabase(DeletableDatabase).ConfigureAwait(false);
+            await CreateDatabase(DeletableDatabase);
 
             DatabaseClientOther = GetArangoDBClient(dbName).Database;
         }

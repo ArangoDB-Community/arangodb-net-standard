@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi.Models;
 using System;
 using System.Threading.Tasks;
@@ -17,11 +17,11 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
         public override async Task InitializeAsync()
         {
-            await base.InitializeAsync().ConfigureAwait(false);
+            await base.InitializeAsync();
 
             string dbName = nameof(DocumentApiClientTest);
 
-            await CreateDatabase(dbName).ConfigureAwait(false);
+            await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
 
@@ -31,7 +31,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                     new PostCollectionBody
                     {
                         Name = TestCollection
-                    }).ConfigureAwait(false);
+                    });
             }
             catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
             {

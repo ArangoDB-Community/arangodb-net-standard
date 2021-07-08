@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DatabaseApi.Models;
 using ArangoDBNetStandard.Transport.Http;
@@ -61,7 +61,7 @@ namespace ArangoDBNetStandardTest
                     {
                         Name = dbName,
                         Users = users
-                    }).ConfigureAwait(false);
+                    });
                 }
                 catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
                 {
@@ -104,7 +104,7 @@ namespace ArangoDBNetStandardTest
             using (var systemDbClient = GetHttpTransport("_system"))
             {
                 var userApiClient = new UserApiClient(systemDbClient);
-                await userApiClient.DeleteUserAsync(user).ConfigureAwait(false);
+                await userApiClient.DeleteUserAsync(user);
             }
         }
 
@@ -113,7 +113,7 @@ namespace ArangoDBNetStandardTest
             using (var systemDbClient = GetHttpTransport("_system"))
             {
                 var dbApiClient = new DatabaseApiClient(systemDbClient);
-                var response = await dbApiClient.DeleteDatabaseAsync(dbName).ConfigureAwait(false);
+                var response = await dbApiClient.DeleteDatabaseAsync(dbName);
             }
         }
 
@@ -123,7 +123,7 @@ namespace ArangoDBNetStandardTest
             {
                 try
                 {
-                    await DropDatabase(dbName).ConfigureAwait(false);
+                    await DropDatabase(dbName);
                 }
                 catch (ApiErrorException ex)
                 {
@@ -136,7 +136,7 @@ namespace ArangoDBNetStandardTest
             {
                 try
                 {
-                    await DropUserAsync(user).ConfigureAwait(false);
+                    await DropUserAsync(user);
                 }
                 catch (ApiErrorException ex)
                 {
