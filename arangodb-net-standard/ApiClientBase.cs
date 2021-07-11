@@ -1,4 +1,4 @@
-using ArangoDBNetStandard.Serialization;
+﻿using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System;
 using System.IO;

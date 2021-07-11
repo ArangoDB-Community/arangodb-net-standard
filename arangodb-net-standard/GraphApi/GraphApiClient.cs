@@ -1,4 +1,4 @@
-using ArangoDBNetStandard.GraphApi.Models;
+﻿using ArangoDBNetStandard.GraphApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System;

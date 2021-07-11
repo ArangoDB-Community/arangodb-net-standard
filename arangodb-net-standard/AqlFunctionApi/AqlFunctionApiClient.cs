@@ -1,4 +1,4 @@
-using ArangoDBNetStandard.AqlFunctionApi.Models;
+﻿using ArangoDBNetStandard.AqlFunctionApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Net;

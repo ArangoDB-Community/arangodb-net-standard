@@ -1,4 +1,4 @@
-using ArangoDBNetStandard.DocumentApi.Models;
+﻿using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Collections.Generic;

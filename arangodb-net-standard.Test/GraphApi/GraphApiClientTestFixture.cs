@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.GraphApi.Models;
 using System;

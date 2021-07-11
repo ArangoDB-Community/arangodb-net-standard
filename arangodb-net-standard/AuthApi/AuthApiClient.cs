@@ -1,4 +1,4 @@
-using ArangoDBNetStandard.AuthApi.Models;
+﻿using ArangoDBNetStandard.AuthApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Threading.Tasks;
