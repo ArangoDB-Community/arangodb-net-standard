@@ -1,4 +1,4 @@
-namespace ArangoDBNetStandard.CollectionApi.Models
+﻿namespace ArangoDBNetStandard.CollectionApi.Models
 {
     public class GetCollectionsResponseResult
     {

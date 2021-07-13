@@ -27,7 +27,7 @@ namespace ArangoDBNetStandard
         /// <returns></returns>
         protected async Task<ApiErrorException> GetApiErrorException(IApiClientResponse response)
         {
-            var stream = await response.Content.ReadAsStreamAsync();
+            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
             try
             {
                 var error = _serialization.DeserializeFromStream<ApiErrorResponse>(stream);

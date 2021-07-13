@@ -1,4 +1,4 @@
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.CursorApi.Models;
 using System.Collections.Generic;

@@ -54,14 +54,14 @@ namespace ArangoDBNetStandard.DatabaseApi
         public virtual async Task<PostDatabaseResponse> PostDatabaseAsync(PostDatabaseBody request)
         {
             var content = GetContent(request, new ApiClientSerializationOptions(true, true));
-            using (var response = await _client.PostAsync(_databaseApiPath, content))
+            using (var response = await _client.PostAsync(_databaseApiPath, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PostDatabaseResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -74,14 +74,14 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <returns></returns>
         public virtual async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string databaseName)
         {
-            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + WebUtility.UrlEncode(databaseName)))
+            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + WebUtility.UrlEncode(databaseName)).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<DeleteDatabaseResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -96,14 +96,14 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <returns></returns>
         public virtual async Task<GetDatabasesResponse> GetDatabasesAsync()
         {
-            using (var response = await _client.GetAsync(_databaseApiPath))
+            using (var response = await _client.GetAsync(_databaseApiPath).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<GetDatabasesResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -113,14 +113,14 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <returns></returns>
         public virtual async Task<GetDatabasesResponse> GetUserDatabasesAsync()
         {
-            using (var response = await _client.GetAsync(_databaseApiPath + "/user"))
+            using (var response = await _client.GetAsync(_databaseApiPath + "/user").ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<GetDatabasesResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -130,14 +130,14 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <returns></returns>
         public virtual async Task<GetCurrentDatabaseInfoResponse> GetCurrentDatabaseInfoAsync()
         {
-            using (var response = await _client.GetAsync(_databaseApiPath + "/current"))
+            using (var response = await _client.GetAsync(_databaseApiPath + "/current").ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<GetCurrentDatabaseInfoResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
     }
