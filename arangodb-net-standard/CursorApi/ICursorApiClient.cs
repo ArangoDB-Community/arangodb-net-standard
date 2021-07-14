@@ -22,6 +22,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cache"></param>
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>
         /// <returns></returns>
         Task<CursorResponse<T>> PostCursorAsync<T>(
                 string query,
@@ -31,7 +32,8 @@ namespace ArangoDBNetStandard.CursorApi
                 long? batchSize = null,
                 bool? cache = null,
                 long? memoryLimit = null,
-                int? ttl = null);
+                int? ttl = null,
+                string transactionId = null);
 
         /// <summary>
         /// Execute an AQL query, creating a cursor which can be used to page query results.
@@ -46,15 +48,17 @@ namespace ArangoDBNetStandard.CursorApi
         /// DELETE /_api/cursor/{cursor-identifier}
         /// </summary>
         /// <param name="cursorId">The id of the cursor to delete.</param>
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>
         /// <returns></returns>
-        Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId);
+        Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId, string transactionId = null);
 
         /// <summary>
         /// Advances an existing query cursor and gets the next set of results.
         /// </summary>
         /// <typeparam name="T">Result type to deserialize to</typeparam>
         /// <param name="cursorId">ID of the existing query cursor.</param>
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>
         /// <returns></returns>
-        Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId);
+        Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId, string transactionId = null);
     }
 }

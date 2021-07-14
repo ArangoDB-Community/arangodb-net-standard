@@ -1,12 +1,12 @@
-using ArangoDBNetStandard;
-using ArangoDBNetStandard.CursorApi;
-using ArangoDBNetStandard.CursorApi.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using ArangoDBNetStandard;
+using ArangoDBNetStandard.CursorApi;
+using ArangoDBNetStandard.CursorApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using Moq;
@@ -187,7 +187,8 @@ namespace ArangoDBNetStandardTest.CursorApi
 
             mockTransport.Setup(x => x.PostAsync(
                     It.IsAny<string>(),
-                    It.IsAny<byte[]>()))
+                    It.IsAny<byte[]>(),
+                    It.IsAny<WebHeaderCollection>()))
                 .Returns(Task.FromResult(mockResponse.Object));
 
             var cursorApi = new CursorApiClient(mockTransport.Object);

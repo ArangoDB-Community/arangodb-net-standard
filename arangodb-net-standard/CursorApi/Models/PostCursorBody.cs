@@ -55,6 +55,11 @@ namespace ArangoDBNetStandard.CursorApi.Models
         public long? MemoryLimit { get; set; }
 
         /// <summary>
+        /// Gets or set the stream transaction Id.
+        /// </summary>
+        public string TransactionId { get; set; }
+
+        /// <summary>
         /// The time-to-live for the cursor (in seconds).
         /// The cursor will be removed on the server automatically after the specified amount of time.
         /// This is useful to ensure garbage collection of cursors that are not fully fetched by clients.
