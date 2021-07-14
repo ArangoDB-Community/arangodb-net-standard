@@ -208,7 +208,7 @@ namespace ArangoDBNetStandard.Transport.Http
                 Content = new ByteArrayContent(content)
             };
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -253,7 +253,7 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <returns></returns>
         public async Task<IApiClientResponse> GetAsync(string requestUri)
         {
-            var response = await _client.GetAsync(requestUri);
+            var response = await _client.GetAsync(requestUri).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -271,7 +271,7 @@ namespace ArangoDBNetStandard.Transport.Http
                 Content = new ByteArrayContent(content)
             };
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -294,7 +294,7 @@ namespace ArangoDBNetStandard.Transport.Http
                     request.Headers.Add(key, webHeaderCollection[key]);
                 }
             }
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 

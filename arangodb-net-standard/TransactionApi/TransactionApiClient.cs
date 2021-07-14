@@ -62,9 +62,9 @@ namespace ArangoDBNetStandard.TransactionApi
             PostTransactionBody body)
         {
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _client.PostAsync(_transactionApiPath, content))
+            using (var response = await _client.PostAsync(_transactionApiPath, content).ConfigureAwait(false))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     return DeserializeJsonFromStream<PostTransactionResponse<T>>(stream);
@@ -90,9 +90,9 @@ namespace ArangoDBNetStandard.TransactionApi
         public virtual async Task<StreamTransactionResponse> AbortTransaction(string transactionId)
         {
             string completeAbortTransactionPath = string.Format(_streamTransactionApiPath, transactionId);
-            using (var response = await _client.DeleteAsync(completeAbortTransactionPath))
+            using (var response = await _client.DeleteAsync(completeAbortTransactionPath).ConfigureAwait(false))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     return DeserializeJsonFromStream<StreamTransactionResponse>(stream);
@@ -119,9 +119,9 @@ namespace ArangoDBNetStandard.TransactionApi
         {
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             string beginTransactionPath = string.Format(_streamTransactionApiPath, "begin");
-            using (var response = await _client.PostAsync(beginTransactionPath, content))
+            using (var response = await _client.PostAsync(beginTransactionPath, content).ConfigureAwait(false))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     return DeserializeJsonFromStream<StreamTransactionResponse>(stream);
@@ -147,9 +147,9 @@ namespace ArangoDBNetStandard.TransactionApi
         public virtual async Task<StreamTransactionResponse> CommitTransaction(string transactionId)
         {
             string completeCommitTransactionPath = string.Format(_streamTransactionApiPath, transactionId);
-            using (var response = await _client.PutAsync(completeCommitTransactionPath, Array.Empty<byte>()))
+            using (var response = await _client.PutAsync(completeCommitTransactionPath, Array.Empty<byte>()).ConfigureAwait(false))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     return DeserializeJsonFromStream<StreamTransactionResponse>(stream);
@@ -169,9 +169,9 @@ namespace ArangoDBNetStandard.TransactionApi
         /// <returns>Response from ArangoDB with all running transactions.</returns>
         public virtual async Task<StreamTransactions> GetAllRunningTransactions()
         {
-            using (var response = await _client.GetAsync(_transactionApiPath))
+            using (var response = await _client.GetAsync(_transactionApiPath).ConfigureAwait(false))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     return DeserializeJsonFromStream<StreamTransactions>(stream);
@@ -194,9 +194,9 @@ namespace ArangoDBNetStandard.TransactionApi
         public virtual async Task<StreamTransactionResponse> GetTransactionStatus(string transactionId)
         {
             string getTransactionPath = string.Format(_streamTransactionApiPath, transactionId);
-            using (var response = await _client.GetAsync(getTransactionPath))
+            using (var response = await _client.GetAsync(getTransactionPath).ConfigureAwait(false))
             {
-                var stream = await response.Content.ReadAsStreamAsync();
+                var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     return DeserializeJsonFromStream<StreamTransactionResponse>(stream);

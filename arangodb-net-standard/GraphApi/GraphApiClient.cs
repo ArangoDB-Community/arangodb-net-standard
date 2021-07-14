@@ -70,14 +70,14 @@ namespace ArangoDBNetStandard.GraphApi
 
             var content = GetContent(postGraphBody, new ApiClientSerializationOptions(true, true));
 
-            using (var response = await _transport.PostAsync(uri, content))
+            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PostGraphResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -92,14 +92,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public virtual async Task<GetGraphsResponse> GetGraphsAsync()
         {
-            using (var response = await _transport.GetAsync(_graphApiPath))
+            using (var response = await _transport.GetAsync(_graphApiPath).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<GetGraphsResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -121,14 +121,14 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.DeleteAsync(uriString))
+            using (var response = await _transport.DeleteAsync(uriString).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<DeleteGraphResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -141,14 +141,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public virtual async Task<GetGraphResponse> GetGraphAsync(string graphName)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName)))
+            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName)).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<GetGraphResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -160,14 +160,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public virtual async Task<GetVertexCollectionsResponse> GetVertexCollectionsAsync(string graphName)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex"))
+            using (var response = await _transport.GetAsync(_graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex").ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<GetVertexCollectionsResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -179,14 +179,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public virtual async Task<GetEdgeCollectionsResponse> GetEdgeCollectionsAsync(string graphName)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge"))
+            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge").ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<GetEdgeCollectionsResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -211,14 +211,14 @@ namespace ArangoDBNetStandard.GraphApi
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge";
 
-            using (var response = await _transport.PostAsync(uri, content))
+            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PostEdgeDefinitionResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -238,14 +238,14 @@ namespace ArangoDBNetStandard.GraphApi
 
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
 
-            using (var response = await _transport.PostAsync(uri, content))
+            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PostVertexCollectionResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -275,14 +275,14 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
             var content = GetContent(vertex, serializationOptions);
-            using (var response = await _transport.PostAsync(uri, content))
+            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PostVertexResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -307,14 +307,14 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.DeleteAsync(uri))
+            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<DeleteEdgeDefinitionResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -340,14 +340,14 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.DeleteAsync(uri))
+            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<DeleteVertexCollectionResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -385,14 +385,14 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.PostAsync(uri, content))
+            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PostEdgeResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -439,14 +439,14 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri))
+            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<GetEdgeResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -498,14 +498,14 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.DeleteAsync(uri))
+            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<DeleteEdgeResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -552,14 +552,14 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.GetAsync(uri))
+            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<GetVertexResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -607,14 +607,14 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri))
+            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<DeleteVertexResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -676,14 +676,14 @@ namespace ArangoDBNetStandard.GraphApi
             }
 
             var content = GetContent(body, new ApiClientSerializationOptions(false, false));
-            using (var response = await _transport.PatchAsync(uri, content))
+            using (var response = await _transport.PatchAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PatchVertexResponse<U>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -739,14 +739,14 @@ namespace ArangoDBNetStandard.GraphApi
             }
 
             var content = GetContent(edge, new ApiClientSerializationOptions(false, false));
-            using (var response = await _transport.PutAsync(uri, content))
+            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PutEdgeResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -775,14 +775,14 @@ namespace ArangoDBNetStandard.GraphApi
                 uriString += "?" + query.ToQueryString();
             }
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uriString, content))
+            using (var response = await _transport.PutAsync(uriString, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PutEdgeDefinitionResponse>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -841,14 +841,14 @@ namespace ArangoDBNetStandard.GraphApi
             }
 
             var content = GetContent(edge, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PatchAsync(uri, content))
+            using (var response = await _transport.PatchAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PatchEdgeResponse<U>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -903,14 +903,14 @@ namespace ArangoDBNetStandard.GraphApi
             }
 
             var content = GetContent(vertex, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content))
+            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PutVertexResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
     }

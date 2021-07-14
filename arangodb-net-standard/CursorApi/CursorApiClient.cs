@@ -100,7 +100,7 @@ namespace ArangoDBNetStandard.CursorApi
                 MemoryLimit = memoryLimit,
                 TransactionId = transactionId,
                 Ttl = ttl
-            });
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -117,10 +117,10 @@ namespace ArangoDBNetStandard.CursorApi
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<CursorResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -139,11 +139,10 @@ namespace ArangoDBNetStandard.CursorApi
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<DeleteCursorResponse>(stream);
                 }
-
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
 
@@ -162,11 +161,10 @@ namespace ArangoDBNetStandard.CursorApi
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync();
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PutCursorResponse<T>>(stream);
                 }
-
-                throw await GetApiErrorException(response);
+                throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
     }
