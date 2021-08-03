@@ -184,14 +184,10 @@ namespace ArangoDBNetStandard.Transport.Http
         /// Sends a DELETE request using <see cref="HttpClient"/>.
         /// </summary>
         /// <param name="requestUri"></param>
-        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> DeleteAsync(
-            string requestUri, WebHeaderCollection webHeaderCollection = null)
+        public async Task<IApiClientResponse> DeleteAsync(string requestUri)
         {
-            var request = new HttpRequestMessage(HttpMethod.Delete, requestUri);
-            ApplyHeaders(webHeaderCollection, request.Headers);
-            var response = await _client.SendAsync(request);
+            var response = await _client.DeleteAsync(requestUri);
             return new HttpApiClientResponse(response);
         }
 
@@ -234,14 +230,12 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="content">The content of the request, must not be null.</param>
-        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> PutAsync(
-            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null)
+            string requestUri, byte[] content)
         {
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
-            ApplyHeaders(webHeaderCollection, httpContent.Headers);
             var response = await _client.PutAsync(requestUri, httpContent);
             return new HttpApiClientResponse(response);
         }

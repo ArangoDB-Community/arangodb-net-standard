@@ -1,9 +1,9 @@
-﻿using ArangoDBNetStandard.CursorApi.Models;
-using ArangoDBNetStandard.Serialization;
-using ArangoDBNetStandard.Transport;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using ArangoDBNetStandard.CursorApi.Models;
+using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Transport;
 
 namespace ArangoDBNetStandard.CursorApi
 {
@@ -48,16 +48,16 @@ namespace ArangoDBNetStandard.CursorApi
         /// <summary>
         /// Method to get the header collection.
         /// </summary>
-        /// <param name="body">The <see cref="PostCursorBody"/> values.</param>
+        /// <param name="headerProperties">The <see cref="HeaderProperties"/> values.</param>
         /// <returns><see cref="WebHeaderCollection"/> values.</returns>
-        private static WebHeaderCollection GetHeaderCollection(PostCursorBody body)
+        private static WebHeaderCollection GetHeaderCollection(HeaderProperties headerProperties)
         {
             var headerCollection = new WebHeaderCollection();
-            if (body != null)
+            if (headerProperties != null)
             {
-                if (!string.IsNullOrWhiteSpace(body.TransactionId))
+                if (!string.IsNullOrWhiteSpace(headerProperties.TransactionId))
                 {
-                    headerCollection.Add("x-arango-trx-id", body.TransactionId);
+                    headerCollection.Add("x-arango-trx-id", headerProperties.TransactionId);
                 }
             }
 
@@ -89,30 +89,37 @@ namespace ArangoDBNetStandard.CursorApi
                 int? ttl = null,
                 string transactionId = null)
         {
-            return await PostCursorAsync<T>(new PostCursorBody
+            var headerProperties = new HeaderProperties();
+            if (!string.IsNullOrWhiteSpace(transactionId))
             {
-                Query = query,
-                BindVars = bindVars,
-                Options = options,
-                Count = count,
-                BatchSize = batchSize,
-                Cache = cache,
-                MemoryLimit = memoryLimit,
-                TransactionId = transactionId,
-                Ttl = ttl
-            }).ConfigureAwait(false);
+                headerProperties.TransactionId = transactionId;
+            }
+
+            return await PostCursorAsync<T>(
+                new PostCursorBody
+                {
+                    Query = query,
+                    BindVars = bindVars,
+                    Options = options,
+                    Count = count,
+                    BatchSize = batchSize,
+                    Cache = cache,
+                    MemoryLimit = memoryLimit,
+                    Ttl = ttl
+                }, headerProperties).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Execute an AQL query, creating a cursor which can be used to page query results.
         /// </summary>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
+        /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <returns></returns>
         public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
-            PostCursorBody postCursorBody)
+            PostCursorBody postCursorBody, HeaderProperties headerProperties = null)
         {
             var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
-            var headerCollection = GetHeaderCollection(postCursorBody);
+            var headerCollection = GetHeaderCollection(headerProperties);
             using (var response = await _client.PostAsync(_cursorApiPath, content, headerCollection))
             {
                 if (response.IsSuccessStatusCode)
@@ -120,6 +127,7 @@ namespace ArangoDBNetStandard.CursorApi
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<CursorResponse<T>>(stream);
                 }
+
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
@@ -129,19 +137,17 @@ namespace ArangoDBNetStandard.CursorApi
         /// DELETE /_api/cursor/{cursor-identifier}
         /// </summary>
         /// <param name="cursorId">The id of the cursor to delete.</param>
-        /// <param name="transactionId">Optional. The stream transaction Id.</param>
         /// <returns></returns>
-        public virtual async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId, string transactionId = null)
+        public virtual async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId)
         {
-            var headerCollection = GetHeaderCollection(new PostCursorBody { TransactionId = transactionId });
-            using (var response = await _client.DeleteAsync(
-                _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId), headerCollection))
+            using (var response = await _client.DeleteAsync(_cursorApiPath + "/" + WebUtility.UrlEncode(cursorId)))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<DeleteCursorResponse>(stream);
                 }
+
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
@@ -151,19 +157,18 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <typeparam name="T">Result type to deserialize to</typeparam>
         /// <param name="cursorId">ID of the existing query cursor.</param>
-        /// <param name="transactionId">Optional. The stream transaction Id.</param>
         /// <returns></returns>
-        public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId, string transactionId = null)
+        public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId)
         {
             string uri = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
-            var headerCollection = GetHeaderCollection(new PostCursorBody { TransactionId = transactionId });
-            using (var response = await _client.PutAsync(uri, new byte[0], headerCollection))
+            using (var response = await _client.PutAsync(uri, new byte[0]))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<PutCursorResponse<T>>(stream);
                 }
+
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }

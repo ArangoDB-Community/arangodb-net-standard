@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandardTest.DocumentApi.Models;
 using Moq;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.DocumentApi
@@ -108,8 +108,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
-                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
+            mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>()))
+                .Returns((string uri) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -619,8 +619,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<WebHeaderCollection>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns((string uri, byte[] content) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -725,8 +725,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<WebHeaderCollection>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Returns((string uri, byte[] content) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
