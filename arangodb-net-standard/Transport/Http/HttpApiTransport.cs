@@ -187,7 +187,7 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <returns></returns>
         public async Task<IApiClientResponse> DeleteAsync(string requestUri)
         {
-            var response = await _client.DeleteAsync(requestUri);
+            var response = await _client.DeleteAsync(requestUri).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -221,7 +221,7 @@ namespace ArangoDBNetStandard.Transport.Http
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
             ApplyHeaders(webHeaderCollection, httpContent.Headers);
-            var response = await _client.PostAsync(requestUri, httpContent);
+            var response = await _client.PostAsync(requestUri, httpContent).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -236,7 +236,7 @@ namespace ArangoDBNetStandard.Transport.Http
         {
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
-            var response = await _client.PutAsync(requestUri, httpContent);
+            var response = await _client.PutAsync(requestUri, httpContent).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 

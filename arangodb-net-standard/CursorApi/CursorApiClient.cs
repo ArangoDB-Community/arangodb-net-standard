@@ -120,7 +120,7 @@ namespace ArangoDBNetStandard.CursorApi
         {
             var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
             var headerCollection = GetHeaderCollection(headerProperties);
-            using (var response = await _client.PostAsync(_cursorApiPath, content, headerCollection))
+            using (var response = await _client.PostAsync(_cursorApiPath, content, headerCollection).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -140,7 +140,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <returns></returns>
         public virtual async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId)
         {
-            using (var response = await _client.DeleteAsync(_cursorApiPath + "/" + WebUtility.UrlEncode(cursorId)))
+            using (var response = await _client.DeleteAsync(_cursorApiPath + "/" + WebUtility.UrlEncode(cursorId)).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -161,7 +161,7 @@ namespace ArangoDBNetStandard.CursorApi
         public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId)
         {
             string uri = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
-            using (var response = await _client.PutAsync(uri, new byte[0]))
+            using (var response = await _client.PutAsync(uri, new byte[0]).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
