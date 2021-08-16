@@ -41,7 +41,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <returns></returns>
         Task<CursorResponse<T>> PostCursorAsync<T>(
-            PostCursorBody postCursorBody, HeaderProperties headerProperties);
+            PostCursorBody postCursorBody, CursorHeaderProperties headerProperties);
 
         /// <summary>
         /// Deletes an existing cursor and frees the resources associated with it.

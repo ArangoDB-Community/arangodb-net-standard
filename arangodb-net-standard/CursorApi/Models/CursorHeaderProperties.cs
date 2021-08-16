@@ -3,11 +3,11 @@
     /// <summary>
     /// Class representing the additional header properties for Cursor Api.
     /// </summary>
-    public class HeaderProperties
+    public class CursorHeaderProperties
     {
         /// <summary>
         /// Gets or sets the stream transaction Id.
-        /// </summary>    
+        /// </summary>
         public string TransactionId { get; set; }
     }
 }

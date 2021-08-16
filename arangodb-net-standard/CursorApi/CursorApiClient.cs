@@ -48,9 +48,9 @@ namespace ArangoDBNetStandard.CursorApi
         /// <summary>
         /// Method to get the header collection.
         /// </summary>
-        /// <param name="headerProperties">The <see cref="HeaderProperties"/> values.</param>
+        /// <param name="headerProperties">The <see cref="CursorHeaderProperties"/> values.</param>
         /// <returns><see cref="WebHeaderCollection"/> values.</returns>
-        private static WebHeaderCollection GetHeaderCollection(HeaderProperties headerProperties)
+        protected virtual WebHeaderCollection GetHeaderCollection(CursorHeaderProperties headerProperties)
         {
             var headerCollection = new WebHeaderCollection();
             if (headerProperties != null)
@@ -89,7 +89,7 @@ namespace ArangoDBNetStandard.CursorApi
                 int? ttl = null,
                 string transactionId = null)
         {
-            var headerProperties = new HeaderProperties();
+            var headerProperties = new CursorHeaderProperties();
             if (!string.IsNullOrWhiteSpace(transactionId))
             {
                 headerProperties.TransactionId = transactionId;
@@ -116,7 +116,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <returns></returns>
         public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
-            PostCursorBody postCursorBody, HeaderProperties headerProperties = null)
+            PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null)
         {
             var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
             var headerCollection = GetHeaderCollection(headerProperties);

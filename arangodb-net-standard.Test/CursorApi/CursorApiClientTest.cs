@@ -217,6 +217,58 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
+        public async Task PostCursorAsync_ShouldUseHeaderProperties()
+        {
+            // Mock the IApiClientTransport.
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            // Mock the IApiClientResponse.
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            // Mock the IApiClientResponseContent.
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            // Setup the mocked api client response.
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(true);
+
+            // Setup the mocked api client transport.
+            WebHeaderCollection requestHeader = null;
+            mockTransport.Setup(x => x.PostAsync(
+                It.IsAny<string>(),
+                It.IsAny<byte[]>(),
+                It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                {
+                    requestHeader = webHeaderCollection;
+                    return Task.FromResult(mockResponse.Object);
+                });
+
+            string transactionHeaderKey = "x-arango-trx-id";
+            string dummyTransactionId = "dummy transaction Id";
+
+            // Call the method to create the cursor.
+            var apiClient = new CursorApiClient(mockTransport.Object);
+            await apiClient.PostCursorAsync<MyModel>(
+                 new PostCursorBody
+                 {
+                     Query = "FOR doc IN [{ myProperty: CONCAT('This is a ', @testString) }] LIMIT 1 RETURN doc",
+                     BindVars = new Dictionary<string, object> { ["testString"] = "robbery" }
+                 },
+                 new CursorHeaderProperties
+                 {
+                     TransactionId = dummyTransactionId
+                 });
+
+            // Check that the header and values are there.
+            Assert.NotNull(requestHeader);
+            Assert.Contains(transactionHeaderKey, requestHeader.AllKeys);
+            Assert.Equal(dummyTransactionId, requestHeader.Get(transactionHeaderKey));
+        }
+
+        [Fact]
         public async Task PutCursorAsync_ShouldSucceed()
         {
             var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
