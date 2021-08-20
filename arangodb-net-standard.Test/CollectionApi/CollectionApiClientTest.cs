@@ -1,13 +1,13 @@
-﻿using ArangoDBNetStandard;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Transport;
 using Moq;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.CollectionApi
@@ -160,8 +160,9 @@ namespace ArangoDBNetStandardTest.CollectionApi
 
             mockTransport.Setup(x => x.PostAsync(
                 It.IsAny<string>(),
-                It.IsAny<byte[]>()))
-                .Returns((string uri, byte[] content) =>
+                It.IsAny<byte[]>(),
+                It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);

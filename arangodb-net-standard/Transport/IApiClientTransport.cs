@@ -14,8 +14,10 @@ namespace ArangoDBNetStandard.Transport
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        Task<IApiClientResponse> PostAsync(string requestUri, byte[] content);
+        Task<IApiClientResponse> PostAsync(
+            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null);
 
         /// <summary>
         /// Send a DELETE request.
@@ -38,7 +40,8 @@ namespace ArangoDBNetStandard.Transport
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        Task<IApiClientResponse> PutAsync(string requestUri, byte[] content);
+        Task<IApiClientResponse> PutAsync(
+            string requestUri, byte[] content);
 
         /// <summary>
         /// Send a GET request.

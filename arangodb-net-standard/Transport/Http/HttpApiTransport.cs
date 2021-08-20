@@ -41,6 +41,22 @@ namespace ArangoDBNetStandard.Transport.Http
         }
 
         /// <summary>
+        /// Method to apply the additional headers.
+        /// </summary>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
+        /// <param name="headers">The header to update.</param>
+        private static void ApplyHeaders(WebHeaderCollection webHeaderCollection, HttpHeaders headers)
+        {
+            if (webHeaderCollection != null)
+            {
+                foreach (var key in webHeaderCollection.AllKeys)
+                {
+                    headers.Add(key, webHeaderCollection[key]);
+                }
+            }
+        }
+
+        /// <summary>
         /// Get an instance of <see cref="HttpApiTransport"/> that uses no authentication.
         /// </summary>
         /// <param name="hostUri"></param>
@@ -197,11 +213,14 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="content">The content of the request, must not be null.</param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> PostAsync(string requestUri, byte[] content)
+        public async Task<IApiClientResponse> PostAsync(
+            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null)
         {
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
+            ApplyHeaders(webHeaderCollection, httpContent.Headers);
             var response = await _client.PostAsync(requestUri, httpContent).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -212,7 +231,8 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="content">The content of the request, must not be null.</param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> PutAsync(string requestUri, byte[] content)
+        public async Task<IApiClientResponse> PutAsync(
+            string requestUri, byte[] content)
         {
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);

@@ -1,12 +1,12 @@
-﻿using ArangoDBNetStandard;
-using ArangoDBNetStandard.CursorApi;
-using ArangoDBNetStandard.CursorApi.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using ArangoDBNetStandard;
+using ArangoDBNetStandard.CursorApi;
+using ArangoDBNetStandard.CursorApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using Moq;
@@ -187,7 +187,8 @@ namespace ArangoDBNetStandardTest.CursorApi
 
             mockTransport.Setup(x => x.PostAsync(
                     It.IsAny<string>(),
-                    It.IsAny<byte[]>()))
+                    It.IsAny<byte[]>(),
+                    It.IsAny<WebHeaderCollection>()))
                 .Returns(Task.FromResult(mockResponse.Object));
 
             var cursorApi = new CursorApiClient(mockTransport.Object);
@@ -213,6 +214,58 @@ namespace ArangoDBNetStandardTest.CursorApi
             Assert.NotNull(ex.Message);
             Assert.Contains("while Deserializing the data response", ex.Message);
             Assert.NotNull(ex.InnerException);
+        }
+
+        [Fact]
+        public async Task PostCursorAsync_ShouldUseHeaderProperties()
+        {
+            // Mock the IApiClientTransport.
+            var mockTransport = new Mock<IApiClientTransport>();
+
+            // Mock the IApiClientResponse.
+            var mockResponse = new Mock<IApiClientResponse>();
+
+            // Mock the IApiClientResponseContent.
+            var mockResponseContent = new Mock<IApiClientResponseContent>();
+
+            // Setup the mocked api client response.
+            mockResponse.Setup(x => x.Content)
+                .Returns(mockResponseContent.Object);
+            mockResponse.Setup(x => x.IsSuccessStatusCode)
+                .Returns(true);
+
+            // Setup the mocked api client transport.
+            WebHeaderCollection requestHeader = null;
+            mockTransport.Setup(x => x.PostAsync(
+                It.IsAny<string>(),
+                It.IsAny<byte[]>(),
+                It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                {
+                    requestHeader = webHeaderCollection;
+                    return Task.FromResult(mockResponse.Object);
+                });
+
+            string transactionHeaderKey = "x-arango-trx-id";
+            string dummyTransactionId = "dummy transaction Id";
+
+            // Call the method to create the cursor.
+            var apiClient = new CursorApiClient(mockTransport.Object);
+            await apiClient.PostCursorAsync<MyModel>(
+                 new PostCursorBody
+                 {
+                     Query = "FOR doc IN [{ myProperty: CONCAT('This is a ', @testString) }] LIMIT 1 RETURN doc",
+                     BindVars = new Dictionary<string, object> { ["testString"] = "robbery" }
+                 },
+                 new CursorHeaderProperties
+                 {
+                     TransactionId = dummyTransactionId
+                 });
+
+            // Check that the header and values are there.
+            Assert.NotNull(requestHeader);
+            Assert.Contains(transactionHeaderKey, requestHeader.AllKeys);
+            Assert.Equal(dummyTransactionId, requestHeader.Get(transactionHeaderKey));
         }
 
         [Fact]

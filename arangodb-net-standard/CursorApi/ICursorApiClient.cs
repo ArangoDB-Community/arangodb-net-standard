@@ -1,7 +1,6 @@
-﻿using ArangoDBNetStandard.CursorApi.Models;
-using ArangoDBNetStandard.Serialization;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ArangoDBNetStandard.CursorApi.Models;
 
 namespace ArangoDBNetStandard.CursorApi
 {
@@ -22,6 +21,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cache"></param>
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>
         /// <returns></returns>
         Task<CursorResponse<T>> PostCursorAsync<T>(
                 string query,
@@ -31,15 +31,17 @@ namespace ArangoDBNetStandard.CursorApi
                 long? batchSize = null,
                 bool? cache = null,
                 long? memoryLimit = null,
-                int? ttl = null);
+                int? ttl = null,
+                string transactionId = null);
 
         /// <summary>
         /// Execute an AQL query, creating a cursor which can be used to page query results.
         /// </summary>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
+        /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <returns></returns>
         Task<CursorResponse<T>> PostCursorAsync<T>(
-            PostCursorBody postCursorBody);
+            PostCursorBody postCursorBody, CursorHeaderProperties headerProperties);
 
         /// <summary>
         /// Deletes an existing cursor and frees the resources associated with it.
