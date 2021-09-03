@@ -291,8 +291,8 @@ namespace ArangoDBNetStandardTest.UserApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>()))
-                .Returns((string uri) =>
+            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -375,8 +375,8 @@ namespace ArangoDBNetStandardTest.UserApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>()))
-                .Returns((string uri) =>
+            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -512,8 +512,8 @@ namespace ArangoDBNetStandardTest.UserApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>()))
-                .Returns((string uri) =>
+            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);

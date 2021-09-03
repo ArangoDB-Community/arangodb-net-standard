@@ -184,10 +184,14 @@ namespace ArangoDBNetStandard.Transport.Http
         /// Sends a DELETE request using <see cref="HttpClient"/>.
         /// </summary>
         /// <param name="requestUri"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> DeleteAsync(string requestUri)
+        public async Task<IApiClientResponse> DeleteAsync(
+            string requestUri, WebHeaderCollection webHeaderCollection = null)
         {
-            var response = await _client.DeleteAsync(requestUri).ConfigureAwait(false);
+            var request = new HttpRequestMessage(HttpMethod.Delete, requestUri);
+            ApplyHeaders(webHeaderCollection, request.Headers);
+            var response = await _client.SendAsync(request).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -196,14 +200,18 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> DeleteAsync(string requestUri, byte[] content)
+        public async Task<IApiClientResponse> DeleteAsync(
+            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, requestUri)
             {
                 Content = new ByteArrayContent(content)
             };
+
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
+            ApplyHeaders(webHeaderCollection, request.Content.Headers);
             var response = await _client.SendAsync(request).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -230,12 +238,14 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="content">The content of the request, must not be null.</param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> PutAsync(
-            string requestUri, byte[] content)
+            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null)
         {
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
+            ApplyHeaders(webHeaderCollection, httpContent.Headers);
             var response = await _client.PutAsync(requestUri, httpContent).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -244,10 +254,13 @@ namespace ArangoDBNetStandard.Transport.Http
         /// Sends a GET request using <see cref="HttpClient"/>.
         /// </summary>
         /// <param name="requestUri">The content of the request, must not be null.</param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> GetAsync(string requestUri)
+        public async Task<IApiClientResponse> GetAsync(string requestUri, WebHeaderCollection webHeaderCollection = null)
         {
-            var response = await _client.GetAsync(requestUri).ConfigureAwait(false);
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            ApplyHeaders(webHeaderCollection, request.Headers);
+            var response = await _client.SendAsync(request).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -256,15 +269,19 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="content">The content of the request, must not be null.</param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> PatchAsync(string requestUri, byte[] content)
+        public async Task<IApiClientResponse> PatchAsync(
+            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null)
         {
             var method = new HttpMethod("PATCH");
             var request = new HttpRequestMessage(method, requestUri)
             {
                 Content = new ByteArrayContent(content)
             };
+
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
+            ApplyHeaders(webHeaderCollection, request.Content.Headers);
             var response = await _client.SendAsync(request).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -273,22 +290,15 @@ namespace ArangoDBNetStandard.Transport.Http
         /// Send a HEAD request using <see cref="HttpClient"/>
         /// </summary>
         /// <param name="requestUri"></param>
-        /// <param name="webHeaderCollection"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> HeadAsync(
             string requestUri,
             WebHeaderCollection webHeaderCollection = null)
         {
             var request = new HttpRequestMessage(HttpMethod.Head, requestUri);
-
-            if (webHeaderCollection != null)
-            {
-                foreach (var key in webHeaderCollection.AllKeys)
-                {
-                    request.Headers.Add(key, webHeaderCollection[key]);
-                }
-            }
-            var response = await _client.SendAsync(request).ConfigureAwait(false);
+            ApplyHeaders(webHeaderCollection, request.Headers);
+            var response = await _client.SendAsync(request);
             return new HttpApiClientResponse(response);
         }
 
