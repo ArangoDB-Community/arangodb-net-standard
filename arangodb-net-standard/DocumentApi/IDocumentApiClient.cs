@@ -360,6 +360,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <remarks>
         /// 200: is returned if the document was found. 
         /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
+        /// 400: is returned if the "TransactionId" header is given and the transactionId does not exist.
         /// 404: is returned if the document or collection was not found. 
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>
@@ -381,6 +382,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <remarks>
         /// 200: is returned if the document was found. 
         /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
+        /// 400: is returned if the "TransactionId" header is given and the transactionId does not exist.
         /// 404: is returned if the document or collection was not found. 
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>

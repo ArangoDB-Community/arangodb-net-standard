@@ -246,7 +246,6 @@ namespace ArangoDBNetStandardTest.CursorApi
                     return Task.FromResult(mockResponse.Object);
                 });
 
-            string transactionHeaderKey = "x-arango-trx-id";
             string dummyTransactionId = "dummy transaction Id";
 
             // Call the method to create the cursor.
@@ -264,8 +263,8 @@ namespace ArangoDBNetStandardTest.CursorApi
 
             // Check that the header and values are there.
             Assert.NotNull(requestHeader);
-            Assert.Contains(transactionHeaderKey, requestHeader.AllKeys);
-            Assert.Equal(dummyTransactionId, requestHeader.Get(transactionHeaderKey));
+            Assert.Contains(CustomHttpHeaders.StreamTransactionHeader, requestHeader.AllKeys);
+            Assert.Equal(dummyTransactionId, requestHeader.Get(CustomHttpHeaders.StreamTransactionHeader));
         }
 
         [Fact]

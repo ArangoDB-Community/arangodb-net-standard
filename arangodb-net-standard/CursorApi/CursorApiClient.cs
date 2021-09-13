@@ -57,7 +57,7 @@ namespace ArangoDBNetStandard.CursorApi
             {
                 if (!string.IsNullOrWhiteSpace(headerProperties.TransactionId))
                 {
-                    headerCollection.Add("x-arango-trx-id", headerProperties.TransactionId);
+                    headerCollection.Add(CustomHttpHeaders.StreamTransactionHeader, headerProperties.TransactionId);
                 }
             }
 

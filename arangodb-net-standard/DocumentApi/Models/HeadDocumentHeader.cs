@@ -28,7 +28,7 @@ namespace ArangoDBNetStandard.DocumentApi.Models
 
             if (TransactionId != null)
             {
-                collection.Add("x-arango-trx-id", TransactionId);
+                collection.Add(CustomHttpHeaders.StreamTransactionHeader, TransactionId);
             }
 
             return collection;
