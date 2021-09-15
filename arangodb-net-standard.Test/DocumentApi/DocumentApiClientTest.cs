@@ -1088,6 +1088,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
+        [Trait("Feature", "StreamTransaction")]
         public async Task ReadDocumentHeaderAsync_ShouldReturnOk_WhenTransactionIdIsGivenAndIsTheSame()
         {
             // Post a single document.
@@ -1118,6 +1119,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         }
 
         [Fact]
+        [Trait("Feature", "StreamTransaction")]
         public async Task ReadDocumentHeaderAsync_ShouldReturnNotFound_WhenTransctionIdIsGiveAndIsNotTheSame()
         {
             string dummyTransactionId = "Bogus transaction Id";
