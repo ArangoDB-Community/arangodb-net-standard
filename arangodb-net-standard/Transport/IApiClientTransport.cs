@@ -23,47 +23,54 @@ namespace ArangoDBNetStandard.Transport
         /// Send a DELETE request.
         /// </summary>
         /// <param name="requestUri"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        Task<IApiClientResponse> DeleteAsync(string requestUri);
+        Task<IApiClientResponse> DeleteAsync(string requestUri, WebHeaderCollection webHeaderCollection = null);
 
         /// <summary>
         /// Send a DELETE request with body content.
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        Task<IApiClientResponse> DeleteAsync(string requestUri, byte[] content);
+        Task<IApiClientResponse> DeleteAsync(
+            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null);
 
         /// <summary>
         /// Send a PUT request.
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
         Task<IApiClientResponse> PutAsync(
-            string requestUri, byte[] content);
+            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null);
 
         /// <summary>
         /// Send a GET request.
         /// </summary>
         /// <param name="requestUri"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        Task<IApiClientResponse> GetAsync(string requestUri);
+        Task<IApiClientResponse> GetAsync(string requestUri, WebHeaderCollection webHeaderCollection = null);
 
         /// <summary>
         /// Send a PATCH request.
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        Task<IApiClientResponse> PatchAsync(string requestUri, byte[] content);
+        Task<IApiClientResponse> PatchAsync(
+            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null);
 
         /// <summary>
         /// Send a HEAD Request.
         /// </summary>
         /// <param name="requestUri"></param>
-        /// <param name="httpRequestHeaders"></param>
+        /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <returns></returns>
-        Task<IApiClientResponse> HeadAsync(string requestUri, WebHeaderCollection httpRequestHeaders);
+        Task<IApiClientResponse> HeadAsync(string requestUri, WebHeaderCollection webHeaderCollection = null);
     }
 }

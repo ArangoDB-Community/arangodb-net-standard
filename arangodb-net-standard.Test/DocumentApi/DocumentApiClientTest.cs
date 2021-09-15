@@ -1,15 +1,16 @@
-﻿using ArangoDBNetStandard;
-using ArangoDBNetStandard.DocumentApi;
-using ArangoDBNetStandard.DocumentApi.Models;
-using ArangoDBNetStandard.Transport;
-using ArangoDBNetStandardTest.DocumentApi.Models;
-using Moq;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using ArangoDBNetStandard;
+using ArangoDBNetStandard.DocumentApi;
+using ArangoDBNetStandard.DocumentApi.Models;
+using ArangoDBNetStandard.TransactionApi.Models;
+using ArangoDBNetStandard.Transport;
+using ArangoDBNetStandardTest.DocumentApi.Models;
+using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.DocumentApi
@@ -108,8 +109,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>()))
-                .Returns((string uri) =>
+            mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -289,8 +290,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
-                .Returns((string uri, byte[] content) =>
+            mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -619,8 +620,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
-                .Returns((string uri, byte[] content) =>
+            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -725,8 +726,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
-                .Returns((string uri, byte[] content) =>
+            mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -852,8 +853,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.PatchAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
-                .Returns((string uri, byte[] content) =>
+            mockTransport.Setup(x => x.PatchAsync(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<WebHeaderCollection>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -1084,6 +1085,57 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             Assert.Equal(HttpStatusCode.PreconditionFailed, response.Code);
             Assert.NotEqual($"\"{docResponse._rev}\"", response.Etag.Tag);
+        }
+
+        [Fact]
+        [Trait("Feature", "StreamTransaction")]
+        public async Task ReadDocumentHeaderAsync_ShouldReturnOk_WhenTransactionIdIsGivenAndIsTheSame()
+        {
+            // Post a single document.
+            var docResponse =
+                await _docClient.PostDocumentAsync(_testCollection, new Dictionary<string, object> { ["key"] = "value" });
+
+            // Begin a transaction.
+            var beginTransaction = await _adb.Transaction.BeginTransaction(
+                new StreamTransactionBody
+                {
+                    Collections = new PostTransactionRequestCollections
+                    {
+                        Write = new[] { _testCollection }
+                    }
+                });
+
+            // Get the header fields.
+            var response = await _docClient.HeadDocumentAsync(
+                _testCollection,
+                docResponse._key,
+                new HeadDocumentHeader { TransactionId = beginTransaction.Result.Id });
+
+            // Check for the expected status.
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+
+            // Abort the transaction.
+            await _adb.Transaction.AbortTransaction(beginTransaction.Result.Id);
+        }
+
+        [Fact]
+        [Trait("Feature", "StreamTransaction")]
+        public async Task ReadDocumentHeaderAsync_ShouldReturnNotFound_WhenTransctionIdIsGiveAndIsNotTheSame()
+        {
+            string dummyTransactionId = "Bogus transaction Id";
+
+            // Post a single document.
+            var docResponse =
+                await _docClient.PostDocumentAsync(_testCollection, new Dictionary<string, object> { ["key"] = "value" });
+
+            // Get the header fields.
+            var response = await _docClient.HeadDocumentAsync(
+                _testCollection,
+                docResponse._key,
+                new HeadDocumentHeader { TransactionId = dummyTransactionId });
+
+            // Check for the expected status.
+            Assert.Equal(HttpStatusCode.BadRequest, response.Code);
         }
 
         [Fact]

@@ -1,8 +1,8 @@
-﻿using ArangoDBNetStandard.DocumentApi.Models;
-using ArangoDBNetStandard.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ArangoDBNetStandard.DocumentApi.Models;
+using ArangoDBNetStandard.Serialization;
 
 namespace ArangoDBNetStandard.DocumentApi
 {
@@ -20,12 +20,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<PostDocumentResponse<T>> PostDocumentAsync<T>(
            string collectionName,
            T document,
            PostDocumentsQuery query = null,
-           ApiClientSerializationOptions serializationOptions = null);
+           ApiClientSerializationOptions serializationOptions = null,
+           HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Post a single document with the possibility to specify a different type
@@ -40,12 +42,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<PostDocumentResponse<U>> PostDocumentAsync<T, U>(
            string collectionName,
            T document,
            PostDocumentsQuery query = null,
-           ApiClientSerializationOptions serializationOptions = null);
+           ApiClientSerializationOptions serializationOptions = null,
+           HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Post multiple documents in a single request.
@@ -56,12 +60,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(
            string collectionName,
            IList<T> documents,
            PostDocumentsQuery query = null,
-           ApiClientSerializationOptions serializationOptions = null);
+           ApiClientSerializationOptions serializationOptions = null,
+           HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Replace multiple documents.
@@ -72,12 +78,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
            string collectionName,
            IList<T> documents,
            PutDocumentsQuery query = null,
-           ApiClientSerializationOptions serializationOptions = null);
+           ApiClientSerializationOptions serializationOptions = null,
+           HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Replaces the document with the provided document ID with the one in
@@ -90,12 +98,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="opts"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
             T doc,
             PutDocumentQuery opts = null,
-            ApiClientSerializationOptions serializationOptions = null);
+            ApiClientSerializationOptions serializationOptions = null,
+            HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Replaces the document based on its Document ID with the one in
@@ -107,12 +117,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="doc"></param>
         /// <param name="opts"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string collectionName,
             string documentKey,
             T doc,
-            PutDocumentQuery opts = null);
+            PutDocumentQuery opts = null,
+            HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Get an existing document.
@@ -120,16 +132,18 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
-        Task<T> GetDocumentAsync<T>(string collectionName, string documentKey);
+        Task<T> GetDocumentAsync<T>(string collectionName, string documentKey, HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Get an existing document based on its Document ID.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
-        Task<T> GetDocumentAsync<T>(string documentId);
+        Task<T> GetDocumentAsync<T>(string documentId, HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Get multiple documents.
@@ -138,10 +152,12 @@ namespace ArangoDBNetStandard.DocumentApi
         /// deserialized from the response.</typeparam>
         /// <param name="collectionName">Collection name</param>
         /// <param name="selectors">Document keys to fetch documents for</param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<List<T>> GetDocumentsAsync<T>(
             string collectionName,
-            IList<string> selectors);
+            IList<string> selectors,
+            HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Delete a document.
@@ -155,11 +171,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <param name="query"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string collectionName,
             string documentKey,
-            DeleteDocumentQuery query = null);
+            DeleteDocumentQuery query = null,
+            HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Delete a document based on its document ID.
@@ -172,10 +190,12 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </remarks>
         /// <param name="documentId"></param>
         /// <param name="query"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string documentId,
-            DeleteDocumentQuery query = null);
+            DeleteDocumentQuery query = null,
+            HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Delete a document.
@@ -184,21 +204,25 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <param name="query"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
           string collectionName,
           string documentKey,
-          DeleteDocumentQuery query = null);
+          DeleteDocumentQuery query = null,
+          HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Delete a document based on its document ID.
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="query"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
           string documentId,
-          DeleteDocumentQuery query = null);
+          DeleteDocumentQuery query = null,
+          HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Delete multiple documents based on the passed document selectors.
@@ -213,11 +237,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="selectors"></param>
         /// <param name="query"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(
           string collectionName,
           IList<string> selectors,
-          DeleteDocumentsQuery query = null);
+          DeleteDocumentsQuery query = null,
+          HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Delete multiple documents based on the passed document selectors.
@@ -227,11 +253,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="selectors"></param>
         /// <param name="query"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(
           string collectionName,
           IList<string> selectors,
-          DeleteDocumentsQuery query = null);
+          DeleteDocumentsQuery query = null,
+          HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Partially updates documents, the documents to update are specified
@@ -258,12 +286,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
           string collectionName,
           IList<T> patches,
           PatchDocumentsQuery query = null,
-          ApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null,
+          HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Partially updates the document identified by document-handle.
@@ -282,12 +312,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
           string collectionName,
           string documentKey,
           T body,
-          PatchDocumentQuery query = null);
+          PatchDocumentQuery query = null,
+          HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Partially updates the document identified by document-handle.
@@ -307,12 +339,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <returns></returns>
         Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
           string documentId,
           T body,
           PatchDocumentQuery query = null,
-          ApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null,
+          HeadDocumentHeader headers = null);
 
         /// <summary>
         /// Like GET, but only returns the header fields and not the body. You
@@ -322,10 +356,11 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </summary>
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
-        /// <param name="headers"></param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <remarks>
         /// 200: is returned if the document was found. 
         /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
+        /// 400: is returned if the "TransactionId" header is given and the transactionId does not exist.
         /// 404: is returned if the document or collection was not found. 
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>
@@ -342,11 +377,12 @@ namespace ArangoDBNetStandard.DocumentApi
         /// HEAD/_api/document/{document-handle}
         /// </summary>
         /// <param name="documentId"></param>
-        /// <param name="headers">Object containing a dictionary of Header keys and values</param>
+        /// <param name="headers">The <see cref="HeadDocumentHeader"/> values.</param>
         /// <exception cref="ArgumentException">Document ID is invalid.</exception>
         /// <remarks>
         /// 200: is returned if the document was found. 
         /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
+        /// 400: is returned if the "TransactionId" header is given and the transactionId does not exist.
         /// 404: is returned if the document or collection was not found. 
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>
