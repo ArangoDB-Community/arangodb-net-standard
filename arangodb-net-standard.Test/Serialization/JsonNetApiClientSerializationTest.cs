@@ -2,6 +2,7 @@
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.TransactionApi.Models;
 using ArangoDBNetStandardTest.Serialization.Models;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -11,21 +12,20 @@ namespace ArangoDBNetStandardTest.Serialization
 {
     public class JsonNetApiClientSerializationTest
     {
-
         [Fact]
         public void Serialize_ShouldSucceed()
         {
             var model = new TestModel()
             {
-                NullPropertyToIgnore = null,
-                PropertyToCamelCase = "myvalue",
-                EnumToConvertToString = TestModel.Number.Two
+                NullProperty = null,
+                PropertyToCheckIfCamelCase = "myvalue",
+                EnumToConvert = TestModel.Number.Two
             };
 
             var serialization = new JsonNetApiClientSerialization();
 
             // Perform serialize with camel case option
-            byte[] jsonBytesWithCamelCase = serialization.Serialize(model, 
+            byte[] jsonBytesWithCamelCase = serialization.Serialize(model,
                 new ApiClientSerializationOptions(true, true, true));
             string jsonStringWithCamelCase = Encoding.UTF8.GetString(jsonBytesWithCamelCase);
 
@@ -35,26 +35,26 @@ namespace ArangoDBNetStandardTest.Serialization
             string jsonStringWithoutCamelCase = Encoding.UTF8.GetString(jsonBytesWithoutCamelCase);
 
             // standard property with and without camelCase
-            Assert.Contains("propertyToCamelCase", jsonStringWithCamelCase);
-            Assert.Contains("PropertyToCamelCase", jsonStringWithoutCamelCase);
+            Assert.Contains("propertyToCheckIfCamelCase", jsonStringWithCamelCase);
+            Assert.Contains("PropertyToCheckIfCamelCase", jsonStringWithoutCamelCase);
 
             // Null property should be ignored in both cases
             // (ignore case is important to make sure we don't miss the string 
             // if it is using different casing than we checked for)
             Assert.DoesNotContain(
-                "nullPropertyToIgnore",
+                "nullProperty",
                 jsonStringWithCamelCase,
                 System.StringComparison.OrdinalIgnoreCase);
 
-            Assert.DoesNotContain("nullPropertyToIgnore", 
+            Assert.DoesNotContain("nullProperty",
                 jsonStringWithoutCamelCase,
                 System.StringComparison.OrdinalIgnoreCase);
 
             // We expect enum conversion to string, as well as camelCase
-            Assert.Contains("enumToConvertToString", jsonStringWithCamelCase);
+            Assert.Contains("enumToConvert", jsonStringWithCamelCase);
 
             // We expect enum conversion to string, but not camelCase
-            Assert.Contains("EnumToConvertToString", jsonStringWithoutCamelCase);
+            Assert.Contains("EnumToConvert", jsonStringWithoutCamelCase);
         }
 
         [Fact]
@@ -62,9 +62,35 @@ namespace ArangoDBNetStandardTest.Serialization
         {
             var model = new TestModel()
             {
-                NullPropertyToIgnore = null,
-                PropertyToCamelCase = "myvalue",
-                EnumToConvertToString = TestModel.Number.Two
+                NullProperty = null,
+                PropertyToCheckIfCamelCase = "myvalue",
+                EnumToConvert = TestModel.Number.Two,
+                PropertyWithDifferentJsonName = "aaaaaaa",
+                MyStringDict = new Dictionary<string, object>()
+                {
+                    ["DictKeyNotCamelCasedAndNotIgnored"] = null,
+                    ["moreParams"] = new TestModel()
+                    {
+                        PropertyToCheckIfCamelCase = "fneozirnzgiodedzf",
+                        MyStringDict = new Dictionary<string, object>()
+                        {
+                            ["string1"] = "value1"
+                        },
+                        PropertyWithDifferentJsonName = "wow",
+                        AnotherNullProperty = null,
+                        EnumToConvert = TestModel.Number.One,
+                        PropertyWithClassType = new InnerTestModel()
+                        {
+                            InnerTestModel_NullProperty = null,
+                            InnerTestModel_PropertyToCheckIfCamelCase = "fjnzfiuzefnzeb"
+                        }
+                    }
+                },
+                PropertyWithClassType = new InnerTestModel()
+                {
+                    InnerTestModel_NullProperty = null,
+                    InnerTestModel_PropertyToCheckIfCamelCase = "djenfiuzrfiubzeiu"
+                }
             };
             var serialization = new JsonNetApiClientSerialization();
 
@@ -73,12 +99,31 @@ namespace ArangoDBNetStandardTest.Serialization
             byte[] jsonBytes = serialization.Serialize(model, null);
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
-            Assert.Contains("PropertyToCamelCase", jsonString);
+            Assert.Equal(
+                "{\"PropertyToCheckIfCamelCase\":\"myvalue\",\"EnumToConvert\":2,\"nameFromJsonProperty\":\"aaaaaaa\",\"MyStringDict\":{\"DictKeyNotCamelCasedAndNotIgnored\":null,\"moreParams\":{\"PropertyToCheckIfCamelCase\":\"fneozirnzgiodedzf\",\"EnumToConvert\":1,\"nameFromJsonProperty\":\"wow\",\"MyStringDict\":{\"string1\":\"value1\"},\"PropertyWithClassType\":{\"InnerTestModel_PropertyToCheckIfCamelCase\":\"fjnzfiuzefnzeb\"}}},\"PropertyWithClassType\":{\"InnerTestModel_PropertyToCheckIfCamelCase\":\"djenfiuzrfiubzeiu\"}}",
+                jsonString);
+
+            // Explicited asserts
+
+            Assert.Contains("PropertyToCheckIfCamelCase", jsonString);
             Assert.DoesNotContain(
-                "NullPropetyToIgnore",
+                "NullProperty",
                 jsonString,
                 System.StringComparison.OrdinalIgnoreCase);
-            Assert.Contains("EnumToConvertToString", jsonString);
+            Assert.Contains("EnumToConvert", jsonString);
+            Assert.DoesNotContain("Two", jsonString);
+            Assert.Contains("nameFromJsonProperty", jsonString);
+            Assert.Contains("MyStringDict", jsonString);
+            Assert.Contains("DictKeyNotCamelCasedAndNotIgnored", jsonString);
+            Assert.Contains("moreParams", jsonString);
+            Assert.Contains("string1", jsonString);
+            Assert.DoesNotContain("PropertyWithDifferentJsonName", jsonString);
+            Assert.DoesNotContain(
+                "AnotherNullProperty",
+                jsonString,
+                System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("PropertyWithClassType", jsonString);
+            Assert.Contains("InnerTestModel_PropertyToCheckIfCamelCase", jsonString);
         }
 
         [Fact]
@@ -126,7 +171,6 @@ namespace ArangoDBNetStandardTest.Serialization
             Assert.DoesNotContain("dontCamelCaseKey", jsonString);
         }
 
-
         [Fact]
         public void Serialize_ShouldNotIgnoreNull_WhenSerializingPostCursorBody()
         {
@@ -145,7 +189,6 @@ namespace ArangoDBNetStandardTest.Serialization
 
             Assert.Contains("DontCamelCaseKey", jsonString);
         }
-
 
         [Fact]
         public void Serialize_ShouldNotIgnoreNull_WhenSerializingPostTransactionBody()
@@ -173,7 +216,7 @@ namespace ArangoDBNetStandardTest.Serialization
             // Deserializing should match both "camelCase" and "CamelCase"
 
             byte[] jsonBytes = Encoding.UTF8.GetBytes(
-                "{\"propertyToCamelCase\":\"myvalue\",\"NullPropertyToIgnore\":\"something\"}");
+                "{\"propertyToCheckIfCamelCase\":\"myvalue\",\"NullProperty\":\"something\"}");
 
             var stream = new MemoryStream(jsonBytes);
 
@@ -181,8 +224,8 @@ namespace ArangoDBNetStandardTest.Serialization
 
             TestModel model = serialization.DeserializeFromStream<TestModel>(stream);
 
-            Assert.Equal("myvalue", model.PropertyToCamelCase);
-            Assert.Equal("something", model.NullPropertyToIgnore);
+            Assert.Equal("myvalue", model.PropertyToCheckIfCamelCase);
+            Assert.Equal("something", model.NullProperty);
         }
     }
 }
