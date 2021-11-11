@@ -1057,7 +1057,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
         {
             Dictionary<string, object> document = new Dictionary<string, object> { ["key"] = "value" };
             var docResponse = await _docClient.PostDocumentAsync(_testCollection, document);
-            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new DocumentHeaderProperties
             {
                 IfNoneMatch = docResponse._rev
             });
@@ -1078,7 +1078,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 ["key"] = "newValue"
             });
             // check if revision has changed
-            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new HeadDocumentHeader
+            var response = await _docClient.HeadDocumentAsync(_testCollection, docResponse._key, new DocumentHeaderProperties
             {
                 IfMatch = docResponse._rev
             });
@@ -1109,7 +1109,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var response = await _docClient.HeadDocumentAsync(
                 _testCollection,
                 docResponse._key,
-                new HeadDocumentHeader { TransactionId = beginTransaction.Result.Id });
+                new DocumentHeaderProperties { TransactionId = beginTransaction.Result.Id });
 
             // Check for the expected status.
             Assert.Equal(HttpStatusCode.OK, response.Code);
@@ -1132,7 +1132,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             var response = await _docClient.HeadDocumentAsync(
                 _testCollection,
                 docResponse._key,
-                new HeadDocumentHeader { TransactionId = dummyTransactionId });
+                new DocumentHeaderProperties { TransactionId = dummyTransactionId });
 
             // Check for the expected status.
             Assert.Equal(HttpStatusCode.BadRequest, response.Code);
