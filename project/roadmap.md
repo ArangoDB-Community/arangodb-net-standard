@@ -7,7 +7,7 @@
 - [X]	Usage guide
 - [X]	License
 - [X]	Automated CI build
-- [ ]	Nuget package
+- [X]	Nuget package
 
 ### API Implementations
 
@@ -81,15 +81,39 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	PATCH/_api/gharial/{graph}/vertex/{collection}/{vertex} Update a vertex
 - [X]	PUT/_api/gharial/{graph}/vertex/{collection}/{vertex} Replace a vertex
 
-#### Transactions API
+#### Javascript Transaction API
 
 - [X]	POST/_api/transaction Execute transaction
+
+#### Stream Transaction API
+
+- [X]   POST /_api/transaction/begin Begin transaction
+- [X]   GET /_api/transaction/{transaction-id} Get transaction status
+- [X]   PUT /_api/transaction/{transaction-id} Commit transaction
+- [X]   DELETE /_api/transaction/{transaction-id} Abort transaction
+- [X]   GET /_api/transaction Get currently running transactions
 
 #### AQL User Functions API
 
 - [X]   POST /_api/aqlfunction
 - [X]   DELETE /_api/aqlfunction/{name}
 - [X]   GET /_api/aqlfunction
+
+#### User Management API
+
+- [X]	POST /_api/user Create User
+- [X]	PUT /_api/user/{user}/database/{dbname} Set the database access level
+- [X]	PUT /_api/user/{user}/database/{dbname}/{collection} Set the collection access level
+- [X]	DELETE /_api/user/{user}/database/{dbname} Clear the database access level
+- [X]	DELETE /_api/user/{user}/database/{dbname}/{collection} Clear the collection access level
+- [X]	GET /_api/user/{user}/database/ List the accessible databases for a user
+- [X]	GET /_api/user/{user}/database/{dbname} Get the database access level
+- [X]	GET /_api/user/{user}/database/{dbname}/{collection} Get the specific collection access level
+- [X]	PUT /_api/user/{user} Replace User
+- [X]	PATCH /_api/user/{user} Modify User
+- [X]	DELETE /_api/user/{user} Remove User
+- [X]	GET /_api/user/{user} Fetch User
+- [X]	GET /_api/user/ List available Users
 
 ## Versions 1.1+
 
@@ -99,7 +123,7 @@ A tick indicates an item is implemented and has automated tests in place.
 - [ ]	PUT/_api/collection/{collection-name}/unload Unload collection
 - [ ]	PUT/_api/collection/{collection-name}/load Load collection
 - [ ]	GET/_api/collection/{collection-name}/checksum Return checksum for the collection
-- [ ]	GET/_api/collection/{collection-name}/figures Return statistics for a collection
+- [X]	GET/_api/collection/{collection-name}/figures Return statistics for a collection
 - [ ]	PUT/_api/collection/{collection-name}/loadIndexesIntoMemory Load Indexes into Memory
 - [ ]	PUT/_api/collection/{collection-name}/recalculateCount Recalculate count of a collection
 - [ ]	PUT/_api/collection/{collection-name}/rotate Rotate journal of a collection
@@ -139,10 +163,6 @@ A tick indicates an item is implemented and has automated tests in place.
 - [ ]	TODO
 
 #### Replication API
-
-- [ ]	TODO
-
-#### User Management API
 
 - [ ]	TODO
 
