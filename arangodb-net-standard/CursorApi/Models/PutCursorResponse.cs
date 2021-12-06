@@ -13,7 +13,7 @@ namespace ArangoDBNetStandard.CursorApi.Models
     /// Once the <see cref="HasMore"/> has a value of false, the client can stop.
     /// </remarks>
     /// <typeparam name="T">The type of the document deserialized in the results.</typeparam>
-    public class PutCursorResponse<T>
+    public class PutCursorResponse<T> : ICursorResponse<T>
     {
         /// <summary>
         /// The cursor identifier.

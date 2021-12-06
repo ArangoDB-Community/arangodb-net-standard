@@ -268,6 +268,15 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
+        public async Task PostCursorAsync_ShouldReturnResponseModelWithInterface()
+        {
+            ICursorResponse<MyModel> response =
+                await _cursorApi.PostCursorAsync<MyModel>("RETURN {}");
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public async Task PutCursorAsync_ShouldSucceed()
         {
             var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
@@ -302,6 +311,18 @@ namespace ArangoDBNetStandardTest.CursorApi
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1600, ex.ApiError.ErrorNum);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
+        }
+
+        [Fact]
+        public async Task PutCursorAsync_ShouldReturnResponseModelWithInterface()
+        {
+            CursorResponse<int> postResponse =
+                await _cursorApi.PostCursorAsync<int>("FOR i IN 0..1500 RETURN i");
+
+            ICursorResponse<int> putResult =
+                await _cursorApi.PutCursorAsync<int>(postResponse.Id);
+
+            Assert.NotNull(putResult);
         }
 
         [Fact]
