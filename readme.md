@@ -189,6 +189,27 @@ var serializer = new JsonNetApiClientSerialization();
 serializer.DefaultOptions.IgnoreNullValues = false;
 ```
 
+### HTTP Request Headers
+
+APIs that support specifying HTTP request headers have an optional method argument to pass in header values.
+
+For example, to specify a stream transaction ID when creating a document:
+
+
+```csharp
+await adb.Document.PostDocumentAsync(
+    "MyCollection",
+    new MyClass
+    {
+        ItemNumber = 123456,
+        Description = "Some item"
+    },
+    new DocumentHeaderProperties()
+    {
+        TransactionId = "0123456789"
+    });
+```
+
 ### API Errors
 
 Any time an endpoint responds with an HTTP status code which is not a "success" code, an `ApiErrorException` will be thrown.  You may wish to wrap your API calls in a try/catch block, and catch `ApiErrorException` in certain circumstances.
