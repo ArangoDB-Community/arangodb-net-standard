@@ -17,6 +17,9 @@ workflows:
       - "test-arangodb-3_7":
           requires:
             - build
+      - "test-arangodb-3_8":
+          requires:
+            - build
 
 jobs:
   build:
@@ -100,9 +103,28 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
         environment:
-          ARANGO_HOST: adb3_7_3
-      - image: arangodb/arangodb:3.7.3
-        name: adb3_7_3
+          ARANGO_HOST: adb3_7_16
+      - image: arangodb/arangodb:3.7.16
+        name: adb3_7_16
+        environment:
+          ARANGO_ROOT_PASSWORD: root
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/
+      - run:
+          name: Test
+          command:
+            dotnet test -c Release
+  
+  "test-arangodb-3_8":
+    working_directory: ~/arangodb-net-standard
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+        environment:
+          ARANGO_HOST: adb3_8_5
+      - image: arangodb/arangodb:3.8.5
+        name: adb3_8_5
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
