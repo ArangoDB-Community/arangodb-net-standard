@@ -123,7 +123,7 @@ jobs:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
         environment:
           ARANGO_HOST: adb3_8_5
-      - image: arangodb/arangodb:3.8.5
+      - image: arangodb/arangodb:3.8.5.1
         name: adb3_8_5
         environment:
           ARANGO_ROOT_PASSWORD: root
