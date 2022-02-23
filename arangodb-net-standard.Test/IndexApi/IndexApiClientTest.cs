@@ -41,7 +41,6 @@ namespace ArangoDBNetStandardTest.IndexApi
         [Fact]
         public async Task PostIndexAsync_ShouldSucceed_WhenPersistentIndex()
         {
-            string indexName = "NewPersistentIndex";
             var createResponse = await _indexApi.PostIndexAsync(
                  IndexType.Persistent,
                  new PostIndexQuery()
@@ -50,7 +49,6 @@ namespace ArangoDBNetStandardTest.IndexApi
                  },
                  new PostIndexBody()
                  {
-                     Name = indexName,
                      Fields = new string[]
                      {
                           "field1",
@@ -64,86 +62,13 @@ namespace ArangoDBNetStandardTest.IndexApi
             Assert.True(createResponse.IsNewlyCreated);
         }
 
-        [Fact]
-        public async Task PostIndexAsync_ShouldSucceed_WhenTTLIndex()
-        {
-            string indexName = "NewTTLIndex";
-            var createResponse = await _indexApi.PostIndexAsync(
-                 IndexType.TTL,
-                 new PostIndexQuery()
-                 {
-                     CollectionName = _testCollection,
-                 },
-                 new PostIndexBody()
-                 {
-                     Name = indexName,
-                     Fields = new string[]
-                     {
-                          "field1"
-                     },
-                     ExpireAfter = 3600
-                 });
-            string indexId = createResponse.Id;
-            Assert.False(createResponse.Error);
-            Assert.NotNull(indexId);
-            Assert.True(createResponse.IsNewlyCreated);
-        }
-
-        [Fact]
-        public async Task PostIndexAsync_ShouldSucceed_WhenFullTextIndex()
-        {
-            string indexName = "NewFullTextIndex";
-            var createResponse = await _indexApi.PostIndexAsync(
-                 IndexType.FullText,
-                 new PostIndexQuery()
-                 {
-                     CollectionName = _testCollection,
-                 },
-                 new PostIndexBody()
-                 {
-                     Name = indexName,
-                     Fields = new string[]
-                     {
-                          "field1"
-                     }
-                 });
-            string indexId = createResponse.Id;
-            Assert.False(createResponse.Error);
-            Assert.NotNull(indexId);
-            Assert.True(createResponse.IsNewlyCreated);
-        }
-
-        [Fact]
-        public async Task PostIndexAsync_ShouldSucceed_WhenGeoIndex()
-        {
-            string indexName = "NewGeoIndex";
-            var createResponse = await _indexApi.PostIndexAsync(
-                 IndexType.Geo,
-                 new PostIndexQuery()
-                 {
-                     CollectionName = _testCollection,
-                 },
-                 new PostIndexBody()
-                 {
-                     Name = indexName,
-                     Fields = new string[]
-                     {
-                          "field1"
-                     },
-                     GeoJson = false
-                 });
-            string indexId = createResponse.Id;
-            Assert.False(createResponse.Error);
-            Assert.NotNull(indexId);
-            Assert.True(createResponse.IsNewlyCreated);
-        }
 
         [Fact]
         public async Task PostIndexAsync_ShouldThrow_WhenIndexNameExists()
         {
             var request = new PostIndexBody()
             {
-                Name = "MyOneAndOnlyIndex",
+                Name = _testIndexName,
                 Fields = new string[]
                      {
                           "field1",
@@ -193,7 +118,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _indexApi.GetIndexAsync("MyWrongIndexId");
+                await _indexApi.GetIndexAsync("MyNonExistentIndexId");
             });
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
         }
@@ -228,7 +153,6 @@ namespace ArangoDBNetStandardTest.IndexApi
         [Fact]
         public async Task DeleteIndexAsync_ShouldSucceed()
         {
-            string indexName = "IndexNameToDelete";
             //Create the index first
             var createResponse = await _indexApi.PostIndexAsync(
                  IndexType.Persistent,
@@ -238,7 +162,6 @@ namespace ArangoDBNetStandardTest.IndexApi
                  },
                  new PostIndexBody()
                  {
-                     Name = indexName,
                      Fields = new string[]
                      {
                           "field1",

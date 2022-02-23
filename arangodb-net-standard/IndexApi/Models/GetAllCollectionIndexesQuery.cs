@@ -15,7 +15,7 @@
         {
             if (!string.IsNullOrEmpty(CollectionName))
             {
-                return "collection=" + CollectionName.ToString().ToLower();
+                return "collection=" + CollectionName;
             }
             else
             {

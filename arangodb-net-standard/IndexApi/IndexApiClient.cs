@@ -72,7 +72,7 @@ namespace ArangoDBNetStandard.IndexApi
         /// <returns></returns>
         public virtual async Task<DeleteIndexResponse> DeleteIndexAsync(string indexId)
         {
-            string uri = _indexApiPath + "/" + WebUtility.UrlEncode(indexId);
+            string uri = _indexApiPath + "/" +indexId;
             using (var response = await _client.DeleteAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
@@ -130,25 +130,25 @@ namespace ArangoDBNetStandard.IndexApi
             {
                 case IndexType.Persistent:
                     {
-                        uri += "#persistent";
+                        //uri += "#persistent";
                         body.Type = "persistent";
                     }
                     break;
                 case IndexType.FullText:
                     {
-                        uri += "#fulltext";
+                        //uri += "#fulltext";
                         body.Type = "fulltext";
                     }
                     break;
                 case IndexType.TTL:
                     {
-                        uri += "#ttl";
+                        //uri += "#ttl";
                         body.Type = "ttl";
                     }
                     break;
                 case IndexType.Geo:
                     {
-                        uri += "#geo";
+                        //uri += "#geo";
                         body.Type = "geo";
                     }
                     break;
