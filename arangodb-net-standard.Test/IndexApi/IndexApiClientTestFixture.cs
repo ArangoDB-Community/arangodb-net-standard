@@ -26,30 +26,40 @@ namespace ArangoDBNetStandardTest.IndexApi
             ArangoDBClient = GetArangoDBClient(dbName);
             try
             {
-                var colRes = await ArangoDBClient.Collection.PostCollectionAsync(new PostCollectionBody() { Name = TestCollectionName });
-                if (colRes.Error)
-                    throw new Exception("PostCollectionAsync failed: " + colRes.Code.ToString());
+                var dbRes = await ArangoDBClient.Database.GetCurrentDatabaseInfoAsync();
+                if (dbRes.Error)
+                    throw new Exception("GetCurrentDatabaseInfoAsync failed: " + dbRes.Code.ToString());
                 else
                 {
-                    Console.WriteLine("Collection " + TestCollectionName + " created successfully");
-                    var idxRes = await ArangoDBClient.Index.PostIndexAsync(
-                        IndexType.Persistent,
-                        new PostIndexQuery()
-                        {
-                            CollectionName = TestCollectionName,
-                        },
-                        new PostIndexBody()
-                        {
-                            Fields = new string[] { "TestName" },
-                            Unique = true
-                        });
-                    if (idxRes.Error)
-                        throw new Exception("PostIndexAsync failed: " + idxRes.Code.ToString());
+                    Console.WriteLine("In database " + dbRes.Result.Name);
+                    var colRes = await ArangoDBClient.Collection.PostCollectionAsync(new PostCollectionBody() { Name = TestCollectionName });
+                    if (colRes.Error)
+                        throw new Exception("PostCollectionAsync failed: " + colRes.Code.ToString());
                     else
                     {
-                        Console.WriteLine("Index " + idxRes.Id + " created successfully");
-                        TestIndexId = idxRes.Id;
-                        TestIndexName = idxRes.Name;
+                        Console.WriteLine("Collection " + TestCollectionName + " created successfully");
+                        var idxRes = await ArangoDBClient.Index.PostIndexAsync(
+                            IndexType.Persistent,
+                            new PostIndexQuery()
+                            {
+                                CollectionName = TestCollectionName,
+                            },
+                            new PostIndexBody()
+                            {
+                                Fields = new string[] { "TestName" },
+                                Unique = true
+                            });
+                        if (idxRes.Error)
+                            throw new Exception("PostIndexAsync failed: " + idxRes.Code.ToString());
+                        else
+                        {
+                            TestIndexId = idxRes.Id;
+                            TestIndexName = idxRes.Name;
+                         
+                            Console.WriteLine("DB: " + dbRes.Result.Name);
+                            Console.WriteLine("Collection: " + TestCollectionName);
+                            Console.WriteLine("Index: " + string.Format("{0} : {1}",TestIndexId, TestIndexName));
+                        }
                     }
                 }
             }
