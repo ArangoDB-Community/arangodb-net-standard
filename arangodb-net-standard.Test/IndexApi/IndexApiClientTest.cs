@@ -88,7 +88,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         {
             var index = await _indexApi.GetIndexAsync(_testIndexId);
             Assert.NotNull(index);
-            Assert.Equal(_testIndexName, index.Name);
+            Assert.Equal(_testIndexId, index.Id);
         }
 
         [Fact]

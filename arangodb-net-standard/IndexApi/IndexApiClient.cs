@@ -53,7 +53,7 @@ namespace ArangoDBNetStandard.IndexApi
         /// <returns></returns>
         public virtual async Task<GetIndexResponse> GetIndexAsync(string indexId)
         {
-            string uri = _indexApiPath + '/' + WebUtility.UrlEncode(indexId);
+            string uri = _indexApiPath + '/' + indexId;
             using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
