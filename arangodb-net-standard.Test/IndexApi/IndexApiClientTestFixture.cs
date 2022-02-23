@@ -55,8 +55,8 @@ namespace ArangoDBNetStandardTest.IndexApi
             }
             catch (ApiErrorException ex) 
             {
-                // The collection must exist already, carry on...
                 Console.WriteLine(ex.Message);
+                throw ex;
             }
 
         }
