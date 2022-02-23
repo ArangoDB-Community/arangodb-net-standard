@@ -10,7 +10,7 @@ namespace ArangoDBNetStandardTest.IndexApi
     {
         public ArangoDBClient ArangoDBClient { get; internal set; }
         public string TestCollectionName { get; internal set; } = "OurIndexTestCollection";
-        public string TestIndexName { get; internal set; }
+        public string TestIndexName { get; internal set; } = "OurIndexTestCollection_FirstIndex";
         public string TestIndexId { get; internal set; } 
 
         public IndexApiClientTestFixture()
@@ -45,7 +45,8 @@ namespace ArangoDBNetStandardTest.IndexApi
                                 CollectionName = TestCollectionName,
                             },
                             new PostIndexBody()
-                            {
+                            { 
+                                Name = TestIndexName,
                                 Fields = new string[] { "TestName" },
                                 Unique = true
                             });
