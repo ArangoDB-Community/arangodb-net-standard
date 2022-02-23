@@ -39,7 +39,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
-        public async Task PostIndexAsync_ShouldSucceed_WhenPersistentIndex()
+        public async Task PostIndexAsync_ShouldSucceed()
         {
             var createResponse = await _indexApi.PostIndexAsync(
                  IndexType.Persistent,
@@ -64,7 +64,7 @@ namespace ArangoDBNetStandardTest.IndexApi
 
 
         [Fact]
-        public async Task PostIndexAsync_ShouldThrow_WhenIndexNameExists()
+        public async Task PostIndexAsync_ShouldThrow_WhenExists()
         {
             var request = new PostIndexBody()
             {
@@ -85,7 +85,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
-        public async Task PostIndexAsync_ShouldThrow_WhenIndexNameInvalid()
+        public async Task PostIndexAsync_ShouldThrow_WhenInvalid()
         {
             var request = new PostIndexBody()
             {
@@ -137,7 +137,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
-        public async Task GetAllCollectionIndexesAsync_ShouldThrow_WhenCollectionNotFound()
+        public async Task GetAllCollectionIndexesAsync_ShouldThrow_WhenNotFound()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
@@ -180,7 +180,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
-        public async Task DeleteIndexAsync_ShouldThrow_WhenIndexDoesNotExist()
+        public async Task DeleteIndexAsync_ShouldThrow_WhenNotExist()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(
                 async () => await _indexApi.DeleteIndexAsync("NonExistentIndexId")

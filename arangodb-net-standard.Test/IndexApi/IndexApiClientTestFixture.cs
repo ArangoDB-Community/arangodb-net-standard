@@ -58,7 +58,7 @@ namespace ArangoDBNetStandardTest.IndexApi
                          
                             Console.WriteLine("DB: " + dbRes.Result.Name);
                             Console.WriteLine("Collection: " + TestCollectionName);
-                            Console.WriteLine("Index: " + string.Format("{0} : {1}",TestIndexId, TestIndexName));
+                            Console.WriteLine("Index: " + string.Format("{0} - {1}",TestIndexId, TestIndexName));
                         }
                     }
                 }
