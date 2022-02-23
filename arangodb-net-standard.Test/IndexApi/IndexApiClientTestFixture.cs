@@ -22,6 +22,7 @@ namespace ArangoDBNetStandardTest.IndexApi
             await base.InitializeAsync();
             string dbName = nameof(IndexApiClientTestFixture);
             await CreateDatabase(dbName);
+            Console.WriteLine("Database " + dbName + " created successfully");
             ArangoDBClient = GetArangoDBClient(dbName);
             try
             {
@@ -30,6 +31,7 @@ namespace ArangoDBNetStandardTest.IndexApi
                     throw new Exception("PostCollectionAsync failed: " + colRes.Code.ToString());
                 else
                 {
+                    Console.WriteLine("Collection " + TestCollectionName + " created successfully");
                     var idxRes = await ArangoDBClient.Index.PostIndexAsync(
                         IndexType.Persistent,
                         new PostIndexQuery()
@@ -45,8 +47,9 @@ namespace ArangoDBNetStandardTest.IndexApi
                         throw new Exception("PostIndexAsync failed: " + idxRes.Code.ToString());
                     else
                     {
+                        Console.WriteLine("Index " + idxRes.Id + " created successfully");
                         TestIndexId = idxRes.Id;
-                        TestCollectionName = idxRes.Name;
+                        TestIndexName = idxRes.Name;
                     }
                 }
             }
