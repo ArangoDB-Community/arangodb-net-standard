@@ -4,7 +4,7 @@
     /// Represents query parameters used when creating a new index
     /// for a collection.
     /// </summary>
-    public class CreateIndexQuery
+    public class PostIndexQuery
     {
         /// <summary>
         /// Name of the collection

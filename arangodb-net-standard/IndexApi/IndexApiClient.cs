@@ -35,6 +35,18 @@ namespace ArangoDBNetStandard.IndexApi
         }
 
         /// <summary>
+        /// Creates an instance of <see cref="IndexApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="serializer"></param>
+        public IndexApiClient(IApiClientTransport client, IApiClientSerialization serializer)
+            : base(serializer)
+        {
+            _client = client;
+        }
+
+        /// <summary>
         /// Fetches data about the specified index.
         /// </summary>
         /// <param name="indexId">The identifier of the index.</param>
@@ -105,7 +117,7 @@ namespace ArangoDBNetStandard.IndexApi
         /// <param name="query">Querystring details</param>
         /// <param name="body">CreateIndexBody object containing the index details</param>
         /// <returns></returns>
-        public virtual async Task<IndexResponseBase> CreateIndexAsync(IndexType indexType, CreateIndexQuery query, CreateIndexBody body)
+        public virtual async Task<IndexResponseBase> PostIndexAsync(IndexType indexType, PostIndexQuery query, PostIndexBody body)
         {
             string uri = _indexApiPath;
             if (query == null)

@@ -6,6 +6,7 @@ using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.GraphApi;
+using ArangoDBNetStandard.IndexApi;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.TransactionApi;
 using ArangoDBNetStandard.Transport;
@@ -70,6 +71,11 @@ namespace ArangoDBNetStandard
         public UserApiClient User { get; private set; }
 
         /// <summary>
+        /// Index management API.
+        /// </summary>
+        public IndexApiClient Index { get; private set; }
+
+        /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
         /// <see cref="HttpClient"/> instance, using the default JSON serialization.
         /// </summary>
@@ -131,6 +137,7 @@ namespace ArangoDBNetStandard
             Transaction = new TransactionApiClient(transport, serialization);
             Graph = new GraphApiClient(transport, serialization);
             User = new UserApiClient(transport, serialization);
+            Index = new IndexApiClient(transport, serialization);
         }
     }
 }

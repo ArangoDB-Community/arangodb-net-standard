@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ArangoDBNetStandard.IndexApi.Models
 {
-    public class CreateIndexBody : IIndex
+    public class PostIndexBody : IIndex
     {
         public IEnumerable<string> Fields { get ; set ; }
         public string Id { get ; set ; }
