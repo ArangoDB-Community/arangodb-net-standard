@@ -25,24 +25,6 @@ namespace ArangoDBNetStandardTest.IndexApi
             await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
-            //try
-            //{
-            //    await ArangoDBClient.Index.PostIndexAsync(
-            //        IndexType.Persistent,
-            //        new PostIndexQuery() 
-            //        {
-            //             CollectionName = TestCollectionName,
-            //        }, 
-            //        new PostIndexBody
-            //        {
-            //            Name = TestIndex,                         
-            //        });
-            //}
-            //catch (ApiErrorException ex) when (ex.ApiError.ErrorNum == 1207)
-            //{
-            //    // The collection must exist already, carry on...
-            //    Console.WriteLine(ex.Message);
-            //}
         }
     }
 }
