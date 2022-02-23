@@ -9,7 +9,7 @@ namespace ArangoDBNetStandardTest.IndexApi
     public class IndexApiClientTestFixture : ApiClientTestFixtureBase
     {
         public ArangoDBClient ArangoDBClient { get; internal set; }
-        public string TestCollectionName { get; internal set; }
+        public string TestCollectionName { get; internal set; } = "OurIndexTestCollection";
         public string TestIndexName { get; internal set; }
         public string TestIndexId { get; internal set; } 
 
