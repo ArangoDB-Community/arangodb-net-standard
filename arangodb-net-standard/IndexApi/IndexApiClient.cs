@@ -27,7 +27,7 @@ namespace ArangoDBNetStandard.IndexApi
         /// Creates an instance of <see cref="IndexApiClient"/>
         /// using the provided transport layer and the default JSON serialization.
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">Transport client that the API client will use to communicate with ArangoDB</param>
         public IndexApiClient(IApiClientTransport client)
             : base(new JsonNetApiClientSerialization())
         {
@@ -38,8 +38,8 @@ namespace ArangoDBNetStandard.IndexApi
         /// Creates an instance of <see cref="IndexApiClient"/>
         /// using the provided transport and serialization layers.
         /// </summary>
-        /// <param name="client"></param>
-        /// <param name="serializer"></param>
+        /// <param name="client">Transport client that the API client will use to communicate with ArangoDB.</param>
+        /// <param name="serializer">Serializer to be used.</param>
         public IndexApiClient(IApiClientTransport client, IApiClientSerialization serializer)
             : base(serializer)
         {
@@ -90,13 +90,14 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentException">Required parameters not provided or invalid.</exception>
         public virtual async Task<GetAllCollectionIndexesResponse> GetAllCollectionIndexesAsync(GetAllCollectionIndexesQuery query)
         {
             string uri = _indexApiPath;
             if (query == null)
-                throw new System.Exception("query is required");
+                throw new System.ArgumentException("query is required", nameof(query));
             if (string.IsNullOrEmpty(query.CollectionName))
-                throw new System.Exception("Collection name is required");
+                throw new System.ArgumentException("Collection name is required", nameof(query.CollectionName));
 
             uri += '?' + query.ToQueryString();
             using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
@@ -117,15 +118,17 @@ namespace ArangoDBNetStandard.IndexApi
         /// <param name="query">Querystring details</param>
         /// <param name="body">CreateIndexBody object containing the index details</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentException">Required parameters not provided or invalid.</exception>
         public virtual async Task<IndexResponseBase> PostIndexAsync(IndexType indexType, PostIndexQuery query, PostIndexBody body)
         {
             string uri = _indexApiPath;
             if (query == null)
-                throw new System.Exception("query is required");
+                throw new System.ArgumentException("query is required", nameof(query));
             if (string.IsNullOrEmpty(query.CollectionName))
-                throw new System.Exception("Collection name is required");
+                throw new System.ArgumentException("Collection name is required", nameof(query.CollectionName));
             if (body == null)
-                throw new System.Exception("body is required");
+                throw new System.ArgumentException("body is required", nameof(body));
+
             switch (indexType)
             {
                 case IndexType.Persistent:
