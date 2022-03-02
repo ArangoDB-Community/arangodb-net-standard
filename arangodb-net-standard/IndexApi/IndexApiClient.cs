@@ -72,7 +72,7 @@ namespace ArangoDBNetStandard.IndexApi
         /// <returns></returns>
         public virtual async Task<DeleteIndexResponse> DeleteIndexAsync(string indexId)
         {
-            string uri = _indexApiPath + "/" +indexId;
+            string uri = _indexApiPath + "/" + indexId;
             using (var response = await _client.DeleteAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
@@ -94,10 +94,16 @@ namespace ArangoDBNetStandard.IndexApi
         public virtual async Task<GetAllCollectionIndexesResponse> GetAllCollectionIndexesAsync(GetAllCollectionIndexesQuery query)
         {
             string uri = _indexApiPath;
+
             if (query == null)
+            {
                 throw new System.ArgumentException("query is required", nameof(query));
+            }
+
             if (string.IsNullOrEmpty(query.CollectionName))
+            {
                 throw new System.ArgumentException("Collection name is required", nameof(query.CollectionName));
+            }
 
             uri += '?' + query.ToQueryString();
             using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
@@ -122,12 +128,21 @@ namespace ArangoDBNetStandard.IndexApi
         public virtual async Task<IndexResponseBase> PostIndexAsync(IndexType indexType, PostIndexQuery query, PostIndexBody body)
         {
             string uri = _indexApiPath;
+
             if (query == null)
+            {
                 throw new System.ArgumentException("query is required", nameof(query));
+            }
+
             if (string.IsNullOrEmpty(query.CollectionName))
+            {
                 throw new System.ArgumentException("Collection name is required", nameof(query.CollectionName));
+            }
+
             if (body == null)
+            {
                 throw new System.ArgumentException("body is required", nameof(body));
+            }
 
             switch (indexType)
             {
