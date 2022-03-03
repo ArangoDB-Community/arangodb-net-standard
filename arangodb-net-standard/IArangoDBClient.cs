@@ -6,6 +6,7 @@ using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.GraphApi;
+using ArangoDBNetStandard.IndexApi;
 using ArangoDBNetStandard.TransactionApi;
 using ArangoDBNetStandard.UserApi;
 
@@ -57,5 +58,10 @@ namespace ArangoDBNetStandard
         /// User management API.
         /// </summary>
         UserApiClient User { get; }
+
+        /// <summary>
+        /// Index management API.
+        /// </summary>
+        IndexApiClient Index { get; }
     }
 }
