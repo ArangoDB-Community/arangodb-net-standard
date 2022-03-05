@@ -118,5 +118,178 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
+
+        /// <summary>
+        /// Explain an AQL query and return information about it
+        /// POST /_api/explain
+        /// </summary>
+        /// <param name="body">The body of the request containing required properties.</param>
+        /// <returns></returns>
+        public virtual async Task<PostExplainAqlQueryResponse> PostExplainAqlQueryAsync(PostExplainAqlQueryBody body)
+        {
+            if (body == null)
+            {
+                throw new System.ArgumentException("body is required", nameof(body));
+            }
+
+            string uri = "_api/explain";
+
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<PostExplainAqlQueryResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Parse an AQL query and return information about it
+        /// POST /_api/query
+        /// </summary>
+        /// <param name="body">The body of the request containing required properties.</param>
+        /// <returns></returns>
+        public virtual async Task<PostParseAqlQueryResponse> PostParseAqlQueryAsync(PostParseAqlQueryBody body)
+        {
+            if (body == null)
+            {
+                throw new System.ArgumentException("body is required", nameof(body));
+            }
+
+            string uri = "_api/query";
+
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<PostParseAqlQueryResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Kills an AQL query in the currently selected database 
+        /// or in all databases.
+        /// DELETE /_api/query/{query-id}
+        /// </summary>
+        /// <param name="queryId">The id of the query to kill.</param>
+        /// <param name="query">The query parameters of the request. 
+        /// If All parameter is set to true, it will attempt to kill
+        /// the specified query in all databases, not just the 
+        /// selected one.
+        /// </param>
+        /// <remarks>
+        /// Kills a running query in the currently selected database. 
+        /// The query will be terminated at the next cancelation point.
+        /// Using the All parameter is only allowed in the system 
+        /// database and with superuser privileges.
+        /// </remarks>
+        /// <returns></returns>
+        public virtual async Task<ResponseBase> DeleteKillRunningAqlQueryAsync(
+            string queryId,
+            DeleteKillRunningAqlQueryQuery query = null)
+        {
+            if (string.IsNullOrWhiteSpace(queryId))
+            {
+                throw new System.ArgumentException("queryId is required", nameof(queryId));
+            }
+
+            string uri = "_api/query/" + queryId;
+
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+
+            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<ResponseBase>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Clears the list of slow AQL queries in the currently 
+        /// selected database or in all databases.
+        /// DELETE /_api/query/slow
+        /// </summary>
+        /// <param name="query">The query parameters of the request. 
+        /// If All parameter is set to true, it will aclear the slow 
+        /// query history in all databases, not just the selected one. 
+        /// Using the parameter is only allowed in the system database
+        /// and with superuser privileges.
+        /// </param>
+        /// <returns></returns>
+        public virtual async Task<ResponseBase> DeleteClearSlowAqlQueriesAsync(DeleteClearSlowAqlQueriesQuery query = null)
+        {
+            string uri = "_api/query/slow";
+
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+
+            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<ResponseBase>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of slow running AQL queries in the currently 
+        /// selected database or in all databases.
+        /// GET /_api/query/slow
+        /// </summary>
+        /// <param name="query">The query parameters of the request. 
+        /// If All parameter is set to true, it will return a list of
+        /// slow running AQL queries in all databases, not just the selected one. 
+        /// Using the parameter is only allowed in the system database
+        /// and with superuser privileges.
+        /// </param>
+        /// <remarks>
+        /// Returns an array containing the last AQL queries that are 
+        /// finished and have exceeded the slow query threshold in the 
+        /// selected database. The maximum amount of queries in the list
+        /// can be controlled by setting the query tracking property maxSlowQueries. 
+        /// The threshold for treating a query as slow can be adjusted by 
+        /// setting the query tracking property slowQueryThreshold.
+        /// </remarks>
+        /// <returns></returns>
+        public virtual async Task<GetSlowAqlQueriesResponse> GetSlowAqlQueriesAsync(GetSlowAqlQueriesQuery query = null)
+        {
+            string uri = "_api/query/slow";
+
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+
+            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetSlowAqlQueriesResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+    
+    
     }
 }
