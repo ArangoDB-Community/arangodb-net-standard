@@ -21,7 +21,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// <summary>
         /// Contains the binding variables involved in the query.
         /// </summary>
-        public Dictionary<string, object> BindVars { get; set; }
+        public IList<string> BindVars { get; set; }
 
         /// <summary>
         /// Tree of data nodes providing information about the query.
