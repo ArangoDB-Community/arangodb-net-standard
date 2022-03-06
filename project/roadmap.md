@@ -161,7 +161,13 @@ A tick indicates an item is implemented and has automated tests in place.
 
 #### Indexes API
 
-- [ ]	`GET/_api/index` Read all indexes of a collection
+- [X]	`GET/_api/index` Read all indexes of a collection
+- [X]	`POST/_api/index#fulltext` Create fulltext index
+- [X]	`POST/_api/index#geo` Create geo-spatial index
+- [X]	`POST/_api/index#persistent` Create a persistent index
+- [X]	`POST/_api/index#ttl` Create TTL index
+- [X]	`DELETE/_api/index/{index-id}` Delete index
+- [X]	`GET/_api/index/{index-id}` Read index
 
 #### Replication API
 
