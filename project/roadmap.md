@@ -161,13 +161,7 @@ A tick indicates an item is implemented and has automated tests in place.
 
 #### Indexes API
 
-- [X]	`GET/_api/index` Read all indexes of a collection
-- [X]	`POST/_api/index#fulltext` Create fulltext index
-- [X]	`POST/_api/index#geo` Create geo-spatial index
-- [X]	`POST/_api/index#persistent` Create a persistent index
-- [X]	`POST/_api/index#ttl` Create TTL index
-- [X]	`DELETE/_api/index/{index-id}` Delete index
-- [X]	`GET/_api/index/{index-id}` Read index
+- [ ]	TODO
 
 #### Replication API
 
@@ -179,3 +173,28 @@ A tick indicates an item is implemented and has automated tests in place.
 
 - [ ]	VelocyStream support
 - [ ]	VelocyPack-over-HTTP support
+
+#### Indexes API
+
+- [X]	`GET/_api/index` Read all indexes of a collection
+- [X]	`POST/_api/index#fulltext` Create fulltext index
+- [X]	`POST/_api/index#geo` Create geo-spatial index
+- [X]	`POST/_api/index#persistent` Create a persistent index
+- [X]	`POST/_api/index#ttl` Create TTL index
+- [X]	`DELETE/_api/index/{index-id}` Delete index
+- [X]	`GET/_api/index/{index-id}` Read index
+
+#### AQL API
+
+- [X]	`POST/_api/explain` Explain an AQL query
+- [X]	`POST/_api/query` Parse an AQL query
+- [X]	`DELETE/_api/query/slow` Clears the list of slow AQL queries
+- [X]	`GET/_api/query/slow` Returns the list of slow AQL queries
+- [X]	`DELETE/_api/query/{query-id}` Kills a running AQL query
+- [ ]	`DELETE/_api/query-cache` Clears any results in the AQL query cache
+- [ ]	`GET/_api/query-cache/entries` Returns the currently cached query results
+- [ ]	`GET/_api/query-cache/properties` Returns the global properties for the AQL query cache
+- [ ]	`PUT/_api/query-cache/properties` Globally adjusts the AQL query result cache properties
+- [ ]	`GET/_api/query/current` Returns the currently running AQL queries
+- [ ]	`GET/_api/query/properties` Returns the properties for the AQL query tracking
+- [ ]	`PUT/_api/query/properties` Changes the properties for the AQL query tracking
