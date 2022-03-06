@@ -161,7 +161,7 @@ A tick indicates an item is implemented and has automated tests in place.
 
 #### Indexes API
 
-- [ ]	TODO
+- [ ]	`GET/_api/index` Read all indexes of a collection
 
 #### Replication API
 
