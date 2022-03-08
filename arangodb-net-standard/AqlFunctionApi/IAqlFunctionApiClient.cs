@@ -115,5 +115,12 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         Task<GetSlowAqlQueriesResponse> GetSlowAqlQueriesAsync(
            GetSlowAqlQueriesQuery query = null);
 
+        /// <summary>
+        /// Clears the query results cache for the current database
+        /// DELETE /_api/query-cache
+        /// </summary>
+        /// <returns></returns>
+        Task<ResponseBase> DeleteClearAqlQueryCacheAsync();
+
     }
 }

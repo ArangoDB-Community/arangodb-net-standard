@@ -289,7 +289,30 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
-    
-    
+
+        /// <summary>
+        /// Clears the query results cache for the current database
+        /// DELETE /_api/query-cache
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<ResponseBase> DeleteClearAqlQueryCacheAsync()
+        {
+            string uri = "_api/query-cache";
+
+            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<ResponseBase>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+
+
+
+
     }
 }
