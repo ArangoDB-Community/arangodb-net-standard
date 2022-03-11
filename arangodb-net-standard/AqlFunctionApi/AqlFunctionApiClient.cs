@@ -289,7 +289,105 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
-    
-    
+
+
+
+        /// <summary>
+        /// Clears the query results cache for the current database
+        /// DELETE /_api/query-cache
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<ResponseBase> DeleteClearAqlQueryCacheAsync()
+        {
+            string uri = "_api/query-cache";
+
+            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<ResponseBase>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of the stored results in the AQL query results cache.
+        /// GET /_api/query-cache/entries
+        /// </summary>
+        /// <remarks>
+        /// Returns an array containing the AQL query results currently 
+        /// stored in the query results cache of the selected database.
+        /// </remarks>
+        /// <returns></returns>
+        public virtual async Task<GetCachedAqlQueryResultsResponse> GetCachedAqlQueryResultsAsync()
+        {
+            string uri = "_api/query-cache/entries";
+            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetCachedAqlQueryResultsResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Gets the global configuration for the AQL query results cache.
+        /// </summary>
+        /// <remarks>
+        /// Returns the global AQL query results cache configuration.
+        /// </remarks>
+        /// <returns></returns>
+        public virtual async Task<QueryCacheGlobalProperties> GetQueryCacheGlobalPropertiesAsync()
+        {
+            string uri = "_api/query-cache/properties";
+            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<QueryCacheGlobalProperties>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Changes the configuration for the AQL query results cache
+        /// PUT /_api/query-cache/properties
+        /// </summary>
+        /// <remarks>
+        /// After the properties have been changed, the current set of properties 
+        /// will be returned in the HTTP response.
+        /// Note: changing the properties may invalidate all results in the cache.
+        /// </remarks>
+        /// <param name="body">The body of the request containing required properties.</param>
+        /// <returns></returns>
+        public virtual async Task<QueryCacheGlobalProperties> PutAdjustQueryCacheGlobalPropertiesAsync(PutAdjustQueryCacheGlobalPropertiesBody body)
+        {
+            if (body == null)
+            {
+                throw new System.ArgumentException("body is required", nameof(body));
+            }
+
+            string uri = "_api/query-cache/properties";
+
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<QueryCacheGlobalProperties>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+
     }
 }
