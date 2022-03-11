@@ -198,16 +198,6 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
         }
 
         [Fact]
-        public async Task GetCurrentlyRunningAqlQueriesAsync_ShouldSucceed()
-        {
-            GetCurrentlyRunningAqlQueriesResponse getResponse =
-                await _fixture.AqlFunctionClient.GetCurrentlyRunningAqlQueriesAsync();
-
-            Assert.False(getResponse.Error);
-            Assert.Equal(HttpStatusCode.OK, getResponse.Code);
-        }
-
-        [Fact]
         public async Task GetQueryTrackingConfigurationAsync_ShouldSucceed()
         {
             QueryTrackingConfiguration getResponse =
