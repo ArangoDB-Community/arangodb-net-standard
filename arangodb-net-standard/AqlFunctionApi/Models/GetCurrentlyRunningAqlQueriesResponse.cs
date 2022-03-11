@@ -7,7 +7,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
     /// Response from
     /// <see cref="AqlFunctionApiClient.GetCurrentlyRunningAqlQueriesAsync(GetCurrentlyRunningAqlQueriesQuery)"/>
     /// </summary>
-    public class GetCurrentlyRunningAqlQueriesResponse:List<RunningAqlQuery>
+    public class GetCurrentlyRunningAqlQueriesResponse : List<RunningAqlQuery>
     {
         /// <summary>
         /// Indicates whether an error occurred

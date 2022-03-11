@@ -5,7 +5,7 @@
     /// Returned by
     /// <see cref="AqlFunctionApiClient.GetQueryTrackingConfigurationAsync()"/>
     /// and 
-    /// <see cref="AqlFunctionApiClient.PutChangeQueryTrackingConfigurationAsync()"/>
+    /// <see cref="AqlFunctionApiClient.PutChangeQueryTrackingConfigurationAsync(PutChangeQueryTrackingConfigurationBody)"/>
     /// </summary>
     public class QueryTrackingConfiguration : ResponseBase
     {
@@ -23,7 +23,7 @@
         /// In order for slow queries to be tracked,
         /// the enabled property must also be set to true.
         /// </summary>
-        public int? TrackSlowQueries { get; set; }
+        public bool? TrackSlowQueries { get; set; }
 
         /// <summary>
         ///  If set to true, then the bind variables used
@@ -47,6 +47,11 @@
         /// The value for slowQueryThreshold is specified in seconds.
         /// </summary>
         public int? SlowQueryThreshold { get; set; }
+
+        /// <summary>
+        /// See online documentation
+        /// </summary>
+        public int? SlowStreamingQueryThreshold { get; set; }
 
         /// <summary>
         /// The maximum query string length to keep in the list 

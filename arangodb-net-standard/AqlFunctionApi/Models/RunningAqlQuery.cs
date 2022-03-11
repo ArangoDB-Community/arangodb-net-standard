@@ -42,7 +42,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
 
         /// <summary>
         /// The query’s current execution state.
-        /// See <see cref="https://www.arangodb.com/docs/stable/http/aql-query.html#returns-the-currently-running-aql-queries"/>
+        /// See online documentation 
         /// for more information.
         /// </summary>
         public string state { get; set; }
