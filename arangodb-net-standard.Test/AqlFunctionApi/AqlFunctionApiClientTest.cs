@@ -197,6 +197,45 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
             Assert.Equal(HttpStatusCode.OK, response.Code);
         }
 
+        [Fact]
+        public async Task GetCurrentlyRunningAqlQueriesAsync_ShouldSucceed()
+        {
+            GetCurrentlyRunningAqlQueriesResponse getResponse =
+                await _fixture.AqlFunctionClient.GetCurrentlyRunningAqlQueriesAsync();
+
+            Assert.False(getResponse.Error);
+            Assert.Equal(HttpStatusCode.OK, getResponse.Code);
+        }
+
+        [Fact]
+        public async Task GetQueryTrackingConfigurationAsync_ShouldSucceed()
+        {
+            QueryTrackingConfiguration getResponse =
+                await _fixture.AqlFunctionClient.GetQueryTrackingConfigurationAsync();
+
+            Assert.False(getResponse.Error);
+            Assert.Equal(HttpStatusCode.OK, getResponse.Code);
+        }
+
+
+        [Fact]
+        public async Task PutChangeQueryTrackingConfigurationAsync_ShouldSucceed()
+        {
+            var getResponse =
+                await _fixture.AqlFunctionClient.GetQueryTrackingConfigurationAsync();
+
+            QueryTrackingConfiguration putResponse =
+                await _fixture.AqlFunctionClient.PutChangeQueryTrackingConfigurationAsync(
+                    new PutChangeQueryTrackingConfigurationBody()
+                    {
+                        Properties = getResponse
+                    }
+                );
+
+            Assert.False(putResponse.Error);
+            Assert.Equal(HttpStatusCode.OK, putResponse.Code);
+        }
+
 
 
 

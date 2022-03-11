@@ -155,5 +155,38 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// <returns></returns>
         Task<QueryCacheGlobalProperties> PutAdjustQueryCacheGlobalPropertiesAsync(
           PutAdjustQueryCacheGlobalPropertiesBody body);
+
+
+        /// <summary>
+        /// Gets the current query tracking configuration. 
+        /// GET /_api/query/properties
+        /// </summary>
+        /// <returns></returns>
+        Task<QueryTrackingConfiguration> GetQueryTrackingConfigurationAsync();
+
+        /// <summary>
+        /// Changes the configuration for the AQL query tracking.
+        /// PUT /_api/query/properties
+        /// </summary>
+        /// <remarks>
+        /// After the configuration properties have been changed, 
+        /// the current set of properties will be returned.
+        /// </remarks>
+        /// <param name="body">The body of the request containing required configuration properties.</param>
+        /// <returns></returns>
+        Task<QueryTrackingConfiguration> PutChangeQueryTrackingConfigurationAsync(
+          PutChangeQueryTrackingConfigurationBody body);
+
+        /// <summary>
+        /// Gets a list of currently running AQL queries.
+        /// GET /_api/query/current
+        /// </summary>
+        /// <remarks>
+        /// Returns the global AQL query results cache configuration.
+        /// </remarks>
+        /// <returns></returns>
+        Task<GetCurrentlyRunningAqlQueriesResponse> GetCurrentlyRunningAqlQueriesAsync(
+            GetCurrentlyRunningAqlQueriesQuery query = null);
+
     }
 }

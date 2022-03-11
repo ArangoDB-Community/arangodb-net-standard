@@ -388,6 +388,83 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             }
         }
 
+        /// <summary>
+        /// Gets the current query tracking configuration. 
+        /// GET /_api/query/properties
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<QueryTrackingConfiguration> GetQueryTrackingConfigurationAsync()
+        {
+            string uri = "_api/query/properties";
+            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<QueryTrackingConfiguration>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Changes the configuration for the AQL query tracking.
+        /// PUT /_api/query/properties
+        /// </summary>
+        /// <remarks>
+        /// After the configuration properties have been changed, 
+        /// the current set of properties will be returned.
+        /// </remarks>
+        /// <param name="body">The body of the request containing required configuration properties.</param>
+        /// <returns></returns>
+        public virtual async Task<QueryTrackingConfiguration> PutChangeQueryTrackingConfigurationAsync(PutChangeQueryTrackingConfigurationBody body)
+        {
+            if (body == null)
+            {
+                throw new System.ArgumentException("body is required", nameof(body));
+            }
+
+            string uri = "_api/query/properties";
+
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<QueryTrackingConfiguration>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of currently running AQL queries.
+        /// </summary>
+        /// <remarks>
+        /// Returns the global AQL query results cache configuration.
+        /// </remarks>
+        /// <returns></returns>
+        public virtual async Task<GetCurrentlyRunningAqlQueriesResponse> GetCurrentlyRunningAqlQueriesAsync(GetCurrentlyRunningAqlQueriesQuery query = null)
+        {
+            string uri = "_api/query/current";
+
+            if (query != null)
+            {
+                uri += "?" + query.ToQueryString();
+            }
+
+            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetCurrentlyRunningAqlQueriesResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
 
     }
 }
