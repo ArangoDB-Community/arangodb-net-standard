@@ -173,3 +173,8 @@ A tick indicates an item is implemented and has automated tests in place.
 
 - [ ]	VelocyStream support
 - [ ]	VelocyPack-over-HTTP support
+
+#### Bulk Operations API
+
+- [X]	`POST /_api/import#document` Bulk Import Document Arrays
+- [X]	`POST /_api/import#json` Bulk Import Document Objects

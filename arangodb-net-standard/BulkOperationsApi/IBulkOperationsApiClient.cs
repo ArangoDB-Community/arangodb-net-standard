@@ -22,39 +22,40 @@ namespace ArangoDBNetStandard.BulkOperationsApi
 
         /// <summary>
         /// Imports data arrays as documents into a collection.
-        /// POST /_api/import
-        /// </summary>
-        /// <param name="query">Options for the import.</param>
-        /// <param name="body">The body of the request containing required properties.</param>
-        /// <returns></returns>
-        Task<ImportDocumentsResponse> PostImportDocumentArraysAsync(
-            ImportDocumentsQuery query,
-            string body);
-
-        /// <summary>
-        /// Imports data arrays as documents into a collection.
         /// Use this method if you have already structured the
         /// JSON body according to the specifications.
         /// POST /_api/import
         /// </summary>
         /// <param name="query">Options for the import.</param>
-        /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="jsonBody">The body of the request containing required value arrays.</param>
+        /// <returns></returns>
+        Task<ImportDocumentsResponse> PostImportDocumentArraysAsync(
+            ImportDocumentsQuery query,
+            string jsonBody);
+
+
+        /// <summary>
+        /// Imports objects as documents into a collection.
+        /// POST /_api/import
+        /// </summary>
+        /// <param name="query">Options for the import.</param>
+        /// <param name="body">The body of the request containing required objects.</param>
         /// <returns></returns>
         Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync(
             ImportDocumentsQuery query,
             ImportDocumentObjectsBody body);
 
         /// <summary>
-        /// Imports data arrays as documents into a collection.
+        /// Imports objects as documents into a collection.
         /// Use this method if you have already structured the
         /// JSON body according to the specifications.
         /// POST /_api/import
         /// </summary>
         /// <param name="query">Options for the import.</param>
-        /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="jsonBody">The body of the request containing the required JSON objects.</param>
         /// <returns></returns>
         Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync(
             ImportDocumentsQuery query,
-            string body);
+            string jsonBody);
     }
 }

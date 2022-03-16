@@ -47,6 +47,22 @@ namespace ArangoDBNetStandard.Serialization
 
         public override byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
+            string json = SerializeToString(item, serializationOptions);
+            return Encoding.UTF8.GetBytes(json);
+        }
+
+
+        /// <summary>
+        /// Serializes an object to JSON string
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <returns></returns>
+
+        public override string SerializeToString<T>(T item, ApiClientSerializationOptions serializationOptions)
+        {
             // When no options passed use the default.
             if (serializationOptions == null)
             {
@@ -71,7 +87,7 @@ namespace ArangoDBNetStandard.Serialization
 
             string json = JsonConvert.SerializeObject(item, jsonSettings);
 
-            return Encoding.UTF8.GetBytes(json);
+            return json;
         }
     }
 }
