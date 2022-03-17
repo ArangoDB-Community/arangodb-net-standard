@@ -58,8 +58,6 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
                 },
                 _testImportDocumentArraysBody);
             Assert.False(postResponse.Error);
-            Assert.Equal(_testImportDocumentArraysBody.ValueArrays.Count(),
-                postResponse.Created);
         }
 
         [Fact]
@@ -72,8 +70,6 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
                 },
                 _testImportDocumentArraysJSON);
             Assert.False(postResponse.Error);
-            Assert.Equal(_testImportDocumentArrayJSONCount,
-                postResponse.Created);
         }
 
         [Fact]
@@ -87,8 +83,6 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
                 },
                 _testImportDocumentObjectsBody);
             Assert.False(postResponse.Error);
-            Assert.Equal(_testImportDocumentObjectsBody.Documents.Count(),
-                postResponse.Created);
         }
 
         [Fact]
@@ -102,8 +96,6 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
                 },
                 _testImportDocumentObjectsJSON);
             Assert.False(postResponse.Error);
-            Assert.Equal(_testImportDocumentObjectJSONCount,
-                postResponse.Created);
         }
     }
 }
