@@ -117,7 +117,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi
                 throw new ArgumentException("Collection name is required", nameof(query.Collection));
             }
 
-            if (string.IsNullOrEmpty(query.Collection))
+            if (string.IsNullOrEmpty(jsonBody))
             {
                 throw new ArgumentException("jsonBody is required", nameof(jsonBody));
             }
@@ -197,7 +197,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi
                 throw new ArgumentException("Type is required", nameof(query.Type));
             }
 
-            if (string.IsNullOrEmpty(query.Collection))
+            if (string.IsNullOrEmpty(jsonBody))
             {
                 throw new ArgumentException("jsonBody is required", nameof(jsonBody));
             }

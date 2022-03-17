@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
+using ArangoDBNetStandard.BulkOperationsApi;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
@@ -76,6 +77,11 @@ namespace ArangoDBNetStandard
         public IndexApiClient Index { get; private set; }
 
         /// <summary>
+        /// Bulk Operations API.
+        /// </summary>
+        public BulkOperationsApiClient BulkOperations { get; private set; }
+
+        /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
         /// <see cref="HttpClient"/> instance, using the default JSON serialization.
         /// </summary>
@@ -138,6 +144,7 @@ namespace ArangoDBNetStandard
             Graph = new GraphApiClient(transport, serialization);
             User = new UserApiClient(transport, serialization);
             Index = new IndexApiClient(transport, serialization);
+            BulkOperations = new BulkOperationsApiClient(transport, serialization);
         }
     }
 }

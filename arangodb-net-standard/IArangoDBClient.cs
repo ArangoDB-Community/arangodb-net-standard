@@ -1,6 +1,7 @@
 ﻿using System;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
+using ArangoDBNetStandard.BulkOperationsApi;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
@@ -63,5 +64,10 @@ namespace ArangoDBNetStandard
         /// Index management API.
         /// </summary>
         IndexApiClient Index { get; }
+
+        /// <summary>
+        /// Bulk Operations API.
+        /// </summary>
+        BulkOperationsApiClient BulkOperations { get; }
     }
 }
