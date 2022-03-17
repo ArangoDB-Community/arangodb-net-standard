@@ -72,9 +72,9 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
                              }
                         };
                         TestImportDocumentObjectsType = "documents";
-                        TestImportDocumentObjectsJSON = "{ name=\"Josy\", gender=\"F\", age =\"43\" }" + Environment.NewLine +
-                                                        "{ name=\"Marie\", gender=\"F\", age =\"34\" }" + Environment.NewLine +
-                                                        "{ name=\"Carinne\", gender=\"F\", age =\"53\" }" + Environment.NewLine;
+                        TestImportDocumentObjectsJSON = "{ name:\"Josy\", gender:\"F\", age:\"43\" }" + Environment.NewLine +
+                                                        "{ name:\"Marie\", gender:\"F\", age:\"34\" }" + Environment.NewLine +
+                                                        "{ name:\"Carinne\", gender:\"F\", age:\"53\" }" + Environment.NewLine;
                         TestImportDocumentObjectJSONCount = 3;
 
                         Console.WriteLine("Test data created successfully");
