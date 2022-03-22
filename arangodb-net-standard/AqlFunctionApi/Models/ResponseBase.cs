@@ -17,5 +17,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// </summary>
         public HttpStatusCode Code { get; set; }
     }
-
 }

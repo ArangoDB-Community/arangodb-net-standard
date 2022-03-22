@@ -20,6 +20,4 @@
         /// </summary>
         public int? PlansCreated { get; set; }
     }
-
-
 }

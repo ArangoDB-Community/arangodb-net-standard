@@ -8,5 +8,4 @@
     {
         public QueryCacheGlobalProperties Properties { get; set; }
     }
-
 }

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace ArangoDBNetStandard.AqlFunctionApi.Models
 {
+    /// <summary>
+    /// Response from
+    /// <see cref="AqlFunctionApiClient.GetCurrentlyRunningAqlQueriesAsync(GetCurrentlyRunningAqlQueriesQuery)"/>
+    /// </summary>
     public class RunningAqlQuery
     {
         /// <summary>

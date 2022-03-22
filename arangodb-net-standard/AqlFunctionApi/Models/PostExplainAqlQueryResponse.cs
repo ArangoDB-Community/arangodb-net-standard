@@ -38,9 +38,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// </summary>
         public PostExplainAqlQueryResponseStats Stats { get; set; }
     }
-
-
-
-
-
 }

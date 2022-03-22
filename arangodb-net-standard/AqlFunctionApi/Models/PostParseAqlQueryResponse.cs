@@ -38,8 +38,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// </summary>
         public string ErrorMessage { get; set; }
     }
-
-
-
-
 }

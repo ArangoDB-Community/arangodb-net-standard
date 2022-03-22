@@ -46,10 +46,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// </summary>
         public bool? IsModificationQuery { get; set; }
     }
-
-
-
-
-
-
 }

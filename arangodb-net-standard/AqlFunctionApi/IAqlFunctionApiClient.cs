@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard.AqlFunctionApi.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.AqlFunctionApi
@@ -112,7 +113,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// setting the query tracking property slowQueryThreshold.
         /// </remarks>
         /// <returns></returns>
-        Task<GetSlowAqlQueriesResponse> GetSlowAqlQueriesAsync(
+        Task<List<SlowAqlQuery>> GetSlowAqlQueriesAsync(
            GetSlowAqlQueriesQuery query = null);
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// stored in the query results cache of the selected database.
         /// </remarks>
         /// <returns></returns>
-        Task<GetCachedAqlQueryResultsResponse> GetCachedAqlQueryResultsAsync();
+        Task<List<CachedAqlQueryResult>> GetCachedAqlQueryResultsAsync();
 
         /// <summary>
         /// Gets the global configuration for the AQL query results cache.
@@ -185,8 +186,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Returns the global AQL query results cache configuration.
         /// </remarks>
         /// <returns></returns>
-        Task<GetCurrentlyRunningAqlQueriesResponse> GetCurrentlyRunningAqlQueriesAsync(
+        Task<List<RunningAqlQuery>> GetCurrentlyRunningAqlQueriesAsync(
             GetCurrentlyRunningAqlQueriesQuery query = null);
-
     }
 }

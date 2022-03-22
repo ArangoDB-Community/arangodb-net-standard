@@ -3,11 +3,13 @@
 namespace ArangoDBNetStandard.AqlFunctionApi.Models
 {
     /// <summary>
+    /// Response from
+    /// <see cref="AqlFunctionApiClient.GetSlowAqlQueriesAsync(GetSlowAqlQueriesQuery)"/>
     /// Represents an AQL query that are finished 
     /// and have exceeded the slow query threshold 
     /// in the selected database.
     /// </summary>
-    public class GetSlowAqlQueriesResponseResult
+    public class SlowAqlQuery
     {
         /// <summary>
         /// The query’s id
@@ -55,5 +57,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// </summary>
         public string Stream { get; set; }
     }
-
 }

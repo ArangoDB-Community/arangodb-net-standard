@@ -38,10 +38,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         public int? Offset { get; set; }
         public bool? FullCount { get; set; }
     }
-
-
-
-
-
-
 }

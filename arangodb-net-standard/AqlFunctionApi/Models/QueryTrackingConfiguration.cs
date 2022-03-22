@@ -62,6 +62,4 @@
         /// </summary>
         public int? MaxQueryStringLength { get; set; }
     }
-
-
 }

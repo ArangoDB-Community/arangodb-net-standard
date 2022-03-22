@@ -6,6 +6,4 @@
         public string Name { get; set; }
         public bool? IsDataFromCollection { get; set; }
     }
-
-
 }

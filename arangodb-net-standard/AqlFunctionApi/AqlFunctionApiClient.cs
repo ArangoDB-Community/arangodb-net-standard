@@ -1,6 +1,7 @@
 ﻿using ArangoDBNetStandard.AqlFunctionApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -270,7 +271,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// setting the query tracking property slowQueryThreshold.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<GetSlowAqlQueriesResponse> GetSlowAqlQueriesAsync(GetSlowAqlQueriesQuery query = null)
+        public virtual async Task<List<SlowAqlQuery>> GetSlowAqlQueriesAsync(GetSlowAqlQueriesQuery query = null)
         {
             string uri = "_api/query/slow";
 
@@ -284,7 +285,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetSlowAqlQueriesResponse>(stream);
+                    return DeserializeJsonFromStream<List<SlowAqlQuery>>(stream);
                 }
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
@@ -321,7 +322,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// stored in the query results cache of the selected database.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<GetCachedAqlQueryResultsResponse> GetCachedAqlQueryResultsAsync()
+        public virtual async Task<List<CachedAqlQueryResult>> GetCachedAqlQueryResultsAsync()
         {
             string uri = "_api/query-cache/entries";
             using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
@@ -329,7 +330,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCachedAqlQueryResultsResponse>(stream);
+                    return DeserializeJsonFromStream<List<CachedAqlQueryResult>>(stream);
                 }
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
@@ -445,7 +446,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Returns the global AQL query results cache configuration.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<GetCurrentlyRunningAqlQueriesResponse> GetCurrentlyRunningAqlQueriesAsync(GetCurrentlyRunningAqlQueriesQuery query = null)
+        public virtual async Task<List<RunningAqlQuery>> GetCurrentlyRunningAqlQueriesAsync(GetCurrentlyRunningAqlQueriesQuery query = null)
         {
             string uri = "_api/query/current";
 
@@ -459,12 +460,10 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCurrentlyRunningAqlQueriesResponse>(stream);
+                    return DeserializeJsonFromStream<List<RunningAqlQuery>>(stream);
                 }
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
-
-
     }
 }

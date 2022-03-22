@@ -225,13 +225,5 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
             Assert.False(putResponse.Error);
             Assert.Equal(HttpStatusCode.OK, putResponse.Code);
         }
-
-
-
-
-
-
-
-
     }
 }

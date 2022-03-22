@@ -26,5 +26,4 @@
         /// </summary>
         public PostExplainAqlQueryBodyOptimizer Optimizer { get; set; }        
     }
-
 }

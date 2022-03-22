@@ -5,7 +5,7 @@
     /// Response from
     /// <see cref="AqlFunctionApiClient.GetQueryCacheGlobalPropertiesAsync()"/>
     /// </summary>
-    public class QueryCacheGlobalProperties : ResponseBase
+    public class QueryCacheGlobalProperties
     {
         /// <summary>
         /// The mode the AQL query results cache operates in. 
@@ -39,5 +39,4 @@
         /// </summary>
         public bool? IncludeSystem { get; set; }
     }
-
 }

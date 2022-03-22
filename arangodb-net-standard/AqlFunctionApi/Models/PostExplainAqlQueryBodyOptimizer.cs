@@ -20,5 +20,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// </summary>
         public IList<string> Rules { get; set; }
     }
-
 }

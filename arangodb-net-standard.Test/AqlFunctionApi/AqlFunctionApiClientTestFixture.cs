@@ -69,12 +69,5 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
                 throw ex;
             }
         }
-
-
-
-
-
-
-
     }
 }

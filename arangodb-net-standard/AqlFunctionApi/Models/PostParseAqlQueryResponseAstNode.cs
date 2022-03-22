@@ -14,8 +14,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         public string Value { get; set; }
         public IList<PostParseAqlQueryResponseAstNode> SubNodes { get; set; }
     }
-
-
-
-
 }

@@ -4,9 +4,10 @@ using System.Collections.Generic;
 namespace ArangoDBNetStandard.AqlFunctionApi.Models
 {
     /// <summary>
+    /// Response from <see cref="AqlFunctionApiClient.GetCachedAqlQueryResultsAsync()"/>
     /// Represents a cached AQL query result.
     /// </summary>
-    public class GetCachedAqlQueryResultItem
+    public class CachedAqlQueryResult
     {
         /// <summary>
         /// The query result’s hash
@@ -57,5 +58,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// </summary>
         public IList<string> DataSources { get; set; }
     }
-
 }

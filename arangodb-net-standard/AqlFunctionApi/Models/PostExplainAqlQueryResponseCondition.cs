@@ -13,10 +13,4 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         public int? VTypeId { get; set; }
         public IList<PostExplainAqlQueryResponseCondition> SubNodes { get; set; }
     }
-
-
-
-
-
-
 }
