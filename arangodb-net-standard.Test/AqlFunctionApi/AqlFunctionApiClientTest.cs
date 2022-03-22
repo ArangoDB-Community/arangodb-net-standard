@@ -152,8 +152,8 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
         [Fact]
         public async Task GetSlowAqlQueriesAsync_ShouldSucceed()
         {
-            GetSlowAqlQueriesResponse getResponse =
-                await _fixture.AqlFunctionClient.GetSlowAqlQueriesAsync();
+            var getResponse =
+                  await _fixture.AqlFunctionClient.GetSlowAqlQueriesAsync();
 
             //Assert.False(getResponse.Error);
             //Assert.Equal(HttpStatusCode.OK, getResponse.Code);
