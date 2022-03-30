@@ -23,8 +23,6 @@ namespace ArangoDBNetStandardTest.CollectionApi
             _adb = fixture.ArangoDBClient;
             _collectionApi = _adb.Collection;
             _testCollection = fixture.TestCollection;
-
-
         }
 
         public async Task InitializeAsync()
@@ -471,5 +469,55 @@ namespace ArangoDBNetStandardTest.CollectionApi
             });
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
         }
+
+
+
+
+        [Fact]
+        public async Task GetChecksumAsync_ShouldSucceed()
+        {
+            var res = await _collectionApi.GetChecksumAsync(_testCollection);
+            Assert.NotNull(res.Checksum);
+        }
+
+        [Fact]
+        public async Task LoadIndexesIntoMemoryAsync_ShouldSucceed()
+        {
+            var res = await _collectionApi.LoadIndexesIntoMemoryAsync(_testCollection);
+            Assert.True(res.Result);
+        }
+
+        [Fact]
+        public async Task RecalculateCountAsync_ShouldSucceed()
+        {
+            var res = await _collectionApi.RecalculateCountAsync(_testCollection);
+            Assert.True(res.Result);
+        }
+
+        [Fact]
+        public async Task GetCollectionShardsAsync_ShouldSucceed()
+        {
+            var res = await _collectionApi.GetCollectionShardsAsync(_testCollection);
+            Assert.Equal(HttpStatusCode.OK,res.Code);
+        }
+
+        [Fact]
+        public async Task GetCollectionShardsWithDetailsAsync_ShouldSucceed()
+        {
+            var res = await _collectionApi.GetCollectionShardsWithDetailsAsync(_testCollection);
+            Assert.Equal(HttpStatusCode.OK, res.Code);
+        }
+
+        [Fact]
+        public async Task CompactCollectionDataAsync_ShouldSucceed()
+        {
+            var res = await _collectionApi.CompactCollectionDataAsync(_testCollection);
+            Assert.Equal(HttpStatusCode.OK, res.Code);
+            Assert.NotNull(res.GloballyUniqueId);
+        }
+
+
+
+
     }
 }
