@@ -198,3 +198,12 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`GET/_api/query/current` Returns the currently running AQL queries
 - [X]	`GET/_api/query/properties` Returns the properties for the AQL query tracking
 - [X]	`PUT/_api/query/properties` Changes the properties for the AQL query tracking
+
+#### Collections API
+
+- [X]	`GET/_api/collection/{collection-name}/checksum` Return checksum for the collection
+- [X]	`PUT/_api/collection/{collection-name}/loadIndexesIntoMemory` Load Indexes into Memory
+- [X]	`PUT/_api/collection/{collection-name}/recalculateCount` Recalculate count of a collection
+- [X]	`PUT​/_api​/collection​/{collection-name}​/responsibleShard` Return responsible shard for a document
+- [X]	`GET/_api/collection/{collection-name}/shards` Return the shard ids of a collection
+- [X]	`PUT/_api/collection/{collection-name}/compact` Compact a collection
