@@ -269,18 +269,6 @@ namespace ArangoDBNetStandard.CollectionApi
             };
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// Get the checksum for a specific collection.
         /// GET /_api/collection/{collection-name}/checksum
@@ -290,7 +278,24 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public virtual async Task<GetChecksumResponse> GetChecksumAsync(string collectionName, GetChecksumQuery query = null)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new System.ArgumentNullException("collectionName", "collectionName is required");
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/checksum";
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetChecksumResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -305,7 +310,20 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public virtual async Task<LoadIndexesIntoMemoryResponse> LoadIndexesIntoMemoryAsync(string collectionName)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new System.ArgumentNullException("collectionName", "collectionName is required");
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/loadIndexesIntoMemory";
+            using (var response = await _transport.PutAsync(uriString, null).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<LoadIndexesIntoMemoryResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -316,7 +334,20 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public virtual async Task<RecalculateCountResponse> RecalculateCountAsync(string collectionName)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new System.ArgumentNullException("collectionName", "collectionName is required");
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/recalculateCount";
+            using (var response = await _transport.PutAsync(uriString, null).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<RecalculateCountResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -332,7 +363,25 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public virtual async Task<DocumentShardResponse> PutDocumentShardAsync(string collectionName, Dictionary<string, object> body)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new System.ArgumentNullException("collectionName", "collectionName is required");
+            }
+            if (body == null)
+            {
+                throw new System.ArgumentNullException("body","body is required");
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/responsibleShard";
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            using (var response = await _transport.PutAsync(uriString, content).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<DocumentShardResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -344,7 +393,20 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public virtual async Task<CollectionShardsResponse> GetCollectionShardsAsync(string collectionName)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new System.ArgumentNullException("collectionName", "collectionName is required");
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards";
+            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<CollectionShardsResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -359,7 +421,20 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public virtual async Task<CollectionShardsDetailedResponse> GetCollectionShardsWithDetailsAsync(string collectionName)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new System.ArgumentNullException("collectionName", "collectionName is required");
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards?details=true";
+            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<CollectionShardsDetailedResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -372,7 +447,20 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <returns></returns>
         public virtual async Task<CompactCollectionDataResponse> CompactCollectionDataAsync(string collectionName)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new System.ArgumentNullException("collectionName", "collectionName is required");
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards?details=true";
+            using (var response = await _transport.PutAsync(uriString,null).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<CompactCollectionDataResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
         }
     }
 }
