@@ -315,7 +315,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw new System.ArgumentNullException("collectionName", "collectionName is required");
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/loadIndexesIntoMemory";
-            using (var response = await _transport.PutAsync(uriString, null).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -339,7 +339,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw new System.ArgumentNullException("collectionName", "collectionName is required");
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/recalculateCount";
-            using (var response = await _transport.PutAsync(uriString, null).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -452,7 +452,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw new System.ArgumentNullException("collectionName", "collectionName is required");
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards?details=true";
-            using (var response = await _transport.PutAsync(uriString,null).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
