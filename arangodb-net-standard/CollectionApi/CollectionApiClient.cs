@@ -451,7 +451,7 @@ namespace ArangoDBNetStandard.CollectionApi
             {
                 throw new System.ArgumentNullException("collectionName", "collectionName is required");
             }
-            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards?details=true";
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/compact";
             using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
