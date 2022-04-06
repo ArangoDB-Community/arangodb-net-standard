@@ -483,14 +483,14 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task LoadIndexesIntoMemoryAsync_ShouldSucceed()
         {
-            var res = await _collectionApi.LoadIndexesIntoMemoryAsync(_testCollection);
+            var res = await _collectionApi.PutLoadIndexesIntoMemoryAsync(_testCollection);
             Assert.True(res.Result);
         }
 
         [Fact]
         public async Task RecalculateCountAsync_ShouldSucceed()
         {
-            var res = await _collectionApi.RecalculateCountAsync(_testCollection);
+            var res = await _collectionApi.PutRecalculateCountAsync(_testCollection);
             Assert.True(res.Result);
         }
 
@@ -519,7 +519,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         [Fact]
         public async Task CompactCollectionDataAsync_ShouldSucceed()
         {
-            var res = await _collectionApi.CompactCollectionDataAsync(_testCollection);
+            var res = await _collectionApi.PutCompactCollectionDataAsync(_testCollection);
             Assert.Equal(HttpStatusCode.OK, res.Code);
             Assert.NotNull(res.GloballyUniqueId);
         }

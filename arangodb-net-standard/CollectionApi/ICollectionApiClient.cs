@@ -114,7 +114,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
         /// <returns></returns>
-        Task<LoadIndexesIntoMemoryResponse> LoadIndexesIntoMemoryAsync(
+        Task<PutLoadIndexesIntoMemoryResponse> PutLoadIndexesIntoMemoryAsync(
            string collectionName);
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
         /// <returns></returns>
-        Task<RecalculateCountResponse> RecalculateCountAsync(
+        Task<PutRecalculateCountResponse> PutRecalculateCountAsync(
            string collectionName);
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// key attributes set to some values.
         /// </param>
         /// <returns></returns>
-        Task<DocumentShardResponse> PutDocumentShardAsync(
+        Task<PutDocumentShardResponse> PutDocumentShardAsync(
            string collectionName, Dictionary<string,object> body);
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
         /// <returns></returns>
-        Task<CollectionShardsResponse> GetCollectionShardsAsync(
+        Task<GetCollectionShardsResponse> GetCollectionShardsAsync(
            string collectionName);
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
         /// <returns></returns>
-        Task<CollectionShardsDetailedResponse> GetCollectionShardsWithDetailsAsync(
+        Task<GetCollectionShardsDetailedResponse> GetCollectionShardsWithDetailsAsync(
            string collectionName);
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
         /// <returns></returns>
-        Task<CompactCollectionDataResponse> CompactCollectionDataAsync(
+        Task<PutCompactCollectionDataResponse> PutCompactCollectionDataAsync(
            string collectionName);
     }
 }

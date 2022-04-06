@@ -11,7 +11,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
     public class GetChecksumResponse:ResponseBase
     {
         /// <summary>
-        /// The GUID of the collection.
+        /// The globally unique Id of the collection
         /// </summary>
         public string GloballyUniqueId { get; set; }
 

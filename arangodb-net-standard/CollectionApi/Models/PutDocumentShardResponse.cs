@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.CollectionApi.Models
 {
-    public class DocumentShardResponse : ResponseBase
+    public class PutDocumentShardResponse : ResponseBase
     {
         /// <summary>
         /// The Id of the responsible shard.

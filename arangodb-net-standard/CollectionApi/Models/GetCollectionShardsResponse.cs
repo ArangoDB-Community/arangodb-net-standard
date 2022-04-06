@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.CollectionApi.Models
 {
-    public class CollectionShardsResponse : CollectionShardsResponseBase
+    public class GetCollectionShardsResponse : CollectionShardsResponseBase
     {
         public List<string> Shards { get; set; }
     }

@@ -2,12 +2,12 @@
 
 namespace ArangoDBNetStandard.CollectionApi.Models
 {
-    public class LoadIndexesIntoMemoryResponse:ResponseBase
+    public class PutLoadIndexesIntoMemoryResponse:ResponseBase
     {
         /// <summary>
         /// Indicates whether the operation
         /// was successful or not.
         /// </summary>
-        public bool? Result { get; set; }
+        public bool Result { get; set; }
     }
 }

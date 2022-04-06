@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.CollectionApi.Models
 {
-    public class CompactCollectionDataResponse : ResponseBase
+    public class PutCompactCollectionDataResponse : ResponseBase
     {
         public int? Type { get; set; }
         public int? Status { get; set; }
