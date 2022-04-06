@@ -12,6 +12,9 @@ namespace ArangoDBNetStandard.CollectionApi.Models
     {
         /// <summary>
         /// The globally unique Id of the collection
+        /// An identifier of the collection that is
+        /// consistent across leader and follower
+        /// shards.
         /// </summary>
         public string GloballyUniqueId { get; set; }
 
