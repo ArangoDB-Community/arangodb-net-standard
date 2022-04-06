@@ -1,7 +1,7 @@
 ﻿namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
     /// <summary>
-    /// Represents a common response class for Analyzer API operations.
+    /// Response from <see cref="IAnalyzerApiClient.DeleteAnalyzerAsync(string)"/>
     /// </summary>
     public class DeleteAnalyzerResponse : ResponseBase
     {

@@ -37,6 +37,6 @@ namespace ArangoDBNetStandard.AnalyzerApi
         /// </summary>
         /// <param name="analyzerName">The name of the analyzer</param>
         /// <returns></returns>
-        Task<DeleteAnalyzerResponse> DeleteIndexAsync(string analyzerName);
+        Task<DeleteAnalyzerResponse> DeleteAnalyzerAsync(string analyzerName);
     }
 }

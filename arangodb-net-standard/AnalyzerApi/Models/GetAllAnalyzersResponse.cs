@@ -3,10 +3,13 @@
 namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
     /// <summary>
-    /// Represents a common response class for Analyzer API operations.
+    /// Response from <see cref="IAnalyzerApiClient.GetAllAnalyzersAsync"/>
     /// </summary>
     public class GetAllAnalyzersResponse : ResponseBase
     {
+        /// <summary>
+        /// List of analyzers
+        /// </summary>
         public List<Analyzer> Result { get; set; }
     }
 }

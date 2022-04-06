@@ -101,7 +101,7 @@ namespace ArangoDBNetStandard.AnalyzerApi
         {
             if (string.IsNullOrEmpty(analyzerName))
             {
-                throw new ArgumentException("analyzerName name is required", nameof(analyzerName));
+                throw new ArgumentException("Analyzer name is required", nameof(analyzerName));
             }
             string uri = _analyzerApiPath + '/' + WebUtility.UrlEncode(analyzerName);
             using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
@@ -121,11 +121,11 @@ namespace ArangoDBNetStandard.AnalyzerApi
         /// </summary>
         /// <param name="analyzerName">The name of the analyzer</param>
         /// <returns></returns>
-        public virtual async Task<DeleteAnalyzerResponse> DeleteIndexAsync(string analyzerName)
+        public virtual async Task<DeleteAnalyzerResponse> DeleteAnalyzerAsync(string analyzerName)
         {
             if (string.IsNullOrEmpty(analyzerName))
             {
-                throw new ArgumentException("analyzerName name is required", nameof(analyzerName));
+                throw new ArgumentException("Analyzer name is required", nameof(analyzerName));
             }
             string uri = _analyzerApiPath + '/' + WebUtility.UrlEncode(analyzerName);
             using (var response = await _client.DeleteAsync(uri).ConfigureAwait(false))

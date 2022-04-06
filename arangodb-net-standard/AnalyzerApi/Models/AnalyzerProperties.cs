@@ -2,6 +2,9 @@
 
 namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
+    /// <summary>
+    /// Properties of an Analyzer
+    /// </summary>
     public class AnalyzerProperties
     {
         public string Locale { get; set; }
@@ -10,5 +13,4 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         public bool Accent { get; set; }
         public bool Stemming { get; set; }
     }
-
 }
