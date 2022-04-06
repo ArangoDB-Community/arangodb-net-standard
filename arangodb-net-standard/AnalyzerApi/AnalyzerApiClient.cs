@@ -1,0 +1,142 @@
+﻿using System.Net;
+using System.Threading.Tasks;
+
+using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.Transport;
+using ArangoDBNetStandard.AnalyzerApi.Models;
+using System;
+
+namespace ArangoDBNetStandard.AnalyzerApi
+{
+    /// <summary>
+    /// A client for interacting with ArangoDB Analyzer endpoints,
+    /// implementing <see cref="IAnalyzerApiClient"/>.
+    /// </summary>
+    public class AnalyzerApiClient : ApiClientBase, IAnalyzerApiClient
+    {
+        /// <summary>
+        /// The transport client used to communicate with the ArangoDB host.
+        /// </summary>
+        protected IApiClientTransport _client;
+
+        /// <summary>
+        /// The root path of the API.
+        /// </summary>
+        protected readonly string _analyzerApiPath = "_api/analyzer";
+
+        /// <summary>
+        /// Creates an instance of <see cref="AnalyzerApiClient"/>
+        /// using the provided transport layer and the default JSON serialization.
+        /// </summary>
+        /// <param name="client">Transport client that the API client will use to communicate with ArangoDB</param>
+        public AnalyzerApiClient(IApiClientTransport client)
+            : base(new JsonNetApiClientSerialization())
+        {
+            _client = client;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="AnalyzerApiClient"/>
+        /// using the provided transport and serialization layers.
+        /// </summary>
+        /// <param name="client">Transport client that the API client will use to communicate with ArangoDB.</param>
+        /// <param name="serializer">Serializer to be used.</param>
+        public AnalyzerApiClient(IApiClientTransport client, IApiClientSerialization serializer)
+            : base(serializer)
+        {
+            _client = client;
+        }
+
+        /// <summary>
+        /// Fetch the list of available Analyzer definitions.
+        /// GET /_api/analyzer
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<GetAllAnalyzersResponse> GetAllAnalyzersAsync()
+        {
+            string uri = _analyzerApiPath;
+            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetAllAnalyzersResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new Analyzer based on the provided definition
+        /// POST /_api/analyzer
+        /// </summary>
+        /// <param name="body">The properties of the new analyzer.</param>
+        /// <returns></returns>
+        public virtual async Task<Analyzer> PostAnalyzerAsync(Analyzer body)
+        {
+            if (body == null)
+            {
+                throw new ArgumentException("body is required", nameof(body));
+            }
+            var uri = _analyzerApiPath;
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            using (var response = await _client.PostAsync(uri, content).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<Analyzer>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Fetches the definition of the specified analyzer.
+        /// GET /_api/analyzer/{analyzer-name}
+        /// </summary>
+        /// <param name="analyzerName">The name of the analyzer</param>
+        /// <returns></returns>
+        public virtual async Task<GetAnalyzerResponse> GetAnalyzerAsync(string analyzerName)
+        {
+            if (string.IsNullOrEmpty(analyzerName))
+            {
+                throw new ArgumentException("analyzerName name is required", nameof(analyzerName));
+            }
+            string uri = _analyzerApiPath + '/' + WebUtility.UrlEncode(analyzerName);
+            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetAnalyzerResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Deletes an Analyzer.
+        /// DELETE /_api/analyzer/{analyzer-name}
+        /// </summary>
+        /// <param name="analyzerName">The name of the analyzer</param>
+        /// <returns></returns>
+        public virtual async Task<DeleteAnalyzerResponse> DeleteIndexAsync(string analyzerName)
+        {
+            if (string.IsNullOrEmpty(analyzerName))
+            {
+                throw new ArgumentException("analyzerName name is required", nameof(analyzerName));
+            }
+            string uri = _analyzerApiPath + '/' + WebUtility.UrlEncode(analyzerName);
+            using (var response = await _client.DeleteAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<DeleteAnalyzerResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+    }
+}
