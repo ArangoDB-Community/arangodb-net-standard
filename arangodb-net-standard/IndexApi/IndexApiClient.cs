@@ -171,7 +171,7 @@ namespace ArangoDBNetStandard.IndexApi
                     }
                     break;
                 default:
-                    throw new System.Exception("Invalid index type");
+                    throw new System.ArgumentException("Invalid index type");
             }
 
             uri += '?' + query.ToQueryString();

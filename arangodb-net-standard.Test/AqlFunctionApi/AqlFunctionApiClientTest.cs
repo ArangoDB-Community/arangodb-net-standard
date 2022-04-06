@@ -147,5 +147,83 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
             Assert.Equal("function (celsius) { return celsius * 1.8 + 32; }", firstResult.Code);
             Assert.True(firstResult.IsDeterministic);
         }
+
+
+        [Fact]
+        public async Task GetSlowAqlQueriesAsync_ShouldSucceed()
+        {
+            var getResponse =
+                  await _fixture.AqlFunctionClient.GetSlowAqlQueriesAsync();
+
+            //Assert.False(getResponse.Error);
+            //Assert.Equal(HttpStatusCode.OK, getResponse.Code);
+        }
+
+        [Fact]
+        public async Task DeleteClearSlowAqlQueriesAsync_ShouldSucceed()
+        {
+            ResponseBase deleteResponse =
+                await _fixture.AqlFunctionClient.DeleteClearSlowAqlQueriesAsync();
+
+            Assert.False(deleteResponse.Error);
+            Assert.Equal(HttpStatusCode.OK, deleteResponse.Code);
+        }
+
+
+        [Fact]
+        public async Task PostExplainAqlQueryAsync_ShouldSucceed()
+        {
+            PostExplainAqlQueryResponse response =
+                await _fixture.AqlFunctionClient.PostExplainAqlQueryAsync(
+                new PostExplainAqlQueryBody()
+                {
+                     Query = _fixture.TestAqlQuery
+                });
+            Assert.False(response.Error);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+        }
+
+
+        [Fact]
+        public async Task PostParseAqlQueryAsync_ShouldSucceed()
+        {
+            PostParseAqlQueryResponse response =
+                await _fixture.AqlFunctionClient.PostParseAqlQueryAsync(
+                new PostParseAqlQueryBody()
+                {  
+                    Query = _fixture.TestAqlQuery
+                });
+            Assert.False(response.Error);
+            Assert.Equal(HttpStatusCode.OK, response.Code);
+        }
+
+        [Fact]
+        public async Task GetQueryTrackingConfigurationAsync_ShouldSucceed()
+        {
+            QueryTrackingConfiguration getResponse =
+                await _fixture.AqlFunctionClient.GetQueryTrackingConfigurationAsync();
+
+            Assert.False(getResponse.Error);
+            Assert.Equal(HttpStatusCode.OK, getResponse.Code);
+        }
+
+
+        [Fact]
+        public async Task PutChangeQueryTrackingConfigurationAsync_ShouldSucceed()
+        {
+            var getResponse =
+                await _fixture.AqlFunctionClient.GetQueryTrackingConfigurationAsync();
+
+            QueryTrackingConfiguration putResponse =
+                await _fixture.AqlFunctionClient.PutChangeQueryTrackingConfigurationAsync(
+                    new PutChangeQueryTrackingConfigurationBody()
+                    {
+                        Properties = getResponse
+                    }
+                );
+
+            Assert.False(putResponse.Error);
+            Assert.Equal(HttpStatusCode.OK, putResponse.Code);
+        }
     }
 }
