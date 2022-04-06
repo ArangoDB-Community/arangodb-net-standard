@@ -1,11 +1,11 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.ViewsApi.Models
+namespace ArangoDBNetStandard.ViewApi.Models
 {
     /// <summary>
-    /// Represents a common response class for Views API operations.
+    /// Response from <see cref="IViewApiClient.GetViewAsync(string)"/>
     /// </summary>
-    public class ResponseBase
+    public class GetViewResponse : ViewSummary
     {
         /// <summary>
         /// Indicates whether an error occurred
@@ -17,5 +17,4 @@ namespace ArangoDBNetStandard.ViewsApi.Models
         /// </summary>
         public HttpStatusCode Code { get; set; }
     }
-
 }

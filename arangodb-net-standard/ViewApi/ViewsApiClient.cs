@@ -1,16 +1,16 @@
-﻿using ArangoDBNetStandard.ViewsApi.Models;
+﻿using ArangoDBNetStandard.ViewApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace ArangoDBNetStandard.ViewsApi
+namespace ArangoDBNetStandard.ViewApi
 {
     /// <summary>
     /// A client to interact with ArangoDB HTTP API endpoints
     /// for views management.
     /// </summary>
-    public class ViewsApiClient : ApiClientBase, IViewsApiClient
+    public class ViewApiClient : ApiClientBase, IViewApiClient
     {
         /// <summary>
         /// The transport client used to communicate with the ArangoDB host.
@@ -23,23 +23,23 @@ namespace ArangoDBNetStandard.ViewsApi
         protected readonly string _apiPath = "_api/view";
 
         /// <summary>
-        /// Create an instance of <see cref="ViewsApiClient"/>
+        /// Create an instance of <see cref="ViewApiClient"/>
         /// using the provided transport layer and the default JSON serialization.
         /// </summary>
         /// <param name="transport"></param>
-        public ViewsApiClient(IApiClientTransport transport)
+        public ViewApiClient(IApiClientTransport transport)
             : base(new JsonNetApiClientSerialization())
         {
             _transport = transport;
         }
 
         /// <summary>
-        /// Create an instance of <see cref="ViewsApiClient"/>
+        /// Create an instance of <see cref="ViewApiClient"/>
         /// using the provided transport and serialization layers.
         /// </summary>
         /// <param name="transport"></param>
         /// <param name="serializer"></param>
-        public ViewsApiClient(IApiClientTransport transport, IApiClientSerialization serializer)
+        public ViewApiClient(IApiClientTransport transport, IApiClientSerialization serializer)
             : base(serializer)
         {
             _transport = transport;
@@ -175,7 +175,7 @@ namespace ArangoDBNetStandard.ViewsApi
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
         /// <returns></returns>
-        public virtual async Task<ViewResponse> ChangeViewPropertiesAsync(string viewName, ViewDetails body)
+        public virtual async Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body)
         {
             string uri = $"{_apiPath}/{viewName}/properties";
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
@@ -197,7 +197,7 @@ namespace ArangoDBNetStandard.ViewsApi
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
         /// <returns></returns>
-        public virtual async Task<RenameViewResponse> RenameViewAsync(string viewName, RenameViewBody body)
+        public virtual async Task<PutRenameViewResponse> PutRenameViewAsync(string viewName, PutRenameViewBody body)
         {
             string uri = $"{_apiPath}/{viewName}/rename";
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
@@ -206,7 +206,7 @@ namespace ArangoDBNetStandard.ViewsApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<RenameViewResponse>(stream);
+                    return DeserializeJsonFromStream<PutRenameViewResponse>(stream);
                 }
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }

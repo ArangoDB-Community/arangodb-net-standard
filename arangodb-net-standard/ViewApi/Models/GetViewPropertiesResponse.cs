@@ -1,8 +1,11 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.ViewsApi.Models
+namespace ArangoDBNetStandard.ViewApi.Models
 {
-    public class RenameViewResponse : ViewSummary
+    /// <summary>
+    /// Response from <see cref="IViewApiClient.GetViewPropertiesAsync(string)"/>
+    /// </summary>
+    public class GetViewPropertiesResponse : ViewResponse
     {
         /// <summary>
         /// Indicates whether an error occurred

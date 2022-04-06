@@ -1,8 +1,11 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.ViewsApi.Models
+namespace ArangoDBNetStandard.ViewApi.Models
 {
-    public class GetViewPropertiesResponse : ViewResponse
+    /// <summary>
+    /// Represents a common response class for Views API operations.
+    /// </summary>
+    public class ResponseBase
     {
         /// <summary>
         /// Indicates whether an error occurred
@@ -14,4 +17,5 @@ namespace ArangoDBNetStandard.ViewsApi.Models
         /// </summary>
         public HttpStatusCode Code { get; set; }
     }
+
 }

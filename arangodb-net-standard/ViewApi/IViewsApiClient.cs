@@ -1,12 +1,12 @@
-﻿using ArangoDBNetStandard.ViewsApi.Models;
+﻿using ArangoDBNetStandard.ViewApi.Models;
 using System.Threading.Tasks;
 
-namespace ArangoDBNetStandard.ViewsApi
+namespace ArangoDBNetStandard.ViewApi
 {
     /// <summary>
     /// Defines a client to access the ArangoDB API for Views.
     /// </summary>
-    public interface IViewsApiClient
+    public interface IViewApiClient
     {
         /// <summary>
         /// Gets a list of all views in a database,
@@ -64,7 +64,7 @@ namespace ArangoDBNetStandard.ViewsApi
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
         /// <returns></returns>
-        Task<ViewResponse> ChangeViewPropertiesAsync(string viewName, ViewDetails body);
+        Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body);
 
         /// <summary>
         /// Renames a view
@@ -73,7 +73,6 @@ namespace ArangoDBNetStandard.ViewsApi
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
         /// <returns></returns>
-        Task<RenameViewResponse> RenameViewAsync(string viewName, RenameViewBody body);
-
+        Task<PutRenameViewResponse> PutRenameViewAsync(string viewName, PutRenameViewBody body);
     }
 }
