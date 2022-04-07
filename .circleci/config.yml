@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release --filter Feature!=StreamTransaction
+            dotnet test -c Release --filter "Feature!=StreamTransaction&RunningMode!=Cluster"
             
   "test-arangodb-3_5":
     working_directory: ~/arangodb-net-standard
@@ -77,7 +77,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release
+            dotnet test -c Release --filter RunningMode!=Cluster
 
   "test-arangodb-3_6":
     working_directory: ~/arangodb-net-standard
@@ -96,7 +96,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release
+            dotnet test -c Release --filter RunningMode!=Cluster
 
   "test-arangodb-3_7":
     working_directory: ~/arangodb-net-standard
@@ -134,4 +134,4 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release
+            dotnet test -c Release --filter RunningMode!=Cluster
