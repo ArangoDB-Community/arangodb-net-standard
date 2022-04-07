@@ -494,27 +494,29 @@ namespace ArangoDBNetStandardTest.CollectionApi
             Assert.True(res.Result);
         }
 
-        ///// <summary>
-        ///// This test will run only in a cluster
-        ///// </summary>
-        ///// <returns></returns>
-        //[Fact]
-        //public async Task GetCollectionShardsAsync_ShouldSucceed()
-        //{
-        //    var res = await _collectionApi.GetCollectionShardsAsync(_testCollection);
-        //    Assert.Equal(HttpStatusCode.OK,res.Code);
-        //}
+        /// <summary>
+        /// This test will run only in a cluster
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        [Trait("RunningMode", "Cluster")]
+        public async Task GetCollectionShardsAsync_ShouldSucceed()
+        {
+            var res = await _collectionApi.GetCollectionShardsAsync(_testCollection);
+            Assert.Equal(HttpStatusCode.OK, res.Code);
+        }
 
-        ///// <summary>
-        ///// This test will run only in a cluster
-        ///// </summary>
-        ///// <returns></returns>
-        //[Fact]
-        //public async Task GetCollectionShardsWithDetailsAsync_ShouldSucceed()
-        //{
-        //    var res = await _collectionApi.GetCollectionShardsWithDetailsAsync(_testCollection);
-        //    Assert.Equal(HttpStatusCode.OK, res.Code);
-        //}
+        /// <summary>
+        /// This test will run only in a cluster
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        [Trait("RunningMode", "Cluster")]
+        public async Task GetCollectionShardsWithDetailsAsync_ShouldSucceed()
+        {
+            var res = await _collectionApi.GetCollectionShardsWithDetailsAsync(_testCollection);
+            Assert.Equal(HttpStatusCode.OK, res.Code);
+        }
 
         [Fact]
         public async Task CompactCollectionDataAsync_ShouldSucceed()

@@ -281,7 +281,7 @@ namespace ArangoDBNetStandard.CollectionApi
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
-                throw new ArgumentException("collectionName is required", "collectionName");
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/checksum";
             if (query != null)
@@ -313,7 +313,7 @@ namespace ArangoDBNetStandard.CollectionApi
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
-                throw new ArgumentException("collectionName is required", "collectionName");
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/loadIndexesIntoMemory";
             using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
@@ -337,7 +337,7 @@ namespace ArangoDBNetStandard.CollectionApi
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
-                throw new ArgumentException("collectionName is required", "collectionName");
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/recalculateCount";
             using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
@@ -367,11 +367,11 @@ namespace ArangoDBNetStandard.CollectionApi
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
-                throw new ArgumentException("collectionName is required", "collectionName");
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             if (body == null || body.Count < 1)
             {
-                throw new ArgumentException("body is required", "body");
+                throw new ArgumentException($"{nameof(body)} is required", nameof(body));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/responsibleShard";
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
@@ -397,7 +397,7 @@ namespace ArangoDBNetStandard.CollectionApi
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
-                throw new ArgumentException("collectionName is required", "collectionName");
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards";
             using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
@@ -425,7 +425,7 @@ namespace ArangoDBNetStandard.CollectionApi
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
-                throw new ArgumentException("collectionName is required", "collectionName");
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards?details=true";
             using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
@@ -451,7 +451,7 @@ namespace ArangoDBNetStandard.CollectionApi
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
-                throw new ArgumentException("collectionName is required","collectionName");
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/compact";
             using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
