@@ -1,6 +1,8 @@
 ﻿using ArangoDBNetStandard.CollectionApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -266,6 +268,201 @@ namespace ArangoDBNetStandard.CollectionApi
 
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             };
+        }
+
+        /// <summary>
+        /// Get the checksum for a specific collection.
+        /// GET /_api/collection/{collection-name}/checksum
+        /// </summary>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="query">Query options.</param>
+        /// <returns></returns>
+        public virtual async Task<GetChecksumResponse> GetChecksumAsync(string collectionName, GetChecksumQuery query = null)
+        {
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/checksum";
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetChecksumResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Load Indexes into Memory.
+        /// Caches all index entries of this collection into the main memory. 
+        /// Therefore it iterates over all indexes of the collection and 
+        /// stores the indexed values, not the entire document data, 
+        /// in memory.
+        /// PUT /_api/collection/{collection-name}/loadIndexesIntoMemory
+        /// </summary>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <returns></returns>
+        public virtual async Task<PutLoadIndexesIntoMemoryResponse> PutLoadIndexesIntoMemoryAsync(string collectionName)
+        {
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/loadIndexesIntoMemory";
+            using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<PutLoadIndexesIntoMemoryResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Recalculates the document count of a collection.        
+        /// PUT /_api/collection/{collection-name}/recalculateCount
+        /// </summary>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <returns></returns>
+        public virtual async Task<PutRecalculateCountResponse> PutRecalculateCountAsync(string collectionName)
+        {
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/recalculateCount";
+            using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<PutRecalculateCountResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Returns the responsible shard for a document.  
+        /// This method is only available in a cluster.      
+        /// PUT /_api/collection/{collection-name}/responsibleShard
+        /// </summary>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="body">
+        /// Body of the request consisting of key/value
+        /// pairs with at least the collection’s shard 
+        /// key attributes set to some values.
+        /// </param>
+        /// <returns></returns>
+        public virtual async Task<PutDocumentShardResponse> PutDocumentShardAsync(string collectionName, Dictionary<string, object> body)
+        {
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
+            }
+            if (body == null || body.Count < 1)
+            {
+                throw new ArgumentException($"{nameof(body)} is required", nameof(body));
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/responsibleShard";
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            using (var response = await _transport.PutAsync(uriString, content).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<PutDocumentShardResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Returns the shard ids of a collection.
+        /// This method is only available in a cluster Coordinator.
+        /// GET /_api/collection/{collection-name}/shards
+        /// </summary>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <returns></returns>
+        public virtual async Task<GetCollectionShardsResponse> GetCollectionShardsAsync(string collectionName)
+        {
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards";
+            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetCollectionShardsResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Returns the shard ids of a collection.
+        /// This method is only available in a cluster Coordinator.
+        /// The response also contains shard IDs as object attribute 
+        /// keys, and the responsible servers for each shard mapped 
+        /// to them. The leader shards will be first in the arrays.
+        /// GET /_api/collection/{collection-name}/shards?details=true
+        /// </summary>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <returns></returns>
+        public virtual async Task<GetCollectionShardsDetailedResponse> GetCollectionShardsWithDetailsAsync(string collectionName)
+        {
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards?details=true";
+            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetCollectionShardsDetailedResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Compacts the data of a collection in order to reclaim disk space.
+        /// The operation will compact the document and index data by rewriting
+        /// the underlying .sst files and only keeping the relevant entries. 
+        /// PUT /_api/collection/{collection-name}/compact
+        /// </summary>
+        /// <param name="collectionName">Name of the collection.</param>
+        /// <returns></returns>
+        public virtual async Task<PutCompactCollectionDataResponse> PutCompactCollectionDataAsync(string collectionName)
+        {
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
+            }
+            string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/compact";
+            using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<PutCompactCollectionDataResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
         }
     }
 }
