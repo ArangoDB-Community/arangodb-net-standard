@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release --filter "Feature!=StreamTransaction&RunningMode!=Cluster"
+            dotnet test -c Release --filter "Feature!=StreamTransaction&RunningMode!=Cluster&Feature!=Analyzer"
             
   "test-arangodb-3_5":
     working_directory: ~/arangodb-net-standard

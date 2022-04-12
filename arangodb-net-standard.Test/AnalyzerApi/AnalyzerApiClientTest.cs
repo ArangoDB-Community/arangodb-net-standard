@@ -33,6 +33,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
+        [Trait("Feature", "Analyzer")]
         public async Task GetAllAnalyzersAsync_ShouldSucceed()
         {
             var res = await _analyzerApi.GetAllAnalyzersAsync();
@@ -41,6 +42,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
+        [Trait("Feature", "Analyzer")]
         public async Task PostAnalyzerAsync_ShouldSucceed()
         {
             var res = await _analyzerApi.PostAnalyzerAsync(
@@ -69,6 +71,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
+        [Trait("Feature", "Analyzer")]
         public async Task GetAnalyzerAsync_ShouldSucceed()
         {
             var allRes = await _analyzerApi.GetAllAnalyzersAsync();
@@ -79,6 +82,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
+        [Trait("Feature", "Analyzer")]
         public async Task DeleteAnalyzerAsync_ShouldSucceed()
         {
             var name = "text_mu";
