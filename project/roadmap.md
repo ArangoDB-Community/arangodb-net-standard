@@ -198,3 +198,14 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`GET/_api/query/current` Returns the currently running AQL queries
 - [X]	`GET/_api/query/properties` Returns the properties for the AQL query tracking
 - [X]	`PUT/_api/query/properties` Changes the properties for the AQL query tracking
+
+#### Views API
+
+- [X]	`GET/_api/view` Reads all views
+- [X]	`POST/_api/view#iresearch` Create iresearch view
+- [X]	`DELETE/_api/view/{view-name}` Drops a view
+- [X]	`GET/_api/view/{view-name}` Return information about a view
+- [X]	`GET/_api/view/{view-name}/properties` Read properties of a view
+- [X]	`PATCH/_api/view/{view-name}/properties#iresearch` Partially changes properties of an iresearch view
+- [X]	`PUT/_api/view/{view-name}/properties#iresearch` Change properties of an iresearch view
+- [X]	`PUT/_api/view/{view-name}/rename` Rename view
