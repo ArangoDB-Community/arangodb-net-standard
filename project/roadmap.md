@@ -207,3 +207,14 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`PUT​/_api​/collection​/{collection-name}​/responsibleShard` Return responsible shard for a document
 - [X]	`GET/_api/collection/{collection-name}/shards` Return the shard ids of a collection
 - [X]	`PUT/_api/collection/{collection-name}/compact` Compact a collection
+
+#### Views API
+
+- [X]	`GET/_api/view` Reads all views
+- [X]	`POST/_api/view#iresearch` Create iresearch view
+- [X]	`DELETE/_api/view/{view-name}` Drops a view
+- [X]	`GET/_api/view/{view-name}` Return information about a view
+- [X]	`GET/_api/view/{view-name}/properties` Read properties of a view
+- [X]	`PATCH/_api/view/{view-name}/properties#iresearch` Partially changes properties of an iresearch view
+- [X]	`PUT/_api/view/{view-name}/properties#iresearch` Change properties of an iresearch view
+- [X]	`PUT/_api/view/{view-name}/rename` Rename view
