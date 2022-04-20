@@ -67,14 +67,39 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <returns></returns>
         public static HttpApiTransport UsingNoAuth(
             Uri hostUri,
-            string dbName,
+            string dbName = "_system",
             HttpContentType contentType = HttpContentType.Json)
         {
             var client = new HttpClient();
+            //defaults to the _system database
+            if (string.IsNullOrWhiteSpace(dbName))
+            {
+                dbName = "_system";
+            }
             client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
             var transport = new HttpApiTransport(client, contentType);
             return transport;
+        }
+
+        /// <summary>
+        /// Get an instance of <see cref="HttpApiTransport"/> that uses basic
+        /// auth to connect to the _system database.
+        /// </summary>
+        /// <param name="hostUri"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="contentType">Content type to use in requests.
+        /// Used to set Content-Type and Accept HTTP headers.
+        /// Uses JSON content type by default.</param>
+        /// <returns></returns>
+        public static HttpApiTransport UsingBasicAuth(
+            Uri hostUri,
+            string username,
+            string password,
+            HttpContentType contentType = HttpContentType.Json)
+        {
+            return UsingBasicAuth(hostUri, "_system", username, password, contentType);
         }
 
         /// <summary>
@@ -96,6 +121,11 @@ namespace ArangoDBNetStandard.Transport.Http
             HttpContentType contentType = HttpContentType.Json)
         {
             var client = new HttpClient();
+            //defaults to the _system database
+            if (string.IsNullOrWhiteSpace(dbName))
+            {
+                dbName = "_system";
+            }
             client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
             var transport = new HttpApiTransport(client, contentType);
@@ -103,6 +133,25 @@ namespace ArangoDBNetStandard.Transport.Http
 
             return transport;
         }
+
+        /// <summary>
+        /// Get an instance of <see cref="HttpApiTransport"/> that uses
+        /// JWT-Token authentication to connect to the _system database.
+        /// </summary>
+        /// <param name="hostUri"></param>
+        /// <param name="jwtToken"></param>
+        /// <param name="contentType">Content type to use in requests.
+        /// Used to set Content-Type and Accept HTTP headers.
+        /// Uses JSON content type by default.</param>
+        /// <returns></returns>
+        public static HttpApiTransport UsingJwtAuth(
+            Uri hostUri,
+            string jwtToken,
+            HttpContentType contentType = HttpContentType.Json)
+        {
+            return UsingJwtAuth(hostUri, "_system", jwtToken, contentType);
+        }
+
 
         /// <summary>
         /// Get an instance of <see cref="HttpApiTransport"/> that uses
@@ -122,6 +171,11 @@ namespace ArangoDBNetStandard.Transport.Http
             HttpContentType contentType = HttpContentType.Json)
         {
             var client = new HttpClient();
+            //defaults to the _system database
+            if (string.IsNullOrWhiteSpace(dbName))
+            {
+                dbName = "_system";
+            }
             client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
             var transport = new HttpApiTransport(client, contentType);
