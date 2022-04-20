@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Serialization;
+using static System.Net.WebRequestMethods;
 
 namespace ArangoDBNetStandard.DocumentApi
 {
@@ -388,5 +389,78 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </remarks>
         /// <returns></returns>
         Task<HeadDocumentResponse> HeadDocumentAsync(string documentId, DocumentHeaderProperties headers = null);
+
+        /// <summary>
+        /// Reads multiple documents from a collection
+        /// PUT /_api/document/{collection}#get
+        /// <see cref="https://www.arangodb.com/docs/stable/http/document-working-with-documents.html#read-multiple-documents"/>
+        /// </summary>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="query">Query options for the API call</param>
+        /// <param name="keysToLookup">List of keys to lookup. Required unless docSpecifications is specified.</param>
+        /// <param name="docSpecifications">List of detailed document specifications to lookup.. Required unless keysToLookup is specified.</param>
+        /// <returns></returns>
+        Task<IList<object>> PutReadMultipleDocumentsAsync(
+            string collectionName,
+            PutReadMultipleDocumentsQuery query,
+            IList<string> keysToLookup = null,
+            IList<PutReadMultipleDocumentsBodyItem> docSpecifications = null);
+
+        /// <summary>
+        /// Executes <see cref="IDocumentApiClient.PutReadMultipleDocumentsAsync(string, PutReadMultipleDocumentsQuery, IList{string}, IList{PutReadMultipleDocumentsBodyItem})"/>
+        /// and returns a list of objects of a specific type.
+        /// </summary>
+        /// <typeparam name="T">Type to return</typeparam>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="query">Query options for the API call</param>
+        /// <param name="keysToLookup">List of keys to lookup. Required unless docSpecifications is specified.</param>
+        /// <param name="docSpecifications">List of detailed document specifications to lookup.. Required unless keysToLookup is specified.</param>
+        /// <returns></returns>
+        Task<IList<T>> PutReadMultipleDocumentsAsync<T>(
+            string collectionName,
+            PutReadMultipleDocumentsQuery query,
+            IList<string> keysToLookup = null,
+            IList<PutReadMultipleDocumentsBodyItem> docSpecifications = null);
+
+
+        /// <summary>
+        /// Creates multiple documents in a collection.
+        /// POST /_api/document/{collection}#multiple
+        /// <see cref="https://www.arangodb.com/docs/stable/http/document-working-with-documents.html#create-multiple-documents"/>
+        /// </summary>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="query">Query options for the API call</param>
+        /// <param name="objects">List of objects from which to create documents.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Creates new documents from the documents given in the body, 
+        /// unless there is already a document with the _key given. 
+        /// If no _key is given, a new unique _key is generated 
+        /// automatically.
+        /// The result body will contain a list of objects of the same
+        /// size as the input list, and each entry contains the
+        /// result of the operation for the corresponding input. 
+        /// In case of an error the entry is a document with 
+        /// attributes error set to true and errorCode set to the
+        /// error code that has happened.
+        /// </remarks>
+        Task<IList<object>> PostMultipleDocumentsAsync(
+            string collectionName,
+            PostMultipleDocumentsQuery query,
+            IList<object> objects);
+
+        /// <summary>
+        /// Executes <see cref="IDocumentApiClient.PostMultipleDocumentsAsync(string, PostMultipleDocumentsQuery, IList{object})"/>
+        /// accepting and returning a list of objects of a specific type.
+        /// </summary>
+        /// <typeparam name="T">Type of object to accept and return</typeparam>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="query">Query options for the API call</param>
+        /// <param name="objects">List of objects from which to create documents.</param>
+        /// <returns></returns>
+        Task<IList<T>> PostMultipleDocumentsAsync<T>(
+            string collectionName,
+            PostMultipleDocumentsQuery query,
+            IList<T> objects);
     }
 }

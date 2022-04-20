@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ArangoDBNetStandard.DocumentApi.Models;
@@ -713,6 +714,173 @@ namespace ArangoDBNetStandard.DocumentApi
                     Etag = response.Headers.ETag
                 };
             }
+        }
+
+        /// <summary>
+        /// Reads multiple documents from a collection
+        /// PUT /_api/document/{collection}#get
+        /// <see cref="https://www.arangodb.com/docs/stable/http/document-working-with-documents.html#read-multiple-documents"/>
+        /// </summary>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="query">Query options for the API call</param>
+        /// <param name="keysToLookup">List of keys to lookup. Required unless docSpecifications is specified.</param>
+        /// <param name="docSpecifications">List of detailed document specifications to lookup.. Required unless keysToLookup is specified.</param>
+        /// <returns></returns>
+        public virtual async Task<IList<object>> PutReadMultipleDocumentsAsync(
+            string collectionName,
+            PutReadMultipleDocumentsQuery query,
+            IList<string> keysToLookup = null,
+            IList<PutReadMultipleDocumentsBodyItem> docSpecifications = null)
+        {
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new System.ArgumentException("collection name is required", nameof(collectionName));
+            }
+
+            if (query == null)
+            {
+                throw new System.ArgumentException("query is required", nameof(query));
+            }
+            
+            if ((keysToLookup == null || keysToLookup.Count < 1) && (docSpecifications == null || docSpecifications.Count < 1))
+            {
+                throw new System.ArgumentException("A list of keys to lookup, a list of document specifications or both are required");
+            }
+
+            //Set the endpoint url
+            string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+
+            //The body is a hybrid list of strings and/or specification objects
+            var body = new List<object>(); 
+            
+            if (keysToLookup != null)
+            {
+                body.AddRange(keysToLookup);
+            }
+
+            if (docSpecifications !=null)
+            {
+                body.AddRange(docSpecifications);
+            }
+
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            using (var response = await _client.PutAsync(uriString, content).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<List<object>>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Creates multiple documents in a collection.
+        /// POST /_api/document/{collection}#multiple
+        /// <see cref="https://www.arangodb.com/docs/stable/http/document-working-with-documents.html#create-multiple-documents"/>
+        /// </summary>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="query">Query options for the API call</param>
+        /// <param name="objects">List of objects from which to create documents.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Creates new documents from the documents given in the body, 
+        /// unless there is already a document with the _key given. 
+        /// If no _key is given, a new unique _key is generated 
+        /// automatically.
+        /// The result body will contain a list of objects of the same
+        /// size as the input list, and each entry contains the
+        /// result of the operation for the corresponding input. 
+        /// In case of an error the entry is a document with 
+        /// attributes error set to true and errorCode set to the
+        /// error code that has happened.
+        /// </remarks>
+        public virtual async Task<IList<object>> PostMultipleDocumentsAsync(
+            string collectionName,
+            PostMultipleDocumentsQuery query,
+            IList<object> objects)
+        {
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                throw new System.ArgumentException("collection name is required", nameof(collectionName));
+            }
+
+            if (query == null)
+            {
+                throw new System.ArgumentException("query is required", nameof(query));
+            }
+
+            if (objects == null || objects.Count < 1)
+            {
+                throw new System.ArgumentException("objects is required", nameof(objects));
+            }
+
+            //Set the endpoint url
+            string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
+            if (query != null)
+            {
+                uriString += "?" + query.ToQueryString();
+            }
+
+            var content = GetContent(objects, new ApiClientSerializationOptions(true, true));
+            using (var response = await _client.PostAsync(uriString, content).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<List<object>>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Executes <see cref="IDocumentApiClient.PutReadMultipleDocumentsAsync(string, PutReadMultipleDocumentsQuery, IList{string}, IList{PutReadMultipleDocumentsBodyItem})"/>
+        /// and returns a list of objects of a specific type.
+        /// </summary>
+        /// <typeparam name="T">Type to return</typeparam>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="query">Query options for the API call</param>
+        /// <param name="keysToLookup">List of keys to lookup. Required unless docSpecifications is specified.</param>
+        /// <param name="docSpecifications">List of detailed document specifications to lookup.. Required unless keysToLookup is specified.</param>
+        /// <returns></returns>
+        public virtual async Task<IList<T>> PutReadMultipleDocumentsAsync<T>(
+            string collectionName,
+            PutReadMultipleDocumentsQuery query,
+            IList<string> keysToLookup = null,
+            IList<PutReadMultipleDocumentsBodyItem> docSpecifications = null)
+        {
+            var docList = await PutReadMultipleDocumentsAsync(collectionName, query, keysToLookup, docSpecifications);
+            if (docList == null)
+                return null;
+            else
+                return (List<T>)docList;
+        }
+
+        /// <summary>
+        /// Executes <see cref="IDocumentApiClient.PostMultipleDocumentsAsync(string, PostMultipleDocumentsQuery, IList{object})"/>
+        /// accepting and returning a list of objects of a specific type.
+        /// </summary>
+        /// <typeparam name="T">Type of object to accept and return</typeparam>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="query">Query options for the API call</param>
+        /// <param name="objects">List of objects from which to create documents.</param>
+        /// <returns></returns>
+        public virtual async Task<IList<T>> PostMultipleDocumentsAsync<T>(
+            string collectionName,
+            PostMultipleDocumentsQuery query,
+            IList<T> objects)
+        {
+            var docList = await PostMultipleDocumentsAsync(collectionName, query, objects);
+            if (docList == null)
+                return null;
+            else
+                return (List<T>)docList;
         }
     }
 }
