@@ -1,6 +1,6 @@
 # arangodb-net-standard: The C#/.NET Standard API driver for ArangoDB.
 
-[![CircleCI](https://circleci.com/gh/Actify-Inc/arangodb-net-standard.svg?style=svg)](https://circleci.com/gh/Actify-Inc/arangodb-net-standard)
+[![CircleCI](https://circleci.com/gh/ArangoDB-Community/arangodb-net-standard.svg?style=svg)](https://circleci.com/gh/ArangoDB-Community/arangodb-net-standard)
 
 ## Description
 
