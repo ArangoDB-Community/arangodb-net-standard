@@ -96,7 +96,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release --filter "RunningMode!=Cluster&Feature!=Analyzer"
+            dotnet test -c Release --filter "RunningMode!=Cluster"
 
   "test-arangodb-3_7":
     working_directory: ~/arangodb-net-standard
