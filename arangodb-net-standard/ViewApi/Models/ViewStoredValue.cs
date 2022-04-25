@@ -9,6 +9,16 @@ namespace ArangoDBNetStandard.ViewApi.Models
     public class ViewStoredValue
     {
         /// <summary>
+        /// Possible value for <see cref="Compression"/>
+        /// </summary>
+        public const string NoCompression = "none";
+
+        /// <summary>
+        /// Possible value for <see cref="Compression"/>
+        /// </summary>
+        public const string LZ4Compression = "lz4";
+
+        /// <summary>
         /// One or more document attribute paths. 
         /// The specified attributes are placed 
         /// into a single column of the index. 
@@ -24,8 +34,8 @@ namespace ArangoDBNetStandard.ViewApi.Models
         /// Optional when creating views. Defines 
         /// the compression type used for the 
         /// internal column-store, which can be 
-        /// "lz4" (LZ4 fast compression, default) 
-        /// OR "none" (no compression).
+        /// <see cref="LZ4Compression"/> (LZ4 fast compression, default) 
+        /// OR <see cref="NoCompression"/> (no compression).
         /// </summary>
         public string Compression { get; set; }
     }

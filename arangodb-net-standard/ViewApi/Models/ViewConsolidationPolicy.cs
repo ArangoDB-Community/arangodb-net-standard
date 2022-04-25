@@ -8,8 +8,17 @@
     public class ViewConsolidationPolicy
     {
         /// <summary>
+        /// Possible value for <see cref="ViewConsolidationPolicy.Type"/>
+        /// </summary>
+        public const string TierType = "tier";
+        /// <summary>
+        /// Possible value for <see cref="ViewConsolidationPolicy.Type"/>
+        /// </summary>
+        public const string BytesAccumulationType = "bytes_accum";
+
+        /// <summary>
         /// The type of consolidation policy.
-        /// 1) "tier" (default): consolidate 
+        /// 1) <see cref="TierType"/> (default): consolidate 
         /// based on segment byte size and live
         /// document count as dictated by the 
         /// customization attributes. 
@@ -19,7 +28,7 @@
         /// <see cref="SegmentsMax"/>, 
         /// <see cref="SegmentsMin"/> and 
         /// <see cref="MinScore"/> are specified.
-        /// 2) "bytes_accum": consolidate only
+        /// 2) <see cref="BytesAccumulationType"/>: consolidate only
         /// if the sum of all candidate segment
         /// byte size is less than the total 
         /// segment byte size multiplied by 
@@ -60,7 +69,7 @@
         public long? SegmentsMin { get; set; }
 
         /// <summary>
-        /// Specified if <see cref="Type"/> is "tier".
+        /// Specified if <see cref="Type"/> is <see cref="TierType"/>.
         /// </summary>
         public long? MinScore { get; set; }
     }

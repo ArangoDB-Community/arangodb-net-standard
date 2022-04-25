@@ -73,6 +73,7 @@ namespace ArangoDBNetStandard.ViewApi
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
         /// <returns></returns>
+        /// <remarks>Note: This method is not available in a cluster.</remarks>
         Task<PutRenameViewResponse> PutRenameViewAsync(string viewName, PutRenameViewBody body);
     }
 }
