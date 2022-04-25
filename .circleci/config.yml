@@ -20,6 +20,9 @@ workflows:
       - "test-arangodb-3_8":
           requires:
             - build
+      - "test-arangodb-3_9":
+          requires:
+            - build
 
 jobs:
   build:
@@ -58,7 +61,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release --filter Feature!=StreamTransaction
+            dotnet test -c Release --filter "Feature!=StreamTransaction&RunningMode!=Cluster"
             
   "test-arangodb-3_5":
     working_directory: ~/arangodb-net-standard
@@ -77,7 +80,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release
+            dotnet test -c Release --filter RunningMode!=Cluster
 
   "test-arangodb-3_6":
     working_directory: ~/arangodb-net-standard
@@ -96,16 +99,16 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release
+            dotnet test -c Release --filter RunningMode!=Cluster
 
   "test-arangodb-3_7":
     working_directory: ~/arangodb-net-standard
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
         environment:
-          ARANGO_HOST: adb3_7_16
-      - image: arangodb/arangodb:3.7.16
-        name: adb3_7_16
+          ARANGO_HOST: adb3_7_17
+      - image: arangodb/arangodb:3.7.17
+        name: adb3_7_17
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
@@ -115,16 +118,16 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release
+            dotnet test -c Release --filter RunningMode!=Cluster
   
   "test-arangodb-3_8":
     working_directory: ~/arangodb-net-standard
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
         environment:
-          ARANGO_HOST: adb3_8_5
-      - image: arangodb/arangodb:3.8.5.1
-        name: adb3_8_5
+          ARANGO_HOST: adb3_8_6
+      - image: arangodb/arangodb:3.8.6
+        name: adb3_8_6
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
@@ -134,4 +137,22 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release
+            dotnet test -c Release --filter RunningMode!=Cluster
+
+  "test-arangodb-3_9":
+    working_directory: ~/arangodb-net-standard
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+        environment:
+          ARANGO_HOST: adb3_9_1
+      - image: arangodb/arangodb:3.9.1
+        name: adb3_9_1
+        environment:
+          ARANGO_ROOT_PASSWORD: root
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/
+      - run:
+          name: Test
+          command: dotnet test -c Release --filter RunningMode!=Cluster
