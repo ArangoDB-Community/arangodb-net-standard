@@ -49,7 +49,7 @@ namespace ArangoDBNetStandardTest.IndexApi
                 new Analyzer()
                 {
                     Name = "text_sc",
-                    Type = "text",
+                    Type = "identity",
                     Properties = new AnalyzerProperties()
                     {
                         Accent = false,
@@ -90,7 +90,7 @@ namespace ArangoDBNetStandardTest.IndexApi
                 new Analyzer()
                 {
                     Name = name,
-                    Type = "text",
+                    Type = "identity",
                     Properties = new AnalyzerProperties()
                     {
                         Accent = false,
