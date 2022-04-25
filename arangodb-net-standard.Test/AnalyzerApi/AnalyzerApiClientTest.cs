@@ -72,6 +72,43 @@ namespace ArangoDBNetStandardTest.IndexApi
 
         [Fact]
         [Trait("Feature", "Analyzer")]
+        public async Task PostAnalyzerAsync_ShouldThrow_WhenAnalyzerIsInvalid()
+        {
+            try
+            {
+                //This call should fail because...
+                var res = await _analyzerApi.PostAnalyzerAsync(
+                    new Analyzer()
+                    {
+                        Name = "text_sc",
+                        Type = "collection", //...invalid analyzer type
+                    Properties = new AnalyzerProperties()
+                        {
+                            Accent = false,
+                            Case = "lower",
+                            Locale = "sc",
+                            Stemming = false,
+                            StopWords = new List<string>()
+                        },
+                        Features = new List<string>()
+                        {
+                        "frequency",
+                        "position",
+                        "norm"
+                        }
+                    }
+                    );
+            }
+            catch (ApiErrorException ex)
+            {
+                Assert.NotNull(ex);
+                Assert.NotNull(ex.ApiError);
+                Assert.True(ex.ApiError.Error);
+            }
+        }
+
+        [Fact]
+        [Trait("Feature", "Analyzer")]
         public async Task GetAnalyzerAsync_ShouldSucceed()
         {
             var allRes = await _analyzerApi.GetAllAnalyzersAsync();
