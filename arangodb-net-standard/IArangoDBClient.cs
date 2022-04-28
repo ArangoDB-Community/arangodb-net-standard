@@ -1,4 +1,5 @@
 ﻿using System;
+using ArangoDBNetStandard.AnalyzerApi;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
 using ArangoDBNetStandard.CollectionApi;
@@ -69,5 +70,10 @@ namespace ArangoDBNetStandard
         /// View management API.
         /// </summary>
         ViewApiClient View { get; }
+        
+        /// <summary>       
+        /// Analyzer API.
+        /// </summary>
+        AnalyzerApiClient Analyzer { get; }
     }
 }

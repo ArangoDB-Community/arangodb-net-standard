@@ -218,3 +218,10 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`PATCH/_api/view/{view-name}/properties#iresearch` Partially changes properties of an iresearch view
 - [X]	`PUT/_api/view/{view-name}/properties#iresearch` Change properties of an iresearch view
 - [X]	`PUT/_api/view/{view-name}/rename` Rename view
+
+#### Analyzers API
+
+- [X]	`GET/_api/analyzer` List all Analyzers
+- [X]	`POST/_api/analyzer` Create an Analyzer with the supplied definition
+- [X]	`DELETE/_api/analyzer/{analyzer-name}` Remove an Analyzer
+- [X]	`GET/_api/analyzer/{analyzer-name}` Return the Analyzer definition

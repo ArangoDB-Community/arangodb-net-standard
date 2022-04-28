@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using ArangoDBNetStandard.AnalyzerApi;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
 using ArangoDBNetStandard.CollectionApi;
@@ -80,6 +81,11 @@ namespace ArangoDBNetStandard
         /// View management API.
         /// </summary>          
         public ViewApiClient View { get; private set; }
+        
+        /// <summary>
+        /// Analyzer management API.
+        /// </summary>
+        public AnalyzerApiClient Analyzer { get; private set; }
 
         /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
@@ -145,6 +151,7 @@ namespace ArangoDBNetStandard
             User = new UserApiClient(transport, serialization);
             Index = new IndexApiClient(transport, serialization);
             View = new ViewApiClient(transport, serialization);
+            Analyzer = new AnalyzerApiClient(transport, serialization); 
         }
     }
 }
