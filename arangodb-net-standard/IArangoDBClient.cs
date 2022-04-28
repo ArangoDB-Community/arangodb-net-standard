@@ -1,4 +1,5 @@
 ﻿using System;
+using ArangoDBNetStandard.AnalyzerApi;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
 using ArangoDBNetStandard.BulkOperationsApi;
@@ -69,5 +70,10 @@ namespace ArangoDBNetStandard
         /// Bulk Operations API.
         /// </summary>
         BulkOperationsApiClient BulkOperations { get; }
+        
+        /// <summary>
+        /// Analyzer managemet API.
+        /// </summary>
+        AnalyzerApiClient Analyzer { get; }
     }
 }
