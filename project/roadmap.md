@@ -208,6 +208,13 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`GET/_api/collection/{collection-name}/shards` Return the shard ids of a collection
 - [X]	`PUT/_api/collection/{collection-name}/compact` Compact a collection
 
+#### Analyzers API
+
+- [X]	`GET/_api/analyzer` List all Analyzers
+- [X]	`POST/_api/analyzer` Create an Analyzer with the supplied definition
+- [X]	`DELETE/_api/analyzer/{analyzer-name}` Remove an Analyzer
+- [X]	`GET/_api/analyzer/{analyzer-name}` Return the Analyzer definition
+- 
 #### Document API
 
 - [X]	`PUT /_api/document/{collection}#get` Read multiple documents

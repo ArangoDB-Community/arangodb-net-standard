@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using ArangoDBNetStandard.AnalyzerApi;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
 using ArangoDBNetStandard.CollectionApi;
@@ -76,6 +77,11 @@ namespace ArangoDBNetStandard
         public IndexApiClient Index { get; private set; }
 
         /// <summary>
+        /// Index management API.
+        /// </summary>
+        public AnalyzerApiClient Analyzer { get; private set; }
+
+        /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
         /// <see cref="HttpClient"/> instance, using the default JSON serialization.
         /// </summary>
@@ -138,6 +144,7 @@ namespace ArangoDBNetStandard
             Graph = new GraphApiClient(transport, serialization);
             User = new UserApiClient(transport, serialization);
             Index = new IndexApiClient(transport, serialization);
+            Analyzer = new AnalyzerApiClient(transport, serialization); 
         }
     }
 }
