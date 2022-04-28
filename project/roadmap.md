@@ -207,3 +207,8 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`PUT​/_api​/collection​/{collection-name}​/responsibleShard` Return responsible shard for a document
 - [X]	`GET/_api/collection/{collection-name}/shards` Return the shard ids of a collection
 - [X]	`PUT/_api/collection/{collection-name}/compact` Compact a collection
+
+#### Document API
+
+- [X]	`PUT /_api/document/{collection}#get` Read multiple documents
+- [X]	`POST ​/_api​/document​/{collection}#multiple` Create multiple documents
