@@ -10,6 +10,7 @@ using ArangoDBNetStandard.GraphApi;
 using ArangoDBNetStandard.IndexApi;
 using ArangoDBNetStandard.TransactionApi;
 using ArangoDBNetStandard.UserApi;
+using ArangoDBNetStandard.ViewApi;
 
 namespace ArangoDBNetStandard
 {
@@ -66,6 +67,11 @@ namespace ArangoDBNetStandard
         IndexApiClient Index { get; }
 
         /// <summary>
+        /// View management API.
+        /// </summary>
+        ViewApiClient View { get; }
+        
+        /// <summary>       
         /// Analyzer API.
         /// </summary>
         AnalyzerApiClient Analyzer { get; }
