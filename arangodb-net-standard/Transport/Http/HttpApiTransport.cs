@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -64,17 +66,46 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="contentType">Content type to use in requests.
         /// Used to set Content-Type and Accept HTTP headers.
         /// Uses JSON content type by default.</param>
+        /// <param name="encodedCA">Base64 encoded CA certificate</param>
         /// <returns></returns>
         public static HttpApiTransport UsingNoAuth(
             Uri hostUri,
-            string dbName,
-            HttpContentType contentType = HttpContentType.Json)
+            string dbName = "_system",
+            HttpContentType contentType = HttpContentType.Json,
+            string encodedCA = null)
         {
-            var client = new HttpClient();
+            var client = InitializeHttpClient(encodedCA);
+            //defaults to the _system database
+            if (string.IsNullOrWhiteSpace(dbName))
+            {
+                dbName = "_system";
+            }
             client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
             var transport = new HttpApiTransport(client, contentType);
             return transport;
+        }
+
+        /// <summary>
+        /// Get an instance of <see cref="HttpApiTransport"/> that uses basic
+        /// auth to connect to the _system database.
+        /// </summary>
+        /// <param name="hostUri"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="contentType">Content type to use in requests.
+        /// Used to set Content-Type and Accept HTTP headers.
+        /// Uses JSON content type by default.</param>
+        /// <param name="encodedCA">Base64 encoded CA certificate</param>
+        /// <returns></returns>
+        public static HttpApiTransport UsingBasicAuth(
+            Uri hostUri,
+            string username,
+            string password,
+            HttpContentType contentType = HttpContentType.Json,
+            string encodedCA = null)
+        {
+            return UsingBasicAuth(hostUri, "_system", username, password, contentType, encodedCA);
         }
 
         /// <summary>
@@ -87,15 +118,22 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="contentType">Content type to use in requests.
         /// Used to set Content-Type and Accept HTTP headers.
         /// Uses JSON content type by default.</param>
+        /// <param name="encodedCA">Base64 encoded CA certificate</param>
         /// <returns></returns>
         public static HttpApiTransport UsingBasicAuth(
             Uri hostUri,
             string dbName,
             string username,
             string password,
-            HttpContentType contentType = HttpContentType.Json)
+            HttpContentType contentType = HttpContentType.Json,
+            string encodedCA = null)
         {
-            var client = new HttpClient();
+            var client = InitializeHttpClient(encodedCA);
+            //defaults to the _system database
+            if (string.IsNullOrWhiteSpace(dbName))
+            {
+                dbName = "_system";
+            }
             client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
             var transport = new HttpApiTransport(client, contentType);
@@ -103,6 +141,27 @@ namespace ArangoDBNetStandard.Transport.Http
 
             return transport;
         }
+
+        /// <summary>
+        /// Get an instance of <see cref="HttpApiTransport"/> that uses
+        /// JWT-Token authentication to connect to the _system database.
+        /// </summary>
+        /// <param name="hostUri"></param>
+        /// <param name="jwtToken"></param>
+        /// <param name="contentType">Content type to use in requests.
+        /// Used to set Content-Type and Accept HTTP headers.
+        /// Uses JSON content type by default.</param>
+        /// <param name="encodedCA">Base64 encoded CA certificate</param>
+        /// <returns></returns>
+        public static HttpApiTransport UsingJwtAuth(
+            Uri hostUri,
+            string jwtToken,
+            HttpContentType contentType = HttpContentType.Json,
+            string encodedCA = null)
+        {
+            return UsingJwtAuth(hostUri, "_system", jwtToken, contentType, encodedCA);
+        }
+
 
         /// <summary>
         /// Get an instance of <see cref="HttpApiTransport"/> that uses
@@ -114,20 +173,51 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="contentType">Content type to use in requests.
         /// Used to set Content-Type and Accept HTTP headers.
         /// Uses JSON content type by default.</param>
+        /// <param name="encodedCA">Base64 encoded CA certificate</param>
         /// <returns></returns>
         public static HttpApiTransport UsingJwtAuth(
             Uri hostUri,
             string dbName,
             string jwtToken,
-            HttpContentType contentType = HttpContentType.Json)
+            HttpContentType contentType = HttpContentType.Json,
+            string encodedCA = null)
         {
-            var client = new HttpClient();
+            var client = InitializeHttpClient(encodedCA);
+            //defaults to the _system database
+            if (string.IsNullOrWhiteSpace(dbName))
+            {
+                dbName = "_system";
+            }
             client.BaseAddress = new Uri(hostUri.AbsoluteUri + "_db/" + dbName + "/");
 
             var transport = new HttpApiTransport(client, contentType);
             transport.SetJwtToken(jwtToken);
 
             return transport;
+        }
+
+        /// <summary>
+        /// Initializes an instance of HttpClient with the option
+        /// of including an SSL certificate
+        /// </summary>
+        /// <param name="encodedCA">Base64 encoded CA certificate</param>
+        /// <returns></returns>
+        static HttpClient InitializeHttpClient(string encodedCA)
+        {
+            if (string.IsNullOrWhiteSpace(encodedCA))
+            {
+                //Initialize a simple http client
+                return new HttpClient();
+            }
+            else
+            {
+                //Initialize the http handler to use the certificate
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.SslProtocols = SslProtocols.Tls12;
+                handler.ClientCertificates.Add(new X509Certificate2(Convert.FromBase64String(encodedCA)));
+                return new HttpClient(handler, true);
+            }
         }
 
         /// <summary>
