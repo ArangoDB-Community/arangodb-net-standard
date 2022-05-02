@@ -14,6 +14,7 @@ using ArangoDBNetStandard.TransactionApi;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.Transport.Http;
 using ArangoDBNetStandard.UserApi;
+using ArangoDBNetStandard.ViewApi;
 
 namespace ArangoDBNetStandard
 {
@@ -83,6 +84,11 @@ namespace ArangoDBNetStandard
         public BulkOperationsApiClient BulkOperations { get; private set; }
         
         /// <summary>
+        /// View management API.
+        /// </summary>          
+        public ViewApiClient View { get; private set; }
+        
+        /// <summary>
         /// Analyzer management API.
         /// </summary>
         public AnalyzerApiClient Analyzer { get; private set; }        
@@ -150,7 +156,8 @@ namespace ArangoDBNetStandard
             Graph = new GraphApiClient(transport, serialization);
             User = new UserApiClient(transport, serialization);
             Index = new IndexApiClient(transport, serialization);
-            BulkOperations = new BulkOperationsApiClient(transport, serialization);
+            BulkOperations = new BulkOperationsApiClient(transport, serialization); 
+            View = new ViewApiClient(transport, serialization);
             Analyzer = new AnalyzerApiClient(transport, serialization); 
         }
     }
