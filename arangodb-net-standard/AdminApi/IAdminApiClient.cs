@@ -12,6 +12,7 @@ namespace ArangoDBNetStandard.AdminApi
         /// <summary>
         /// Retrieves log messages from the server.
         /// GET /_admin/log/entries
+        /// Works on ArangoDB 3.8 or later.
         /// </summary>
         /// <param name="query">Query string parameters</param>
         /// <returns></returns>

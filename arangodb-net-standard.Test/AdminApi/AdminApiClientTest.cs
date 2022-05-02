@@ -9,7 +9,7 @@ using ArangoDBNetStandard.Transport;
 using Moq;
 using Xunit;
 
-namespace ArangoDBNetStandardTest.IndexApi
+namespace ArangoDBNetStandardTest.AdminApi
 {
     public class AdminApiClientTest : IClassFixture<AdminApiClientTestFixture>, IAsyncLifetime
     {
@@ -32,7 +32,12 @@ namespace ArangoDBNetStandardTest.IndexApi
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Works only on version 3.8 onwards. 
+        /// </summary>
+        /// <returns></returns>
         [Fact]
+        [Trait("ServerVersion", "3_8_PLUS")]
         public async Task GetLogsAsync_ShouldSucceed()
         {
             var getResponse = await _adminApi.GetLogsAsync();            

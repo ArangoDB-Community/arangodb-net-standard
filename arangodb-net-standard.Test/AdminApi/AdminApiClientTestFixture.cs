@@ -4,7 +4,7 @@ using ArangoDBNetStandard.IndexApi.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace ArangoDBNetStandardTest.IndexApi
+namespace ArangoDBNetStandardTest.AdminApi
 {
     public class AdminApiClientTestFixture : ApiClientTestFixtureBase
     {
