@@ -51,7 +51,7 @@ namespace ArangoDBNetStandard.AdminApi
         /// </summary>
         /// <param name="query">Query string parameters</param>
         /// <returns></returns>
-        public virtual async Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query)
+        public virtual async Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query = null)
         {
             string uri = $"{_adminApiPath}/log/entries";
             if (query != null)

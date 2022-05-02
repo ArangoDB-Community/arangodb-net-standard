@@ -207,3 +207,12 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`PUT​/_api​/collection​/{collection-name}​/responsibleShard` Return responsible shard for a document
 - [X]	`GET/_api/collection/{collection-name}/shards` Return the shard ids of a collection
 - [X]	`PUT/_api/collection/{collection-name}/compact` Compact a collection
+
+#### Admin API
+
+- [X]	`GET/_admin/log/entries` Read global logs from the server
+- [X]	`POST/_admin/routing/reload` Reloads the routing information
+- [X]	`GET/_admin/server/id` Return id of a server in a cluster
+- [X]	`GET/_admin/server/role` Return role of a server in a cluster
+- [X]	`GET/_api/engine` Return server database engine type
+- [X]	`GET/_api/version` Return server version

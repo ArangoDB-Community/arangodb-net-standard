@@ -1,11 +1,12 @@
 ﻿namespace ArangoDBNetStandard.AdminApi.Models
 {
     /// <summary>
-    /// Response from <see cref="IAdminApiClient.GetServerRoleAsync"/>
+    /// Returned by <see cref="IAdminApiClient.GetServerRoleAsync"/>
     /// </summary>
     public class GetServerRoleResponse : ResponseBase
     {
         /// <summary>
+        /// The server's role.
         /// Possible values for role are:
         /// SINGLE: the server is a standalone server without clustering.
         /// COORDINATOR: the server is a Coordinator in a cluster.

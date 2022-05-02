@@ -15,7 +15,7 @@ namespace ArangoDBNetStandard.AdminApi
         /// </summary>
         /// <param name="query">Query string parameters</param>
         /// <returns></returns>
-        Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query);
+        Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query = null);
 
         /// <summary>
         /// Reloads the routing table.
