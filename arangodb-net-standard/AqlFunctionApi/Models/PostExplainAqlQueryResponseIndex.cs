@@ -10,7 +10,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         public string Type { get; set; }
         public string Name { get; set; }
         public IEnumerable<string> Fields { get; set; }
-        public int? SelectivityEstimate { get; set; }
+        public double? SelectivityEstimate { get; set; }
         public bool? Unique { get; set; }
         public bool? Sparse { get; set; }
         public bool? Deduplicate { get; set; }
