@@ -117,15 +117,9 @@ namespace ArangoDBNetStandard.IndexApi
             }
         }
 
-        /// <summary>
-        /// Creates an index
-        /// </summary>
-        /// <param name="indexType">Type of index to create</param>
-        /// <param name="query">Querystring details</param>
-        /// <param name="body">CreateIndexBody object containing the index details</param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         /// <exception cref="System.ArgumentException">Required parameters not provided or invalid.</exception>
-        public virtual async Task<IndexResponseBase> PostIndexAsync(IndexType indexType, PostIndexQuery query, PostIndexBody body)
+        public virtual async Task<IndexResponseBase> PostIndexAsync(PostIndexQuery query, PostIndexBody body)
         {
             string uri = _indexApiPath;
 
@@ -142,36 +136,6 @@ namespace ArangoDBNetStandard.IndexApi
             if (body == null)
             {
                 throw new System.ArgumentException("body is required", nameof(body));
-            }
-
-            switch (indexType)
-            {
-                case IndexType.Persistent:
-                    {
-                        //uri += "#persistent";
-                        body.Type = "persistent";
-                    }
-                    break;
-                case IndexType.FullText:
-                    {
-                        //uri += "#fulltext";
-                        body.Type = "fulltext";
-                    }
-                    break;
-                case IndexType.TTL:
-                    {
-                        //uri += "#ttl";
-                        body.Type = "ttl";
-                    }
-                    break;
-                case IndexType.Geo:
-                    {
-                        //uri += "#geo";
-                        body.Type = "geo";
-                    }
-                    break;
-                default:
-                    throw new System.ArgumentException("Invalid index type");
             }
 
             uri += '?' + query.ToQueryString();

@@ -33,13 +33,13 @@ namespace ArangoDBNetStandardTest.IndexApi
 
             Console.WriteLine("Collection " + TestCollectionName + " created successfully");
             var idxRes = await ArangoDBClient.Index.PostIndexAsync(
-                IndexType.Persistent,
                 new PostIndexQuery()
                 {
                     CollectionName = TestCollectionName,
                 },
                 new PostIndexBody()
                 {
+                    Type = IndexTypes.Persistent,
                     Name = TestIndexName,
                     Fields = new string[] { "TestName" },
                     Unique = true

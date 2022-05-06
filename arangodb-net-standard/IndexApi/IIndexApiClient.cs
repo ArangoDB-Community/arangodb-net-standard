@@ -32,10 +32,9 @@ namespace ArangoDBNetStandard.IndexApi
         /// <summary>
         /// Creates a new index
         /// </summary>
-        /// <param name="indexType">The type of index to create.</param>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
         /// <returns></returns>
-        Task<IndexResponseBase> PostIndexAsync(IndexType indexType, PostIndexQuery query, PostIndexBody body);
+        Task<IndexResponseBase> PostIndexAsync(PostIndexQuery query, PostIndexBody body);
     }
 }
