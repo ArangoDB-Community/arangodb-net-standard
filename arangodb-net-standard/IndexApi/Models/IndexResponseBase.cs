@@ -58,7 +58,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// <summary>
         /// The index selectivity estimate value for the index if <see cref="Estimates"/> is set to True.
         /// </summary>
-        public int? SelectivityEstimate { get; set; }
+        public double? SelectivityEstimate { get; set; }
 
         /// <summary>
         /// Supported by array indexes of type <see cref="IndexType.Persistent"/>. 
