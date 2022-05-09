@@ -8,8 +8,12 @@ namespace ArangoDBNetStandard.AdminApi.Models
     public class ResponseBase
     {
         /// <summary>
-        /// Indicates whether an error occurred
+        /// Always false.
         /// </summary>
+        /// <remarks>
+        /// To handle errors, catch <see cref="ApiErrorException"/>
+        /// thrown by API client methods.
+        /// </remarks>
         public bool Error { get; set; }
 
         /// <summary>

@@ -1,7 +1,12 @@
-﻿namespace ArangoDBNetStandard.AdminApi.Models
+﻿using System.Collections.Generic;
+
+namespace ArangoDBNetStandard.AdminApi.Models
 {
     public class EngineAlias
     {
-        public EngineAliasIndex Indexes { get; set; }
+        /// <summary>
+        /// List of indexes and associated types
+        /// </summary>
+        public Dictionary<string,string> Indexes { get; set; }
     }
 }

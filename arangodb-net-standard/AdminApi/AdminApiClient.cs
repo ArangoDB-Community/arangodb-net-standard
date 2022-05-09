@@ -7,7 +7,7 @@ using ArangoDBNetStandard.AdminApi.Models;
 namespace ArangoDBNetStandard.AdminApi
 {
     /// <summary>
-    /// A client for interacting with ArangoDB Index endpoints,
+    /// A client for interacting with ArangoDB Admin API,
     /// implementing <see cref="IAdminApiClient"/>.
     /// </summary>
     public class AdminApiClient : ApiClientBase, IAdminApiClient
@@ -52,6 +52,9 @@ namespace ArangoDBNetStandard.AdminApi
         /// </summary>
         /// <param name="query">Query string parameters</param>
         /// <returns></returns>
+        /// <remarks>
+        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#read-global-logs-from-the-server"/> 
+        /// </remarks>
         public virtual async Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query = null)
         {
             string uri = $"{_adminApiPath}/log/entries";
@@ -75,6 +78,9 @@ namespace ArangoDBNetStandard.AdminApi
         /// POST /_admin/routing/reload
         /// </summary>
         /// <returns></returns>
+        /// <remarks>
+        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#reloads-the-routing-information"/> 
+        /// </remarks>
         public virtual async Task<bool> PostReloadRoutingInfoAsync()
         {
             string uri = $"{_adminApiPath}/routing/reload";
@@ -95,6 +101,9 @@ namespace ArangoDBNetStandard.AdminApi
         /// GET /_admin/server/id
         /// </summary>
         /// <returns></returns>
+        /// <remarks>
+        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-id-of-a-server-in-a-cluster"/> 
+        /// </remarks>
         public virtual async Task<GetServerIdResponse> GetServerIdAsync()
         {
             string uri = $"{_adminApiPath}/server/id";
@@ -114,6 +123,9 @@ namespace ArangoDBNetStandard.AdminApi
         /// GET /_admin/server/role
         /// </summary>
         /// <returns></returns>
+        /// <remarks>
+        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-the-role-of-a-server-in-a-cluster"/> 
+        /// </remarks>
         public virtual async Task<GetServerRoleResponse> GetServerRoleAsync()
         {
             string uri = $"{_adminApiPath}/server/role";
@@ -133,6 +145,9 @@ namespace ArangoDBNetStandard.AdminApi
         /// GET /_api/engine
         /// </summary>
         /// <returns></returns>
+        /// <remarks>
+        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-database-engine-type"/> 
+        /// </remarks>
         public virtual async Task<GetServerEngineTypeResponse> GetServerEngineTypeAsync()
         {
             string uri = "_api/engine";
@@ -151,10 +166,18 @@ namespace ArangoDBNetStandard.AdminApi
         /// Retrieves the server version.
         /// GET /_api/version
         /// </summary>
+        /// <param name="query">Query string parameters</param>
         /// <returns></returns>
-        public virtual async Task<GetServerVersionResponse> GetServerVersionAsync()
+        /// <remarks>
+        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-version"/> 
+        /// </remarks>
+        public virtual async Task<GetServerVersionResponse> GetServerVersionAsync(GetServerVersionQuery query = null)
         {
             string uri = "_api/version";
+            if (query != null)
+            {
+                uri += '?' + query.ToQueryString();
+            }
             using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)

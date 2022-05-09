@@ -1,7 +1,9 @@
-﻿namespace ArangoDBNetStandard.AdminApi.Models
+﻿using System.Collections.Generic;
+
+namespace ArangoDBNetStandard.AdminApi.Models
 {
     /// <summary>
-    /// Returned by <see cref="IAdminApiClient.GetServerVersionAsync"/>
+    /// Returned by <see cref="IAdminApiClient.GetServerVersionAsync(GetServerVersionQuery)"/>
     /// </summary>
     public class GetServerVersionResponse
     {
@@ -19,5 +21,13 @@
         /// The version of the server.
         /// </summary>
         public string Version { get; set; }
+
+        /// <summary>
+        /// Additional details about the DB server. 
+        /// This is returned only if the <see cref="GetServerVersionQuery.Details"/> 
+        /// query parameter is set to true in 
+        /// the request.
+        /// </summary>
+        public Dictionary<string, string> Details {get;set;}
     }
 }

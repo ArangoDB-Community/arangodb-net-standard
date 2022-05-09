@@ -84,7 +84,7 @@ namespace ArangoDBNetStandard.AdminApi.Models
             }
             if (Level != null)
             {
-                queryParams.Add("level=" + UpTo.ToString());
+                queryParams.Add("level=" + Level.ToString());
             }
             if (Start != null)
             {
