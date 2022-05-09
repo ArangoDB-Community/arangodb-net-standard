@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ArangoDBNetStandard.IndexApi.Models
 {
@@ -102,19 +100,19 @@ namespace ArangoDBNetStandard.IndexApi.Models
 
         /// <summary>
         /// For more information,
-        /// <see cref="https://www.arangodb.com/docs/stable/http/indexes-geo.html"/>
+        /// see https://www.arangodb.com/docs/stable/http/indexes-geo.html
         /// </summary>
         public int? MaxNumCoverCells { get; set; }
 
         /// <summary>
         /// For more information,
-        /// <see cref="https://www.arangodb.com/docs/stable/http/indexes-geo.html"/>
+        /// see https://www.arangodb.com/docs/stable/http/indexes-geo.html
         /// </summary>
         public int? BestIndexedLevel { get; set; }
 
         /// <summary>
         /// For more information,
-        /// <see cref="https://www.arangodb.com/docs/stable/http/indexes-geo.html"/>
+        /// see https://www.arangodb.com/docs/stable/http/indexes-geo.html
         /// </summary>
         public int? WorstIndexedLevel { get; set; }
     }

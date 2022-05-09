@@ -3,8 +3,8 @@
 namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
     /// <summary>
-    /// Properties of an Analyzer
-    /// <see cref="https://www.arangodb.com/docs/stable/analyzers.html#analyzer-properties"/>
+    /// Properties of an Analyzer.
+    /// See https://www.arangodb.com/docs/stable/analyzers.html#analyzer-properties
     /// </summary>
     public class AnalyzerProperties
     {
@@ -52,7 +52,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         /// treated as a single token, for supported languages.
         /// Stemming support is provided by Snowball,
         /// which supports the languages listed at:
-        /// <see cref="https://www.arangodb.com/docs/stable/analyzers.html#stemming"/>
+        /// https://www.arangodb.com/docs/stable/analyzers.html#stemming
         /// </summary>
         public bool Stemming { get; set; }
     }

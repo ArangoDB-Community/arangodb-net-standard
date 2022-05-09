@@ -10,14 +10,14 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         /// <summary>
         /// Name of the analyzer
         /// For rules regarding analyzer names, see
-        /// <see cref="https://www.arangodb.com/docs/stable/analyzers.html#analyzer-names"/>
+        /// https://www.arangodb.com/docs/stable/analyzers.html#analyzer-names
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
         /// Type of the analyzer
         /// For valid analyzer types, see
-        /// <see cref="https://www.arangodb.com/docs/stable/analyzers.html#analyzer-types"/>
+        /// https://www.arangodb.com/docs/stable/analyzers.html#analyzer-types
         /// </summary>
         public string Type { get; set; }
 
