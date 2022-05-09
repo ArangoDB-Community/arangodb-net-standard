@@ -8,8 +8,12 @@ namespace ArangoDBNetStandard.DatabaseApi.Models
     public class GetCurrentDatabaseInfoResponse
     {
         /// <summary>
-        /// Indicates whether an error occurred (false in this case).
+        /// Always false.
         /// </summary>
+        /// <remarks>
+        /// To handle errors, catch <see cref="ApiErrorException"/>
+        /// thrown by API client methods.
+        /// </remarks>
         public bool Error { get; set; }
 
         /// <summary>

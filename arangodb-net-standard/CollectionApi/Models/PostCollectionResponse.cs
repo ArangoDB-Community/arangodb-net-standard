@@ -4,6 +4,13 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 {
     public class PostCollectionResponse
     {
+        /// <summary>
+        /// Always false.
+        /// </summary>
+        /// <remarks>
+        /// To handle errors, catch <see cref="ApiErrorException"/>
+        /// thrown by API client methods.
+        /// </remarks>
         public bool Error { get; set; }
 
         public HttpStatusCode Code { get; set; }

@@ -1,10 +1,8 @@
 ﻿using ArangoDBNetStandard;
-using ArangoDBNetStandard.CollectionApi.Models;
-using ArangoDBNetStandard.AnalyzerApi.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace ArangoDBNetStandardTest.IndexApi
+namespace ArangoDBNetStandardTest.AnalyzerApi
 {
     public class AnalyzerApiClientTestFixture : ApiClientTestFixtureBase
     {
