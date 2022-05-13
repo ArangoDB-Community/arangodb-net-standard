@@ -17,7 +17,8 @@ namespace ArangoDBNetStandard.AdminApi
         /// <param name="query">Query string parameters</param>
         /// <returns></returns>
         /// <remarks>
-        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#read-global-logs-from-the-server"/> 
+        /// For further information see 
+        /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#read-global-logs-from-the-server
         /// </remarks>
         Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query = null);
 
@@ -27,7 +28,8 @@ namespace ArangoDBNetStandard.AdminApi
         /// </summary>
         /// <returns></returns>
         /// <remarks>
-        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#reloads-the-routing-information"/> 
+        /// For further information see 
+        /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#reloads-the-routing-information
         /// </remarks>
         Task<bool> PostReloadRoutingInfoAsync();
 
@@ -38,7 +40,8 @@ namespace ArangoDBNetStandard.AdminApi
         /// </summary>
         /// <returns></returns>
         /// <remarks>
-        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-id-of-a-server-in-a-cluster"/> 
+        /// For further information see 
+        /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-id-of-a-server-in-a-cluster
         /// </remarks>
         Task<GetServerIdResponse> GetServerIdAsync();
 
@@ -48,7 +51,8 @@ namespace ArangoDBNetStandard.AdminApi
         /// </summary>
         /// <returns></returns>
         /// <remarks>
-        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-the-role-of-a-server-in-a-cluster"/> 
+        /// For further information see
+        /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-the-role-of-a-server-in-a-cluster
         /// </remarks>
         Task<GetServerRoleResponse> GetServerRoleAsync();
 
@@ -58,7 +62,8 @@ namespace ArangoDBNetStandard.AdminApi
         /// </summary>
         /// <returns></returns>
         /// <remarks>
-        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-database-engine-type"/> 
+        /// For further information see 
+        /// https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-database-engine-type
         /// </remarks>
         Task<GetServerEngineTypeResponse> GetServerEngineTypeAsync();
 
@@ -69,7 +74,8 @@ namespace ArangoDBNetStandard.AdminApi
         /// <param name="query">Query string parameters</param>
         /// <returns></returns>
         /// <remarks>
-        /// For further information <see cref="https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-version"/> 
+        /// For further information see 
+        /// https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-version
         /// </remarks>
         Task<GetServerVersionResponse> GetServerVersionAsync(GetServerVersionQuery query = null);
     }
