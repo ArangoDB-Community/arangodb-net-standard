@@ -68,3 +68,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - `POST /_api/index#ttl` Create TTL index
 - `DELETE /_api/index/{index-id}` Delete index
 - `GET /_api/index/{index-id}` Read index
+
+## 2022-05-16
+### Added
+- added support for basic Admin API features (#370)
+- `GET/_admin/log/entries` Read global logs from the server
+- `POST/_admin/routing/reload` Reloads the routing information
+- `GET/_admin/server/id` Return id of a server in a cluster
+- `GET/_admin/server/role` Return role of a server in a cluster
+- `GET/_api/engine` Return server database engine type
+- `GET/_api/version` Return server version
