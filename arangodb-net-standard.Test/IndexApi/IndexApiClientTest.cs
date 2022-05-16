@@ -42,13 +42,13 @@ namespace ArangoDBNetStandardTest.IndexApi
         public async Task PostIndexAsync_ShouldSucceed()
         {
             var createResponse = await _indexApi.PostIndexAsync(
-                 IndexType.Persistent,
                  new PostIndexQuery()
                  {
                      CollectionName = _testCollection,
                  },
                  new PostIndexBody()
                  {
+                     Type = IndexTypes.Persistent,
                      Fields = new string[]
                      {
                           "field1",
@@ -61,6 +61,24 @@ namespace ArangoDBNetStandardTest.IndexApi
             Assert.NotNull(indexId);
         }
 
+        [Fact]
+        public async Task PostIndexAsync_ShouldThrow_WhenIndexTypeIsInvalid()
+        {
+            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
+            {
+                await _indexApi.PostIndexAsync(
+                    new PostIndexQuery()
+                    {
+                        CollectionName = _testCollection
+                    },
+                    new PostIndexBody()
+                    {
+                        Type = "unknownindextype"
+                    });
+            });
+            Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
+            Assert.Equal(10, ex.ApiError.ErrorNum);
+        }
 
         [Fact]
         public async Task GetIndexAsync_ShouldSucceed()
@@ -112,13 +130,13 @@ namespace ArangoDBNetStandardTest.IndexApi
         {
             //Create the index first
             var createResponse = await _indexApi.PostIndexAsync(
-                 IndexType.Persistent,
                  new PostIndexQuery()
                  {
                      CollectionName = _testCollection,
                  },
                  new PostIndexBody()
                  {
+                     Type = IndexTypes.Persistent,
                      Fields = new string[]
                      {
                           "field1",
@@ -144,8 +162,5 @@ namespace ArangoDBNetStandardTest.IndexApi
                 );
             Assert.Equal(400, ex.ApiError.ErrorNum);
         }
-
-
-
     }
 }
