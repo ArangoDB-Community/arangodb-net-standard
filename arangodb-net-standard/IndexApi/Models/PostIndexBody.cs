@@ -16,12 +16,11 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// <summary>
         /// The name of the new index. If you do not specify a name, one will be auto-generated.
         /// </summary>
-         public string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The type of index to create. 
-        /// The method <see cref="IndexApiClient.PostIndexAsync(IndexType, PostIndexQuery, PostIndexBody)"/>
-        /// will set this value, so, you can ignore it.
+        /// Supported index types can be found in <see cref="IndexTypes"/>.
         /// </summary>
         public string Type { get; set; }
 
@@ -35,7 +34,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         public IEnumerable<string> Fields { get; set; }
 
         /// <summary>
-        /// Applies to indexes of type <see cref="IndexType.Persistent"/>.
+        /// Applies to indexes of type <see cref="IndexTypes.Persistent"/>.
         /// Can be set to true to create a sparse index.
         /// Sparse indexes do not index documents for which any of the index attributes
         /// is either not set or is null.
@@ -49,26 +48,26 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// <remarks>
         /// The following index types do not support uniqueness,
         /// and using the unique attribute with these types may lead to an error:
-        /// <see cref="IndexType.Geo"/>, <see cref="IndexType.FullText"/>.
+        /// <see cref="IndexTypes.Geo"/>, <see cref="IndexTypes.FullText"/>.
         /// Unique indexes on non-shard keys are not supported in a cluster.
         /// </remarks>
         public bool? Unique { get; set; }
 
         /// <summary>
-        /// Supported by indexes of type <see cref="IndexType.Persistent"/>. Defaults to true if not set.
+        /// Supported by indexes of type <see cref="IndexTypes.Persistent"/>. Defaults to true if not set.
         /// This property controls whether index selectivity estimates are maintained for the index.
         /// </summary>
         public bool? Estimates { get; set; }
 
         /// <summary>
-        /// Supported by array indexes of type <see cref="IndexType.Persistent"/>. The default value is true.
+        /// Supported by array indexes of type <see cref="IndexTypes.Persistent"/>. The default value is true.
         /// It controls whether inserting duplicate index values from the same document
         /// into a unique array index will lead to a unique constraint error or not.
         /// </summary>
         public bool? Deduplicate { get; set; }
 
         /// <summary>
-        /// Supported by indexes of type <see cref="IndexType.Geo"/>.
+        /// Supported by indexes of type <see cref="IndexTypes.Geo"/>.
         /// If a geo-spatial index on a location is constructed and geoJson is true,
         /// then the order within the array is longitude followed by latitude.
         /// </summary>
@@ -78,7 +77,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         public bool? GeoJson { get; set; }
 
         /// <summary>
-        /// Supported by indexes of type <see cref="IndexType.TTL"/>.
+        /// Supported by indexes of type <see cref="IndexTypes.TTL"/>.
         /// The time interval (in seconds) from the point in time stored in the <see cref="Fields"/> property
         /// after which the documents count as expired.
         /// Can be set to 0 to let documents expire as soon as the server time
@@ -95,7 +94,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         public bool? InBackground { get; set; }
 
         /// <summary>
-        /// Supported by indexes of type <see cref="IndexType.FullText"/>.
+        /// Supported by indexes of type <see cref="IndexTypes.FullText"/>.
         /// Minimum character length of words to index.
         /// Will default to a server-defined value if unspecified.
         /// It is thus recommended to set this value explicitly when creating the index.

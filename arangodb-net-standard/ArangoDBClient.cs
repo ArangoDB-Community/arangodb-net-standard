@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using ArangoDBNetStandard.AdminApi;
 using ArangoDBNetStandard.AnalyzerApi;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
@@ -69,20 +70,20 @@ namespace ArangoDBNetStandard
         public GraphApiClient Graph { get; private set; }
 
         /// <summary>
-        /// User management API.
+        /// User management API
         /// </summary>
         public UserApiClient User { get; private set; }
 
         /// <summary>
-        /// Index management API.
+        /// Index management API
         /// </summary>
         public IndexApiClient Index { get; private set; }
-
+        
         /// <summary>
         /// Bulk Operations API.
         /// </summary>
         public BulkOperationsApiClient BulkOperations { get; private set; }
-        
+
         /// <summary>
         /// View management API.
         /// </summary>          
@@ -91,7 +92,12 @@ namespace ArangoDBNetStandard
         /// <summary>
         /// Analyzer management API.
         /// </summary>
-        public AnalyzerApiClient Analyzer { get; private set; }        
+        public AnalyzerApiClient Analyzer { get; private set; }    
+        
+        /// <summary>
+        /// Admin management API
+        /// </summary>
+        public AdminApiClient Admin { get; private set; }
 
         /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
@@ -158,7 +164,8 @@ namespace ArangoDBNetStandard
             Index = new IndexApiClient(transport, serialization);
             BulkOperations = new BulkOperationsApiClient(transport, serialization); 
             View = new ViewApiClient(transport, serialization);
-            Analyzer = new AnalyzerApiClient(transport, serialization); 
+            Analyzer = new AnalyzerApiClient(transport, serialization);            
+            Admin = new AdminApiClient(transport, serialization);
         }
     }
 }

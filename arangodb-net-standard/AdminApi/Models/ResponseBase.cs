@@ -1,11 +1,11 @@
 ﻿using System.Net;
 
-namespace ArangoDBNetStandard.DatabaseApi.Models
+namespace ArangoDBNetStandard.AdminApi.Models
 {
     /// <summary>
-    /// Represents a response containing information about the current database.
+    /// Represents a common response class for Admin API operations.
     /// </summary>
-    public class GetCurrentDatabaseInfoResponse
+    public class ResponseBase
     {
         /// <summary>
         /// Always false.
@@ -20,10 +20,6 @@ namespace ArangoDBNetStandard.DatabaseApi.Models
         /// The HTTP status code.
         /// </summary>
         public HttpStatusCode Code { get; set; }
-
-        /// <summary>
-        /// The database information.
-        /// </summary>
-        public CurrentDatabaseInfo Result { get; set; }
     }
+
 }

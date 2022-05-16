@@ -226,3 +226,12 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`POST/_api/analyzer` Create an Analyzer with the supplied definition
 - [X]	`DELETE/_api/analyzer/{analyzer-name}` Remove an Analyzer
 - [X]	`GET/_api/analyzer/{analyzer-name}` Return the Analyzer definition
+
+#### Admin API
+
+- [X]	`GET/_admin/log/entries` Read global logs from the server
+- [X]	`POST/_admin/routing/reload` Reloads the routing information
+- [X]	`GET/_admin/server/id` Return id of a server in a cluster
+- [X]	`GET/_admin/server/role` Return role of a server in a cluster
+- [X]	`GET/_api/engine` Return server database engine type
+- [X]	`GET/_api/version` Return server version

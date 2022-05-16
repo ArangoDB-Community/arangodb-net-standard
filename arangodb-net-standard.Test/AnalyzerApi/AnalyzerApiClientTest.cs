@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.AnalyzerApi;
 using ArangoDBNetStandard.AnalyzerApi.Models;
-using ArangoDBNetStandard.Transport;
-using Moq;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace ArangoDBNetStandardTest.IndexApi
+namespace ArangoDBNetStandardTest.AnalyzerApi
 {
     public class AnalyzerApiClientTest : IClassFixture<AnalyzerApiClientTestFixture>, IAsyncLifetime
     {

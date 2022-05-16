@@ -1,29 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ArangoDBNetStandard.IndexApi.Models
+﻿namespace ArangoDBNetStandard.IndexApi.Models
 {
     /// <summary>
-    /// Type of index
+    /// Defines values for ArangoDB index types.
     /// </summary>
-    public enum IndexType
+    public static class IndexTypes
     {
         /// <summary>
         /// See https://www.arangodb.com/docs/stable/http/indexes-fulltext.html
         /// </summary>
-        FullText,
+        public const string FullText = "fulltext";
+
         /// <summary>
         /// See https://www.arangodb.com/docs/stable/http/indexes-geo.html
         /// </summary>
-        Geo,
+        public const string Geo = "geo";
+
         /// <summary>
         /// See https://www.arangodb.com/docs/stable/http/indexes-persistent.html
         /// </summary>
-        Persistent,
+        public const string Persistent = "persistent";
+
         /// <summary>
         /// See https://www.arangodb.com/docs/stable/http/indexes-ttl.html
         /// </summary>
-        TTL
+        public const string TTL = "ttl";
     }
 }
