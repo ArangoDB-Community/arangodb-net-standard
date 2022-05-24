@@ -41,9 +41,9 @@ namespace ArangoDBNetStandard.BulkOperationsApi
         /// <param name="query">Options for the import.</param>
         /// <param name="body">The body of the request containing required objects.</param>
         /// <returns></returns>
-        Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync(
+        Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync<T>(
             ImportDocumentsQuery query,
-            ImportDocumentObjectsBody body);
+            ImportDocumentObjectsBody<T> body);
 
         /// <summary>
         /// Imports objects as documents into a collection.

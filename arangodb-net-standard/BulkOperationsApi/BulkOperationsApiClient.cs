@@ -13,7 +13,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi
     /// A client for interacting with ArangoDB Bulk Operations API endpoints,
     /// implementing <see cref="IBulkOperationsApiClient"/>.
     /// </summary>
-    public class BulkOperationsApiClient:ApiClientBase, IBulkOperationsApiClient
+    public class BulkOperationsApiClient : ApiClientBase, IBulkOperationsApiClient
     {
         /// <summary>
         /// The transport client used to communicate with the ArangoDB host.
@@ -63,37 +63,31 @@ namespace ArangoDBNetStandard.BulkOperationsApi
             {
                 throw new ArgumentException("body is required", nameof(body));
             }
-            else
-            {
-                if (body.DocumentAttributes == null || body.DocumentAttributes.Count() < 1)
-                {
-                    throw new ArgumentException("DocumentAttributes is required", nameof(body.DocumentAttributes));
-                }
 
-                if (body.ValueArrays == null || body.DocumentAttributes.Count() < 1)
-                {
-                    throw new ArgumentException("ValueArrays is required", nameof(body.ValueArrays));
-                }
-                else
-                {
-                    var maxValueLength = (from l in body.ValueArrays
-                                          where l != null
-                                          select l.Count()).Max();
-                    if (maxValueLength != body.DocumentAttributes.Count())
-                    {
-                        throw new ArgumentException(
-                            "Every array in ValueArrays must have the exact number of elements as the DocumentAttributes array.",
-                            nameof(body.ValueArrays));
-                    }
-                }
+            if (body.DocumentAttributes == null || body.DocumentAttributes.Count() < 1)
+            {
+                throw new ArgumentException("DocumentAttributes is required", nameof(body.DocumentAttributes));
             }
-            var contentString = string.Empty;
+
+            if (body.ValueArrays == null || body.DocumentAttributes.Count() < 1)
+            {
+                throw new ArgumentException("ValueArrays is required", nameof(body.ValueArrays));
+            }
+
+            if (body.ValueArrays.Any(values => values.Count() != body.DocumentAttributes.Count()))
+            {
+                throw new ArgumentException(
+                    "Every array in ValueArrays must have the exact number of elements as the DocumentAttributes array.",
+                    nameof(body.ValueArrays));
+            }
+
+            var sb = new StringBuilder();
             var options = new ApiClientSerializationOptions(true, true);
             foreach (var valueArr in body.ValueArrays)
             {
-                contentString += GetContentString(valueArr, options) + Environment.NewLine;
+                sb.AppendLine(GetContentString(valueArr, options) );
             }
-            return await PostImportDocumentArraysAsync(query, contentString);
+            return await PostImportDocumentArraysAsync(query, sb.ToString());
         }
 
         /// <summary>
@@ -136,9 +130,16 @@ namespace ArangoDBNetStandard.BulkOperationsApi
             }
         }
 
-        public virtual async Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync(
-            ImportDocumentsQuery query, 
-            ImportDocumentObjectsBody body)
+        /// <summary>
+        /// Imports objects as documents into a collection.
+        /// POST /_api/import
+        /// </summary>
+        /// <param name="query">Options for the import.</param>
+        /// <param name="body">The body of the request containing required objects.</param>
+        /// <returns></returns>
+        public virtual async Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync<T>(
+            ImportDocumentsQuery query,
+            ImportDocumentObjectsBody<T> body)
         {
             if (query == null)
             {
@@ -154,12 +155,13 @@ namespace ArangoDBNetStandard.BulkOperationsApi
             {
                 throw new ArgumentException("body is required", nameof(body));
             }
-            else if (body.Documents == null || body.Documents.Count() < 1)
+            
+            if (body.Documents == null || body.Documents.Count() < 1)
             {
                 throw new ArgumentException("Documents is required", nameof(body.Documents));
             }
 
-            var contentString = string.Empty;
+            var sb = new StringBuilder();
             var options = new ApiClientSerializationOptions(true, true);
 
             if (query.Type == "documents")
@@ -167,17 +169,26 @@ namespace ArangoDBNetStandard.BulkOperationsApi
                 //body should be a list of documents seperated by newline char
                 foreach (var doc in body.Documents)
                 {
-                    contentString += GetContentString(doc, options) + Environment.NewLine;
+                    sb.AppendLine(GetContentString(doc, options));
                 }
             }
             else
             {
                 //body should be one array of JSON objects
-                contentString = GetContentString(body.Documents, options);
+                sb.Append(GetContentString(body.Documents, options));
             }
-            return await PostImportDocumentObjectsAsync(query, contentString);
+            return await PostImportDocumentObjectsAsync(query, sb.ToString());
         }
 
+        /// <summary>
+        /// Imports objects as documents into a collection.
+        /// Use this method if you have already structured the
+        /// JSON body according to the specifications.
+        /// POST /_api/import
+        /// </summary>
+        /// <param name="query">Options for the import.</param>
+        /// <param name="jsonBody">The body of the request containing the required JSON objects.</param>
+        /// <returns></returns>
         public virtual async Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync(
             ImportDocumentsQuery query,
             string jsonBody)
@@ -215,10 +226,5 @@ namespace ArangoDBNetStandard.BulkOperationsApi
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
-
-
-
-
-
     }
 }

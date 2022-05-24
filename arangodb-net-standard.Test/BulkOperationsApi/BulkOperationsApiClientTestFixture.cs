@@ -12,7 +12,7 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
         public ArangoDBClient ArangoDBClient { get; internal set; }
         public string TestCollectionName { get; internal set; } = "OurBulkTestCollection";
         public ImportDocumentArraysBody TestImportDocumentArraysBody { get; internal set; }
-        public ImportDocumentObjectsBody TestImportDocumentObjectsBody { get; internal set; }
+        public ImportDocumentObjectsBody<object> TestImportDocumentObjectsBody { get; internal set; }
         public string TestImportDocumentArraysJSON { get; internal set; }
         public string TestImportDocumentObjectsJSON { get; internal set; }
         public int TestImportDocumentArrayJSONCount { get; internal set; }
@@ -62,7 +62,7 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
                         TestImportDocumentArrayJSONCount = 3;
 
 
-                        TestImportDocumentObjectsBody = new ImportDocumentObjectsBody()
+                        TestImportDocumentObjectsBody = new ImportDocumentObjectsBody<object>()
                         {
                              Documents = new List<object>()
                              {

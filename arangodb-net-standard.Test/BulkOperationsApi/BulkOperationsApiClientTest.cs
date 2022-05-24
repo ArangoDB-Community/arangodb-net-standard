@@ -17,7 +17,7 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
         private ArangoDBClient _adb;
         private readonly string _testCollection;
         private readonly ImportDocumentArraysBody _testImportDocumentArraysBody;
-        private readonly ImportDocumentObjectsBody _testImportDocumentObjectsBody;
+        private readonly ImportDocumentObjectsBody<object> _testImportDocumentObjectsBody;
         private readonly string _testImportDocumentArraysJSON;
         private readonly int _testImportDocumentArrayJSONCount;
         private readonly string _testImportDocumentObjectsJSON;
