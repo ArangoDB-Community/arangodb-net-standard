@@ -3,6 +3,7 @@ using ArangoDBNetStandard.AdminApi;
 using ArangoDBNetStandard.AnalyzerApi;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
+using ArangoDBNetStandard.BulkOperationsApi;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
@@ -79,7 +80,12 @@ namespace ArangoDBNetStandard
         public IndexApiClient Index { get; private set; }
         
         /// <summary>
-        /// View management API
+        /// Bulk Operations API.
+        /// </summary>
+        public BulkOperationsApiClient BulkOperations { get; private set; }
+
+        /// <summary>
+        /// View management API.
         /// </summary>          
         public ViewApiClient View { get; private set; }
         
@@ -156,6 +162,7 @@ namespace ArangoDBNetStandard
             Graph = new GraphApiClient(transport, serialization);
             User = new UserApiClient(transport, serialization);
             Index = new IndexApiClient(transport, serialization);
+            BulkOperations = new BulkOperationsApiClient(transport, serialization); 
             View = new ViewApiClient(transport, serialization);
             Analyzer = new AnalyzerApiClient(transport, serialization);            
             Admin = new AdminApiClient(transport, serialization);

@@ -3,6 +3,7 @@ using ArangoDBNetStandard.AdminApi;
 using ArangoDBNetStandard.AnalyzerApi;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
+using ArangoDBNetStandard.BulkOperationsApi;
 using ArangoDBNetStandard.CollectionApi;
 using ArangoDBNetStandard.CursorApi;
 using ArangoDBNetStandard.DatabaseApi;
@@ -68,12 +69,17 @@ namespace ArangoDBNetStandard
         IndexApiClient Index { get; }
         
         /// <summary>
+        /// Bulk Operations API
+        /// </summary>
+        BulkOperationsApiClient BulkOperations { get; }                        
+                       
+        /// <summary>
         /// View management API
         /// </summary>
-        ViewApiClient View { get; }
-        
-        /// <summary>       
-        /// Analyzer API
+        ViewApiClient View { get; }                    
+
+        /// <summary>
+        /// Analyzer managemet API
         /// </summary>
         AnalyzerApiClient Analyzer { get; }
 

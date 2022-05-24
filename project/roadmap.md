@@ -174,8 +174,11 @@ A tick indicates an item is implemented and has automated tests in place.
 - [ ]	VelocyStream support
 - [ ]	VelocyPack-over-HTTP support
 
-#### Indexes API
+#### Bulk Operations API
+- [X]	`POST /_api/import#document` Bulk Import Document Arrays
+- [X]	`POST /_api/import#json` Bulk Import Document Objects
 
+#### Indexes API
 - [X]	`GET/_api/index` Read all indexes of a collection
 - [X]	`POST/_api/index#fulltext` Create fulltext index
 - [X]	`POST/_api/index#geo` Create geo-spatial index
@@ -185,7 +188,6 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`GET/_api/index/{index-id}` Read index
 
 #### AQL API
-
 - [X]	`POST/_api/explain` Explain an AQL query
 - [X]	`POST/_api/query` Parse an AQL query
 - [X]	`DELETE/_api/query/slow` Clears the list of slow AQL queries
@@ -200,11 +202,10 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`PUT/_api/query/properties` Changes the properties for the AQL query tracking
 
 #### Collections API
-
 - [X]	`GET/_api/collection/{collection-name}/checksum` Return checksum for the collection
 - [X]	`PUT/_api/collection/{collection-name}/loadIndexesIntoMemory` Load Indexes into Memory
 - [X]	`PUT/_api/collection/{collection-name}/recalculateCount` Recalculate count of a collection
-- [X]	`PUT​/_api​/collection​/{collection-name}​/responsibleShard` Return responsible shard for a document
+- [X]	`PUT/_api/collection/{collection-name}/responsibleShard` Return responsible shard for a document
 - [X]	`GET/_api/collection/{collection-name}/shards` Return the shard ids of a collection
 - [X]	`PUT/_api/collection/{collection-name}/compact` Compact a collection
 

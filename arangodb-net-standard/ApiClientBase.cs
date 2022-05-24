@@ -77,5 +77,18 @@ namespace ArangoDBNetStandard
                 throw new SerializationException($"A serialization error occured while preparing a request for Arango. See InnerException for more details.", e);
             }
         }
+
+        protected string GetContentString<T>(T item, ApiClientSerializationOptions serializationOptions)
+        {
+            try
+            {
+                return _serialization.SerializeToString(item, serializationOptions);
+            }
+            catch (Exception e)
+            {
+                throw new SerializationException($"A serialization error occured while preparing a request for Arango. See InnerException for more details.", e);
+            }
+        }
+
     }
 }

@@ -26,5 +26,16 @@ namespace ArangoDBNetStandard.Serialization
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
         byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions);
+
+        /// <summary>
+        /// Serializes the specified object to a JSON string,
+        /// following the provided rules for camel case property name and null value handling.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to serialize.</typeparam>
+        /// <param name="item">The object to serialize.</param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <returns></returns>
+        string SerializeToString<T>(T item, ApiClientSerializationOptions serializationOptions);
     }
 }
