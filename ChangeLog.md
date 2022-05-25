@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## 2022-05-24
+### Added
+- added support for ArangoDB Bulk Operations API features (#354)
+- `POST/_api/import#document` Imports document values
+- `POST/_api/import#json` Imports documents from JSON
+
+## 2022-05-16
+### Added
+- added support for basic ArangoDB Admin API features (#370)
+- `GET/_admin/log/entries` Read global logs from the server
+- `POST/_admin/routing/reload` Reloads the routing information
+- `GET/_admin/server/id` Returns the id of a server in a cluster
+- `GET/_admin/server/role` Returns the role of a server in a cluster
+- `GET/_api/engine` Returns the server database engine type
+- `GET/_api/version` Returns the server version
+
 ## 2022-05-02
 ### Added
 - Added support for connecting to ArangoDB Oasis Cloud Service (#364)
