@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-05-25
+### Added
+- Run tests against ArangoDB 3.8 by @DiscoPYF in #347
+- Use arangodb image 3.8.5.1 for 3.8 tests. by @DiscoPYF in #349
+- Support for indexes api by @tjoubert in #350
+- Support for additional AQL/Query endpoints by @tjoubert in #352
+- Support for additional collection endpoints by @tjoubert in #356
+- Add changelog file by @tjoubert in #369
+- Support for analyzers by @tjoubert in #357
+- Support for Views API by @tjoubert in #358
+- Support for Oasis (ArangoDB Cloud) by @tjoubert in #364
+- Simplify error handling in test fixture of Index API client by @DiscoPYF in #377
+- Support basic Admin API by @tjoubert in #370
+- Use constants to represent index types. by @DiscoPYF in #376
+- Bulk operations support by @tjoubert in #354
+
+### Changed
+- Make header properties optional in cursor API client interface. by @DiscoPYF in #344
+- Update CircleCI badge link by @Zyqsempai in #365
+- Update CI config to run tests against ArangoDB 3.9 by @DiscoPYF in #361
+- Amended changelog file by @tjoubert in #371
+- Resolve build warnings caused by syntax issues in XML doc comments. by @DiscoPYF in #373
+- Fix type of selectivity estimate in responses. by @DiscoPYF in #374
+- Extract common index response properties into an interface. by @DiscoPYF in #378
+- Updated ChangeLog by @tjoubert in #379
+
 ## 2022-05-24
 ### Added
 - added support for ArangoDB Bulk Operations API features (#354)

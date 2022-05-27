@@ -5,11 +5,11 @@
     <Description>A consistent, comprehensive, minimal interface to enable .NET applications to use the complete range of features exposed by the ArangoDB REST API.</Description>
     <Summary>A consistent, comprehensive, minimal interface to enable .NET applications to use the complete range of features exposed by the ArangoDB REST API.</Summary>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Actify-Inc/arangodb-net-standard</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Actify-Inc/arangodb-net-standard</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ArangoDB-Community/arangodb-net-standard</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ArangoDB-Community/arangodb-net-standard</RepositoryUrl>
     <PackageTags>arangodb-net-standard arangodb arango .net c# netstandard multimodel graph document database</PackageTags>
     <Version>1.1.0</Version>
-    <Company>Actify, Inc</Company>
+    <Company>ArangoDB Community</Company>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
