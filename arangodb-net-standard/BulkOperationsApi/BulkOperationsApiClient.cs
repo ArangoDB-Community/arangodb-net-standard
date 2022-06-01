@@ -85,9 +85,10 @@ namespace ArangoDBNetStandard.BulkOperationsApi
             var options = new ApiClientSerializationOptions(true, true);
             foreach (var valueArr in body.ValueArrays)
             {
-                sb.AppendLine(GetContentString(valueArr, options) );
+                sb.AppendLine(GetContentString(valueArr, options));
             }
-            return await PostImportDocumentArraysAsync(query, sb.ToString());
+            return await PostImportDocumentArraysAsync(query, sb.ToString())
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -155,7 +156,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi
             {
                 throw new ArgumentException("body is required", nameof(body));
             }
-            
+
             if (body.Documents == null || body.Documents.Count() < 1)
             {
                 throw new ArgumentException("Documents is required", nameof(body.Documents));
@@ -177,7 +178,8 @@ namespace ArangoDBNetStandard.BulkOperationsApi
                 //body should be one array of JSON objects
                 sb.Append(GetContentString(body.Documents, options));
             }
-            return await PostImportDocumentObjectsAsync(query, sb.ToString());
+            return await PostImportDocumentObjectsAsync(query, sb.ToString())
+                .ConfigureAwait(false);
         }
 
         /// <summary>
