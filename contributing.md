@@ -123,7 +123,7 @@ For example, the following test method names could be used:
 
 To create a new release, follow these steps:
 
-1. Pull branch for release from actify-inc repo.
+1. Pull branch for release from ArangoDB-Community repo.
 2. Check the version number in ./arangodb-net-standard/ArangoDBNetStandard.csproj file
   - if the version number is incorrect, create a separate commit to change the version number, push it and get it merged before proceeding.
 3. Run `dotnet pack --configuration Release ./arangodb-net-standard/ArangoDBNetStandard.csproj`
