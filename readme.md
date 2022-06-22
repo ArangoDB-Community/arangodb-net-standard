@@ -179,8 +179,9 @@ All API methods that support passing objects of user-specified data types have a
 
 The options are passed as an instance of the `ApiClientSerializationOptions` class, which contains options for:
 
-- `boolean UseCamelCasePropertyNames`
-- `boolean IgnoreNullValues`
+- `UseCamelCasePropertyNames` (boolean, default is `false`)
+- `IgnoreNullValues` (boolean, default is `true`)
+- `UseStringEnumConversion` (boolean, default is `false`)
 
 In addition, the default options can be updated, which will affect all subsequent operations that use these options. To set default options, set them on the serializer implementation itself.  For example, if using the supplied `JsonNetApiClientSerialization`:
 
@@ -188,6 +189,8 @@ In addition, the default options can be updated, which will affect all subsequen
 var serializer = new JsonNetApiClientSerialization();
 serializer.DefaultOptions.IgnoreNullValues = false;
 ```
+
+Note: the default values were chosen in line with Json.NET default values as it is the default serializer.
 
 ### HTTP Request Headers
 
