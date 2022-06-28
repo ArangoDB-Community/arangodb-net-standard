@@ -609,9 +609,9 @@
   </HelpKINode>
   <HelpKINode Title="BindVars property">
     <HelpKINode Title="CachedAqlQueryResult.BindVars Property " Url="html/8701b557-0f2f-d110-29e6-e963f4a2422f.htm" />
-    <HelpKINode Title="PostCursorBody.BindVars Property " Url="html/a7ecafe8-b153-999a-d766-968b4f190176.htm" />
     <HelpKINode Title="PostExplainAqlQueryBody.BindVars Property " Url="html/786e04e0-daf1-1bd1-1225-b3924772ad17.htm" />
     <HelpKINode Title="PostParseAqlQueryResponse.BindVars Property " Url="html/99ba100b-d928-4805-b308-b27b13586413.htm" />
+    <HelpKINode Title="PostCursorBody.BindVars Property " Url="html/a7ecafe8-b153-999a-d766-968b4f190176.htm" />
     <HelpKINode Title="SlowAqlQuery.BindVars Property " Url="html/92bf93fe-5d8a-8a3f-d223-d3f0657114ad.htm" />
   </HelpKINode>
   <HelpKINode Title="bindVars property" Url="html/4cd4b7c7-864b-2325-c2cb-0d2c812914c6.htm" />
@@ -724,13 +724,13 @@
     <HelpKINode Title="PutRenameViewResponse.Code Property " Url="html/c0adad52-ffa9-00de-83f7-975b5669c42f.htm" />
     <HelpKINode Title="PutVertexResponse(T).Code Property " Url="html/b121f079-da30-4050-be26-321a7f9b298c.htm" />
     <HelpKINode Title="RenameCollectionResponse.Code Property " Url="html/3e50ecbd-717a-dee6-bb35-a49b7f0c18f5.htm" />
-    <HelpKINode Title="ResponseBase.Code Property " Url="html/f984a497-cdde-35a6-8f92-0d1f9df2ce8b.htm" />
-    <HelpKINode Title="ResponseBase.Code Property " Url="html/13caad08-0dab-703a-c6c9-b7d29151a0a6.htm" />
-    <HelpKINode Title="ResponseBase.Code Property " Url="html/3fcccda8-c86e-cbc3-d0e1-5a17bc506d73.htm" />
-    <HelpKINode Title="ResponseBase.Code Property " Url="html/265a24b3-d613-2a80-276c-85071cee375a.htm" />
-    <HelpKINode Title="ResponseBase.Code Property " Url="html/922e2e71-5e53-f5a3-4d6d-f64e5804b1fa.htm" />
     <HelpKINode Title="ResponseBase.Code Property " Url="html/c50a0f7d-a137-4ba4-e1be-e8e71c0de5bf.htm" />
+    <HelpKINode Title="ResponseBase.Code Property " Url="html/f984a497-cdde-35a6-8f92-0d1f9df2ce8b.htm" />
+    <HelpKINode Title="ResponseBase.Code Property " Url="html/922e2e71-5e53-f5a3-4d6d-f64e5804b1fa.htm" />
+    <HelpKINode Title="ResponseBase.Code Property " Url="html/3fcccda8-c86e-cbc3-d0e1-5a17bc506d73.htm" />
     <HelpKINode Title="ResponseBase.Code Property " Url="html/52f5472d-6805-c232-c4cc-eb18bf662914.htm" />
+    <HelpKINode Title="ResponseBase.Code Property " Url="html/265a24b3-d613-2a80-276c-85071cee375a.htm" />
+    <HelpKINode Title="ResponseBase.Code Property " Url="html/13caad08-0dab-703a-c6c9-b7d29151a0a6.htm" />
     <HelpKINode Title="StreamTransactionResponse.Code Property " Url="html/93bff67d-68af-c7f7-cb6c-4a2ded8b147e.htm" />
     <HelpKINode Title="TruncateCollectionResponse.Code Property " Url="html/a9db57e2-c944-66d8-227e-26e84e20c363.htm" />
   </HelpKINode>
@@ -1049,8 +1049,8 @@
   </HelpKINode>
   <HelpKINode Title="CustomHttpHeaders.StreamTransactionHeader field" Url="html/7b5a2d86-bf60-a09b-1aa9-eb370fc86208.htm" />
   <HelpKINode Title="Database property">
-    <HelpKINode Title="ArangoDBClient.Database Property " Url="html/690f0695-ea0d-c363-7ae4-5e64fa39d113.htm" />
     <HelpKINode Title="IArangoDBClient.Database Property " Url="html/61cc0bdf-e191-624e-c457-85523b418715.htm" />
+    <HelpKINode Title="ArangoDBClient.Database Property " Url="html/690f0695-ea0d-c363-7ae4-5e64fa39d113.htm" />
     <HelpKINode Title="PostExplainAqlQueryResponseNode.Database Property " Url="html/275ab87c-5f49-12b3-9b5f-305938001dbd.htm" />
     <HelpKINode Title="SlowAqlQuery.Database Property " Url="html/e5652928-8218-e4e7-7dff-996c02c02a1e.htm" />
   </HelpKINode>
@@ -1703,13 +1703,13 @@
     <HelpKINode Title="PutRenameViewResponse.Error Property " Url="html/d9d766e7-01ad-c53e-fa37-b156fc041a8e.htm" />
     <HelpKINode Title="PutVertexResponse(T).Error Property " Url="html/4464059a-c7da-688c-9695-0c22350a26ae.htm" />
     <HelpKINode Title="RenameCollectionResponse.Error Property " Url="html/8e172da8-82fb-d815-e24e-17d5e01fdbff.htm" />
-    <HelpKINode Title="ResponseBase.Error Property " Url="html/a58d0f10-b6ad-19d7-c2d6-89ce71063824.htm" />
     <HelpKINode Title="ResponseBase.Error Property " Url="html/a6f4b4ec-466c-5dd5-c6bd-6fdf2f35e06b.htm" />
+    <HelpKINode Title="ResponseBase.Error Property " Url="html/c4c0c8e4-1f8e-aa76-0207-cd81ab6c407d.htm" />
     <HelpKINode Title="ResponseBase.Error Property " Url="html/0542a12c-6851-a39c-a897-17098a4cc15b.htm" />
     <HelpKINode Title="ResponseBase.Error Property " Url="html/3baa6c0d-d597-6c7c-46d0-9a25710a7de9.htm" />
-    <HelpKINode Title="ResponseBase.Error Property " Url="html/c4c0c8e4-1f8e-aa76-0207-cd81ab6c407d.htm" />
-    <HelpKINode Title="ResponseBase.Error Property " Url="html/85105c48-5b88-533a-5ef5-18586346e0aa.htm" />
     <HelpKINode Title="ResponseBase.Error Property " Url="html/38bc581b-0db1-5971-625e-716fa0ce6689.htm" />
+    <HelpKINode Title="ResponseBase.Error Property " Url="html/a58d0f10-b6ad-19d7-c2d6-89ce71063824.htm" />
+    <HelpKINode Title="ResponseBase.Error Property " Url="html/85105c48-5b88-533a-5ef5-18586346e0aa.htm" />
     <HelpKINode Title="StreamTransactionResponse.Error Property " Url="html/e99b6bb7-bd20-da46-aced-c31fab4e7705.htm" />
     <HelpKINode Title="TruncateCollectionResponse.Error Property " Url="html/38b9688f-3633-a026-c0db-bab15205c870.htm" />
   </HelpKINode>
@@ -4989,61 +4989,61 @@
     <HelpKINode Title="PostGraphOptions.ReplicationFactor Property " Url="html/83ae3aee-3d48-e51e-57f2-2945b93c287b.htm" />
   </HelpKINode>
   <HelpKINode Title="ResponseBase class">
-    <HelpKINode Title="ResponseBase Class" Url="html/d0a32b48-5551-e400-93b6-2d57de30cb0b.htm" />
-    <HelpKINode Title="ResponseBase Class" Url="html/b8c7a1fd-0093-5432-e55a-419a225feba5.htm" />
     <HelpKINode Title="ResponseBase Class" Url="html/ee8e8d29-b2e6-a6c5-10d1-882e90aaf3c8.htm" />
     <HelpKINode Title="ResponseBase Class" Url="html/f21566b8-99a4-b769-234d-e36cc3e01fa7.htm" />
-    <HelpKINode Title="ResponseBase Class" Url="html/1fbe7dd1-a696-f52b-4750-102bf0210603.htm" />
     <HelpKINode Title="ResponseBase Class" Url="html/e45c652b-f0b5-f96e-c1ea-5dc3d86e4d98.htm" />
+    <HelpKINode Title="ResponseBase Class" Url="html/d0a32b48-5551-e400-93b6-2d57de30cb0b.htm" />
+    <HelpKINode Title="ResponseBase Class" Url="html/1fbe7dd1-a696-f52b-4750-102bf0210603.htm" />
+    <HelpKINode Title="ResponseBase Class" Url="html/b8c7a1fd-0093-5432-e55a-419a225feba5.htm" />
     <HelpKINode Title="ResponseBase Class" Url="html/888a2abd-72c1-15bd-8ad6-84a39035f6f0.htm" />
     <HelpKINode Title="constructor" Url="html/bdfaef80-3fe8-6abc-066d-e91656a191b0.htm" />
-    <HelpKINode Title="constructor" Url="html/2630095e-8ba7-1501-6c7c-4b54240616f4.htm" />
-    <HelpKINode Title="constructor" Url="html/4413dc36-3df4-be1b-2141-250f200ece86.htm" />
-    <HelpKINode Title="constructor" Url="html/046623ea-8bcb-bf44-1a95-05585caeb258.htm" />
-    <HelpKINode Title="constructor" Url="html/b60cba45-33ca-50a0-86d0-8ec292256dda.htm" />
-    <HelpKINode Title="constructor" Url="html/da566a3f-eb1b-2334-7473-861be9838303.htm" />
     <HelpKINode Title="constructor" Url="html/fb8e0b96-7c34-6907-c85f-e07a7866fca9.htm" />
-    <HelpKINode Title="methods" Url="html/d7c09e0c-c61e-47bb-57ec-a1197780ba16.htm" />
-    <HelpKINode Title="methods" Url="html/3d99b16f-960a-af36-6e6f-5087b7fcfbb0.htm" />
-    <HelpKINode Title="methods" Url="html/1825a7ff-13ce-900c-ac30-d0ada0f106b3.htm" />
-    <HelpKINode Title="methods" Url="html/4dfeda63-4ffa-3d63-58b9-e176f4666550.htm" />
-    <HelpKINode Title="methods" Url="html/bf82777e-a29a-24d1-bfe6-f2f9a431d778.htm" />
+    <HelpKINode Title="constructor" Url="html/2630095e-8ba7-1501-6c7c-4b54240616f4.htm" />
+    <HelpKINode Title="constructor" Url="html/046623ea-8bcb-bf44-1a95-05585caeb258.htm" />
+    <HelpKINode Title="constructor" Url="html/da566a3f-eb1b-2334-7473-861be9838303.htm" />
+    <HelpKINode Title="constructor" Url="html/b60cba45-33ca-50a0-86d0-8ec292256dda.htm" />
+    <HelpKINode Title="constructor" Url="html/4413dc36-3df4-be1b-2141-250f200ece86.htm" />
     <HelpKINode Title="methods" Url="html/6bbbf0cd-f15a-c17d-a89c-198727b53d6f.htm" />
     <HelpKINode Title="methods" Url="html/5382c3f2-0a4a-8a9c-a91f-4917e055a8ab.htm" />
+    <HelpKINode Title="methods" Url="html/d7c09e0c-c61e-47bb-57ec-a1197780ba16.htm" />
+    <HelpKINode Title="methods" Url="html/4dfeda63-4ffa-3d63-58b9-e176f4666550.htm" />
+    <HelpKINode Title="methods" Url="html/bf82777e-a29a-24d1-bfe6-f2f9a431d778.htm" />
+    <HelpKINode Title="methods" Url="html/1825a7ff-13ce-900c-ac30-d0ada0f106b3.htm" />
+    <HelpKINode Title="methods" Url="html/3d99b16f-960a-af36-6e6f-5087b7fcfbb0.htm" />
     <HelpKINode Title="properties" Url="html/d06b2091-faac-8247-e85c-b1dbb3c77026.htm" />
-    <HelpKINode Title="properties" Url="html/7df05de8-f1f3-6ff8-193a-45c4b8cc2246.htm" />
-    <HelpKINode Title="properties" Url="html/bcb5db47-94a2-1eae-d9cf-a4c02a4857aa.htm" />
     <HelpKINode Title="properties" Url="html/1d1b5b7c-3f89-5aae-aa96-f0f2ffb90c84.htm" />
     <HelpKINode Title="properties" Url="html/ae6029b3-1d1f-9515-b6bc-25a49ea6af9f.htm" />
-    <HelpKINode Title="properties" Url="html/5dcab8c7-569a-81b3-6936-97204be1a0e4.htm" />
     <HelpKINode Title="properties" Url="html/1ef0086f-502a-7b87-6c3e-9a43c95146c1.htm" />
+    <HelpKINode Title="properties" Url="html/7df05de8-f1f3-6ff8-193a-45c4b8cc2246.htm" />
+    <HelpKINode Title="properties" Url="html/5dcab8c7-569a-81b3-6936-97204be1a0e4.htm" />
+    <HelpKINode Title="properties" Url="html/bcb5db47-94a2-1eae-d9cf-a4c02a4857aa.htm" />
   </HelpKINode>
   <HelpKINode Title="ResponseBase.Code property">
-    <HelpKINode Title="ResponseBase.Code Property " Url="html/52f5472d-6805-c232-c4cc-eb18bf662914.htm" />
-    <HelpKINode Title="ResponseBase.Code Property " Url="html/265a24b3-d613-2a80-276c-85071cee375a.htm" />
-    <HelpKINode Title="ResponseBase.Code Property " Url="html/3fcccda8-c86e-cbc3-d0e1-5a17bc506d73.htm" />
-    <HelpKINode Title="ResponseBase.Code Property " Url="html/f984a497-cdde-35a6-8f92-0d1f9df2ce8b.htm" />
     <HelpKINode Title="ResponseBase.Code Property " Url="html/c50a0f7d-a137-4ba4-e1be-e8e71c0de5bf.htm" />
     <HelpKINode Title="ResponseBase.Code Property " Url="html/922e2e71-5e53-f5a3-4d6d-f64e5804b1fa.htm" />
+    <HelpKINode Title="ResponseBase.Code Property " Url="html/52f5472d-6805-c232-c4cc-eb18bf662914.htm" />
     <HelpKINode Title="ResponseBase.Code Property " Url="html/13caad08-0dab-703a-c6c9-b7d29151a0a6.htm" />
+    <HelpKINode Title="ResponseBase.Code Property " Url="html/f984a497-cdde-35a6-8f92-0d1f9df2ce8b.htm" />
+    <HelpKINode Title="ResponseBase.Code Property " Url="html/265a24b3-d613-2a80-276c-85071cee375a.htm" />
+    <HelpKINode Title="ResponseBase.Code Property " Url="html/3fcccda8-c86e-cbc3-d0e1-5a17bc506d73.htm" />
   </HelpKINode>
   <HelpKINode Title="ResponseBase.Error property">
-    <HelpKINode Title="ResponseBase.Error Property " Url="html/38bc581b-0db1-5971-625e-716fa0ce6689.htm" />
-    <HelpKINode Title="ResponseBase.Error Property " Url="html/3baa6c0d-d597-6c7c-46d0-9a25710a7de9.htm" />
-    <HelpKINode Title="ResponseBase.Error Property " Url="html/0542a12c-6851-a39c-a897-17098a4cc15b.htm" />
-    <HelpKINode Title="ResponseBase.Error Property " Url="html/85105c48-5b88-533a-5ef5-18586346e0aa.htm" />
     <HelpKINode Title="ResponseBase.Error Property " Url="html/a58d0f10-b6ad-19d7-c2d6-89ce71063824.htm" />
-    <HelpKINode Title="ResponseBase.Error Property " Url="html/c4c0c8e4-1f8e-aa76-0207-cd81ab6c407d.htm" />
     <HelpKINode Title="ResponseBase.Error Property " Url="html/a6f4b4ec-466c-5dd5-c6bd-6fdf2f35e06b.htm" />
+    <HelpKINode Title="ResponseBase.Error Property " Url="html/85105c48-5b88-533a-5ef5-18586346e0aa.htm" />
+    <HelpKINode Title="ResponseBase.Error Property " Url="html/3baa6c0d-d597-6c7c-46d0-9a25710a7de9.htm" />
+    <HelpKINode Title="ResponseBase.Error Property " Url="html/38bc581b-0db1-5971-625e-716fa0ce6689.htm" />
+    <HelpKINode Title="ResponseBase.Error Property " Url="html/0542a12c-6851-a39c-a897-17098a4cc15b.htm" />
+    <HelpKINode Title="ResponseBase.Error Property " Url="html/c4c0c8e4-1f8e-aa76-0207-cd81ab6c407d.htm" />
   </HelpKINode>
   <HelpKINode Title="ResponseBase.ResponseBase constructor">
-    <HelpKINode Title="ResponseBase Constructor " Url="html/4413dc36-3df4-be1b-2141-250f200ece86.htm" />
-    <HelpKINode Title="ResponseBase Constructor " Url="html/046623ea-8bcb-bf44-1a95-05585caeb258.htm" />
     <HelpKINode Title="ResponseBase Constructor " Url="html/fb8e0b96-7c34-6907-c85f-e07a7866fca9.htm" />
+    <HelpKINode Title="ResponseBase Constructor " Url="html/bdfaef80-3fe8-6abc-066d-e91656a191b0.htm" />
+    <HelpKINode Title="ResponseBase Constructor " Url="html/046623ea-8bcb-bf44-1a95-05585caeb258.htm" />
     <HelpKINode Title="ResponseBase Constructor " Url="html/b60cba45-33ca-50a0-86d0-8ec292256dda.htm" />
     <HelpKINode Title="ResponseBase Constructor " Url="html/da566a3f-eb1b-2334-7473-861be9838303.htm" />
+    <HelpKINode Title="ResponseBase Constructor " Url="html/4413dc36-3df4-be1b-2141-250f200ece86.htm" />
     <HelpKINode Title="ResponseBase Constructor " Url="html/2630095e-8ba7-1501-6c7c-4b54240616f4.htm" />
-    <HelpKINode Title="ResponseBase Constructor " Url="html/bdfaef80-3fe8-6abc-066d-e91656a191b0.htm" />
   </HelpKINode>
   <HelpKINode Title="Result property">
     <HelpKINode Title="CursorResponse(T).Result Property " Url="html/c9324204-ce80-57f5-9bf8-5adf5dc44d18.htm" />
@@ -5141,11 +5141,11 @@
   <HelpKINode Title="RunningAqlQuery.Stream property" Url="html/c18586f9-253d-eb88-627f-a7a18be84e41.htm" />
   <HelpKINode Title="RunningAqlQuery.user property" Url="html/fef5103d-2dd0-0727-dcfc-81f31f2add5a.htm" />
   <HelpKINode Title="RunTime property">
-    <HelpKINode Title="CachedAqlQueryResult.RunTime Property " Url="html/91ff3a79-9f7a-3302-3007-7fcb7b03e617.htm" />
     <HelpKINode Title="SlowAqlQuery.RunTime Property " Url="html/77626fa4-dc1b-6bcc-f0b0-32f4aa2d74d7.htm" />
+    <HelpKINode Title="CachedAqlQueryResult.RunTime Property " Url="html/91ff3a79-9f7a-3302-3007-7fcb7b03e617.htm" />
   </HelpKINode>
-  <HelpKINode Title="Runtime property" Url="html/ec1461ec-5103-3b1d-503e-51381f8c7f1b.htm" />
   <HelpKINode Title="runTime property" Url="html/3cc281c5-d335-765f-e53f-a240f0a969c5.htm" />
+  <HelpKINode Title="Runtime property" Url="html/ec1461ec-5103-3b1d-503e-51381f8c7f1b.htm" />
   <HelpKINode Title="Satellite property" Url="html/4c9aac00-60a0-62b3-7714-64007ffffb02.htm" />
   <HelpKINode Title="SatelliteSyncWait property" Url="html/c4c87eb7-a684-3de7-caf0-3ca07b71bb87.htm" />
   <HelpKINode Title="ScannedFull property" Url="html/182d7ef8-c609-8911-eb57-fddf953acdd2.htm" />
@@ -5260,16 +5260,16 @@
     <HelpKINode Title="PostIndexBody.Sparse Property " Url="html/b5e779af-ba1e-621a-67a7-82f3efb71da5.htm" />
   </HelpKINode>
   <HelpKINode Title="Start property" Url="html/47195ef2-9525-0c8e-3d5a-f8c921fa7da4.htm" />
+  <HelpKINode Title="started property" Url="html/4e7786a5-1c8e-1d39-58f0-7cf810004b0e.htm" />
   <HelpKINode Title="Started property">
     <HelpKINode Title="CachedAqlQueryResult.Started Property " Url="html/c374041c-60e0-97cd-cf01-dadb7839a024.htm" />
     <HelpKINode Title="SlowAqlQuery.Started Property " Url="html/4d5647fd-ebfd-564d-2461-e7fe1390b45b.htm" />
   </HelpKINode>
-  <HelpKINode Title="started property" Url="html/4e7786a5-1c8e-1d39-58f0-7cf810004b0e.htm" />
+  <HelpKINode Title="state property" Url="html/768abbd3-be40-07d9-263d-a02f02230f75.htm" />
   <HelpKINode Title="State property">
     <HelpKINode Title="SlowAqlQuery.State Property " Url="html/27dd54dd-e591-cd89-be3a-552471e5b3e2.htm" />
     <HelpKINode Title="Transaction.State Property " Url="html/291615b0-21fe-00a9-086d-82b67fc6d47d.htm" />
   </HelpKINode>
-  <HelpKINode Title="state property" Url="html/768abbd3-be40-07d9-263d-a02f02230f75.htm" />
   <HelpKINode Title="Stats property">
     <HelpKINode Title="CursorResponseExtra.Stats Property " Url="html/b07ee042-6d60-9316-1176-8ca8cb484239.htm" />
     <HelpKINode Title="PostExplainAqlQueryResponse.Stats Property " Url="html/f19ff693-6885-5ada-ab12-4cb97650945d.htm" />
@@ -5478,12 +5478,12 @@
   <HelpKINode Title="UseCamelCasePropertyNames property" Url="html/35d43080-aab9-27f0-dd60-37a3eb75c333.htm" />
   <HelpKINode Title="UseJsonContentType method" Url="html/e786fd89-45ac-6d5d-a26d-a1c1d2f5c596.htm" />
   <HelpKINode Title="User property">
-    <HelpKINode Title="ArangoDBClient.User Property " Url="html/f0da1588-1195-cbfe-fc87-a2e20ffda6b7.htm" />
+    <HelpKINode Title="AvailableUser.User Property " Url="html/fa7e4a49-711b-fe37-ddd1-cc1b54508c81.htm" />
     <HelpKINode Title="IArangoDBClient.User Property " Url="html/81d51dbf-27ea-b4c3-6c46-f9f53fb34416.htm" />
     <HelpKINode Title="PostUserBody.User Property " Url="html/7f3782c0-64aa-9c9b-e993-5830032ddc41.htm" />
     <HelpKINode Title="SlowAqlQuery.User Property " Url="html/dfac209a-457b-a22a-6058-8f112e9893ce.htm" />
     <HelpKINode Title="UserResponseBase.User Property " Url="html/aa100c79-e66a-e43a-c12f-1466bd676509.htm" />
-    <HelpKINode Title="AvailableUser.User Property " Url="html/fa7e4a49-711b-fe37-ddd1-cc1b54508c81.htm" />
+    <HelpKINode Title="ArangoDBClient.User Property " Url="html/f0da1588-1195-cbfe-fc87-a2e20ffda6b7.htm" />
   </HelpKINode>
   <HelpKINode Title="user property" Url="html/fef5103d-2dd0-0727-dcfc-81f31f2add5a.htm" />
   <HelpKINode Title="UserApiClient class">
