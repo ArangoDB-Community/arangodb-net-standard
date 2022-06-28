@@ -1,0 +1,45 @@
+# DeleteDocumentsQuery.Silent Property 
+ 
+
+If set to true, an empty object will be returned as response. No meta-data will be returned for the deleted documents. This option can be used to save some network traffic.
+
+**Namespace:**&nbsp;<a href="81a73561-cfc6-64b8-9923-29f0333f4867">ArangoDBNetStandard.DocumentApi.Models</a><br />**Assembly:**&nbsp;ArangoDBNetStandard (in ArangoDBNetStandard.dll) Version: 1.1.0
+
+## Syntax
+
+**C#**<br />
+``` C#
+public bool? Silent { get; set; }
+```
+
+**VB**<br />
+``` VB
+Public Property Silent As Boolean?
+	Get
+	Set
+```
+
+**C++**<br />
+``` C++
+public:
+property Nullable<bool> Silent {
+	Nullable<bool> get ();
+	void set (Nullable<bool> value);
+}
+```
+
+**F#**<br />
+``` F#
+member Silent : Nullable<bool> with get, set
+
+```
+
+
+#### Property Value
+Type: <a href="https://docs.microsoft.com/dotnet/api/system.nullable-1" target="_blank" rel="noopener noreferrer">Nullable</a>(<a href="https://docs.microsoft.com/dotnet/api/system.boolean" target="_blank" rel="noopener noreferrer">Boolean</a>)
+
+## See Also
+
+
+#### Reference
+<a href="d4dc5177-3a85-3bf8-b1c3-cc9c23b7a233">DeleteDocumentsQuery Class</a><br /><a href="81a73561-cfc6-64b8-9923-29f0333f4867">ArangoDBNetStandard.DocumentApi.Models Namespace</a><br />
