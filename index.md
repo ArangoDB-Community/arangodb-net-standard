@@ -2,4 +2,4 @@
 
 # arangodb-net-standard
 
-- [.NET Driver v1.1.0](https://arangodb-community.github.io/arangodb-net-standard/v1-1-0)
+- [.NET Driver v1.1.0](https://arangodb-community.github.io/arangodb-net-standard/v1-1-0/home.md)
