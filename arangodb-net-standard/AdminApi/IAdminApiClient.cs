@@ -78,5 +78,29 @@ namespace ArangoDBNetStandard.AdminApi
         /// https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-version
         /// </remarks>
         Task<GetServerVersionResponse> GetServerVersionAsync(GetServerVersionQuery query = null);
+
+        /// <summary>
+        /// Retrieves the server license information.
+        /// GET /_admin/license
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// For further information see 
+        /// https://www.arangodb.com/docs/3.9/administration-license.html
+        /// </remarks>
+        Task<GetLicenseResponse> GetLicenseAsync();
+
+        /// <summary>
+        /// Sets a new license key.
+        /// PUT /_admin/license
+        /// </summary>
+        /// <param name="licenseKey">The new license key</param>
+        /// <param name="query">Query string parameters</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// For further information see 
+        /// https://www.arangodb.com/docs/3.9/administration-license.html
+        /// </remarks>
+        Task<PutLicenseResponse> PutLicenseAsync(string licenseKey, PutLicenseQuery query = null);
     }
 }
