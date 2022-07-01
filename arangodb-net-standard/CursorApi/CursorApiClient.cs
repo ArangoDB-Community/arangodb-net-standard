@@ -78,7 +78,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="ttl"></param>
         /// <param name="transactionId">Optional. The stream transaction Id.</param>
         /// <returns></returns>
-        public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
+        public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
                 string query,
                 Dictionary<string, object> bindVars = null,
                 PostCursorOptions options = null,
@@ -115,7 +115,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <returns></returns>
-        public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
+        public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
             PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null)
         {
             var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
@@ -125,7 +125,7 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<CursorResponse<T>>(stream);
+                    return DeserializeJsonFromStream<PostCursorResponse<T>>(stream);
                 }
 
                 throw await GetApiErrorException(response).ConfigureAwait(false);
