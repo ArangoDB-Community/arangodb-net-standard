@@ -11,7 +11,7 @@ namespace ArangoDBNetStandard.Serialization
         /// <summary>
         /// The default serialization options.
         /// </summary>
-        public virtual ApiClientSerializationOptions DefaultOptions => 
+        public virtual ApiClientSerializationOptions DefaultOptions { get; } =
             new ApiClientSerializationOptions(false, true, false);
 
         /// <summary>
