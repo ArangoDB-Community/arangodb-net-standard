@@ -127,6 +127,27 @@ namespace ArangoDBNetStandardTest.Serialization
         }
 
         [Fact]
+        public void DefaultOptions_ShouldAllowValuesToBeModifiedInEachInstances()
+        {
+            var serialization1 = new JsonNetApiClientSerialization();
+            var serialization2 = new JsonNetApiClientSerialization();
+
+            AssertDefaultOptions(serialization1.DefaultOptions);
+
+            serialization1.DefaultOptions.UseCamelCasePropertyNames = true;
+            serialization1.DefaultOptions.IgnoreNullValues = false;
+            serialization1.DefaultOptions.UseStringEnumConversion = true;
+
+            Assert.True(serialization1.DefaultOptions.UseCamelCasePropertyNames);
+            Assert.False(serialization1.DefaultOptions.IgnoreNullValues);
+            Assert.True(serialization1.DefaultOptions.UseStringEnumConversion);
+
+            // Ensure options for each instances are independent
+
+            AssertDefaultOptions(serialization2.DefaultOptions);
+        }
+
+        [Fact]
         public void Serialize_ShouldNotCamelCaseBindVars_WhenSerializingPostCursorBody()
         {
             var body = new PostCursorBody
@@ -226,6 +247,13 @@ namespace ArangoDBNetStandardTest.Serialization
 
             Assert.Equal("myvalue", model.PropertyToCheckIfCamelCase);
             Assert.Equal("something", model.NullProperty);
+        }
+
+        private void AssertDefaultOptions(ApiClientSerializationOptions options)
+        {
+            Assert.False(options.UseCamelCasePropertyNames);
+            Assert.True(options.IgnoreNullValues);
+            Assert.False(options.UseStringEnumConversion);
         }
     }
 }
