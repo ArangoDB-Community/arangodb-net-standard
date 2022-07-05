@@ -8,7 +8,7 @@
     <PackageProjectUrl>https://github.com/ArangoDB-Community/arangodb-net-standard</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ArangoDB-Community/arangodb-net-standard</RepositoryUrl>
     <PackageTags>arangodb-net-standard arangodb arango .net c# netstandard multimodel graph document database</PackageTags>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Company>ArangoDB Community</Company>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>ArangoDB Community</Authors>
