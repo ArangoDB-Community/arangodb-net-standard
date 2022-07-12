@@ -23,7 +23,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="ttl"></param>
         /// <param name="transactionId">Optional. The stream transaction Id.</param>
         /// <returns></returns>
-        Task<CursorResponse<T>> PostCursorAsync<T>(
+        Task<PostCursorResponse<T>> PostCursorAsync<T>(
                 string query,
                 Dictionary<string, object> bindVars = null,
                 PostCursorOptions options = null,
@@ -40,7 +40,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <returns></returns>
-        Task<CursorResponse<T>> PostCursorAsync<T>(
+        Task<PostCursorResponse<T>> PostCursorAsync<T>(
             PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null);
 
         /// <summary>
