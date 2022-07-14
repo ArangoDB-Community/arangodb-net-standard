@@ -574,6 +574,43 @@ namespace ArangoDBNetStandard.DocumentApi
             }
         }
 
+
+        /// <summary>
+        /// Partially updates documents, the documents to update are specified
+        /// by the _key attributes in the body objects.The body of the
+        /// request must contain a JSON array of document updates with the
+        /// attributes to patch(the patch documents). All attributes from the
+        /// patch documents will be added to the existing documents if they do
+        /// not yet exist, and overwritten in the existing documents if they do
+        /// exist there.
+        /// Setting an attribute value to null in the patch documents will cause a
+        /// value of null to be saved for the attribute by default.
+        /// If ignoreRevs is false and there is a _rev attribute in a
+        /// document in the body and its value does not match the revision of
+        /// the corresponding document in the database, the precondition is
+        /// violated.
+        /// PATCH/_api/document/{collection}
+        /// </summary>
+        /// <typeparam name="T">Type of the patch object used to partially update documents.</typeparam>
+        /// <see cref="PatchDocumentsQuery.ReturnNew"/> or <see cref="PatchDocumentsQuery.ReturnOld"/>
+        /// are used.</typeparam>
+        /// <param name="collectionName"></param>
+        /// <param name="patches"></param>
+        /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <returns></returns>
+        public virtual async Task<PatchDocumentsResponse<object>> PatchDocumentsAsync<T>(
+          string collectionName,
+          IList<T> patches,
+          PatchDocumentsQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null,
+          DocumentHeaderProperties headers = null)
+        {
+            return await PatchDocumentsAsync<T, object>(collectionName,patches,query,serializationOptions,headers);
+        }
+
         /// <summary>
         /// Partially updates the document identified by document-handle.
         /// The body of the request must contain a JSON document with the
@@ -653,6 +690,31 @@ namespace ArangoDBNetStandard.DocumentApi
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
+
+        /// <summary>
+        /// Partially updates the document identified by document-handle.
+        /// The body of the request must contain a JSON document with the
+        /// attributes to patch(the patch document). All attributes from the
+        /// patch document will be added to the existing document if they do not
+        /// yet exist, and overwritten in the existing document if they do exist
+        /// there.
+        /// PATCH/_api/document/{document-handle}
+        /// </summary>
+        /// <typeparam name="T">Type of the patch object used to partially update a document.</typeparam>
+        /// <see cref="PatchDocumentQuery.ReturnNew"/> or <see cref="PatchDocumentQuery.ReturnOld"/>
+        /// are used.</typeparam>
+        /// <param name="documentId"></param>
+        /// <param name="body"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PatchDocumentResponse<object>> PatchDocumentAsync<T>(
+            string documentId,
+            T body,
+            PatchDocumentQuery query = null)
+        {
+            return await PatchDocumentAsync<T, object>(documentId, body, query);
+        }
+
 
         /// <summary>
         /// Like GET, but only returns the header fields and not the body. You
