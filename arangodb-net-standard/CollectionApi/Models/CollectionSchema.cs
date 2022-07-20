@@ -7,8 +7,9 @@
     {
         /// <summary>
         /// Defines the JSON Schema description for schema validation.
+        /// See https://www.arangodb.com/docs/3.9/data-modeling-documents-schema-validation.html
         /// </summary>
-        public CollectionSchemaRule Rule { get; set; }
+        public object Rule { get; set; }
 
         /// <summary>
         /// Controls when the validation will be applied/triggered.
