@@ -73,6 +73,5 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
         public bool IsVolatile { get; set; }
-
     }
 }

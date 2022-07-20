@@ -98,5 +98,10 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// The type of the collection.
         /// </summary>
         public CollectionType Type { get; set; }
+
+        /// <summary>
+        /// The collection level schema for documents.
+        /// </summary>
+        public CollectionSchema Schema { get; set; }
     }
 }
