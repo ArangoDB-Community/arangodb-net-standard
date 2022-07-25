@@ -182,6 +182,7 @@ The options are passed as an instance of the `ApiClientSerializationOptions` cla
 - `UseCamelCasePropertyNames` (boolean, default is `false`)
 - `IgnoreNullValues` (boolean, default is `true`)
 - `UseStringEnumConversion` (boolean, default is `false`)
+- `IgnoreMissingMember` (boolean, default is `true`)
 
 In addition, the default options can be updated, which will affect all subsequent operations that use these options. To set default options, set them on the serializer implementation itself.  For example, if using the supplied `JsonNetApiClientSerialization`:
 
