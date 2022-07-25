@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using ArangoDBNetStandard.CursorApi.Models;
@@ -158,6 +159,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <typeparam name="T">Result type to deserialize to</typeparam>
         /// <param name="cursorId">ID of the existing query cursor.</param>
         /// <returns></returns>
+        [Obsolete("Use PostCursorAsync")]
         public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId)
         {
             string uri = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
