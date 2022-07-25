@@ -12,7 +12,7 @@ namespace ArangoDBNetStandard
         {
         }
 
-        public ApiErrorException(ApiErrorResponse error) : base(error.ErrorMessage)
+        public ApiErrorException(ApiErrorResponse error) : base(error == null ? string.Empty : error.ErrorMessage)
         {
             ApiError = error;
         }
