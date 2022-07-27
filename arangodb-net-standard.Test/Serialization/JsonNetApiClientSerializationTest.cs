@@ -163,10 +163,10 @@ namespace ArangoDBNetStandardTest.Serialization
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
-            Assert.Contains("DontCamelCaseMe", jsonString);
             Assert.Contains("DontCamelCaseKey", jsonString);
-            Assert.DoesNotContain("dontCamelCaseMe", jsonString);
             Assert.DoesNotContain("dontCamelCaseKey", jsonString);
+            Assert.Contains("dontCamelCaseMe", jsonString);
+            Assert.DoesNotContain("DontCamelCaseMe", jsonString);
         }
 
         [Fact]
@@ -186,10 +186,10 @@ namespace ArangoDBNetStandardTest.Serialization
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
-            Assert.Contains("DontCamelCaseMe", jsonString);
             Assert.Contains("DontCamelCaseKey", jsonString);
-            Assert.DoesNotContain("dontCamelCaseMe", jsonString);
             Assert.DoesNotContain("dontCamelCaseKey", jsonString);
+            Assert.Contains("dontCamelCaseMe", jsonString);
+            Assert.DoesNotContain("DontCamelCaseMe", jsonString);
         }
 
         [Fact]
