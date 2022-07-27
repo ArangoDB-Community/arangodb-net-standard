@@ -17,7 +17,7 @@
         public bool IgnoreNullValues { get; set; }
 
         /// <summary>
-        /// True to ignore missing members, otherwise false.
+        /// True to ignore missing members when deserializing, otherwise false.
         /// </summary>
         public bool IgnoreMissingMember { get; set; }
 
