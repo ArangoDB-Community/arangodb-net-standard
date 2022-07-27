@@ -373,6 +373,8 @@ By default, all API clients will use the provided `JsonNetApiClientSerialization
 
 In many cases we depend on the behaviour of Json.NET to automatically map JSON properties using `camelCase` to C# properties defined using `PascalCase` when deserializing. Any alternative serializer will need to mimic that behaviour in order to deserialize some ArangoDB JSON objects to their C# types.  For example, if using `System.Text.Json`, the option `PropertyNameCaseInsensitive = true` should be used.
 
+If any error occurs during (de)serialization of success/error responses, an exception of type `ArangoDBNetStandard.Serialization.SerializationException` will be thrown. Detailed reasons for the error will be available through the `InnerException` property of this object.
+
 ## Contributing
 
 We welcome any contributions from the wider ArangoDB community.
