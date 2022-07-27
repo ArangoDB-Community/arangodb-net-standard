@@ -71,6 +71,7 @@ namespace ArangoDBNetStandard.Serialization
 
             var jsonSettings = new JsonSerializerSettings
             {
+                MissingMemberHandling = serializationOptions.IgnoreMissingMember ? MissingMemberHandling.Ignore : MissingMemberHandling.Error,
                 NullValueHandling = serializationOptions.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
             };
 
