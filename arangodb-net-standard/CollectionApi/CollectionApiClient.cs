@@ -85,13 +85,15 @@ namespace ArangoDBNetStandard.CollectionApi
         /// Truncates a collection, i.e. removes all documents in the collection.
         /// PUT/_api/collection/{collection-name}/truncate
         /// </summary>
-        /// <param name="collectionName"></param>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <returns></returns>
-        public virtual async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName)
+        public virtual async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName, ApiHeaderProperties headers = null)
         {
             using (var response = await _transport.PutAsync(
                 _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/truncate",
-                new byte[0]).ConfigureAwait(false))
+                new byte[0], 
+                headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -106,11 +108,14 @@ namespace ArangoDBNetStandard.CollectionApi
         /// Gets count of documents in a collection.
         /// GET/_api/collection/{collection-name}/count
         /// </summary>
-        /// <param name="collectionName"></param>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <returns></returns>
-        public virtual async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName)
+        public virtual async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName, ApiHeaderProperties headers = null)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/count").ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(
+                _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/count", 
+                headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
