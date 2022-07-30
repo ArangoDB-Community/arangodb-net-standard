@@ -54,7 +54,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <remarks>
         /// The creation of a graph requires the name of the graph and a definition of its edges.
         /// </remarks>
-        /// <param name="postGraphBody">The information of the graph to create.</param>
+        /// <param name="postGraphBody">The information of the graph to create. Must be an instance of <see cref="PostSatelliteGraphOptions"/> or <see cref="PostNonSatelliteGraphOptions"/>.</param>
         /// <param name="query">Optional query parameters of the request.</param>
         /// <returns></returns>
         public virtual async Task<PostGraphResponse> PostGraphAsync(
