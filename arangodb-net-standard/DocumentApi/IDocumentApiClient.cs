@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Serialization;
@@ -21,13 +22,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostDocumentResponse<T>> PostDocumentAsync<T>(
            string collectionName,
            T document,
            PostDocumentsQuery query = null,
            ApiClientSerializationOptions serializationOptions = null,
-           DocumentHeaderProperties headers = null);
+           DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Post a single document with the possibility to specify a different type
@@ -43,13 +46,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostDocumentResponse<U>> PostDocumentAsync<T, U>(
            string collectionName,
            T document,
            PostDocumentsQuery query = null,
            ApiClientSerializationOptions serializationOptions = null,
-           DocumentHeaderProperties headers = null);
+           DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Post multiple documents in a single request.
@@ -61,13 +66,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(
            string collectionName,
            IList<T> documents,
            PostDocumentsQuery query = null,
            ApiClientSerializationOptions serializationOptions = null,
-           DocumentHeaderProperties headers = null);
+           DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Replace multiple documents.
@@ -79,13 +86,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
            string collectionName,
            IList<T> documents,
            PutDocumentsQuery query = null,
            ApiClientSerializationOptions serializationOptions = null,
-           DocumentHeaderProperties headers = null);
+           DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Replaces the document with the provided document ID with the one in
@@ -99,13 +108,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
             T doc,
             PutDocumentQuery opts = null,
             ApiClientSerializationOptions serializationOptions = null,
-            DocumentHeaderProperties headers = null);
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Replaces the document based on its Document ID with the one in
@@ -118,13 +129,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="doc"></param>
         /// <param name="opts"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string collectionName,
             string documentKey,
             T doc,
             PutDocumentQuery opts = null,
-            DocumentHeaderProperties headers = null);
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Get an existing document.
@@ -133,8 +146,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<T> GetDocumentAsync<T>(string collectionName, string documentKey, DocumentHeaderProperties headers = null);
+        Task<T> GetDocumentAsync<T>(string collectionName, string documentKey, DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Get an existing document based on its Document ID.
@@ -142,8 +157,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<T> GetDocumentAsync<T>(string documentId, DocumentHeaderProperties headers = null);
+        Task<T> GetDocumentAsync<T>(string documentId, DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Get multiple documents.
@@ -153,11 +170,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName">Collection name</param>
         /// <param name="selectors">Document keys to fetch documents for</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<List<T>> GetDocumentsAsync<T>(
             string collectionName,
             IList<string> selectors,
-            DocumentHeaderProperties headers = null);
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Delete a document.
@@ -172,12 +191,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string collectionName,
             string documentKey,
             DeleteDocumentQuery query = null,
-            DocumentHeaderProperties headers = null);
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Delete a document based on its document ID.
@@ -191,11 +212,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string documentId,
             DeleteDocumentQuery query = null,
-            DocumentHeaderProperties headers = null);
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Delete a document.
@@ -205,12 +228,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
           string collectionName,
           string documentKey,
           DeleteDocumentQuery query = null,
-          DocumentHeaderProperties headers = null);
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Delete a document based on its document ID.
@@ -218,11 +243,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
           string documentId,
           DeleteDocumentQuery query = null,
-          DocumentHeaderProperties headers = null);
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Delete multiple documents based on the passed document selectors.
@@ -238,12 +265,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="selectors"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(
           string collectionName,
           IList<string> selectors,
           DeleteDocumentsQuery query = null,
-          DocumentHeaderProperties headers = null);
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Delete multiple documents based on the passed document selectors.
@@ -254,12 +283,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="selectors"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(
           string collectionName,
           IList<string> selectors,
           DeleteDocumentsQuery query = null,
-          DocumentHeaderProperties headers = null);
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Partially updates documents, the documents to update are specified
@@ -287,13 +318,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
           string collectionName,
           IList<T> patches,
           PatchDocumentsQuery query = null,
           ApiClientSerializationOptions serializationOptions = null,
-          DocumentHeaderProperties headers = null);
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Partially updates documents, the documents to update are specified
@@ -311,7 +344,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// violated.
         /// PATCH/_api/document/{collection}
         /// </summary>
-        /// <typeparam name="T">Type of the patch object used to partially update documents.</typeparam>
+        /// <typeparam name="T">Type of the patch object used to partially update documents.
         /// <see cref="PatchDocumentsQuery.ReturnNew"/> or <see cref="PatchDocumentsQuery.ReturnOld"/>
         /// are used.</typeparam>
         /// <param name="collectionName"></param>
@@ -320,13 +353,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchDocumentsResponse<object>> PatchDocumentsAsync<T>(
           string collectionName,
           IList<T> patches,
           PatchDocumentsQuery query = null,
           ApiClientSerializationOptions serializationOptions = null,
-          DocumentHeaderProperties headers = null);
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Partially updates the document identified by document-handle.
@@ -346,13 +381,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
           string collectionName,
           string documentKey,
           T body,
           PatchDocumentQuery query = null,
-          DocumentHeaderProperties headers = null);
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Partially updates the document identified by document-handle.
@@ -373,13 +410,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
           string documentId,
           T body,
           PatchDocumentQuery query = null,
           ApiClientSerializationOptions serializationOptions = null,
-          DocumentHeaderProperties headers = null);
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Partially updates the document identified by document-handle.
@@ -396,11 +435,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchDocumentResponse<object>> PatchDocumentAsync<T>(
             string documentId,
             T body,
-            PatchDocumentQuery query = null);
+            PatchDocumentQuery query = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Like GET, but only returns the header fields and not the body. You
@@ -411,6 +452,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// 200: is returned if the document was found. 
         /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
@@ -422,7 +464,8 @@ namespace ArangoDBNetStandard.DocumentApi
         Task<HeadDocumentResponse> HeadDocumentAsync(
           string collectionName,
           string documentKey,
-          DocumentHeaderProperties headers = null);
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Like GET, but only returns the header fields and not the body. You
@@ -432,6 +475,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <exception cref="ArgumentException">Document ID is invalid.</exception>
         /// <remarks>
         /// 200: is returned if the document was found. 
@@ -441,6 +485,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>
         /// <returns></returns>
-        Task<HeadDocumentResponse> HeadDocumentAsync(string documentId, DocumentHeaderProperties headers = null);
+        Task<HeadDocumentResponse> HeadDocumentAsync(string documentId, 
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default);
     }
 }

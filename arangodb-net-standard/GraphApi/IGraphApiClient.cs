@@ -1,5 +1,6 @@
 ﻿using ArangoDBNetStandard.GraphApi.Models;
 using ArangoDBNetStandard.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.GraphApi
@@ -15,21 +16,23 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="postGraphBody">The information of the graph to create.</param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostGraphResponse> PostGraphAsync(
           PostGraphBody postGraphBody,
-          PostGraphQuery query = null);
+          PostGraphQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Lists all graphs stored in this database.
         /// GET /_api/gharial
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Note: The <see cref="GraphResult.Name"/> property is null for <see cref="GraphApiClient.GetGraphsAsync"/>
         /// in ArangoDB 4.5.2 and below, in which case you can use <see cref="GraphResult._key"/> instead.
         /// </remarks>
         /// <returns></returns>
-        Task<GetGraphsResponse> GetGraphsAsync();
+        Task<GetGraphsResponse> GetGraphsAsync(CancellationToken token = default);
 
         /// <summary>
         /// Deletes an existing graph object by name.
@@ -39,10 +42,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteGraphResponse> DeleteGraphAsync(
           string graphName,
-          DeleteGraphQuery query = null);
+          DeleteGraphQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Selects information for a given graph.
@@ -51,23 +55,25 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName"></param>
         /// <returns></returns>
-        Task<GetGraphResponse> GetGraphAsync(string graphName);
+        Task<GetGraphResponse> GetGraphAsync(string graphName, CancellationToken token = default);
 
         /// <summary>
         /// Lists all vertex collections within the given graph.
         /// GET /_api/gharial/{graph}/vertex
         /// </summary>
         /// <param name="graphName">The name of the graph.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetVertexCollectionsResponse> GetVertexCollectionsAsync(string graphName);
+        Task<GetVertexCollectionsResponse> GetVertexCollectionsAsync(string graphName, CancellationToken token = default);
 
         /// <summary>
         /// Lists all edge collections within this graph.
         /// GET /_api/gharial/{graph}/edge
         /// </summary>
         /// <param name="graphName"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetEdgeCollectionsResponse> GetEdgeCollectionsAsync(string graphName);
+        Task<GetEdgeCollectionsResponse> GetEdgeCollectionsAsync(string graphName, CancellationToken token = default);
 
         /// <summary>
         /// Adds an additional edge definition to the graph.
@@ -81,10 +87,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="body">The information of the edge definition.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostEdgeDefinitionResponse> PostEdgeDefinitionAsync(
           string graphName,
-          PostEdgeDefinitionBody body);
+          PostEdgeDefinitionBody body, CancellationToken token = default);
 
         /// <summary>
         /// Adds a vertex collection to the set of orphan collections of the graph.
@@ -93,10 +100,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="body">The information of the vertex collection.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostVertexCollectionResponse> PostVertexCollectionAsync(
           string graphName,
-          PostVertexCollectionBody body);
+          PostVertexCollectionBody body, CancellationToken token = default);
 
         /// <summary>
         /// Adds a vertex to the given collection.
@@ -109,13 +117,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostVertexResponse<T>> PostVertexAsync<T>(
           string graphName,
           string collectionName,
           T vertex,
           PostVertexQuery query = null,
-          ApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null, CancellationToken token = default);
 
         /// <summary>
         /// Remove one edge definition from the graph. This will only remove the
@@ -126,11 +135,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName"></param>
         /// <param name="collectionName"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteEdgeDefinitionResponse> DeleteEdgeDefinitionAsync(
           string graphName,
           string collectionName,
-          DeleteEdgeDefinitionQuery query = null);
+          DeleteEdgeDefinitionQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Removes a vertex collection from the graph and optionally deletes the collection,
@@ -142,11 +152,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName"></param>
         /// <param name="collectionName"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteVertexCollectionResponse> DeleteVertexCollectionAsync(
           string graphName,
           string collectionName,
-          DeleteVertexCollectionQuery query = null);
+          DeleteVertexCollectionQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Creates an edge in an existing graph.
@@ -164,13 +175,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
           string graphName,
           string collectionName,
           T edge,
           PostEdgeQuery query = null,
-          ApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null, CancellationToken token = default);
 
         /// <summary>
         /// Gets an edge from the given graph using the edge collection and _key attribute.
@@ -180,12 +192,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edgeKey">The _key attribute of the edge.</param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetEdgeResponse<T>> GetEdgeAsync<T>(
            string graphName,
            string collectionName,
            string edgeKey,
-           GetEdgeQuery query = null);
+           GetEdgeQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Gets an edge from the given graph using the edge's document-handle.
@@ -195,11 +208,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="edgeHandle">The document-handle of the edge document.</param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetEdgeResponse<T>> GetEdgeAsync<T>(
           string graphName,
           string edgeHandle,
-          GetEdgeQuery query = null);
+          GetEdgeQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Removes an edge from the collection.
@@ -211,12 +225,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edgeKey">The _key attribute of the edge.</param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
           string graphName,
           string collectionName,
           string edgeKey,
-          DeleteEdgeQuery query = null);
+          DeleteEdgeQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Removes an edge based on its document ID.
@@ -226,11 +241,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="documentId">The document ID of the edge to delete.</param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
           string graphName,
           string documentId,
-          DeleteEdgeQuery query = null);
+          DeleteEdgeQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Gets a vertex from the given collection.
@@ -240,12 +256,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertexKey"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetVertexResponse<T>> GetVertexAsync<T>(
           string graphName,
           string collectionName,
           string vertexKey,
-          GetVertexQuery query = null);
+          GetVertexQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Gets a vertex based on its document ID.
@@ -253,11 +270,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph to get the vertex from.</param>
         /// <param name="documentId">The document ID of the vertex to retrieve.</param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetVertexResponse<T>> GetVertexAsync<T>(
           string graphName,
           string documentId,
-          GetVertexQuery query = null);
+          GetVertexQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Removes a vertex from the collection.
@@ -267,12 +285,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertexKey"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
           string graphName,
           string collectionName,
           string vertexKey,
-          DeleteVertexQuery query = null);
+          DeleteVertexQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Removes a vertex based on its document ID.
@@ -280,11 +299,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph to delete the vertex from.</param>
         /// <param name="documentId">The document ID of the vertex to delete.</param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
           string graphName,
           string documentId,
-          DeleteVertexQuery query = null);
+          DeleteVertexQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Updates the data of the specific vertex in the collection.
@@ -299,13 +319,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
           string graphName,
           string collectionName,
           string vertexKey,
           T body,
-          PatchVertexQuery query = null);
+          PatchVertexQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Updates the data of the specific vertex based on its document ID.
@@ -318,12 +339,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to update.</param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
           string graphName,
           string documentId,
           T body,
-          PatchVertexQuery query = null);
+          PatchVertexQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Replaces the data of an edge in the collection.
@@ -335,13 +357,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey"></param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
           string graphName,
           string collectionName,
           string edgeKey,
           T edge,
-          PutEdgeQuery query = null);
+          PutEdgeQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Replaces the data of an edge based on its document ID.
@@ -351,12 +374,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to replace.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
           string graphName,
           string documentId,
           T edge,
-          PutEdgeQuery query = null);
+          PutEdgeQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Change one specific edge definition.
@@ -367,12 +391,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutEdgeDefinitionResponse> PutEdgeDefinitionAsync(
           string graphName,
           string collectionName,
           PutEdgeDefinitionBody body,
-          PutEdgeDefinitionQuery query = null);
+          PutEdgeDefinitionQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Updates the data of the specific edge in the collection.
@@ -386,6 +411,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey">The document key of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
           string graphName,
@@ -404,12 +430,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
           string graphName,
           string documentId,
           T edge,
-          PatchEdgeQuery query = null);
+          PatchEdgeQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Replaces the data of a vertex in the collection.
@@ -421,13 +448,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="key"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutVertexResponse<T>> PutVertexAsync<T>(
           string graphName,
           string collectionName,
           string key,
           T vertex,
-          PutVertexQuery query = null);
+          PutVertexQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Replaces the data of a vertex based on its document ID.
@@ -437,11 +465,12 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to replace.</param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutVertexResponse<T>> PutVertexAsync<T>(
           string graphName,
           string documentId,
           T vertex,
-          PutVertexQuery query = null);
+          PutVertexQuery query = null, CancellationToken token = default);
     }
 }
