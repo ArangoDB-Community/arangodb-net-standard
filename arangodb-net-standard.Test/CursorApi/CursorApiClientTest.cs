@@ -190,7 +190,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                     It.IsAny<string>(),
                     It.IsAny<byte[]>(),
                     It.IsAny<WebHeaderCollection>(),
-                CancellationToken.None))
+                    It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(mockResponse.Object));
 
             var cursorApi = new CursorApiClient(mockTransport.Object);
@@ -242,7 +242,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
-                CancellationToken.None))
+                It.IsAny<CancellationToken>()))
                 .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestHeader = webHeaderCollection;

@@ -112,8 +112,8 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             mockTransport.Setup(x => x.DeleteAsync(
                 It.IsAny<string>(),
-                It.IsAny<WebHeaderCollection>(),
-                CancellationToken.None))
+                It.IsAny<WebHeaderCollection>(), 
+                It.IsAny<CancellationToken>()))
                 .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
@@ -296,7 +296,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>(), It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
-                CancellationToken.None))
+                It.IsAny<CancellationToken>()))
                 .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
@@ -628,7 +628,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
-                CancellationToken.None))
+                It.IsAny<CancellationToken>()))
                 .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
@@ -736,7 +736,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
             mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
-                CancellationToken.None))
+                It.IsAny<CancellationToken>()))
                 .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
@@ -866,7 +866,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             mockTransport.Setup(x => x.PatchAsync(
                 It.IsAny<string>(), It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
-                CancellationToken.None))
+                It.IsAny<CancellationToken>()))
                 .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;

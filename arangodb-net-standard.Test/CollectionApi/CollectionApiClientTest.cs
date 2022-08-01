@@ -160,8 +160,8 @@ namespace ArangoDBNetStandardTest.CollectionApi
             mockTransport.Setup(x => x.PostAsync(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
-                It.IsAny<WebHeaderCollection>(), 
-                CancellationToken.None))
+                It.IsAny<WebHeaderCollection>(),
+                It.IsAny<CancellationToken>()))
                 .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
