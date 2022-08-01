@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -291,7 +292,8 @@ namespace ArangoDBNetStandardTest.UserApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
+            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>(),
+                CancellationToken.None))
                 .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
@@ -375,7 +377,10 @@ namespace ArangoDBNetStandardTest.UserApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
+            mockTransport.Setup(x => x.GetAsync(
+                It.IsAny<string>(),
+                It.IsAny<WebHeaderCollection>(),
+                CancellationToken.None))
                 .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
@@ -512,7 +517,8 @@ namespace ArangoDBNetStandardTest.UserApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
+            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>(),
+                CancellationToken.None))
                 .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;

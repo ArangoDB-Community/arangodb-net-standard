@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CursorApi;
@@ -188,7 +189,8 @@ namespace ArangoDBNetStandardTest.CursorApi
             mockTransport.Setup(x => x.PostAsync(
                     It.IsAny<string>(),
                     It.IsAny<byte[]>(),
-                    It.IsAny<WebHeaderCollection>()))
+                    It.IsAny<WebHeaderCollection>(),
+                CancellationToken.None))
                 .Returns(Task.FromResult(mockResponse.Object));
 
             var cursorApi = new CursorApiClient(mockTransport.Object);
@@ -239,7 +241,8 @@ namespace ArangoDBNetStandardTest.CursorApi
             mockTransport.Setup(x => x.PostAsync(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
-                It.IsAny<WebHeaderCollection>()))
+                It.IsAny<WebHeaderCollection>(),
+                CancellationToken.None))
                 .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestHeader = webHeaderCollection;

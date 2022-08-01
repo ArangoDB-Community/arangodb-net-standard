@@ -903,7 +903,7 @@ namespace ArangoDBNetStandard.GraphApi
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(key),
                 vertex,
-                query,, token: token);
+                query, token: token);
         }
 
         /// <summary>

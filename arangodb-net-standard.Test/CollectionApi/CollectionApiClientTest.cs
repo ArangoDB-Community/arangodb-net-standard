@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
@@ -159,7 +160,8 @@ namespace ArangoDBNetStandardTest.CollectionApi
             mockTransport.Setup(x => x.PostAsync(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
-                It.IsAny<WebHeaderCollection>()))
+                It.IsAny<WebHeaderCollection>(), 
+                CancellationToken.None))
                 .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
                 {
                     requestUri = uri;
