@@ -418,7 +418,7 @@ namespace ArangoDBNetStandard.GraphApi
           string collectionName,
           string edgeKey,
           T edge,
-          PatchEdgeQuery query = null);
+          PatchEdgeQuery query = null, CancellationToken token = default);
 
         /// <summary>
         /// Updates the data of the specific edge based on its document ID.
