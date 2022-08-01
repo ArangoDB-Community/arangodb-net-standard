@@ -114,7 +114,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 It.IsAny<string>(),
                 It.IsAny<WebHeaderCollection>(), 
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -297,7 +297,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             mockTransport.Setup(x => x.DeleteAsync(It.IsAny<string>(), It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -629,7 +629,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -737,7 +737,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             mockTransport.Setup(x => x.PutAsync(It.IsAny<string>(), It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -867,7 +867,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
                 It.IsAny<string>(), It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);

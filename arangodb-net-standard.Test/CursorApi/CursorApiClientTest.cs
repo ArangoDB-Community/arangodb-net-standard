@@ -243,7 +243,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestHeader = webHeaderCollection;
                     return Task.FromResult(mockResponse.Object);

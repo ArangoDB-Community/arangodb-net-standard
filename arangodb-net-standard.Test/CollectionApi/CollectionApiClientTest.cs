@@ -162,7 +162,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
                 It.IsAny<byte[]>(),
                 It.IsAny<WebHeaderCollection>(),
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);

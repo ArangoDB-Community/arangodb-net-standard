@@ -296,7 +296,7 @@ namespace ArangoDBNetStandardTest.UserApi
                 It.IsAny<string>(), 
                 It.IsAny<WebHeaderCollection>(),
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -383,7 +383,7 @@ namespace ArangoDBNetStandardTest.UserApi
                 It.IsAny<string>(),
                 It.IsAny<WebHeaderCollection>(),
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -523,7 +523,7 @@ namespace ArangoDBNetStandardTest.UserApi
                 It.IsAny<string>(),
                 It.IsAny<WebHeaderCollection>(),
                 It.IsAny<CancellationToken>()))
-                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
+                .Returns((string uri, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
