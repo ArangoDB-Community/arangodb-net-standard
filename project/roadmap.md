@@ -219,10 +219,6 @@ A tick indicates an item is implemented and has automated tests in place.
 
 - [ ]	TODO
 
-#### Indexes API
-
-- [ ]	TODO
-
 #### Replication API
 
 - [ ]	TODO
