@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard.CursorApi.Models;
 
@@ -22,6 +23,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
         /// <param name="transactionId">Optional. The stream transaction Id.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostCursorResponse<T>> PostCursorAsync<T>(
                 string query,
@@ -32,31 +34,39 @@ namespace ArangoDBNetStandard.CursorApi
                 bool? cache = null,
                 long? memoryLimit = null,
                 int? ttl = null,
-                string transactionId = null);
+                string transactionId = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Execute an AQL query, creating a cursor which can be used to page query results.
         /// </summary>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostCursorResponse<T>> PostCursorAsync<T>(
-            PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null);
+            PostCursorBody postCursorBody, 
+            CursorHeaderProperties headerProperties = null,
+            CancellationToken token = default);
 
         /// <summary>
         /// Deletes an existing cursor and frees the resources associated with it.
         /// DELETE /_api/cursor/{cursor-identifier}
         /// </summary>
         /// <param name="cursorId">The id of the cursor to delete.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId);
+        Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId,
+            CancellationToken token = default);
 
         /// <summary>
         /// Advances an existing query cursor and gets the next set of results.
         /// </summary>
         /// <typeparam name="T">Result type to deserialize to</typeparam>
         /// <param name="cursorId">ID of the existing query cursor.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId);
+        Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId,
+            CancellationToken token = default);
     }
 }

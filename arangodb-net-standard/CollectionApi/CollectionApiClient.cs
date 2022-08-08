@@ -4,6 +4,7 @@ using ArangoDBNetStandard.Transport;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.CollectionApi
@@ -47,9 +48,17 @@ namespace ArangoDBNetStandard.CollectionApi
             _transport = transport;
         }
 
+        /// <summary>
+        /// Creates a new collection
+        /// </summary>
+        /// <param name="body">Attributes of the new collection</param>
+        /// <param name="options">Query string options for the task.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
         public virtual async Task<PostCollectionResponse> PostCollectionAsync(
             PostCollectionBody body,
-            PostCollectionQuery options = null)
+            PostCollectionQuery options = null,
+            CancellationToken token = default)
         {
             string uriString = _collectionApiPath;
             if (options != null)
@@ -57,7 +66,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 uriString += "?" + options.ToQueryString();
             }
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PostAsync(uriString, content).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uriString, content, null, token).ConfigureAwait(false))
             {
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
@@ -68,9 +77,19 @@ namespace ArangoDBNetStandard.CollectionApi
             }
         }
 
-        public virtual async Task<DeleteCollectionResponse> DeleteCollectionAsync(string collectionName)
+        /// <summary>
+        /// Deletes a collection.
+        /// </summary>
+        /// <param name="collectionName"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        public virtual async Task<DeleteCollectionResponse> DeleteCollectionAsync(string collectionName,
+            CancellationToken token = default)
         {
-            using (var response = await _transport.DeleteAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName)).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(
+                _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName), 
+                null,
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -86,14 +105,18 @@ namespace ArangoDBNetStandard.CollectionApi
         /// PUT/_api/collection/{collection-name}/truncate
         /// </summary>
         /// <param name="collectionName">Name of the collection</param>
-        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
+        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>        
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName, CollectionHeaderProperties headers = null)
+        public virtual async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName, 
+                      CollectionHeaderProperties headers = null, 
+                      CancellationToken token = default)
         {
             using (var response = await _transport.PutAsync(
                 _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/truncate",
                 new byte[0], 
-                headers?.ToWebHeaderCollection()).ConfigureAwait(false))
+                headers?.ToWebHeaderCollection(),
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -109,13 +132,17 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET/_api/collection/{collection-name}/count
         /// </summary>
         /// <param name="collectionName">Name of the collection</param>
-        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
+        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>        
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName, CollectionHeaderProperties headers = null)
+        public virtual async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName, 
+                CollectionHeaderProperties headers = null, 
+                CancellationToken token = default)
         {
             using (var response = await _transport.GetAsync(
                 _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/count", 
-                headers?.ToWebHeaderCollection()).ConfigureAwait(false))
+                headers?.ToWebHeaderCollection(),
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -131,15 +158,17 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET/_api/collection
         /// </summary>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery query = null)
+        public virtual async Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery query = null,
+            CancellationToken token = default)
         {
             string uriString = _collectionApiPath;
             if (query != null)
             {
                 uriString += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uriString, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -151,16 +180,19 @@ namespace ArangoDBNetStandard.CollectionApi
         }
 
         /// <summary>
-        /// Return information about the requested collection.
+        /// Gets the requested collection.
         /// GET/_api/collection/{collection-name}
         /// </summary>
-        /// <param name="collectionName">The name of the collection.</param>
-        /// <returns>
-        /// The result is an object describing the collection.
-        /// </returns>
-        public async Task<GetCollectionResponse> GetCollectionAsync(string collectionName)
+        /// <param name="collectionName"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        public async Task<GetCollectionResponse> GetCollectionAsync(string collectionName,
+            CancellationToken token = default)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName)).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(
+                _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName), 
+                null,
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -177,10 +209,15 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET /_api/collection/{collection-name}/properties
         /// </summary>
         /// <param name="collectionName"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName)
+        public virtual async Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName,
+            CancellationToken token = default)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/properties").ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(
+                _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/properties", 
+                null,
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -197,11 +234,17 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName"></param>
         /// <param name="body"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body)
+        public virtual async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body,
+            CancellationToken token = default)
         {
             var content = GetContent(body, new ApiClientSerializationOptions(true, false));
-            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/rename", content).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(
+                _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/rename", 
+                content,
+                null,
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -218,10 +261,15 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET /_api/collection/{collection-name}/revision
         /// </summary>
         /// <param name="collectionName">Name of the collection</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetCollectionRevisionResponse> GetCollectionRevisionAsync(string collectionName)
+        public virtual async Task<GetCollectionRevisionResponse> GetCollectionRevisionAsync(string collectionName,
+            CancellationToken token = default)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/revision").ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(
+                _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/revision",
+                null,
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -238,13 +286,19 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName"></param>
         /// <param name="body"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PutCollectionPropertyResponse> PutCollectionPropertyAsync(
             string collectionName,
-            PutCollectionPropertyBody body)
+            PutCollectionPropertyBody body,
+            CancellationToken token = default)
         {
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(_collectionApiPath + "/" + collectionName + "/properties", content).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(
+                _collectionApiPath + "/" + collectionName + "/properties", 
+                content,
+                null,
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -256,14 +310,19 @@ namespace ArangoDBNetStandard.CollectionApi
         }
 
         /// <summary>
-        /// Contains the number of documents and additional statistical information about the collection.
+        /// Gets the number of documents and additional statistical information about the collection.
         /// GET/_api/collection/{collection-name}/figures
         /// </summary>
         /// <param name="collectionName"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName)
+        public virtual async Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName,
+            CancellationToken token = default)
         {
-            using (var response = await _transport.GetAsync(_collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/figures").ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(
+                _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/figures",
+                null,
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -281,8 +340,12 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
         /// <param name="query">Query options.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetChecksumResponse> GetChecksumAsync(string collectionName, GetChecksumQuery query = null)
+        public virtual async Task<GetChecksumResponse> GetChecksumAsync(
+            string collectionName,
+            GetChecksumQuery query = null,
+            CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
@@ -293,7 +356,7 @@ namespace ArangoDBNetStandard.CollectionApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uriString, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -313,15 +376,17 @@ namespace ArangoDBNetStandard.CollectionApi
         /// PUT /_api/collection/{collection-name}/loadIndexesIntoMemory
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PutLoadIndexesIntoMemoryResponse> PutLoadIndexesIntoMemoryAsync(string collectionName)
+        public virtual async Task<PutLoadIndexesIntoMemoryResponse> PutLoadIndexesIntoMemoryAsync(string collectionName,
+            CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
                 throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/loadIndexesIntoMemory";
-            using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uriString, new byte[] { }, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -337,15 +402,17 @@ namespace ArangoDBNetStandard.CollectionApi
         /// PUT /_api/collection/{collection-name}/recalculateCount
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PutRecalculateCountResponse> PutRecalculateCountAsync(string collectionName)
+        public virtual async Task<PutRecalculateCountResponse> PutRecalculateCountAsync(string collectionName,
+            CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
                 throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/recalculateCount";
-            using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uriString, new byte[] { },null,token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -357,8 +424,7 @@ namespace ArangoDBNetStandard.CollectionApi
         }
 
         /// <summary>
-        /// Returns the responsible shard for a document.  
-        /// This method is only available in a cluster.      
+        /// Returns the responsible shard for a document.        
         /// PUT /_api/collection/{collection-name}/responsibleShard
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
@@ -367,8 +433,12 @@ namespace ArangoDBNetStandard.CollectionApi
         /// pairs with at least the collection’s shard 
         /// key attributes set to some values.
         /// </param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PutDocumentShardResponse> PutDocumentShardAsync(string collectionName, Dictionary<string, object> body)
+        public virtual async Task<PutDocumentShardResponse> PutDocumentShardAsync(
+            string collectionName, 
+            Dictionary<string, object> body,
+            CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
@@ -380,7 +450,7 @@ namespace ArangoDBNetStandard.CollectionApi
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/responsibleShard";
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uriString, content).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uriString, content, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -397,15 +467,17 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET /_api/collection/{collection-name}/shards
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetCollectionShardsResponse> GetCollectionShardsAsync(string collectionName)
+        public virtual async Task<GetCollectionShardsResponse> GetCollectionShardsAsync(string collectionName,
+            CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
                 throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards";
-            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uriString, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -425,15 +497,17 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET /_api/collection/{collection-name}/shards?details=true
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetCollectionShardsDetailedResponse> GetCollectionShardsWithDetailsAsync(string collectionName)
+        public virtual async Task<GetCollectionShardsDetailedResponse> GetCollectionShardsWithDetailsAsync(string collectionName,
+            CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
                 throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/shards?details=true";
-            using (var response = await _transport.GetAsync(uriString).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uriString, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -451,15 +525,17 @@ namespace ArangoDBNetStandard.CollectionApi
         /// PUT /_api/collection/{collection-name}/compact
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PutCompactCollectionDataResponse> PutCompactCollectionDataAsync(string collectionName)
+        public virtual async Task<PutCompactCollectionDataResponse> PutCompactCollectionDataAsync(string collectionName,
+            CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(collectionName))
             {
                 throw new ArgumentException($"{nameof(collectionName)} is required", nameof(collectionName));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/compact";
-            using (var response = await _transport.PutAsync(uriString, new byte[] { }).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uriString, new byte[] { },null,token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
