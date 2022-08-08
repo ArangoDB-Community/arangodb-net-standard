@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.IndexApi.Models;
+using System.Threading;
 
 namespace ArangoDBNetStandard.IndexApi
 {
@@ -50,11 +51,13 @@ namespace ArangoDBNetStandard.IndexApi
         /// Fetches data about the specified index.
         /// </summary>
         /// <param name="indexId">The identifier of the index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetIndexResponse> GetIndexAsync(string indexId)
+        public virtual async Task<GetIndexResponse> GetIndexAsync(string indexId,
+            CancellationToken token = default)
         {
             string uri = _indexApiPath + '/' + indexId;
-            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -69,11 +72,13 @@ namespace ArangoDBNetStandard.IndexApi
         /// Delete an index permanently.
         /// </summary>
         /// <param name="indexId">The identifier of the index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<DeleteIndexResponse> DeleteIndexAsync(string indexId)
+        public virtual async Task<DeleteIndexResponse> DeleteIndexAsync(string indexId,
+            CancellationToken token = default)
         {
             string uri = _indexApiPath + "/" + indexId;
-            using (var response = await _client.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -89,9 +94,11 @@ namespace ArangoDBNetStandard.IndexApi
         /// Fetch the list of indexes for a collection.
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentException">Required parameters not provided or invalid.</exception>
-        public virtual async Task<GetAllCollectionIndexesResponse> GetAllCollectionIndexesAsync(GetAllCollectionIndexesQuery query)
+        public virtual async Task<GetAllCollectionIndexesResponse> GetAllCollectionIndexesAsync(GetAllCollectionIndexesQuery query,
+            CancellationToken token = default)
         {
             string uri = _indexApiPath;
 
@@ -106,7 +113,7 @@ namespace ArangoDBNetStandard.IndexApi
             }
 
             uri += '?' + query.ToQueryString();
-            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -116,10 +123,11 @@ namespace ArangoDBNetStandard.IndexApi
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
-
+                
         /// <inheritdoc/>
-        /// <exception cref="System.ArgumentException">Required parameters not provided or invalid.</exception>
-        public virtual async Task<IndexResponseBase> PostIndexAsync(PostIndexQuery query, PostIndexBody body)
+        /// <exception cref="System.ArgumentException">Required parameters not provided or invalid.</exception> 
+        public virtual async Task<IndexResponseBase> PostIndexAsync(PostIndexQuery query, PostIndexBody body,
+            CancellationToken token = default)
         {
             string uri = _indexApiPath;
 
@@ -140,7 +148,7 @@ namespace ArangoDBNetStandard.IndexApi
 
             uri += '?' + query.ToQueryString();
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _client.PostAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(uri, content,token:token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {

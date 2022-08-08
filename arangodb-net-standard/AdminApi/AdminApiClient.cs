@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.AdminApi.Models;
+using System.Threading;
 
 namespace ArangoDBNetStandard.AdminApi
 {
@@ -50,20 +51,21 @@ namespace ArangoDBNetStandard.AdminApi
         /// GET /_admin/log/entries
         /// Works on ArangoDB 3.8 or later.
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <param name="query">Query string parameters</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#read-global-logs-from-the-server
         /// </remarks>
-        public virtual async Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query = null)
+        public virtual async Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query = null, CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/log/entries";
             if (query != null)
             {
                 uri += '?' + query.ToQueryString();
             }
-            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -78,16 +80,17 @@ namespace ArangoDBNetStandard.AdminApi
         /// Reloads the routing table.
         /// POST /_admin/routing/reload
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#reloads-the-routing-information
         /// </remarks>
-        public virtual async Task<bool> PostReloadRoutingInfoAsync()
+        public virtual async Task<bool> PostReloadRoutingInfoAsync(CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/routing/reload";
             var body = new byte[] { };
-            using (var response = await _client.PostAsync(uri, body).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(uri, body, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -102,15 +105,16 @@ namespace ArangoDBNetStandard.AdminApi
         /// The method will fail if the server is not running in cluster mode.
         /// GET /_admin/server/id
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-id-of-a-server-in-a-cluster
         /// </remarks>
-        public virtual async Task<GetServerIdResponse> GetServerIdAsync()
+        public virtual async Task<GetServerIdResponse> GetServerIdAsync(CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/server/id";
-            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -125,15 +129,16 @@ namespace ArangoDBNetStandard.AdminApi
         /// Retrieves the role of the server in a cluster.
         /// GET /_admin/server/role
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see
         /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-the-role-of-a-server-in-a-cluster
         /// </remarks>
-        public virtual async Task<GetServerRoleResponse> GetServerRoleAsync()
+        public virtual async Task<GetServerRoleResponse> GetServerRoleAsync(CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/server/role";
-            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -148,15 +153,16 @@ namespace ArangoDBNetStandard.AdminApi
         /// Retrieves the server database engine type.
         /// GET /_api/engine
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-database-engine-type
         /// </remarks>
-        public virtual async Task<GetServerEngineTypeResponse> GetServerEngineTypeAsync()
+        public virtual async Task<GetServerEngineTypeResponse> GetServerEngineTypeAsync(CancellationToken token = default)
         {
             string uri = "_api/engine";
-            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -172,19 +178,20 @@ namespace ArangoDBNetStandard.AdminApi
         /// GET /_api/version
         /// </summary>
         /// <param name="query">Query string parameters</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-version
         /// </remarks>
-        public virtual async Task<GetServerVersionResponse> GetServerVersionAsync(GetServerVersionQuery query = null)
+        public virtual async Task<GetServerVersionResponse> GetServerVersionAsync(GetServerVersionQuery query = null, CancellationToken token = default)
         {
             string uri = "_api/version";
             if (query != null)
             {
                 uri += '?' + query.ToQueryString();
             }
-            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri,null,token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -291,8 +292,11 @@ namespace ArangoDBNetStandardTest.UserApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
-                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
+            mockTransport.Setup(x => x.GetAsync(
+                It.IsAny<string>(), 
+                It.IsAny<WebHeaderCollection>(),
+                It.IsAny<CancellationToken>()))
+                .Returns((string uri, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -375,8 +379,11 @@ namespace ArangoDBNetStandardTest.UserApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
-                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
+            mockTransport.Setup(x => x.GetAsync(
+                It.IsAny<string>(),
+                It.IsAny<WebHeaderCollection>(),
+                It.IsAny<CancellationToken>()))
+                .Returns((string uri, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -512,8 +519,11 @@ namespace ArangoDBNetStandardTest.UserApi
 
             string requestUri = null;
 
-            mockTransport.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<WebHeaderCollection>()))
-                .Returns((string uri, WebHeaderCollection webHeaderCollection) =>
+            mockTransport.Setup(x => x.GetAsync(
+                It.IsAny<string>(),
+                It.IsAny<WebHeaderCollection>(),
+                It.IsAny<CancellationToken>()))
+                .Returns((string uri, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);

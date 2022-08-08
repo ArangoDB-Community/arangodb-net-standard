@@ -6,13 +6,17 @@ namespace ArangoDBNetStandard
     [Serializable]
     public class ApiErrorException : Exception
     {
+        /// <summary>
+        /// Can be null if ArangoDB returns empty content 
+        /// in the response.
+        /// </summary>
         public ApiErrorResponse ApiError { get; set; }
 
         public ApiErrorException()
         {
         }
 
-        public ApiErrorException(ApiErrorResponse error) : base(error.ErrorMessage)
+        public ApiErrorException(ApiErrorResponse error) : base(error == null ? string.Empty : error.ErrorMessage)
         {
             ApiError = error;
         }

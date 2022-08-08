@@ -73,5 +73,28 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
         public bool IsVolatile { get; set; }
+        
+        /// <summary>
+        /// Write concern for the collection (default: 1). It determines how many copies of 
+        /// each shard are required to be in sync on the different DB-Servers. If there are
+        /// less then these many copies in the cluster a shard will refuse to write. Writes 
+        /// to shards with enough up-to-date copies will succeed at the same time however.
+        /// The value of WriteConcern cannot be larger than replicationFactor. (cluster only)
+        /// </summary>
+        public int WriteConcern { get; set; }
+
+        /// <summary>
+        /// (The default is 1): in a cluster, this attribute determines how many copies of 
+        /// each shard are kept on different DB-Servers. The value 1 means that only one copy 
+        /// (no synchronous replication) is kept. A value of k means that k-1 replicas are kept.
+        /// It can also be the string "satellite" for a SatelliteCollection, where the replication
+        /// factor is matched to the number of DB-Servers (Enterprise Edition only).
+        /// Any two copies reside on different DB-Servers.Replication between them is synchronous,
+        /// that is, every write operation to the “leader” copy will be replicated to all “follower”
+        /// replicas, before the write operation is reported successful.
+        /// If a server fails, this is detected automatically and one of the servers holding 
+        /// copies take over, usually without an error being reported.
+        /// </summary>
+        public int ReplicationFactor { get; set; }
     }
 }
