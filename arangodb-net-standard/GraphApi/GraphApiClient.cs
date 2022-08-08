@@ -459,7 +459,7 @@ namespace ArangoDBNetStandard.GraphApi
             string edgeHandle,
             GetEdgeQuery query = null,
             GraphHeaderProperties headers = null, 
-            CancellationToken token = default
+            CancellationToken token = default)
         {
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + edgeHandle;

@@ -429,7 +429,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// there.
         /// PATCH/_api/document/{document-handle}
         /// </summary>
-        /// <typeparam name="T">Type of the patch object used to partially update a document.</typeparam>
+        /// <typeparam name="T">Type of the patch object used to partially update a document.
         /// <see cref="PatchDocumentQuery.ReturnNew"/> or <see cref="PatchDocumentQuery.ReturnOld"/>
         /// are used.</typeparam>
         /// <param name="documentId"></param>
