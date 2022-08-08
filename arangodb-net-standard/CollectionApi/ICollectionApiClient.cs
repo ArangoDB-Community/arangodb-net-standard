@@ -36,21 +36,25 @@ namespace ArangoDBNetStandard.CollectionApi
         /// Truncates a collection, i.e. removes all documents in the collection.
         /// PUT/_api/collection/{collection-name}/truncate
         /// </summary>
-        /// <param name="collectionName"></param>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName,
-            CancellationToken token = default);
+        Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName, 
+              CollectionHeaderProperties headers = null,
+              CancellationToken token = default);
 
         /// <summary>
         /// Gets count of documents in a collection.
         /// GET/_api/collection/{collection-name}/count
         /// </summary>
-        /// <param name="collectionName"></param>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName,
-            CancellationToken token = default);
+        Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName, 
+              CollectionHeaderProperties headers = null, 
+              CancellationToken token = default);
 
         /// <summary>
         /// Get all collections.
