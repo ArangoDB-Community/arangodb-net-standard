@@ -268,7 +268,7 @@ namespace ArangoDBNetStandard.GraphApi
             T vertex,
             PostVertexQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
                 "/vertex/" + WebUtility.UrlEncode(collectionName);
@@ -377,7 +377,7 @@ namespace ArangoDBNetStandard.GraphApi
             T edge,
             PostEdgeQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             var content = GetContent(edge, serializationOptions);
 
@@ -415,7 +415,7 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             string edgeKey,
             GetEdgeQuery query = null,
-           ApiHeaderProperties headers = null)
+           GraphHeaderProperties headers = null)
         {
             return GetEdgeAsync<T>(
                 graphName,
@@ -438,7 +438,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             string edgeHandle,
             GetEdgeQuery query = null,
-           ApiHeaderProperties headers = null)
+           GraphHeaderProperties headers = null)
         {
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + edgeHandle;
@@ -476,7 +476,7 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             string edgeKey,
             DeleteEdgeQuery query = null,
-           ApiHeaderProperties headers = null)
+           GraphHeaderProperties headers = null)
         {
             return DeleteEdgeAsync<T>(
                 graphName,
@@ -501,7 +501,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             string documentId,
             DeleteEdgeQuery query = null,
-           ApiHeaderProperties headers = null)
+           GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -538,7 +538,7 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             string vertexKey,
             GetVertexQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             return GetVertexAsync<T>(
                 graphName,
@@ -559,7 +559,7 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string documentId,
           GetVertexQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -596,7 +596,7 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             string vertexKey,
             DeleteVertexQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             return DeleteVertexAsync<T>(
                 graphName,
@@ -618,7 +618,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             string documentId,
             DeleteVertexQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -662,7 +662,7 @@ namespace ArangoDBNetStandard.GraphApi
             string vertexKey,
             T body,
             PatchVertexQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             return PatchVertexAsync<T, U>(
                 graphName,
@@ -691,7 +691,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T body,
             PatchVertexQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -733,7 +733,7 @@ namespace ArangoDBNetStandard.GraphApi
             string edgeKey,
             T edge,
             PutEdgeQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             return PutEdgeAsync<T>(
                 graphName,
@@ -759,7 +759,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T edge,
             PutEdgeQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -839,7 +839,7 @@ namespace ArangoDBNetStandard.GraphApi
             string edgeKey,
             T edge,
             PatchEdgeQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             return PatchEdgeAsync<T, U>(
                 graphName,
@@ -866,7 +866,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T edge,
             PatchEdgeQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -908,7 +908,7 @@ namespace ArangoDBNetStandard.GraphApi
             string key,
             T vertex,
             PutVertexQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             return PutVertexAsync<T>(
                 graphName,
@@ -933,7 +933,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T vertex,
             PutVertexQuery query = null,
-          ApiHeaderProperties headers = null)
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 

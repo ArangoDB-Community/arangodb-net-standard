@@ -117,7 +117,7 @@ namespace ArangoDBNetStandard.GraphApi
           T vertex,
           PostVertexQuery query = null,
           ApiClientSerializationOptions serializationOptions = null,
-          ApiHeaderProperties headers=null);
+          GraphHeaderProperties headers=null);
 
         /// <summary>
         /// Remove one edge definition from the graph. This will only remove the
@@ -174,7 +174,7 @@ namespace ArangoDBNetStandard.GraphApi
           T edge,
           PostEdgeQuery query = null,
           ApiClientSerializationOptions serializationOptions = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Gets an edge from the given graph using the edge collection and _key attribute.
@@ -191,7 +191,7 @@ namespace ArangoDBNetStandard.GraphApi
            string collectionName,
            string edgeKey,
            GetEdgeQuery query = null,
-           ApiHeaderProperties headers = null);
+           GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Gets an edge from the given graph using the edge's document-handle.
@@ -207,7 +207,7 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string edgeHandle,
           GetEdgeQuery query = null,
-           ApiHeaderProperties headers = null);
+           GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Removes an edge from the collection.
@@ -226,7 +226,7 @@ namespace ArangoDBNetStandard.GraphApi
           string collectionName,
           string edgeKey,
           DeleteEdgeQuery query = null,
-           ApiHeaderProperties headers = null);
+           GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Removes an edge based on its document ID.
@@ -242,7 +242,7 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string documentId,
           DeleteEdgeQuery query = null,
-           ApiHeaderProperties headers = null);
+           GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Gets a vertex from the given collection.
@@ -259,7 +259,7 @@ namespace ArangoDBNetStandard.GraphApi
           string collectionName,
           string vertexKey,
           GetVertexQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Gets a vertex based on its document ID.
@@ -273,7 +273,7 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string documentId,
           GetVertexQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Removes a vertex from the collection.
@@ -290,7 +290,7 @@ namespace ArangoDBNetStandard.GraphApi
           string collectionName,
           string vertexKey,
           DeleteVertexQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Removes a vertex based on its document ID.
@@ -304,7 +304,7 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string documentId,
           DeleteVertexQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Updates the data of the specific vertex in the collection.
@@ -327,7 +327,7 @@ namespace ArangoDBNetStandard.GraphApi
           string vertexKey,
           T body,
           PatchVertexQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Updates the data of the specific vertex based on its document ID.
@@ -347,7 +347,7 @@ namespace ArangoDBNetStandard.GraphApi
           string documentId,
           T body,
           PatchVertexQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Replaces the data of an edge in the collection.
@@ -367,7 +367,7 @@ namespace ArangoDBNetStandard.GraphApi
           string edgeKey,
           T edge,
           PutEdgeQuery query = null,
-          ApiHeaderProperties headers=null);
+          GraphHeaderProperties headers=null);
 
         /// <summary>
         /// Replaces the data of an edge based on its document ID.
@@ -384,7 +384,7 @@ namespace ArangoDBNetStandard.GraphApi
           string documentId,
           T edge,
           PutEdgeQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Change one specific edge definition.
@@ -422,7 +422,7 @@ namespace ArangoDBNetStandard.GraphApi
           string edgeKey,
           T edge,
           PatchEdgeQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Updates the data of the specific edge based on its document ID.
@@ -441,7 +441,7 @@ namespace ArangoDBNetStandard.GraphApi
           string documentId,
           T edge,
           PatchEdgeQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Replaces the data of a vertex in the collection.
@@ -461,7 +461,7 @@ namespace ArangoDBNetStandard.GraphApi
           string key,
           T vertex,
           PutVertexQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Replaces the data of a vertex based on its document ID.
@@ -478,6 +478,6 @@ namespace ArangoDBNetStandard.GraphApi
           string documentId,
           T vertex,
           PutVertexQuery query = null,
-          ApiHeaderProperties headers = null);
+          GraphHeaderProperties headers = null);
     }
 }

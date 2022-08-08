@@ -23,7 +23,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <param name="collectionName">Name of the collection</param>
         /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <returns></returns>
-        Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName, ApiHeaderProperties headers = null);
+        Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName, CollectionHeaderProperties headers = null);
 
         /// <summary>
         /// Gets count of documents in a collection.
@@ -32,7 +32,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <param name="collectionName">Name of the collection</param>
         /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <returns></returns>
-        Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName, ApiHeaderProperties headers = null);
+        Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName, CollectionHeaderProperties headers = null);
 
         /// <summary>
         /// Get all collections.

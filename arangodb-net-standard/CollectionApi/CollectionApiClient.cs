@@ -88,7 +88,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <param name="collectionName">Name of the collection</param>
         /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <returns></returns>
-        public virtual async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName, ApiHeaderProperties headers = null)
+        public virtual async Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName, CollectionHeaderProperties headers = null)
         {
             using (var response = await _transport.PutAsync(
                 _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/truncate",
@@ -111,7 +111,7 @@ namespace ArangoDBNetStandard.CollectionApi
         /// <param name="collectionName">Name of the collection</param>
         /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <returns></returns>
-        public virtual async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName, ApiHeaderProperties headers = null)
+        public virtual async Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName, CollectionHeaderProperties headers = null)
         {
             using (var response = await _transport.GetAsync(
                 _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/count", 
