@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard.CursorApi.Models;
 using ArangoDBNetStandard.Serialization;
@@ -78,6 +79,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
         /// <param name="transactionId">Optional. The stream transaction Id.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
                 string query,
@@ -88,7 +90,8 @@ namespace ArangoDBNetStandard.CursorApi
                 bool? cache = null,
                 long? memoryLimit = null,
                 int? ttl = null,
-                string transactionId = null)
+                string transactionId = null,
+            CancellationToken token = default)
         {
             var headerProperties = new CursorHeaderProperties();
             if (!string.IsNullOrWhiteSpace(transactionId))
@@ -107,7 +110,9 @@ namespace ArangoDBNetStandard.CursorApi
                     Cache = cache,
                     MemoryLimit = memoryLimit,
                     Ttl = ttl
-                }, headerProperties).ConfigureAwait(false);
+                },
+                headerProperties,
+                token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -115,13 +120,18 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
-            PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null)
+            PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null,
+            CancellationToken token = default)
         {
             var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
             var headerCollection = GetHeaderCollection(headerProperties);
-            using (var response = await _client.PostAsync(_cursorApiPath, content, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(_cursorApiPath, 
+                content, 
+                headerCollection,
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -138,10 +148,15 @@ namespace ArangoDBNetStandard.CursorApi
         /// DELETE /_api/cursor/{cursor-identifier}
         /// </summary>
         /// <param name="cursorId">The id of the cursor to delete.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId)
+        public virtual async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId,
+            CancellationToken token = default)
         {
-            using (var response = await _client.DeleteAsync(_cursorApiPath + "/" + WebUtility.UrlEncode(cursorId)).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(
+                _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId),
+                null,
+                token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -158,12 +173,14 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <typeparam name="T">Result type to deserialize to</typeparam>
         /// <param name="cursorId">ID of the existing query cursor.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         [Obsolete("Use PostCursorAsync")]
-        public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId)
+        public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId,
+            CancellationToken token = default)
         {
             string uri = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
-            using (var response = await _client.PutAsync(uri, new byte[0]).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, new byte[0],null,token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
