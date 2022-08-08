@@ -2,20 +2,16 @@
 
 namespace ArangoDBNetStandard.DocumentApi.Models
 {
-    public class DocumentHeaderProperties
+    public class DocumentHeaderProperties:ApiHeaderProperties
     {
         public string IfMatch { get; set; }
 
         public string IfNoneMatch { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Id of a stream transaction.
-        /// </summary>
-        public string TransactionId { get; set; }
-
-        public WebHeaderCollection ToWebHeaderCollection()
+        public new WebHeaderCollection ToWebHeaderCollection()
         {
-            WebHeaderCollection collection = new WebHeaderCollection();
+            WebHeaderCollection collection = base.ToWebHeaderCollection();
+            
             if (IfMatch != null)
             {
                 collection.Add(HttpRequestHeader.IfMatch, $"\"{IfMatch}\"");
@@ -24,11 +20,6 @@ namespace ArangoDBNetStandard.DocumentApi.Models
             if (IfNoneMatch != null)
             {
                 collection.Add(HttpRequestHeader.IfNoneMatch, $"\"{IfNoneMatch}\"");
-            }
-
-            if (TransactionId != null)
-            {
-                collection.Add(CustomHttpHeaders.StreamTransactionHeader, TransactionId);
             }
 
             return collection;

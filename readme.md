@@ -179,8 +179,10 @@ All API methods that support passing objects of user-specified data types have a
 
 The options are passed as an instance of the `ApiClientSerializationOptions` class, which contains options for:
 
-- `boolean UseCamelCasePropertyNames`
-- `boolean IgnoreNullValues`
+- `UseCamelCasePropertyNames` (boolean, default is `false`)
+- `IgnoreNullValues` (boolean, default is `true`)
+- `UseStringEnumConversion` (boolean, default is `false`)
+- `IgnoreMissingMember` (boolean, default is `true`)
 
 In addition, the default options can be updated, which will affect all subsequent operations that use these options. To set default options, set them on the serializer implementation itself.  For example, if using the supplied `JsonNetApiClientSerialization`:
 
@@ -188,6 +190,8 @@ In addition, the default options can be updated, which will affect all subsequen
 var serializer = new JsonNetApiClientSerialization();
 serializer.DefaultOptions.IgnoreNullValues = false;
 ```
+
+Note: the default values were chosen in line with Json.NET default values as it is the default serializer.
 
 ### HTTP Request Headers
 
@@ -368,6 +372,8 @@ ArangoDB-net-standard allows for alternative serializer implementations to be us
 By default, all API clients will use the provided `JsonNetApiClientSerialization` which uses the Json.NET library. To use an alternative serialization implementation, pass an instance of `IApiClientSerialization` when instantiating any API client class or the `ArangoDBClient` class.
 
 In many cases we depend on the behaviour of Json.NET to automatically map JSON properties using `camelCase` to C# properties defined using `PascalCase` when deserializing. Any alternative serializer will need to mimic that behaviour in order to deserialize some ArangoDB JSON objects to their C# types.  For example, if using `System.Text.Json`, the option `PropertyNameCaseInsensitive = true` should be used.
+
+If any error occurs during (de)serialization of success/error responses, an exception of type `ArangoDBNetStandard.Serialization.SerializationException` will be thrown. Detailed reasons for the error will be available through the `InnerException` property of this object.
 
 ## Contributing
 

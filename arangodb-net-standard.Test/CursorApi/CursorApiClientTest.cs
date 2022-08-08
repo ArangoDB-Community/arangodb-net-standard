@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CursorApi;
@@ -188,7 +189,8 @@ namespace ArangoDBNetStandardTest.CursorApi
             mockTransport.Setup(x => x.PostAsync(
                     It.IsAny<string>(),
                     It.IsAny<byte[]>(),
-                    It.IsAny<WebHeaderCollection>()))
+                    It.IsAny<WebHeaderCollection>(),
+                    It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(mockResponse.Object));
 
             var cursorApi = new CursorApiClient(mockTransport.Object);
@@ -239,8 +241,9 @@ namespace ArangoDBNetStandardTest.CursorApi
             mockTransport.Setup(x => x.PostAsync(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
-                It.IsAny<WebHeaderCollection>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                It.IsAny<WebHeaderCollection>(),
+                It.IsAny<CancellationToken>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestHeader = webHeaderCollection;
                     return Task.FromResult(mockResponse.Object);
@@ -316,7 +319,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task PutCursorAsync_ShouldReturnResponseModelWithInterface()
         {
-            CursorResponse<int> postResponse =
+            PostCursorResponse<int> postResponse =
                 await _cursorApi.PostCursorAsync<int>("FOR i IN 0..1500 RETURN i");
 
             ICursorResponse<int> putResult =

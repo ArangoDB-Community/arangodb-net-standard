@@ -11,8 +11,12 @@ namespace ArangoDBNetStandard.Serialization
         /// <summary>
         /// The default serialization options.
         /// </summary>
-        public virtual ApiClientSerializationOptions DefaultOptions => 
-            new ApiClientSerializationOptions(false, true, false);
+        public virtual ApiClientSerializationOptions DefaultOptions { get; } =
+            new ApiClientSerializationOptions(
+                useCamelCasePropertyNames: false,
+                ignoreNullValues: true,
+                useStringEnumConversion: false,
+                ignoreMissingMember: true);
 
         /// <summary>
         /// Deserializes the data structure contained by the specified stream
