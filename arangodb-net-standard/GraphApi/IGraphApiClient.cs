@@ -109,13 +109,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PostVertexResponse<T>> PostVertexAsync<T>(
           string graphName,
           string collectionName,
           T vertex,
           PostVertexQuery query = null,
-          ApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null,
+          GraphHeaderProperties headers=null);
 
         /// <summary>
         /// Remove one edge definition from the graph. This will only remove the
@@ -163,14 +165,16 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edge">The edge to create.</param>
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
-        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>        
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
           string graphName,
           string collectionName,
           T edge,
           PostEdgeQuery query = null,
-          ApiClientSerializationOptions serializationOptions = null);
+          ApiClientSerializationOptions serializationOptions = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Gets an edge from the given graph using the edge collection and _key attribute.
@@ -179,13 +183,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edgeKey">The _key attribute of the edge.</param>
-        /// <param name="query"></param>
+        /// <param name="query"></param>   
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<GetEdgeResponse<T>> GetEdgeAsync<T>(
            string graphName,
            string collectionName,
            string edgeKey,
-           GetEdgeQuery query = null);
+           GetEdgeQuery query = null,
+           GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Gets an edge from the given graph using the edge's document-handle.
@@ -195,11 +201,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="edgeHandle">The document-handle of the edge document.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<GetEdgeResponse<T>> GetEdgeAsync<T>(
           string graphName,
           string edgeHandle,
-          GetEdgeQuery query = null);
+          GetEdgeQuery query = null,
+           GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Removes an edge from the collection.
@@ -211,12 +219,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edgeKey">The _key attribute of the edge.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
           string graphName,
           string collectionName,
           string edgeKey,
-          DeleteEdgeQuery query = null);
+          DeleteEdgeQuery query = null,
+           GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Removes an edge based on its document ID.
@@ -226,11 +236,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="documentId">The document ID of the edge to delete.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
           string graphName,
           string documentId,
-          DeleteEdgeQuery query = null);
+          DeleteEdgeQuery query = null,
+           GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Gets a vertex from the given collection.
@@ -240,12 +252,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertexKey"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<GetVertexResponse<T>> GetVertexAsync<T>(
           string graphName,
           string collectionName,
           string vertexKey,
-          GetVertexQuery query = null);
+          GetVertexQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Gets a vertex based on its document ID.
@@ -253,11 +267,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph to get the vertex from.</param>
         /// <param name="documentId">The document ID of the vertex to retrieve.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<GetVertexResponse<T>> GetVertexAsync<T>(
           string graphName,
           string documentId,
-          GetVertexQuery query = null);
+          GetVertexQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Removes a vertex from the collection.
@@ -267,12 +283,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertexKey"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
           string graphName,
           string collectionName,
           string vertexKey,
-          DeleteVertexQuery query = null);
+          DeleteVertexQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Removes a vertex based on its document ID.
@@ -280,11 +298,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph to delete the vertex from.</param>
         /// <param name="documentId">The document ID of the vertex to delete.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
           string graphName,
           string documentId,
-          DeleteVertexQuery query = null);
+          DeleteVertexQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Updates the data of the specific vertex in the collection.
@@ -299,13 +319,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
           string graphName,
           string collectionName,
           string vertexKey,
           T body,
-          PatchVertexQuery query = null);
+          PatchVertexQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Updates the data of the specific vertex based on its document ID.
@@ -318,12 +340,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to update.</param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
           string graphName,
           string documentId,
           T body,
-          PatchVertexQuery query = null);
+          PatchVertexQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Replaces the data of an edge in the collection.
@@ -335,13 +359,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey"></param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
           string graphName,
           string collectionName,
           string edgeKey,
           T edge,
-          PutEdgeQuery query = null);
+          PutEdgeQuery query = null,
+          GraphHeaderProperties headers=null);
 
         /// <summary>
         /// Replaces the data of an edge based on its document ID.
@@ -351,12 +377,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to replace.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
           string graphName,
           string documentId,
           T edge,
-          PutEdgeQuery query = null);
+          PutEdgeQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Change one specific edge definition.
@@ -386,13 +414,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey">The document key of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
           string graphName,
           string collectionName,
           string edgeKey,
           T edge,
-          PatchEdgeQuery query = null);
+          PatchEdgeQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Updates the data of the specific edge based on its document ID.
@@ -404,12 +434,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
           string graphName,
           string documentId,
           T edge,
-          PatchEdgeQuery query = null);
+          PatchEdgeQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Replaces the data of a vertex in the collection.
@@ -421,13 +453,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="key"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PutVertexResponse<T>> PutVertexAsync<T>(
           string graphName,
           string collectionName,
           string key,
           T vertex,
-          PutVertexQuery query = null);
+          PutVertexQuery query = null,
+          GraphHeaderProperties headers = null);
 
         /// <summary>
         /// Replaces the data of a vertex based on its document ID.
@@ -437,11 +471,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to replace.</param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         Task<PutVertexResponse<T>> PutVertexAsync<T>(
           string graphName,
           string documentId,
           T vertex,
-          PutVertexQuery query = null);
+          PutVertexQuery query = null,
+          GraphHeaderProperties headers = null);
     }
 }

@@ -20,17 +20,19 @@ namespace ArangoDBNetStandard.CollectionApi
         /// Truncates a collection, i.e. removes all documents in the collection.
         /// PUT/_api/collection/{collection-name}/truncate
         /// </summary>
-        /// <param name="collectionName"></param>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <returns></returns>
-        Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName);
+        Task<TruncateCollectionResponse> TruncateCollectionAsync(string collectionName, CollectionHeaderProperties headers = null);
 
         /// <summary>
         /// Gets count of documents in a collection.
         /// GET/_api/collection/{collection-name}/count
         /// </summary>
-        /// <param name="collectionName"></param>
+        /// <param name="collectionName">Name of the collection</param>
+        /// <param name="headers">Headers (such as transaction id) to use for this operation.</param>
         /// <returns></returns>
-        Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName);
+        Task<GetCollectionCountResponse> GetCollectionCountAsync(string collectionName, CollectionHeaderProperties headers = null);
 
         /// <summary>
         /// Get all collections.

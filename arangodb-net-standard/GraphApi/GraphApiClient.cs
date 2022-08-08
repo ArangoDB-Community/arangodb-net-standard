@@ -260,13 +260,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="query"></param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<PostVertexResponse<T>> PostVertexAsync<T>(
             string graphName,
             string collectionName,
             T vertex,
             PostVertexQuery query = null,
-            ApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null,
+          GraphHeaderProperties headers = null)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
                 "/vertex/" + WebUtility.UrlEncode(collectionName);
@@ -275,7 +277,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
             var content = GetContent(vertex, serializationOptions);
-            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content,headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -367,13 +369,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="query">Optional query parameters of the request.</param>
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<PostEdgeResponse<T>> PostEdgeAsync<T>(
             string graphName,
             string collectionName,
             T edge,
             PostEdgeQuery query = null,
-            ApiClientSerializationOptions serializationOptions = null)
+            ApiClientSerializationOptions serializationOptions = null,
+          GraphHeaderProperties headers = null)
         {
             var content = GetContent(edge, serializationOptions);
 
@@ -385,7 +389,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content, headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -404,17 +408,20 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edgeKey">The _key attribute of the edge.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual Task<GetEdgeResponse<T>> GetEdgeAsync<T>(
             string graphName,
             string collectionName,
             string edgeKey,
-            GetEdgeQuery query = null)
+            GetEdgeQuery query = null,
+           GraphHeaderProperties headers = null)
         {
             return GetEdgeAsync<T>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + '/' + WebUtility.UrlEncode(edgeKey),
-                query);
+                query,
+                headers);
         }
 
         /// <summary>
@@ -425,11 +432,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="edgeHandle">The document-handle of the edge document.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<GetEdgeResponse<T>> GetEdgeAsync<T>(
             string graphName,
             string edgeHandle,
-            GetEdgeQuery query = null)
+            GetEdgeQuery query = null,
+           GraphHeaderProperties headers = null)
         {
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + edgeHandle;
@@ -439,7 +448,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri,headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -460,17 +469,20 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edgeKey">The _key attribute of the edge.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
             string graphName,
             string collectionName,
             string edgeKey,
-            DeleteEdgeQuery query = null)
+            DeleteEdgeQuery query = null,
+           GraphHeaderProperties headers = null)
         {
             return DeleteEdgeAsync<T>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
-                query);
+                query,
+                headers);
 
         }
 
@@ -483,11 +495,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="documentId">The document ID of the edge to delete.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<DeleteEdgeResponse<T>> DeleteEdgeAsync<T>(
             string graphName,
             string documentId,
-            DeleteEdgeQuery query = null)
+            DeleteEdgeQuery query = null,
+           GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -498,7 +512,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri,headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -517,12 +531,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertexKey"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual Task<GetVertexResponse<T>> GetVertexAsync<T>(
             string graphName,
             string collectionName,
             string vertexKey,
-            GetVertexQuery query = null)
+            GetVertexQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             return GetVertexAsync<T>(
                 graphName,
@@ -537,11 +553,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph to get the vertex from.</param>
         /// <param name="documentId">The document ID of the vertex to retrieve.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<GetVertexResponse<T>> GetVertexAsync<T>(
           string graphName,
           string documentId,
-          GetVertexQuery query = null)
+          GetVertexQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -552,7 +570,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri,headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -571,17 +589,20 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="vertexKey"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
             string graphName,
             string collectionName,
             string vertexKey,
-            DeleteVertexQuery query = null)
+            DeleteVertexQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             return DeleteVertexAsync<T>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey),
-                query);
+                query,
+                headers);
         }
 
         /// <summary>
@@ -591,11 +612,13 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName">The name of the graph to delete the vertex from.</param>
         /// <param name="documentId">The document ID of the vertex to delete.</param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<DeleteVertexResponse<T>> DeleteVertexAsync<T>(
             string graphName,
             string documentId,
-            DeleteVertexQuery query = null)
+            DeleteVertexQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -607,7 +630,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri,headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -631,19 +654,22 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
             string graphName,
             string collectionName,
             string vertexKey,
             T body,
-            PatchVertexQuery query = null)
+            PatchVertexQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             return PatchVertexAsync<T, U>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey),
                 body,
-                query);
+                query,
+                headers);
         }
 
         /// <summary>
@@ -658,12 +684,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to update.</param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<PatchVertexResponse<U>> PatchVertexAsync<T, U>(
             string graphName,
             string documentId,
             T body,
-            PatchVertexQuery query = null)
+            PatchVertexQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -676,7 +704,7 @@ namespace ArangoDBNetStandard.GraphApi
             }
 
             var content = GetContent(body, new ApiClientSerializationOptions(false, false));
-            using (var response = await _transport.PatchAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PatchAsync(uri, content,headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -697,19 +725,22 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey"></param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
             string graphName,
             string collectionName,
             string edgeKey,
             T edge,
-            PutEdgeQuery query = null)
+            PutEdgeQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             return PutEdgeAsync<T>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
                 edge,
-                query);
+                query,
+                headers);
         }
 
         /// <summary>
@@ -721,12 +752,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to replace.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<PutEdgeResponse<T>> PutEdgeAsync<T>(
             string graphName,
             string documentId,
             T edge,
-            PutEdgeQuery query = null)
+            PutEdgeQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -739,7 +772,7 @@ namespace ArangoDBNetStandard.GraphApi
             }
 
             var content = GetContent(edge, new ApiClientSerializationOptions(false, false));
-            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uri, content, headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -798,19 +831,22 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey">The document key of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
             string graphName,
             string collectionName,
             string edgeKey,
             T edge,
-            PatchEdgeQuery query = null)
+            PatchEdgeQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             return PatchEdgeAsync<T, U>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
                 edge,
-                query);
+                query,
+                headers);
         }
 
         /// <summary>
@@ -823,12 +859,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<PatchEdgeResponse<U>> PatchEdgeAsync<T, U>(
             string graphName,
             string documentId,
             T edge,
-            PatchEdgeQuery query = null)
+            PatchEdgeQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -841,7 +879,7 @@ namespace ArangoDBNetStandard.GraphApi
             }
 
             var content = GetContent(edge, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PatchAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PatchAsync(uri, content, headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -862,19 +900,22 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="key"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual Task<PutVertexResponse<T>> PutVertexAsync<T>(
             string graphName,
             string collectionName,
             string key,
             T vertex,
-            PutVertexQuery query = null)
+            PutVertexQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             return PutVertexAsync<T>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(key),
                 vertex,
-                query);
+                query,
+                headers);
         }
 
         /// <summary>
@@ -885,12 +926,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to replace.</param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers to use for this operation.</param>
         /// <returns></returns>
         public virtual async Task<PutVertexResponse<T>> PutVertexAsync<T>(
             string graphName,
             string documentId,
             T vertex,
-            PutVertexQuery query = null)
+            PutVertexQuery query = null,
+          GraphHeaderProperties headers = null)
         {
             ValidateDocumentId(documentId);
 
@@ -903,7 +946,7 @@ namespace ArangoDBNetStandard.GraphApi
             }
 
             var content = GetContent(vertex, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uri, content, headers?.ToWebHeaderCollection()).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
