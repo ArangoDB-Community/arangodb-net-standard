@@ -28,22 +28,33 @@
         public bool UseStringEnumConversion { get; set; }
 
         /// <summary>
+        /// True to camel case the names of properties of object values 
+        /// in dictionaries (i.e. CamelCaseMe => "camelCaseMe").
+        /// False to leave the names of properties of object values 
+        /// in dictionaries as they are (i.e. DontCamelCaseMe => "DontCamelCaseMe")        
+        /// </summary>
+        public bool CamelCasePropertyNamesOfObjectValuesInDictionaries { get; set; }
+
+        /// <summary>
         /// Create serialization options.
         /// </summary>
         /// <param name="useCamelCasePropertyNames">Whether property names should be serialized using camelCase.</param>
         /// <param name="ignoreNullValues">Whether null values should be ignored - i.e. not defined at all in the serialized string.</param>
         /// <param name="useStringEnumConversion">Whether to serialize enum values to a string value instead of an integer.</param>
         /// <param name="ignoreMissingMember">Whether missing members should be ignored.</param>
+        /// <param name="camelCasePropertyNamesOfObjectValuesInDictionaries">Whether to camel case the names of properties of object values in dictionaries.</param>
         public ApiClientSerializationOptions(
             bool useCamelCasePropertyNames,
             bool ignoreNullValues,
             bool useStringEnumConversion = false,
-            bool ignoreMissingMember = true)
+            bool ignoreMissingMember = true,
+            bool camelCasePropertyNamesOfObjectValuesInDictionaries = false)
         {
             UseCamelCasePropertyNames = useCamelCasePropertyNames;
             IgnoreNullValues = ignoreNullValues;
             UseStringEnumConversion = useStringEnumConversion;
             IgnoreMissingMember = ignoreMissingMember;
+            CamelCasePropertyNamesOfObjectValuesInDictionaries = camelCasePropertyNamesOfObjectValuesInDictionaries;
         }
     }
 }

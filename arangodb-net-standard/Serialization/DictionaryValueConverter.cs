@@ -29,23 +29,33 @@ namespace ArangoDBNetStandard.Serialization
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            // Use a local serializer for writing instead of the passed-in serializer         
-            JsonSerializer mySerializer = new JsonSerializer
+            // Use a local serializer for writing instead of the passed-in serializer
+            JsonSerializer mySerializer;
+            if (_serializationOptions != null && _serializationOptions.CamelCasePropertyNamesOfObjectValuesInDictionaries)
             {
-                MissingMemberHandling = _serializationOptions.IgnoreMissingMember ? MissingMemberHandling.Ignore : MissingMemberHandling.Error,
-                NullValueHandling = _serializationOptions.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
-            };
-            if (_serializationOptions.UseStringEnumConversion)
-            {
-                var stringEnumConverter = new StringEnumConverter();
-                mySerializer.Converters.Add(stringEnumConverter);
+                mySerializer = new JsonSerializer
+                {
+                    MissingMemberHandling = _serializationOptions.IgnoreMissingMember ? MissingMemberHandling.Ignore : MissingMemberHandling.Error,
+                    NullValueHandling = _serializationOptions.IgnoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include
+                };
+                if (_serializationOptions.UseStringEnumConversion)
+                {
+                    var stringEnumConverter = new StringEnumConverter();
+                    mySerializer.Converters.Add(stringEnumConverter);
+                }
+                if (_serializationOptions.UseCamelCasePropertyNames)
+                {
+                    mySerializer.ContractResolver = new CamelCasePropertyNamesExceptDictionaryContractResolver(_serializationOptions);
+                }
             }
-            if (_serializationOptions.UseCamelCasePropertyNames)
+            else
             {
-                mySerializer.ContractResolver = new CamelCasePropertyNamesExceptDictionaryContractResolver(_serializationOptions);
+                mySerializer = new JsonSerializer
+                {
+                    NullValueHandling = NullValueHandling.Include
+                };
             }
             mySerializer.Serialize(writer, value);
         }
     }
-
 }
