@@ -159,7 +159,35 @@ namespace ArangoDBNetStandardTest.Serialization
             };
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(true, true));
+            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
+                useCamelCasePropertyNames: true,
+                ignoreNullValues: true,
+                camelCasePropertyNamesOfObjectValuesInDictionaries: false));
+
+            string jsonString = Encoding.UTF8.GetString(jsonBytes);
+
+            Assert.Contains("DontCamelCaseMe", jsonString);
+            Assert.Contains("DontCamelCaseKey", jsonString);
+            Assert.DoesNotContain("dontCamelCaseMe", jsonString);
+            Assert.DoesNotContain("dontCamelCaseKey", jsonString);
+        }
+
+        [Fact]
+        public void Serialize_ShouldCamelCaseBindVars_WhenSerializingPostCursorBody()
+        {
+            var body = new PostCursorBody
+            {
+                BindVars = new Dictionary<string, object>
+                {
+                    ["DontCamelCaseKey"] = new { DontCamelCaseMe = true }
+                }
+            };
+            var serialization = new JsonNetApiClientSerialization();
+
+            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
+                useCamelCasePropertyNames: true, 
+                ignoreNullValues: true, 
+                camelCasePropertyNamesOfObjectValuesInDictionaries: true));
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
