@@ -5,6 +5,7 @@ workflows:
   build_and_test:
     jobs:
       - build
+          context: SonarCloud
       - "test-arangodb-3_4":
           requires:
             - build
@@ -43,6 +44,7 @@ jobs:
           root: ~/
           paths:
             - arangodb-net-standard
+      - sonarcloud/scan
 
   "test-arangodb-3_4":
     working_directory: ~/arangodb-net-standard
@@ -156,3 +158,6 @@ jobs:
       - run:
           name: Test
           command: dotnet test -c Release --filter RunningMode!=Cluster
+
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.0.3
