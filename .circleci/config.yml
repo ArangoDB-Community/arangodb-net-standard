@@ -5,7 +5,7 @@ workflows:
   build_and_test:
     jobs:
       - build
-          context: SonarCloud
+      context: SonarCloud
       - "test-arangodb-3_4":
           requires:
             - build
