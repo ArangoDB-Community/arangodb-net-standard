@@ -163,4 +163,4 @@ jobs:
           command: dotnet test -c Release --filter RunningMode!=Cluster
 
 orbs:
-  sonarcloud: sonarsource/sonarcloud@1.0.3
+  sonarcloud: sonarsource/sonarcloud@1.1.1
