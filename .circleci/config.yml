@@ -2,10 +2,13 @@ version: 2.1
 
 workflows:
   version: 2
+  main:
+    jobs:
+      - build:
+          context: SonarCloud
   build_and_test:
     jobs:
       - build
-      context: SonarCloud
       - "test-arangodb-3_4":
           requires:
             - build
