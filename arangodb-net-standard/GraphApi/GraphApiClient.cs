@@ -3,6 +3,7 @@ using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System;
 using System.Collections;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,8 +31,9 @@ namespace ArangoDBNetStandard.GraphApi
         /// using the provided transport layer and the default JSON serialization.
         /// </summary>
         /// <param name="transport"></param>
-        public GraphApiClient(IApiClientTransport transport)
-            : base(new JsonNetApiClientSerialization())
+        /// <param name="arangoDBClient">The ArangoDBClient instance relating to this API client.</param>
+        public GraphApiClient(IApiClientTransport transport, ArangoDBClient arangoDBClient)
+            : base(new JsonNetApiClientSerialization(), arangoDBClient)
         {
             _transport = transport;
         }
@@ -42,8 +44,9 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="transport"></param>
         /// <param name="serializer"></param>
-        public GraphApiClient(IApiClientTransport transport, IApiClientSerialization serializer)
-            : base(serializer)
+        /// <param name="arangoDBClient">The ArangoDBClient instance relating to this API client.</param>
+        public GraphApiClient(IApiClientTransport transport, IApiClientSerialization serializer, ArangoDBClient arangoDBClient)
+            : base(serializer, arangoDBClient)
         {
             _transport = transport;
         }
@@ -93,7 +96,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// in ArangoDB 4.5.2 and below, in which case you can use <see cref="GraphResult._key"/> instead.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<GetGraphsResponse> GetGraphsAsync( CancellationToken token = default)
+        public virtual async Task<GetGraphsResponse> GetGraphsAsync(CancellationToken token = default)
         {
             using (var response = await _transport.GetAsync(_graphApiPath, token: token).ConfigureAwait(false))
             {
@@ -186,7 +189,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <returns></returns>
         public virtual async Task<GetEdgeCollectionsResponse> GetEdgeCollectionsAsync(string graphName, CancellationToken token = default)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge",  token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge", token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -278,7 +281,7 @@ namespace ArangoDBNetStandard.GraphApi
             T vertex,
             PostVertexQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) +
@@ -288,7 +291,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
             var content = GetContent(vertex, serializationOptions);
-            using (var response = await _transport.PostAsync(uri, content,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -391,7 +394,7 @@ namespace ArangoDBNetStandard.GraphApi
             T edge,
             PostEdgeQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             var content = GetContent(edge, serializationOptions);
@@ -432,7 +435,7 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             string edgeKey,
             GetEdgeQuery query = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             return GetEdgeAsync<T>(
@@ -458,7 +461,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             string edgeHandle,
             GetEdgeQuery query = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
@@ -468,7 +471,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.GetAsync(uri,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -497,14 +500,14 @@ namespace ArangoDBNetStandard.GraphApi
             string collectionName,
             string edgeKey,
             DeleteEdgeQuery query = null,
-           GraphHeaderProperties headers = null, 
+           GraphHeaderProperties headers = null,
            CancellationToken token = default)
         {
             return DeleteEdgeAsync<T>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
                 query,
-                headers, 
+                headers,
                 token: token);
         }
 
@@ -524,7 +527,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             string documentId,
             DeleteEdgeQuery query = null,
-           GraphHeaderProperties headers = null, 
+           GraphHeaderProperties headers = null,
            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
@@ -536,7 +539,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.DeleteAsync(uri,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -586,7 +589,7 @@ namespace ArangoDBNetStandard.GraphApi
           string graphName,
           string documentId,
           GetVertexQuery query = null,
-          GraphHeaderProperties headers = null, 
+          GraphHeaderProperties headers = null,
           CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
@@ -599,7 +602,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -651,7 +654,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             string documentId,
             DeleteVertexQuery query = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
@@ -664,7 +667,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -697,7 +700,7 @@ namespace ArangoDBNetStandard.GraphApi
             string vertexKey,
             T body,
             PatchVertexQuery query = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             return PatchVertexAsync<T, U>(
@@ -705,7 +708,7 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey),
                 body,
                 query,
-                headers, 
+                headers,
                 token: token);
         }
 
@@ -729,7 +732,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T body,
             PatchVertexQuery query = null,
-          GraphHeaderProperties headers = null, 
+          GraphHeaderProperties headers = null,
           CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
@@ -743,7 +746,7 @@ namespace ArangoDBNetStandard.GraphApi
             }
 
             var content = GetContent(body, new ApiClientSerializationOptions(false, false));
-            using (var response = await _transport.PatchAsync(uri, content,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
+            using (var response = await _transport.PatchAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -773,7 +776,7 @@ namespace ArangoDBNetStandard.GraphApi
             string edgeKey,
             T edge,
             PutEdgeQuery query = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             return PutEdgeAsync<T>(
@@ -781,7 +784,7 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
                 edge,
                 query,
-                headers, 
+                headers,
                 token: token);
         }
 
@@ -802,7 +805,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T edge,
             PutEdgeQuery query = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
@@ -886,7 +889,7 @@ namespace ArangoDBNetStandard.GraphApi
             string edgeKey,
             T edge,
             PatchEdgeQuery query = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             return PatchEdgeAsync<T, U>(
@@ -894,7 +897,7 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
                 edge,
                 query,
-                headers, 
+                headers,
                 token: token);
         }
 
@@ -916,7 +919,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T edge,
             PatchEdgeQuery query = null,
-            GraphHeaderProperties headers = null, 
+            GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
@@ -968,7 +971,7 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(key),
                 vertex,
                 query,
-                headers, 
+                headers,
                 token: token);
         }
 
@@ -1001,7 +1004,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
             var content = GetContent(vertex, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content, headers?.ToWebHeaderCollection(),token:token).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
 
             {
                 if (response.IsSuccessStatusCode)
@@ -1013,5 +1016,127 @@ namespace ArangoDBNetStandard.GraphApi
             }
         }
 
+        /// <summary>
+        /// Executes a graph traversal query.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="body">Parameters to use to generate the traversal query.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        public virtual async Task<T[]> TraverseGraphAsync<T>(
+            TraverseGraphBody body,
+            CancellationToken token = default)
+        {
+            if (body == null)
+            {
+                throw new ArgumentNullException(nameof(body));
+            }
+
+            if (body.CurrentVertex == null)
+            {
+                throw new Exception($"{nameof(body.CurrentVertex)} cannot be null.");
+            }
+
+            //initialize serialization options
+            var so = new ApiClientSerializationOptions(true, true);
+
+            //build the query string
+            var qs = string.Empty;
+
+            if (body.VertexCollections != null && body.VertexCollections.Count() > 0)
+            {
+                qs += $"WITH {string.Join(",", body.VertexCollections)} {Environment.NewLine}";
+            }
+
+            qs += $"FOR {GetContentString(body.CurrentVertex, so)} ";
+
+            if (body.CurrentEdge != null)
+            {
+                qs += $", {GetContentString(body.CurrentEdge, so)} ";
+            }
+
+            if (body.CurrentPath != null)
+            {
+                qs += $", {GetContentString(body.CurrentPath, so)} ";
+            }
+
+            qs += Environment.NewLine;
+
+            if (body.MinDepth != null)
+            {
+                qs += $"IN {body.MinDepth}";
+                if (body.MaxDepth != null)
+                {
+                    qs += $"..{body.MaxDepth}";
+                }
+                qs += Environment.NewLine;
+            }
+
+            qs += $"{(string.IsNullOrWhiteSpace(body.Direction) ? TraversalDirection.Any : body.Direction)} {body.StartVertex ?? string.Empty} {Environment.NewLine}";
+
+            if (string.IsNullOrWhiteSpace(body.GraphName))
+            {
+                //we're working with a set of edge collections, make sure we have them
+                if (body.EdgeCollections == null || body.EdgeCollections.Count() < 1)
+                {
+                    throw new Exception($"{nameof(body.EdgeCollections)} is required if {nameof(body.GraphName)} is not specified");
+                }
+                else
+                {
+                    qs += $"{string.Join(",", body.EdgeCollections)}{Environment.NewLine}";
+                }
+            }
+            else
+            {
+                //we're working with a named graph
+                qs += $"'{body.GraphName}'{Environment.NewLine}";
+            }
+
+            if (!string.IsNullOrWhiteSpace(body.PruneCondition))
+            {
+                qs += $"PRUNE {body.PruneCondition}{Environment.NewLine}";
+            }
+
+            if (body.Options != null)
+            {
+                qs += $"OPTIONS {GetContentString(body.Options, so)}";
+            }
+
+            return await TraverseGraphAsync<T>(qs, token);
+        }
+
+        /// <summary>
+        /// Executes a graph traversal query.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queryString">The traversal query to execute.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        public virtual async Task<T[]> TraverseGraphAsync<T>(
+            string queryString,
+            CancellationToken token = default)
+        {
+            if (string.IsNullOrWhiteSpace(queryString))
+            {
+                throw new ArgumentNullException(nameof(queryString));
+            }
+
+            if (_arangoDBClient == null)
+            {
+                throw new Exception("arangoDBClient is not initialized.");
+            }
+
+            var cursorRes = await _arangoDBClient.Cursor.PostCursorAsync<T>(
+                                    postCursorBody: new CursorApi.Models.PostCursorBody()
+                                    {
+                                        Query = queryString
+                                    },
+                                    token: token);
+
+            if (cursorRes.Result == null)
+                return null;
+            else
+                return cursorRes.Result.ToArray();
+        }
     }
 }

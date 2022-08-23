@@ -1,5 +1,6 @@
 ﻿using ArangoDBNetStandard.GraphApi.Models;
 using ArangoDBNetStandard.Serialization;
+using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -508,5 +509,27 @@ namespace ArangoDBNetStandard.GraphApi
           T vertex,
           PutVertexQuery query = null,
           GraphHeaderProperties headers = null, CancellationToken token = default);
+
+        /// <summary>
+        /// Executes a graph traversal query.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="body">Parameters to use to generate the traversal query.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<T[]> TraverseGraphAsync<T>(
+            TraverseGraphBody body, 
+            CancellationToken token = default);
+
+        /// <summary>
+        /// Executes a graph traversal query.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queryString">The traversal query to execute.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<T[]> TraverseGraphAsync<T>(
+            string queryString,
+            CancellationToken token = default);
     }
 }

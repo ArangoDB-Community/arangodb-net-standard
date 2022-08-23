@@ -9,15 +9,18 @@ namespace ArangoDBNetStandard
     public abstract class ApiClientBase
     {
         private readonly IApiClientSerialization _serialization;
+        protected ArangoDBClient _arangoDBClient;
 
         /// <summary>
         /// Creates an instance of <see cref="ApiClientBase"/> using
         /// the provided serialization layer.
         /// </summary>
         /// <param name="serialization"></param>
-        public ApiClientBase(IApiClientSerialization serialization)
+        /// <param name="arangoDBClient">The ArangoDBClient instance relating to this API client.</param>
+        public ApiClientBase(IApiClientSerialization serialization, ArangoDBClient arangoDBClient = null)
         {
             _serialization = serialization;
+            _arangoDBClient = arangoDBClient;
         }
 
         /// <summary>
