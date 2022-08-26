@@ -43,7 +43,9 @@ namespace ArangoDBNetStandard.IndexApi
         /// <param name="body">The properties of the new index.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<IndexResponseBase> PostIndexAsync(PostIndexQuery query, PostIndexBody body,
+        Task<IndexResponseBase> PostIndexAsync(
+            PostIndexQuery query, 
+            PostIndexBody body,
             CancellationToken token = default);
     }
 }

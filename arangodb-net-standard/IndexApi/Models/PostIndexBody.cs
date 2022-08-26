@@ -100,5 +100,14 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// It is thus recommended to set this value explicitly when creating the index.
         /// </summary>
         public int? MinLength { get; set; }
+
+        /// <summary>
+        /// Introduced in v3.10
+        /// Can be set to true to enable an in-memory cache for 
+        /// index values for persistent indexes. Otherwise the
+        /// index is created without it. Caching is turned off
+        /// by default.
+        /// </summary>
+        public bool? CacheEnabled { get; set; }
     }
 }
