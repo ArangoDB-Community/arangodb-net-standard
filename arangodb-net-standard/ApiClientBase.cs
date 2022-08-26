@@ -29,8 +29,9 @@ namespace ArangoDBNetStandard
         {
             try
             {
-                if (response.Content.Headers.ContentType?.MediaType?.Contains("json",
-                        StringComparison.InvariantCultureIgnoreCase) ?? false)
+                string mediaType = response.Content.Headers.ContentType?.MediaType;
+                if (mediaType != null && mediaType.IndexOf("json",
+                        StringComparison.InvariantCultureIgnoreCase) >= 0)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     var error = _serialization.DeserializeFromStream<ApiErrorResponse>(stream);
