@@ -27,15 +27,20 @@ namespace ArangoDBNetStandard
         /// <returns></returns>
         protected async Task<ApiErrorException> GetApiErrorException(IApiClientResponse response)
         {
-            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
             try
             {
-                var error = _serialization.DeserializeFromStream<ApiErrorResponse>(stream);
-                return new ApiErrorException(error);
+                if (response.Content.Headers.ContentType?.MediaType?.Contains("json",
+                        StringComparison.InvariantCultureIgnoreCase) ?? false)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    var error = _serialization.DeserializeFromStream<ApiErrorResponse>(stream);
+                    return new ApiErrorException(error);
+                }
+                return new ApiErrorException($"HTTP Status Code: {response.StatusCode}");
             }
             catch (Exception e)
             {
-                throw new SerializationException($"An error occured while Deserializing an error response from Arango. See InnerException for more details.", e);
+                return new ApiErrorException($"HTTP Status Code: {response.StatusCode}", e);
             }
         }
 
