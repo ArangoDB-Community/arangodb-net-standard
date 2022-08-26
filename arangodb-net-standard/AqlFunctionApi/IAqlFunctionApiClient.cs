@@ -219,5 +219,18 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         Task<List<RunningAqlQuery>> GetCurrentlyRunningAqlQueriesAsync(
             GetCurrentlyRunningAqlQueriesQuery query = null,
             CancellationToken token = default);
+
+        /// <summary>
+        /// Gets the available optimizer rules for AQL queries
+        /// GET /_api/query/rules
+        /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <remarks>
+        /// Returns an array of objects that contain the name of each available 
+        /// rule and its respective flags.
+        /// </remarks>
+        /// <returns></returns>
+        Task<GetQueryRulesResponse> GetQueryRulesAsync(
+            CancellationToken token = default);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ArangoDBNetStandard.AqlFunctionApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -503,6 +504,31 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                     return DeserializeJsonFromStream<List<RunningAqlQuery>>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Gets the available optimizer rules for AQL queries
+        /// GET /_api/query/rules
+        /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <remarks>
+        /// Returns an array of objects that contain the name of each available 
+        /// rule and its respective flags.
+        /// </remarks>
+        /// <returns></returns>
+        public virtual async Task<GetQueryRulesResponse> GetQueryRulesAsync(CancellationToken token = default)
+        {
+            string uri = "_api/query/rules";
+
+            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetQueryRulesResponse>(stream);
                 }
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
