@@ -100,5 +100,18 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// It is thus recommended to set this value explicitly when creating the index.
         /// </summary>
         public int? MinLength { get; set; }
+
+        /// <summary>
+        /// Introduced in v3.10.
+        /// An array of additional index attribute paths in a persistent index.
+        /// These additional attributes cannot be used for index lookups or
+        /// sorts, but they can be used for projections.
+        /// </summary>
+        /// <remarks>
+        /// There must be no overlap of attribute paths between 
+        /// <see cref="Fields"/> and <see cref="StoredValues"/>. 
+        /// The maximum number of values is 32.
+        /// </remarks>
+        public IEnumerable<string> StoredValues { get; set; }
     }
 }

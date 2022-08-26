@@ -39,5 +39,13 @@ namespace ArangoDBNetStandard.IndexApi.Models
         public int? BestIndexedLevel { get; set; }
 
         public int? WorstIndexedLevel { get; set; }
+
+        /// <summary>
+        /// Introduced in v3.10.
+        /// An array of additional index attribute paths in a persistent index.
+        /// These additional attributes cannot be used for index lookups or
+        /// sorts, but they can be used for projections.
+        /// </summary>
+        public IEnumerable<string> StoredValues { get; set; }
     }
 }
