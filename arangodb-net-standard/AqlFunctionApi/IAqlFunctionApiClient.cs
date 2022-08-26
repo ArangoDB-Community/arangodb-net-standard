@@ -230,7 +230,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// rule and its respective flags.
         /// </remarks>
         /// <returns></returns>
-        Task<GetQueryRulesResponse> GetQueryRulesAsync(
+        Task<List<GetQueryRulesResponseItem>> GetQueryRulesAsync(
             CancellationToken token = default);
     }
 }
