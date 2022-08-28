@@ -50,6 +50,17 @@ namespace ArangoDBNetStandard.CursorApi
             CancellationToken token = default);
 
         /// <summary>
+        /// Advances an existing query cursor and gets the next set of results.
+        /// Replaces <see cref="PutCursorAsync{T}(string, CancellationToken)"/>
+        /// </summary>
+        /// <param name="cursorIdentifier">The name / identifier of the existing cursor.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<PostCursorResponse<T>> PostCursorAsync<T>(
+            string cursorIdentifier,
+            CancellationToken token = default);
+
+        /// <summary>
         /// Deletes an existing cursor and frees the resources associated with it.
         /// DELETE /_api/cursor/{cursor-identifier}
         /// </summary>
