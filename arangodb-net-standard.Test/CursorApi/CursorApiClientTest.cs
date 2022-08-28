@@ -44,7 +44,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task PostCursorAsync_ShouldSucceed_WhenQueryResultsInWarnings()
         {
-            var response = await _cursorApi.PostCursorAsync<object>("RETURN 1 / 0");
+            var response = await _cursorApi.PostCursorAsync<object>("RETURN 1 / 0",null);
 
             Assert.Single(response.Result);
             Assert.Null(response.Result.First());
@@ -158,7 +158,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
-                await _cursorApi.PostCursorAsync<MyModel>("RETURN blah");
+                await _cursorApi.PostCursorAsync<MyModel>("RETURN blah", null);
             });
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
@@ -197,7 +197,7 @@ namespace ArangoDBNetStandardTest.CursorApi
 
             var ex = await Assert.ThrowsAsync<SerializationException>(async () =>
             {
-                await cursorApi.PostCursorAsync<object>("RETURN true");
+                await cursorApi.PostCursorAsync<object>("RETURN true", null);
             });
 
             Assert.NotNull(ex.Message);
@@ -210,7 +210,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         {
             var ex = await Assert.ThrowsAsync<SerializationException>(async () =>
             {
-                await _cursorApi.PostCursorAsync<int>("RETURN null");
+                await _cursorApi.PostCursorAsync<int>("RETURN null", null);
             });
 
             Assert.NotNull(ex.Message);
@@ -274,7 +274,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         public async Task PostCursorAsync_ShouldReturnResponseModelWithInterface()
         {
             ICursorResponse<MyModel> response =
-                await _cursorApi.PostCursorAsync<MyModel>("RETURN {}");
+                await _cursorApi.PostCursorAsync<MyModel>("RETURN {}", null);
 
             Assert.NotNull(response);
         }
@@ -282,7 +282,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task PutCursorAsync_ShouldSucceed()
         {
-            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
+            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i", null);
             Assert.True(response.HasMore);
 
             var nextResponse = await _cursorApi.PutCursorAsync<long>(response.Id);
@@ -295,7 +295,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task PutCursorAsync_ShouldThrow_WhenCursorIsExhausted()
         {
-            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
+            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i", null);
             Assert.True(response.HasMore);
 
             var nextResponse = await _cursorApi.PutCursorAsync<long>(response.Id);
@@ -320,7 +320,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         public async Task PutCursorAsync_ShouldReturnResponseModelWithInterface()
         {
             PostCursorResponse<int> postResponse =
-                await _cursorApi.PostCursorAsync<int>("FOR i IN 0..1500 RETURN i");
+                await _cursorApi.PostCursorAsync<int>("FOR i IN 0..1500 RETURN i", null);
 
             ICursorResponse<int> putResult =
                 await _cursorApi.PutCursorAsync<int>(postResponse.Id);
@@ -342,7 +342,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Fact]
         public async Task DeleteCursorAsync_ShouldSucceed()
         {
-            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
+            var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i", null);
             Assert.True(response.HasMore);
 
             var deleteResponse = await _cursorApi.DeleteCursorAsync(response.Id);
