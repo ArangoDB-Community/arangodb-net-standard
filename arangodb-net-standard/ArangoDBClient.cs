@@ -16,6 +16,7 @@ using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.Transport.Http;
 using ArangoDBNetStandard.UserApi;
 using ArangoDBNetStandard.ViewApi;
+using ArangoDBNetStandard.VersionApi;
 
 namespace ArangoDBNetStandard
 {
@@ -100,6 +101,11 @@ namespace ArangoDBNetStandard
         public AdminApiClient Admin { get; private set; }
 
         /// <summary>
+        /// Version API
+        /// </summary>
+        public VersionApiClient Version { get; private set; }
+
+        /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
         /// <see cref="HttpClient"/> instance, using the default JSON serialization.
         /// </summary>
@@ -166,6 +172,7 @@ namespace ArangoDBNetStandard
             View = new ViewApiClient(transport, serialization);
             Analyzer = new AnalyzerApiClient(transport, serialization);            
             Admin = new AdminApiClient(transport, serialization);
+            Version = new VersionApiClient(transport, serialization);
         }
     }
 }
