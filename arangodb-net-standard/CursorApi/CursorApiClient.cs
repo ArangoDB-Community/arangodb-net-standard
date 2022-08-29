@@ -175,7 +175,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cursorId">ID of the existing query cursor.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        [Obsolete("Use PostCursorAsync and specify the cursorIdentifier parameter.")]
+        [Obsolete("Use PostAdvanceCursorAsync.")]
         public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId,
             CancellationToken token = default)
         {
@@ -199,7 +199,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cursorIdentifier">The name / identifier of the existing cursor.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(string cursorIdentifier, CancellationToken token = default)
+        public virtual async Task<PostCursorResponse<T>> PostAdvanceCursorAsync<T>(string cursorIdentifier, CancellationToken token = default)
         {
             using (var response = await _client.PostAsync(
                 requestUri: _cursorApiPath + $"/{WebUtility.UrlEncode(cursorIdentifier)}",
