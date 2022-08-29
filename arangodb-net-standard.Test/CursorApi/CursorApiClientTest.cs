@@ -280,6 +280,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
+        [Trait("ServerVersion", "3_8_PLUS")]
         public async Task PostAdvanceCursorAsync_ShouldSucceed()
         {
             var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i", null);
@@ -293,6 +294,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
+        [Trait("ServerVersion", "3_8_PLUS")]
         public async Task PostAdvanceCursorAsync_ShouldThrow_WhenCursorIsExhausted()
         {
             var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i", null);
@@ -306,6 +308,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
+        [Trait("ServerVersion", "3_8_PLUS")]
         public async Task PostAdvanceCursorAsync_ShouldThrow_WhenCursorDoesNotExist()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
@@ -317,6 +320,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
+        [Trait("ServerVersion", "3_8_PLUS")]
         public async Task PostAdvanceCursorAsync_ShouldReturnResponseModelWithInterface()
         {
             PostCursorResponse<int> postResponse =
