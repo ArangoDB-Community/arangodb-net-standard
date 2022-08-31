@@ -98,5 +98,11 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// The type of the collection.
         /// </summary>
         public CollectionType Type { get; set; }
+
+        /// <summary>
+        /// A list of computed values configured for the 
+        /// collection.
+        /// </summary>
+        public List<ComputedValue> ComputedValue { get; set; }
     }
 }
