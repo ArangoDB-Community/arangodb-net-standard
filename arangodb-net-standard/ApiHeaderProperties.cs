@@ -13,6 +13,11 @@ namespace ArangoDBNetStandard
         public string TransactionId { get; set; }
 
         /// <summary>
+        /// Allow read from followers
+        /// </summary>
+        public bool? AllowReadFromFollowers { get; set; }
+
+        /// <summary>
         /// Any other headers you wish to add based on
         /// the specifications of the API operation.
         /// </summary>
@@ -25,6 +30,12 @@ namespace ArangoDBNetStandard
             {
                 collection.Add(CustomHttpHeaders.StreamTransactionHeader, TransactionId);
             }
+
+            if (AllowReadFromFollowers != null)
+            {
+                collection.Add(CustomHttpHeaders.ReadFromFollowersHeader, AllowReadFromFollowers.Value.ToString());
+            }
+
             if (OtherHeaders != null && OtherHeaders.Count > 0)
             {
                 foreach (string key in OtherHeaders.Keys)
@@ -32,6 +43,7 @@ namespace ArangoDBNetStandard
                     collection.Add(key, OtherHeaders[key]); 
                 }
             }
+
             return collection;
         }
     }

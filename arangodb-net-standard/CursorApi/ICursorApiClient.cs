@@ -13,6 +13,10 @@ namespace ArangoDBNetStandard.CursorApi
         /// <summary>
         /// Execute an AQL query, creating a cursor which can be used to page query results.
         /// </summary>
+        /// <remarks>
+        /// This method supports Read from Followers (dirty-reads). 
+        /// To enable it, set the AllowReadFromFollowers header property to true.
+        /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
         /// <param name="bindVars"></param>
@@ -22,7 +26,8 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cache"></param>
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
-        /// <param name="transactionId">Optional. The stream transaction Id.</param>
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>        
+        /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostCursorResponse<T>> PostCursorAsync<T>(
@@ -35,11 +40,16 @@ namespace ArangoDBNetStandard.CursorApi
                 long? memoryLimit = null,
                 int? ttl = null,
                 string transactionId = null,
+                CursorHeaderProperties headerProperties = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Execute an AQL query, creating a cursor which can be used to page query results.
         /// </summary>
+        /// <remarks>
+        /// This method supports Read from Followers (dirty-reads). 
+        /// To enable it, set the AllowReadFromFollowers header property to true.
+        /// </remarks>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
