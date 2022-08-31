@@ -1,4 +1,6 @@
-﻿namespace ArangoDBNetStandard.IndexApi.Models
+﻿using System;
+
+namespace ArangoDBNetStandard.IndexApi.Models
 {
     /// <summary>
     /// Defines values for ArangoDB index types.
@@ -6,8 +8,11 @@
     public static class IndexTypes
     {
         /// <summary>
-        /// See https://www.arangodb.com/docs/stable/http/indexes-fulltext.html
+        /// This option is deprecated.
+        /// For an alternative to fulltext indexes
+        /// see https://www.arangodb.com/docs/stable/arangosearch.html
         /// </summary>
+        [Obsolete("Use ArangoSearch for advanced full-text search capabilities.")]
         public const string FullText = "fulltext";
 
         /// <summary>
