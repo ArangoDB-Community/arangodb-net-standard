@@ -103,6 +103,6 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// A list of computed values configured for the 
         /// collection.
         /// </summary>
-        public List<ComputedValue> ComputedValue { get; set; }
+        public List<ComputedValue> ComputedValues { get; set; }
     }
 }
