@@ -8,7 +8,7 @@
         /// <summary>
         /// See https://www.arangodb.com/docs/stable/http/indexes-fulltext.html
         /// </summary>
-        public const string FullText = "fulltext";
+        public const string Fulltext = "fulltext";
 
         /// <summary>
         /// See https://www.arangodb.com/docs/stable/http/indexes-geo.html
@@ -24,5 +24,20 @@
         /// See https://www.arangodb.com/docs/stable/http/indexes-ttl.html
         /// </summary>
         public const string TTL = "ttl";
+
+        /// <summary>
+        /// See https://www.arangodb.com/docs/stable/http/indexes-skiplist.html
+        /// </summary>
+        public const string Skiplist = "skiplist";
+
+        /// <summary>
+        /// See https://www.arangodb.com/docs/stable/http/indexes-hash.html
+        /// </summary>
+        public const string Hash = "hash";
+
+        /// <summary>
+        /// See https://www.arangodb.com/docs/stable/http/indexes-hash.html
+        /// </summary>
+        public const string MultiDimensional = "zkd"; 
     }
 }

@@ -1,4 +1,6 @@
-﻿using ArangoDBNetStandard.IndexApi.Models;
+﻿
+using ArangoDBNetStandard.IndexApi.Models;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,13 +39,85 @@ namespace ArangoDBNetStandard.IndexApi
             CancellationToken token = default);
 
         /// <summary>
-        /// Creates a new index
+        /// Creates a new fulltext index.
+        /// Deprecated in v3.10.
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<IndexResponseBase> PostIndexAsync(PostIndexQuery query, PostIndexBody body,
+        /// <remarks>
+        /// Deprecated in v3.10.
+        /// </remarks>
+        [Obsolete("Use ArangoSearch for advanced full-text search capabilities.")]
+        Task<IndexResponseBase> PostFulltextIndexAsync(PostIndexQuery query,
+            PostFulltextIndexBody body,
+            CancellationToken token = default);
+
+        /// <summary>
+        /// Creates a new geo-spatial index
+        /// </summary>
+        /// <param name="query">Query parameters for the request.</param>
+        /// <param name="body">The properties of the new index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<IndexResponseBase> PostGeoSpatialIndexAsync(PostIndexQuery query,
+            PostGeoSpatialIndexBody body,
+            CancellationToken token = default);
+
+        /// <summary>
+        /// Creates a new hash index
+        /// </summary>
+        /// <param name="query">Query parameters for the request.</param>
+        /// <param name="body">The properties of the new index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<IndexResponseBase> PostHashIndexAsync(PostIndexQuery query,
+            PostHashIndexBody body,
+            CancellationToken token = default);
+
+        /// <summary>
+        /// Creates a new multi-dimensional index
+        /// </summary>
+        /// <param name="query">Query parameters for the request.</param>
+        /// <param name="body">The properties of the new index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<IndexResponseBase> PostMultiDimensionalIndexAsync(PostIndexQuery query,
+            PostMultiDimensionalIndexBody body,
+            CancellationToken token = default);
+
+        /// <summary>
+        /// Creates a new persistent index
+        /// </summary>
+        /// <param name="query">Query parameters for the request.</param>
+        /// <param name="body">The properties of the new index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<IndexResponseBase> PostPersistentIndexAsync(PostIndexQuery query,
+            PostPersistentIndexBody body,
+            CancellationToken token = default);
+
+        /// <summary>
+        /// Creates a new skiplist index
+        /// </summary>
+        /// <param name="query">Query parameters for the request.</param>
+        /// <param name="body">The properties of the new index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<IndexResponseBase> PostSkiplistIndexAsync(PostIndexQuery query,
+            PostSkiplistIndexBody body,
+            CancellationToken token = default);
+
+        /// <summary>
+        /// Creates a new TTL (time-to-live) index
+        /// </summary>
+        /// <param name="query">Query parameters for the request.</param>
+        /// <param name="body">The properties of the new index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<IndexResponseBase> PostTTLIndexAsync(PostIndexQuery query,
+            PostTTLIndexBody body,
             CancellationToken token = default);
     }
 }

@@ -39,5 +39,14 @@ namespace ArangoDBNetStandard.IndexApi.Models
         public int? BestIndexedLevel { get; set; }
 
         public int? WorstIndexedLevel { get; set; }
+
+        public List<string> StoredValues { get; set; }
+
+        /// <summary>
+        /// Introduced in v3.10.
+        /// If true, an in-memory cache is enabled for 
+        /// index values for persistent indexes.
+        /// </summary>
+        public bool? CacheEnabled { get; set; }
     }
 }

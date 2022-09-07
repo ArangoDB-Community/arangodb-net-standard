@@ -41,5 +41,8 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         public int? BestIndexedLevel { get; set; }
 
         public int? WorstIndexedLevel { get; set; }
+
+        public List<string> StoredValues { get; set; }
+        public bool? CacheEnabled { get; set; }
     }
 }
