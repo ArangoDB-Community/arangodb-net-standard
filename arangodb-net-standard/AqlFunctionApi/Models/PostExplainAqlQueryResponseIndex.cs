@@ -44,5 +44,18 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
 
         public List<string> StoredValues { get; set; }
         public bool? CacheEnabled { get; set; }
+
+        /// <summary>
+        /// Introduced in v3.10.
+        /// A geo index with legacyPolygons set to true
+        /// will use the old, pre-3.10 rules for the parsing
+        /// GeoJSON polygons. This allows you to let old 
+        /// indexes produce the same, potentially wrong 
+        /// results as before an upgrade. A geo index with
+        /// legacyPolygons set to false will use the new, 
+        /// correct and consistent method for parsing of
+        /// GeoJSON polygons.
+        /// </summary>
+        public bool? LegacyPolygons { get; set; }
     }
 }
