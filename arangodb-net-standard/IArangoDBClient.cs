@@ -10,6 +10,7 @@ using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.GraphApi;
 using ArangoDBNetStandard.IndexApi;
+using ArangoDBNetStandard.PregelApi;
 using ArangoDBNetStandard.TransactionApi;
 using ArangoDBNetStandard.UserApi;
 using ArangoDBNetStandard.ViewApi;
@@ -87,5 +88,10 @@ namespace ArangoDBNetStandard
         /// Admin API
         /// </summary>
         AdminApiClient Admin { get; }
+
+        /// <summary>
+        /// Pregel API
+        /// </summary>
+        PregelApiClient Pregel { get; }
     }
 }
