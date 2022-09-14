@@ -55,5 +55,23 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         /// https://www.arangodb.com/docs/stable/analyzers.html#stemming
         /// </summary>
         public bool Stemming { get; set; }
+
+        /// <summary>
+        /// Introduced in 3.10. for minHash analyzers.
+        /// An Analyzer-like definition with a type (string) 
+        /// and a properties attribute (object)
+        /// This is the inner analyzer to use for incoming data. 
+        /// In case if omitted field or empty object falls back 
+        /// to identity analyzer. 
+        /// </summary>
+        public Analyzer Analyzer { get; set; }
+
+        /// <summary>
+        /// Introduced in 3.10. for minHash analyzers.
+        /// Specifies the size of min hash signature. 
+        /// Must be greater or equal to 1. Signature 
+        /// size defines probabilistic error.
+        /// </summary>
+        public int? NumHashes { get; set; }
     }
 }

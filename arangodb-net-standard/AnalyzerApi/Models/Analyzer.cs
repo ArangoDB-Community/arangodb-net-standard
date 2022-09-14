@@ -38,6 +38,8 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         /// position: sequentially increasing term position,
         /// required for PHRASE(). If present then the
         /// frequency feature is also required.
+        /// offset: 3.10 onwards. Enables search highlighting capabilities 
+        /// for ArangoSearch Views.
         /// </summary>
         public List<string> Features { get; set; }
     }

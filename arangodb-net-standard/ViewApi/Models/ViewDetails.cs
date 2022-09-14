@@ -13,6 +13,11 @@ namespace ArangoDBNetStandard.ViewApi.Models
         public const string ArangoSearchViewType = "arangosearch";
 
         /// <summary>
+        /// Possible value for <see cref="Type"/>
+        /// </summary>
+        public const string SearchAliasViewType = "search-alias";
+
+        /// <summary>
         /// Possible value for <see cref="PrimarySortCompression"/>
         /// </summary>
         public const string LZ4SortCompression = "lz4";
@@ -29,7 +34,8 @@ namespace ArangoDBNetStandard.ViewApi.Models
 
         /// <summary>
         /// The type of the View. 
-        /// Must be set to <see cref="ArangoSearchViewType"/>
+        /// Can be set to <see cref="ArangoSearchViewType"/>
+        /// or <see cref="SearchAliasViewType"/>
         /// when creating a view.
         /// This option is immutable.
         /// </summary>
