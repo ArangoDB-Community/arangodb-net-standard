@@ -263,5 +263,17 @@ namespace ArangoDBNetStandard.IndexApi
         {
             return await PostIndexAsync(query, body, token).ConfigureAwait(false);
         }
+
+        /// <summary>
+        /// Creates a new inverted index
+        /// </summary>
+        /// <param name="query">Query parameters for the request.</param>
+        /// <param name="body">The properties of the new index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        public virtual async Task<IndexResponseBase> PostInvertedIndexAsync(PostIndexQuery query, PostInvertedIndexBody body, CancellationToken token = default)
+        {
+            return await PostIndexAsync(query, body, token).ConfigureAwait(false);
+        }
     }
 }

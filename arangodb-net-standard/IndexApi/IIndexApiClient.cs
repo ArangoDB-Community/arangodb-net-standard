@@ -119,5 +119,16 @@ namespace ArangoDBNetStandard.IndexApi
         Task<IndexResponseBase> PostTTLIndexAsync(PostIndexQuery query,
             PostTTLIndexBody body,
             CancellationToken token = default);
+
+        /// <summary>
+        /// Creates a new inverted index
+        /// </summary>
+        /// <param name="query">Query parameters for the request.</param>
+        /// <param name="body">The properties of the new index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<IndexResponseBase> PostInvertedIndexAsync(PostIndexQuery query,
+            PostInvertedIndexBody body,
+            CancellationToken token = default);
     }
 }
