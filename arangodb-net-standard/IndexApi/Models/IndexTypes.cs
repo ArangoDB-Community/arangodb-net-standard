@@ -38,6 +38,8 @@
         /// <summary>
         /// See https://www.arangodb.com/docs/stable/http/indexes-hash.html
         /// </summary>
-        public const string MultiDimensional = "zkd"; 
+        public const string MultiDimensional = "zkd";
+
+        public const string Inverted = "inverted";
     }
 }
