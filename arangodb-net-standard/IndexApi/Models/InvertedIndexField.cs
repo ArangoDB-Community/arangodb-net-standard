@@ -10,5 +10,6 @@ namespace ArangoDBNetStandard.IndexApi.Models
         public bool? SearchField { get; set; }
         public bool? TrackListPositions { get; set; }
         public IEnumerable<string> Features { get; set; }
+        public IEnumerable<InvertedIndexField> Nested { get; set; }
     }
 }
