@@ -48,7 +48,7 @@ namespace ArangoDBNetStandard.ViewApi.Models
         /// (default: 2, to disable use: 0).
         /// Read more about this in the documentation.
         /// </summary>
-        public int CleanupIntervalStep { get; set; }
+        public int? CleanupIntervalStep { get; set; }
 
         /// <summary>
         /// The number of milliseconds to wait
@@ -57,7 +57,7 @@ namespace ArangoDBNetStandard.ViewApi.Models
         /// to queries (default: 1000, to disable use: 0)
         /// Read more about this in the documentation.
         /// </summary>
-        public int CommitIntervalMsec { get; set; }
+        public int? CommitIntervalMsec { get; set; }
 
         /// <summary>
         /// The number of milliseconds to wait
@@ -67,7 +67,7 @@ namespace ArangoDBNetStandard.ViewApi.Models
         /// (default: 10000, to disable use: 0). 
         /// Read more about this in the documentation.
         /// </summary>
-        public int ConsolidationIntervalMsec { get; set; }
+        public int? ConsolidationIntervalMsec { get; set; }
 
         /// <summary>
         /// The consolidation policy to apply
@@ -132,5 +132,11 @@ namespace ArangoDBNetStandard.ViewApi.Models
         /// and the link properties as attribute values.
         /// </summary>
         public IDictionary<string, LinkProperties> Links { get; set; }
+
+        /// <summary>
+        /// Introduced in 3.10. List of indexes for
+        /// search-alias views.
+        /// </summary>
+        public List<SearchAliasIndex> Indexes { get; set; }
     }
 }

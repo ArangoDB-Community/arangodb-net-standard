@@ -13,7 +13,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         /// When false, accented characters are converted to 
         /// their base characters.
         /// </summary>
-        public bool Accent { get; set; }
+        public bool? Accent { get; set; }
 
         /// <summary>
         /// A locale in the format language[_COUNTRY][.encoding][@variant] 
@@ -54,7 +54,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         /// which supports the languages listed at:
         /// https://www.arangodb.com/docs/stable/analyzers.html#stemming
         /// </summary>
-        public bool Stemming { get; set; }
+        public bool? Stemming { get; set; }
 
         /// <summary>
         /// Introduced in 3.10. for minHash analyzers.
@@ -69,9 +69,43 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         /// <summary>
         /// Introduced in 3.10. for minHash analyzers.
         /// Specifies the size of min hash signature. 
-        /// Must be greater or equal to 1. Signature 
-        /// size defines probabilistic error.
+        /// Must be greater or equal to 1. 
+        /// The signature size defines the probalistic 
+        /// error (err = rsqrt(numHashes)). For an error
+        /// amount that does not exceed 5% (0.05), use a
+        /// size of 1 / (0.05 * 0.05) = 400.
         /// </summary>
         public int? NumHashes { get; set; }
+
+        /// <summary>
+        /// Introduced in 3.10. The on-disk path to 
+        /// the trained fastText supervised model.
+        /// Note: if you are running this in an 
+        /// ArangoDB cluster, this model must 
+        /// exist on every machine in the cluster.
+        /// Required for classification and 
+        /// nearest_neighbors  analyzers. 
+        /// </summary>
+        public string Model_Location { get; set; }
+
+        /// <summary>
+        /// Introduced in 3.10. The number of class
+        /// labels that will be produced per input
+        /// (default: 1).
+        /// Optional for classification and 
+        /// nearest_neighbors analyzers.
+        /// </summary>
+        public int? Top_K { get; set; }
+
+        /// <summary>
+        /// Introduced in 3.10. The probability 
+        /// threshold for which a label will be 
+        /// assigned to an input. A fastText model
+        /// produces a probability per class label, 
+        /// and this is what will be filtered 
+        /// (default: 0.99).
+        /// Optional for Classification analyzers.
+        /// </summary>
+        public decimal? Threshold { get; set; }
     }
 }
