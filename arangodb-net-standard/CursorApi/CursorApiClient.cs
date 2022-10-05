@@ -68,7 +68,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cache"></param>
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
-        /// <param name="transactionId">Optional. The stream transaction Id.</param>
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>      
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
@@ -110,7 +110,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <remarks>
         /// This method supports Read from Followers (dirty-reads). 
-        /// To enable it, set the AllowReadFromFollowers header property to true.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
         /// </remarks>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
