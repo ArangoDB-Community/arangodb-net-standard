@@ -225,5 +225,23 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
             Assert.False(putResponse.Error);
             Assert.Equal(HttpStatusCode.OK, putResponse.Code);
         }
+
+
+        [Fact]
+        public async Task GetQueryRulesAsync_ShouldSucceed()
+        {
+            if (_fixture.VersionMajor >= 3 && _fixture.VersionMinor >= 10)
+            {
+                var getResponse =
+                    await _fixture.AqlFunctionClient.GetQueryRulesAsync();
+
+                Assert.NotNull(getResponse);
+                Assert.All(getResponse, x =>
+                {
+                    Assert.NotNull(x.Name);
+                    Assert.NotNull(x.Flags);
+                });
+            }
+        }
     }
 }
