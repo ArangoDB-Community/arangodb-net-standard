@@ -3,7 +3,7 @@
     /// <summary>
     /// List of pregel algorithm names
     /// </summary>
-    public struct PregelAlgorithms
+    public static class PregelAlgorithms
     {
         /// <summary>
         /// Page Rank

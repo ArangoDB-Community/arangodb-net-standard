@@ -10,7 +10,7 @@ namespace ArangoDBNetStandard.PregelApi.Models
         /// <summary>
         /// ID of the Pregel job.
         /// </summary>
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// An algorithm used by the job.
@@ -73,7 +73,7 @@ namespace ArangoDBNetStandard.PregelApi.Models
         /// <summary>
         /// The number of global supersteps executed.
         /// </summary>
-        public int GSS { get; set; }
+        public int Gss { get; set; }
 
         /// <summary>
         /// Total runtime of the execution up to now
@@ -105,19 +105,18 @@ namespace ArangoDBNetStandard.PregelApi.Models
         public decimal StorageTime { get; set; }
 
         /// <summary>
-        /// Database in which the job is executing.
+        /// Computation time of each global
+        /// super step. Is shown when the
+        /// computation started.
         /// </summary>
-        public string Database { get; set; }
+        public decimal[] GssTimes { get; set; }
 
         /// <summary>
-        /// 
+        /// Statistics about the Pregel execution.
+        /// The value will only be populated once 
+        /// the algorithm has finished.
         /// </summary>
-        public int SendCount { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ReceivedCount { get; set; }
+        public object[] Reports { get; set; }
 
         /// <summary>
         /// Total number of vertices processed.
@@ -130,11 +129,29 @@ namespace ArangoDBNetStandard.PregelApi.Models
         public int EdgeCount { get; set; }
 
         /// <summary>
-        /// Statistics about the Pregel execution.
-        /// The value will only be populated once 
-        /// the algorithm has finished.
+        /// Database in which the job is executing.
         /// </summary>
-        public object Reports { get; set; }
+        public string Database { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool UseMemoryMaps { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int SendCount { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ReceivedCount { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public object Aggregators { get; set; }
 
         /// <summary>
         /// Additional Pregel job run details
