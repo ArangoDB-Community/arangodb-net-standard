@@ -39,6 +39,21 @@ namespace ArangoDBNetStandard.IndexApi
             CancellationToken token = default);
 
         /// <summary>
+        /// Generic method to create an index.
+        /// It is highly recommended that you use a specialized method like
+        /// <see cref="PostGeoSpatialIndexAsync(PostIndexQuery, PostGeoSpatialIndexBody, CancellationToken)"/>
+        /// to create indexes. Use this method to create indexes that do not
+        /// have a specialized method available.
+        /// </summary>
+        /// <param name="query">Query parameters for the request.</param>
+        /// <param name="body">The properties of the new index.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>       
+        Task<IndexResponseBase> PostIndexAsync(PostIndexQuery query,
+            PostIndexBody body,
+            CancellationToken token = default);
+
+        /// <summary>
         /// Creates a new fulltext index.
         /// Deprecated in v3.10.
         /// </summary>

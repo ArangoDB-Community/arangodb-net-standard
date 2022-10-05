@@ -7,7 +7,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
     /// <summary>
     /// Base class for the request body for creating an index for a collection.
     /// </summary>
-    public abstract class PostIndexBody
+    public class PostIndexBody
     {
         /// <summary>
         /// The name of the new index. If you do not specify a name, one will be auto-generated.
@@ -18,7 +18,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// The type of index to create. 
         /// Supported index types can be found in <see cref="IndexTypes"/>.
         /// </summary>
-        public string Type { get; protected set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// The attributes to be indexed.
