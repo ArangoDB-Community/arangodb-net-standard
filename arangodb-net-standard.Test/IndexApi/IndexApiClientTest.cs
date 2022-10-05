@@ -39,7 +39,7 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
-        public async Task PostIndexAsync_ShouldSucceed()
+        public async Task PostPersistentIndexAsync_ShouldSucceed()
         {
             var createResponse = await _indexApi.PostPersistentIndexAsync(
                  new PostIndexQuery()
