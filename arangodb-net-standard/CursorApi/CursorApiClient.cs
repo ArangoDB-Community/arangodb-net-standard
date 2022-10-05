@@ -109,7 +109,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// Execute an AQL query, creating a cursor which can be used to page query results.
         /// </summary>
         /// <remarks>
-        /// This method supports Read from Followers (dirty-reads). 
+        /// This method supports Read from Followers (dirty-reads) introduced in ArangoDB 3.10. 
         /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
         /// </remarks>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>

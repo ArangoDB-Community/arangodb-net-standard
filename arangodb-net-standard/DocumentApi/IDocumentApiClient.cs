@@ -143,8 +143,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// Get an existing document.
         /// </summary>
         /// <remarks>
-        /// This method supports Read from Followers (dirty-reads). 
-        /// To enable it, set the AllowReadFromFollowers header property to true.
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
         /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
@@ -159,8 +159,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// Get an existing document based on its Document ID.
         /// </summary>
         /// <remarks>
-        /// This method supports Read from Followers (dirty-reads). 
-        /// To enable it, set the AllowReadFromFollowers header property to true.
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
         /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
@@ -174,8 +174,8 @@ namespace ArangoDBNetStandard.DocumentApi
         /// Get multiple documents.
         /// </summary>
         /// <remarks>
-        /// This method supports Read from Followers (dirty-reads). 
-        /// To enable it, set the AllowReadFromFollowers header property to true.
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
         /// </remarks>
         /// <typeparam name="T">The type of the documents
         /// deserialized from the response.</typeparam>

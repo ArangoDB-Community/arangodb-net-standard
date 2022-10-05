@@ -14,6 +14,7 @@ namespace ArangoDBNetStandard
 
         /// <summary>
         /// Allow read from followers ("dirty reads").
+        /// Introduced in ArangoDB 3.10.
         /// </summary>
         public bool? AllowReadFromFollowers { get; set; }
 

@@ -11,6 +11,7 @@
         public const string StreamTransactionHeader = "x-arango-trx-id";
         /// <summary>
         /// The header string used for Allowing Read From Followers (dirty-reads)
+        /// Introduced in ArangoDB 3.10.
         /// </summary>    
         public const string ReadFromFollowersHeader = "x-arango-allow-dirty-read";
     }

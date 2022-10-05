@@ -30,8 +30,8 @@ namespace ArangoDBNetStandard.TransactionApi
         /// </summary>
         /// <remarks>
         /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#begin-a-transaction
-        /// This method supports Read from Followers (dirty-reads). 
-        /// To enable it, set the AllowReadFromFollowers header property to true.
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
         /// </remarks>
         /// <param name="body">Object containing information to submit in the POST stream transaction request.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
