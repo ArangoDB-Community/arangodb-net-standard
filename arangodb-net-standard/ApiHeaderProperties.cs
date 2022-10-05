@@ -13,7 +13,7 @@ namespace ArangoDBNetStandard
         public string TransactionId { get; set; }
 
         /// <summary>
-        /// Allow read from followers
+        /// Allow read from followers ("dirty reads").
         /// </summary>
         public bool? AllowReadFromFollowers { get; set; }
 
