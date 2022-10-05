@@ -58,6 +58,7 @@ namespace ArangoDBNetStandardTest.IndexApi
             string indexId = createResponse.Id;
             Assert.False(createResponse.Error);
             Assert.NotNull(indexId);
+            Assert.True(createResponse.Unique);
         }
 
         [Fact]
