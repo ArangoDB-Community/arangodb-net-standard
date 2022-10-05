@@ -15,6 +15,6 @@
         /// Required. Always initialized to the value "double". 
         /// Currently only doubles are supported as values.
         /// </summary>
-        public string FieldValueTypes { get; private set; }
+        public string FieldValueTypes { get; set; }
     }
 }
