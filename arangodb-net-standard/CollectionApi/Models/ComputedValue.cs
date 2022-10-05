@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 namespace ArangoDBNetStandard.CollectionApi.Models
 {
@@ -21,7 +22,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// <summary>
         /// Required. An AQL RETURN operation with an
         /// expression that computes the desired value. 
-        /// <see cref="https://www.arangodb.com/docs/devel/data-modeling-documents-computed-values.html#computed-value-expressions"/>
+        /// <see cref="https://www.arangodb.com/docs/stable/data-modeling-documents-computed-values.html#computed-value-expressions"/>
         /// </summary>
         public string Expression { get; set; }
 
@@ -49,13 +50,13 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// expression returns null. 
         /// The default is True.
         /// </summary>
-        public bool KeepNull { get; set; } = true;
+        public bool? KeepNull { get; set; }
 
         /// <summary>
         /// Optional. Indicates whether to let the write operation 
         /// fail if the expression produces a warning.
         /// The default is False.
         /// </summary>
-        public bool FailOnWarning { get; set; } = false;
+        public bool? FailOnWarning { get; set; }
     }
 }
