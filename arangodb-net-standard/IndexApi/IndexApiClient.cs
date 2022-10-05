@@ -204,12 +204,17 @@ namespace ArangoDBNetStandard.IndexApi
         }
 
         /// <summary>
-        /// Creates a new hash index
+        /// Creates a new hash index.
+        /// Deprecated in v3.9.
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
+        /// <remarks>
+        /// Deprecated in v3.9.
+        /// </remarks>
+        [Obsolete("A hash index is now an alias for a persistent index. Use PostPersistentIndexAsync().")]
         public virtual async Task<IndexResponseBase> PostHashIndexAsync(PostIndexQuery query,
             PostHashIndexBody body,
             CancellationToken token = default)
@@ -246,12 +251,17 @@ namespace ArangoDBNetStandard.IndexApi
         }
 
         /// <summary>
-        /// Creates a new skiplist index
+        /// Creates a new skiplist index.
+        /// Deprecated in v3.9.
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
+        /// <remarks>
+        /// Deprecated in v3.9.
+        /// </remarks>
+        [Obsolete("A hash index is now an alias for a persistent index. Use PostPersistentIndexAsync().")]
         public virtual async Task<IndexResponseBase> PostSkiplistIndexAsync(PostIndexQuery query,
             PostSkiplistIndexBody body,
             CancellationToken token = default)
