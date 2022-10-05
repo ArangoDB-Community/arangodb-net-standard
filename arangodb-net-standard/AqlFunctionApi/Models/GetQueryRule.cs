@@ -6,9 +6,9 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
     /// Represents a response item returned by 
     /// <see cref="IAqlFunctionApiClient.GetQueryRulesAsync(System.Threading.CancellationToken)"/>
     /// </summary>
-    public class GetQueryRulesResponseItem
+    public class GetQueryRule
     {
         public string Name { get; set; }
-        public GetQueryRulesResponseFlags Flags { get; set; }
+        public GetQueryRuleFlags Flags { get; set; }
     }
 }

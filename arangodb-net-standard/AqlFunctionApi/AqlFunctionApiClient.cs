@@ -519,7 +519,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// rule and its respective flags.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<List<GetQueryRulesResponseItem>> GetQueryRulesAsync(CancellationToken token = default)
+        public virtual async Task<List<GetQueryRule>> GetQueryRulesAsync(CancellationToken token = default)
         {
             string uri = "_api/query/rules";
 
@@ -528,7 +528,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<List<GetQueryRulesResponseItem>>(stream);
+                    return DeserializeJsonFromStream<List<GetQueryRule>>(stream);
                 }
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }

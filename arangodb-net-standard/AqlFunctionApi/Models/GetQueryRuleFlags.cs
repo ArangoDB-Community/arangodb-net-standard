@@ -1,6 +1,6 @@
 ﻿namespace ArangoDBNetStandard.AqlFunctionApi.Models
 {
-    public class GetQueryRulesResponseFlags
+    public class GetQueryRuleFlags
     {
         public bool Hidden { get; set; }
         public bool ClusterOnly { get; set; }
