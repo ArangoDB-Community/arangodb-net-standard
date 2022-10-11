@@ -39,16 +39,15 @@ namespace ArangoDBNetStandardTest.IndexApi
         }
 
         [Fact]
-        public async Task PostIndexAsync_ShouldSucceed()
+        public async Task PostPersistentIndexAsync_ShouldSucceed()
         {
-            var createResponse = await _indexApi.PostIndexAsync(
+            var createResponse = await _indexApi.PostPersistentIndexAsync(
                  new PostIndexQuery()
                  {
                      CollectionName = _testCollection,
                  },
-                 new PostIndexBody()
+                 new PostPersistentIndexBody()
                  {
-                     Type = IndexTypes.Persistent,
                      Fields = new string[]
                      {
                           "field1",
@@ -59,25 +58,7 @@ namespace ArangoDBNetStandardTest.IndexApi
             string indexId = createResponse.Id;
             Assert.False(createResponse.Error);
             Assert.NotNull(indexId);
-        }
-
-        [Fact]
-        public async Task PostIndexAsync_ShouldThrow_WhenIndexTypeIsInvalid()
-        {
-            var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-            {
-                await _indexApi.PostIndexAsync(
-                    new PostIndexQuery()
-                    {
-                        CollectionName = _testCollection
-                    },
-                    new PostIndexBody()
-                    {
-                        Type = "unknownindextype"
-                    });
-            });
-            Assert.Equal(HttpStatusCode.BadRequest, ex.ApiError.Code);
-            Assert.Equal(10, ex.ApiError.ErrorNum);
+            Assert.True(createResponse.Unique);
         }
 
         [Fact]
@@ -129,14 +110,13 @@ namespace ArangoDBNetStandardTest.IndexApi
         public async Task DeleteIndexAsync_ShouldSucceed()
         {
             //Create the index first
-            var createResponse = await _indexApi.PostIndexAsync(
+            var createResponse = await _indexApi.PostPersistentIndexAsync(
                  new PostIndexQuery()
                  {
                      CollectionName = _testCollection,
                  },
-                 new PostIndexBody()
+                 new PostPersistentIndexBody ()
                  {
-                     Type = IndexTypes.Persistent,
                      Fields = new string[]
                      {
                           "field1",
