@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 
 namespace ArangoDBNetStandard.CollectionApi.Models
 {
@@ -96,5 +97,11 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// copies take over, usually without an error being reported.
         /// </summary>
         public int ReplicationFactor { get; set; }
+
+        /// <summary>
+        /// A list of computed values configured for the 
+        /// collection.
+        /// </summary>
+        public List<ComputedValue> ComputedValues { get; set; }
     }
 }

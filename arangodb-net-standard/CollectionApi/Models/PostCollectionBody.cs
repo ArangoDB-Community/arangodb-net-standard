@@ -139,5 +139,10 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// (default: false)
         /// </summary>
         public bool? WaitForSync { get; set; }
+
+        /// <summary>
+        /// Optional. A list of computed values.
+        /// </summary>
+        public List<ComputedValue> ComputedValues { get; set; }
     }
 }
