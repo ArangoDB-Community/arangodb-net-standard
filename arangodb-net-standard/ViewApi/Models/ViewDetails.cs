@@ -8,34 +8,14 @@ namespace ArangoDBNetStandard.ViewApi.Models
     public class ViewDetails
     {
         /// <summary>
-        /// Possible value for <see cref="Type"/>
-        /// </summary>
-        public const string ArangoSearchViewType = "arangosearch";
-
-        /// <summary>
-        /// Possible value for <see cref="Type"/>
-        /// </summary>
-        public const string SearchAliasViewType = "search-alias";
-
-        /// <summary>
-        /// Possible value for <see cref="PrimarySortCompression"/>
-        /// </summary>
-        public const string LZ4SortCompression = "lz4";
-
-        /// <summary>
-        /// Possible value for <see cref="PrimarySortCompression"/>
-        /// </summary>
-        public const string NoSortCompression = "none";
-
-        /// <summary>
         /// The name of the View.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
         /// The type of the View. 
-        /// Can be set to <see cref="ArangoSearchViewType"/>
-        /// or <see cref="SearchAliasViewType"/>
+        /// Can be set to <see cref="ViewTypes.ArangoSearch"/>
+        /// or <see cref="ViewTypes.SearchAlias"/>
         /// when creating a view.
         /// This option is immutable.
         /// </summary>
@@ -88,8 +68,8 @@ namespace ArangoDBNetStandard.ViewApi.Models
         /// (introduced in v3.7.1). ArangoDB v3.5 and v3.6 
         /// always compress the index using LZ4. 
         /// This option is immutable. Possible values:
-        /// 1) <see cref="LZ4SortCompression"/> (default): use LZ4 fast compression.
-        /// 2) <see cref="NoSortCompression"/>: disable compression to trade space for speed.
+        /// 1) <see cref="SortCompressionTypes.LZ4"/> (default): use LZ4 fast compression.
+        /// 2) <see cref="SortCompressionTypes.None"/>: disable compression to trade space for speed.
         /// Read more about this in the documentation.
         /// </summary>
         public string PrimarySortCompression { get; set; }

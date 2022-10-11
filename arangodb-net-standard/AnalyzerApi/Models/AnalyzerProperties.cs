@@ -57,7 +57,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         public bool? Stemming { get; set; }
 
         /// <summary>
-        /// Introduced in 3.10. for minHash analyzers.
+        /// Introduced in 3.10 for minHash analyzers.
         /// An Analyzer-like definition with a type (string) 
         /// and a properties attribute (object)
         /// This is the inner analyzer to use for incoming data. 

@@ -7,21 +7,6 @@ namespace ArangoDBNetStandard.ViewApi.Models
     public class SearchAliasIndex
     {
         /// <summary>
-        /// Possible value for <see cref="Operation"/>
-        /// </summary>
-        public const string SearchAliasIndexAddOperation = "add";
-
-        /// <summary>
-        /// Possible value for <see cref="Operation"/>
-        /// </summary>
-        public const string SearchAliasIndexDelOperation = "del";
-
-        /// <summary>
-        /// Possible value for <see cref="Operation"/>
-        /// </summary>
-        public const string SearchAliasIndexNoOperation = "";
-
-        /// <summary>
         /// Name of the collection
         /// </summary>
         public string Collection { get; set; }
@@ -34,9 +19,10 @@ namespace ArangoDBNetStandard.ViewApi.Models
         /// <summary>
         /// Optional. Type of operation.
         /// Possible values:
-        /// <see cref="SearchAliasIndexAddOperation"/>,
-        /// <see cref="SearchAliasIndexDelOperation"/>, or
-        /// <see cref="SearchAliasIndexNoOperation"/>
+        /// <see cref="SearchAliasIndexOperation.Add"/>, or
+        /// <see cref="SearchAliasIndexOperation.Del"/>
+        /// Only relevant when updating the 
+        /// properties of a View definition.
         /// </summary>
         public string Operation { get; set; }
     }
