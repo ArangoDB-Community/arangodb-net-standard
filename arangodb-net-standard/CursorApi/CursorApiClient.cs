@@ -53,16 +53,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <returns><see cref="WebHeaderCollection"/> values.</returns>
         protected virtual WebHeaderCollection GetHeaderCollection(CursorHeaderProperties headerProperties)
         {
-            var headerCollection = new WebHeaderCollection();
-            if (headerProperties != null)
-            {
-                if (!string.IsNullOrWhiteSpace(headerProperties.TransactionId))
-                {
-                    headerCollection.Add(CustomHttpHeaders.StreamTransactionHeader, headerProperties.TransactionId);
-                }
-            }
-
-            return headerCollection;
+            return headerProperties?.ToWebHeaderCollection(); 
         }
 
         /// <summary>
@@ -77,7 +68,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cache"></param>
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
-        /// <param name="transactionId">Optional. The stream transaction Id.</param>
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>      
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
@@ -117,12 +108,17 @@ namespace ArangoDBNetStandard.CursorApi
         /// <summary>
         /// Execute an AQL query, creating a cursor which can be used to page query results.
         /// </summary>
+        /// <remarks>
+        /// This method supports Read from Followers (dirty-reads) introduced in ArangoDB 3.10. 
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
+        /// </remarks>
         /// <param name="postCursorBody">Object encapsulating options and parameters of the query.</param>
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
-            PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null,
+            PostCursorBody postCursorBody, 
+            CursorHeaderProperties headerProperties = null,
             CancellationToken token = default)
         {
             var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));

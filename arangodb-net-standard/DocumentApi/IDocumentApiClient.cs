@@ -142,6 +142,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <summary>
         /// Get an existing document.
         /// </summary>
+        /// <remarks>
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
+        /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
@@ -154,6 +158,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <summary>
         /// Get an existing document based on its Document ID.
         /// </summary>
+        /// <remarks>
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
+        /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
@@ -165,6 +173,10 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <summary>
         /// Get multiple documents.
         /// </summary>
+        /// <remarks>
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
+        /// </remarks>
         /// <typeparam name="T">The type of the documents
         /// deserialized from the response.</typeparam>
         /// <param name="collectionName">Collection name</param>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ArangoDBNetStandard.CursorApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.TransactionApi.Models;
 using ArangoDBNetStandard.Transport;
@@ -113,20 +114,29 @@ namespace ArangoDBNetStandard.TransactionApi
         /// </summary>
         /// <remarks>
         /// https://www.arangodb.com/docs/stable/http/transaction-stream-transaction.html#begin-a-transaction
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
         /// </remarks>
         /// <param name="body">Object containing information to submit in the POST stream transaction request.</param>
+        /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <exception cref="ApiErrorException">
         /// With ErrorNum 10 if the <paramref name="body"/> is missing or malformed.
         /// With ErrorNum 1203 if the <paramref name="body"/> contains an unknown collection.
         /// </exception>
         /// <returns>Response from ArangoDB after beginning a transaction.</returns>
-        public virtual async Task<StreamTransactionResponse> BeginTransaction(StreamTransactionBody body,
+        public virtual async Task<StreamTransactionResponse> BeginTransaction(
+            StreamTransactionBody body,
+            ApiHeaderProperties headerProperties = null,
             CancellationToken token = default)
         {
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
             string beginTransactionPath = string.Format(_streamTransactionApiPath, "begin");
-            using (var response = await _client.PostAsync(beginTransactionPath, content, token: token).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(
+                beginTransactionPath,
+                content,
+                webHeaderCollection: headerProperties?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
