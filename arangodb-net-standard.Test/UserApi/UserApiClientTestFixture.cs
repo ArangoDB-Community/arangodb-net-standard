@@ -60,6 +60,7 @@ namespace ArangoDBNetStandardTest.UserApi
             });
 
             var dbClient = GetArangoDBClient(TestDbName);
+            await GetVersionAsync(dbClient);
 
             await dbClient.Collection.PostCollectionAsync(new PostCollectionBody()
             {

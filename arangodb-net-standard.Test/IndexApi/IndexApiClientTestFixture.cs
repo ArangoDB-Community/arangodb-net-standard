@@ -24,6 +24,7 @@ namespace ArangoDBNetStandardTest.IndexApi
             await CreateDatabase(dbName);
             Console.WriteLine("Database " + dbName + " created successfully");
             ArangoDBClient = GetArangoDBClient(dbName);
+            await GetVersionAsync(ArangoDBClient);
 
             var dbRes = await ArangoDBClient.Database.GetCurrentDatabaseInfoAsync();
 

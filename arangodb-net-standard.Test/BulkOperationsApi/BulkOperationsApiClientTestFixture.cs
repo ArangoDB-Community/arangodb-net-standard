@@ -30,6 +30,7 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
             await CreateDatabase(dbName);
             Console.WriteLine("Database " + dbName + " created successfully");
             ArangoDBClient = GetArangoDBClient(dbName);
+            await GetVersionAsync(ArangoDBClient);
             try
             {
                 var dbRes = await ArangoDBClient.Database.GetCurrentDatabaseInfoAsync();
