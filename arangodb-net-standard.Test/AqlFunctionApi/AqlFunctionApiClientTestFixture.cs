@@ -16,9 +16,6 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
         public AqlFunctionApiClient AqlFunctionClient { get; set; }
         public string TestCollectionName { get; internal set; } = "Pets";
         public string TestAqlQuery { get; internal set; }
-        public GetServerVersionResponse ServerVersion { get; internal set; }
-        public int VersionMajor { get; internal set; }
-        public int VersionMinor { get; internal set; }
 
         public override async Task InitializeAsync()
         {
@@ -27,17 +24,8 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
             await CreateDatabase(dbName);
             var arangoClient = GetArangoDBClient(dbName);
             AqlFunctionClient = arangoClient.AqlFunction;
-            ServerVersion = await arangoClient.Admin.GetServerVersionAsync(
-                new GetServerVersionQuery()
-                {
-                    Details = true
-                });
-            if (ServerVersion != null)
-            {
-                var vParts = ServerVersion.Version.Split(".");
-                VersionMajor = int.Parse(vParts[0]);
-                VersionMinor = int.Parse(vParts[1]);
-            }
+            await GetVersionAsync(arangoClient);
+
             try
             {
                 //create one collection for our tests...

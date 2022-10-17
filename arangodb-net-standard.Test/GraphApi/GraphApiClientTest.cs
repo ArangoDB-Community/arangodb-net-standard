@@ -434,7 +434,14 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+            if (_fixture.VersionMajor >= 3 && _fixture.VersionMinor >= 10)
+            {
+                Assert.Equal(1947, ex.ApiError.ErrorNum); //referenced vertex collection is not part of the graph
+            }
+            else
+            {
+                Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+            }
         }
 
         [Fact]

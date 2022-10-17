@@ -24,6 +24,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
             await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
+            await GetVersionAsync(ArangoDBClient);
             try
             {
                 await ArangoDBClient.Collection.PostCollectionAsync(
