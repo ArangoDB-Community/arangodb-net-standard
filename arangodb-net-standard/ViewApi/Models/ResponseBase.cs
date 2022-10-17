@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.ViewApi.Models
     /// <summary>
     /// Represents a common response class for Views API operations.
     /// </summary>
-    public class ResponseBase
+    public class ResponseBase : ApiResponseBase
     {
         /// <summary>
         /// Indicates whether an error occurred
@@ -23,5 +23,4 @@ namespace ArangoDBNetStandard.ViewApi.Models
         /// </summary>
         public HttpStatusCode Code { get; set; }
     }
-
 }

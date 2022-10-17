@@ -62,7 +62,9 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetAllViewsResponse>(stream);
+                    var result = DeserializeJsonFromStream<GetAllViewsResponse>(stream);
+                    result.ResponseHeaders = new ApiResponseHeaders(response.Headers);
+                    return result;
                 }
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
@@ -85,7 +87,9 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<ViewResponse>(stream);
+                    var result = DeserializeJsonFromStream<ViewResponse>(stream);
+                    result.ResponseHeaders = new ApiResponseHeaders(response.Headers);
+                    return result;
                 }
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
