@@ -54,6 +54,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// GET /_api/gharial/{graph}
         /// </summary>
         /// <param name="graphName"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetGraphResponse> GetGraphAsync(string graphName, CancellationToken token = default);
 

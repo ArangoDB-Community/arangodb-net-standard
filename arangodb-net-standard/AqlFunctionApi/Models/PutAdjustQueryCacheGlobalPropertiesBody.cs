@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Parameter to
-    /// <see cref="AqlFunctionApiClient.PutAdjustQueryCacheGlobalPropertiesAsync(PutAdjustQueryCacheGlobalPropertiesBody)"/>
+    /// <see cref="AqlFunctionApiClient.PutAdjustQueryCacheGlobalPropertiesAsync"/>
     /// </summary>
     public class PutAdjustQueryCacheGlobalPropertiesBody
     {
