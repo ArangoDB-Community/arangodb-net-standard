@@ -14,6 +14,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public string Id { get; set; }
 
+        [System.Obsolete()]
         public int IndexBuckets { get; set; }
 
         public string Error { get; set; }
@@ -24,12 +25,15 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public int Status { get; set; }
 
+        [System.Obsolete()]
         public int JournalSize { get; set; }
 
+        [System.Obsolete()]
         public bool IsVolatile { get; set; }
 
         public string Name { get; set; }
 
+        [System.Obsolete()]
         public bool DoCompact { get; set; }
 
         public bool IsSystem { get; set; }

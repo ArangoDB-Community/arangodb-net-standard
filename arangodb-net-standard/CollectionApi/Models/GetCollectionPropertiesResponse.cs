@@ -17,12 +17,14 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// Whether or not the collection is compacted.
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        [System.Obsolete()]
         public bool DoCompact { get; set; }
 
         /// <summary>
         /// The maximal size of a journal or datafile in bytes.
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        [System.Obsolete()]
         public int JournalSize { get; set; }
 
         /// <summary>
@@ -35,6 +37,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// If true then the collection data is kept in-memory only and not made persistent.
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        [System.Obsolete()]
         public bool IsVolatile { get; set; }
 
         /// <summary>

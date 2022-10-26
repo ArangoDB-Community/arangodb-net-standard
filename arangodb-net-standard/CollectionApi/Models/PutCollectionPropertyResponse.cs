@@ -10,6 +10,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public bool WaitForSync { get; set; }
 
+        [System.Obsolete()]
         public long JournalSize { get; set; }
 
         public int Status { get; set; }
@@ -18,8 +19,10 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public bool IsSystem { get; set; }
 
+        [System.Obsolete()]
         public bool IsVolatile { get; set; }
 
+        [System.Obsolete()]
         public bool DoCompact { get; set; }
 
         public CollectionKeyOptions KeyOptions { get; set; }
@@ -41,6 +44,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public string StatusString { get; set; }
 
+        [System.Obsolete()]
         public int IndexBuckets { get; set; }
     }
 }

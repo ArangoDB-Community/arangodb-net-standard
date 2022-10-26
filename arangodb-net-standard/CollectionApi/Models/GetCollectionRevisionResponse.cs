@@ -19,12 +19,15 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public bool WaitForSync { get; set; }
 
+        [System.Obsolete()]
         public int JournalSize { get; set; }
 
+        [System.Obsolete()]
         public bool IsVolatile { get; set; }
 
         public bool IsSystem { get; set; }
 
+        [System.Obsolete()]
         public int IndexBuckets { get; set; }
 
         public CollectionKeyOptions KeyOptions { get; set; }
@@ -43,6 +46,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         public string Name { get; set; }
 
+        [System.Obsolete()]
         public bool DoCompact { get; set; }
     }
 }
