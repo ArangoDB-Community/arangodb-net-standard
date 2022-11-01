@@ -123,7 +123,8 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
-            PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null,
+            PostCursorBody postCursorBody, 
+            CursorHeaderProperties headerProperties = null,
             CancellationToken token = default)
         {
             var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
