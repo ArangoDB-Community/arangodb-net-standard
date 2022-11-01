@@ -62,4 +62,5 @@ namespace ArangoDBNetStandard.CursorApi.Models
         /// </summary>
         public string Id { get; set; }
     }
-}
+
+}}
