@@ -81,7 +81,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="transactionId">Optional. The stream transaction Id.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
+        public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
                 string query,
                 Dictionary<string, object> bindVars = null,
                 PostCursorOptions options = null,
@@ -122,7 +122,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
+        public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
             PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null,
             CancellationToken token = default)
         {
@@ -136,7 +136,7 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostCursorResponse<T>>(stream);
+                    return DeserializeJsonFromStream<CursorResponse<T>>(stream);
                 }
 
                 throw await GetApiErrorException(response).ConfigureAwait(false);
@@ -199,7 +199,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cursorIdentifier">The name / identifier of the existing cursor.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PostCursorResponse<T>> PostAdvanceCursorAsync<T>(string cursorIdentifier, CancellationToken token = default)
+        public virtual async Task<CursorResponse<T>> PostAdvanceCursorAsync<T>(string cursorIdentifier, CancellationToken token = default)
         {
             using (var response = await _client.PostAsync(
                 requestUri: _cursorApiPath + $"/{WebUtility.UrlEncode(cursorIdentifier)}",
@@ -209,7 +209,7 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostCursorResponse<T>>(stream);
+                    return DeserializeJsonFromStream<CursorResponse<T>>(stream);
                 }
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }

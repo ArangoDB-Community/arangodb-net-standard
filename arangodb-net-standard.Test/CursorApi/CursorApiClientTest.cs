@@ -323,7 +323,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         [Trait("ServerVersion", "3_8_PLUS")]
         public async Task PostAdvanceCursorAsync_ShouldReturnResponseModelWithInterface()
         {
-            PostCursorResponse<int> postResponse =
+            CursorResponse<int> postResponse =
                 await _cursorApi.PostCursorAsync<int>("FOR i IN 0..1500 RETURN i");
 
             ICursorResponse<int> putResult =
