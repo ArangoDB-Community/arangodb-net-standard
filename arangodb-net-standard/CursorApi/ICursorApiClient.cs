@@ -60,7 +60,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cursorIdentifier">The name / identifier of the existing cursor.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<PostCursorResponse<T>> PostAdvanceCursorAsync<T>(
+        Task<CursorResponse<T>> PostAdvanceCursorAsync<T>(
             string cursorIdentifier,
             CancellationToken token = default);
 
