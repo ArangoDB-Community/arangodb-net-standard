@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -32,6 +33,11 @@ namespace ArangoDBNetStandard.Transport.Http
             };
 
         /// <summary>
+        /// Flags containing specific driver information.
+        /// </summary>
+        public List<string> DriverFlags { get; set; }
+
+        /// <summary>
         /// Create <see cref="HttpApiTransport"/> from an existing <see cref="HttpClient"/> instance.
         /// </summary>
         /// <param name="client">Existing HTTP client instance.</param>
@@ -48,7 +54,8 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <param name="headers">The header to update.</param>
-        private static void ApplyHeaders(WebHeaderCollection webHeaderCollection, HttpHeaders headers)
+        /// <param name="driverFlags">Driver flags that are passed to the server.</param>
+        private static void ApplyHeaders(WebHeaderCollection webHeaderCollection, HttpHeaders headers, List<string> driverFlags = null)
         {
             if (webHeaderCollection != null)
             {
@@ -57,6 +64,14 @@ namespace ArangoDBNetStandard.Transport.Http
                     headers.Add(key, webHeaderCollection[key]);
                 }
             }
+            //build and add driver info header
+            string flags = string.Empty;
+            if (driverFlags != null)
+            {
+                flags = string.Join(";",driverFlags);
+            }
+            var assemblyInfo = Assembly.GetCallingAssembly().GetName();
+            headers.Add(CustomHttpHeaders.DriverInfoHeader, $"{assemblyInfo.Name}/{assemblyInfo.Version} ({flags})");
         }
 
         /// <summary>
@@ -284,7 +299,7 @@ namespace ArangoDBNetStandard.Transport.Http
             CancellationToken token = default)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, requestUri);
-            ApplyHeaders(webHeaderCollection, request.Headers);
+            ApplyHeaders(webHeaderCollection, request.Headers,DriverFlags);
             var response = await _client.SendAsync(request, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -309,7 +324,7 @@ namespace ArangoDBNetStandard.Transport.Http
             };
 
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
-            ApplyHeaders(webHeaderCollection, request.Content.Headers);
+            ApplyHeaders(webHeaderCollection, request.Content.Headers, DriverFlags);
             var response = await _client.SendAsync(request, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -330,7 +345,7 @@ namespace ArangoDBNetStandard.Transport.Http
         {
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
-            ApplyHeaders(webHeaderCollection, httpContent.Headers);
+            ApplyHeaders(webHeaderCollection, httpContent.Headers, DriverFlags);
             var response = await _client.PostAsync(requestUri, httpContent, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -351,7 +366,7 @@ namespace ArangoDBNetStandard.Transport.Http
         {
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
-            ApplyHeaders(webHeaderCollection, httpContent.Headers);
+            ApplyHeaders(webHeaderCollection, httpContent.Headers, DriverFlags);
             var response = await _client.PutAsync(requestUri, httpContent, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -369,7 +384,7 @@ namespace ArangoDBNetStandard.Transport.Http
             CancellationToken token = default)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
-            ApplyHeaders(webHeaderCollection, request.Headers);
+            ApplyHeaders(webHeaderCollection, request.Headers, DriverFlags);
             var response = await _client.SendAsync(request, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -395,7 +410,7 @@ namespace ArangoDBNetStandard.Transport.Http
             };
 
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
-            ApplyHeaders(webHeaderCollection, request.Content.Headers);
+            ApplyHeaders(webHeaderCollection, request.Content.Headers, DriverFlags);
             var response = await _client.SendAsync(request, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -413,7 +428,7 @@ namespace ArangoDBNetStandard.Transport.Http
             CancellationToken token = default)
         {
             var request = new HttpRequestMessage(HttpMethod.Head, requestUri);
-            ApplyHeaders(webHeaderCollection, request.Headers);
+            ApplyHeaders(webHeaderCollection, request.Headers, DriverFlags);
             var response = await _client.SendAsync(request, token);
             return new HttpApiClientResponse(response);
         }
