@@ -29,7 +29,7 @@
         ///  A value of k means that k-1 replicas are kept. It can also be the 
         ///  string "satellite" for a SatelliteCollection, where the replication 
         ///  factor is matched to the number of DB-Servers (Enterprise Edition only).
-        ///  Any two copies reside on different DB-Servers.Replication between them 
+        ///  Any two copies reside on different DB-Servers. Replication between them 
         ///  is synchronous, that is, every write operation to the “leader” copy 
         ///  will be replicated to all “follower” replicas, before the write operation 
         ///  is reported successful.
