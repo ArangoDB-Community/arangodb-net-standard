@@ -14,7 +14,7 @@ namespace ArangoDBNetStandard.Transport
         /// <summary>
         /// Flags containing specific driver information.
         /// </summary>
-        List<string> DriverFlags { get; set; }
+        IEnumerable<string> DriverFlags { get; set; }
 
         /// <summary>
         /// Send a POST request.
