@@ -24,6 +24,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
             await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
+            await GetVersionAsync(ArangoDBClient);
 
             try
             {

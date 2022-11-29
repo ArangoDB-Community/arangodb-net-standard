@@ -688,6 +688,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -697,6 +699,7 @@ namespace ArangoDBNetStandard.GraphApi
             string vertexKey,
             T body,
             PatchVertexQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null,
             GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
@@ -705,6 +708,7 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey),
                 body,
                 query,
+                serializationOptions,
                 headers, 
                 token: token);
         }
@@ -721,6 +725,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to update.</param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -729,8 +735,9 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T body,
             PatchVertexQuery query = null,
-          GraphHeaderProperties headers = null, 
-          CancellationToken token = default)
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null, 
+            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
 
@@ -742,7 +749,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(body, new ApiClientSerializationOptions(false, false));
+            var content = GetContent(body, serializationOptions);
             using (var response = await _transport.PatchAsync(uri, content,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
@@ -764,6 +771,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey"></param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -773,6 +782,7 @@ namespace ArangoDBNetStandard.GraphApi
             string edgeKey,
             T edge,
             PutEdgeQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null,
             GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
@@ -781,6 +791,7 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
                 edge,
                 query,
+                serializationOptions,
                 headers, 
                 token: token);
         }
@@ -794,6 +805,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to replace.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -802,6 +815,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T edge,
             PutEdgeQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null,
             GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
@@ -815,7 +829,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(edge, new ApiClientSerializationOptions(false, false));
+            var content = GetContent(edge, serializationOptions);
 
             using (var response = await _transport.PutAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
@@ -877,6 +891,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey">The document key of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -886,6 +902,7 @@ namespace ArangoDBNetStandard.GraphApi
             string edgeKey,
             T edge,
             PatchEdgeQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null,
             GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
@@ -894,6 +911,7 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
                 edge,
                 query,
+                serializationOptions,
                 headers, 
                 token: token);
         }
@@ -908,6 +926,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -916,6 +936,7 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T edge,
             PatchEdgeQuery query = null,
+            ApiClientSerializationOptions serializationOptions = null,
             GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
@@ -929,7 +950,7 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(edge, new ApiClientSerializationOptions(true, true));
+            var content = GetContent(edge, serializationOptions);
             using (var response = await _transport.PatchAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
@@ -951,6 +972,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="key"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -960,14 +983,16 @@ namespace ArangoDBNetStandard.GraphApi
             string key,
             T vertex,
             PutVertexQuery query = null,
-          GraphHeaderProperties headers = null,
-          CancellationToken token = default)
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             return PutVertexAsync<T>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(key),
                 vertex,
                 query,
+                serializationOptions,
                 headers, 
                 token: token);
         }
@@ -980,6 +1005,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to replace.</param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -988,8 +1015,9 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T vertex,
             PutVertexQuery query = null,
-          GraphHeaderProperties headers = null,
-          CancellationToken token = default)
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
 
@@ -1000,7 +1028,7 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(vertex, new ApiClientSerializationOptions(true, true));
+            var content = GetContent(vertex, serializationOptions);
             using (var response = await _transport.PutAsync(uri, content, headers?.ToWebHeaderCollection(),token:token).ConfigureAwait(false))
 
             {

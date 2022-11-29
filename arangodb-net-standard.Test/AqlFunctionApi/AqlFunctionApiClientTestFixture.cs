@@ -4,6 +4,7 @@ using ArangoDBNetStandard.AqlFunctionApi;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using ArangoDBNetStandard.AdminApi.Models;
 
 namespace ArangoDBNetStandardTest.AqlFunctionApi
 {
@@ -23,6 +24,7 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
             await CreateDatabase(dbName);
             var arangoClient = GetArangoDBClient(dbName);
             AqlFunctionClient = arangoClient.AqlFunction;
+            await GetVersionAsync(arangoClient);
 
             try
             {

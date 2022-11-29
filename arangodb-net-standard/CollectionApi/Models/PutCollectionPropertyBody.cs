@@ -9,6 +9,7 @@
         /// </summary>
         public bool? WaitForSync { get; set; }
 
+        [System.Obsolete()]
         public long? JournalSize { get; set; }
 
         /// <summary>

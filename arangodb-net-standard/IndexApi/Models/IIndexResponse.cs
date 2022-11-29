@@ -24,10 +24,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         IEnumerable<string> Fields { get; set; }
 
         /// <summary>
-        /// Applies to indexes of type <see cref="IndexTypes.Persistent"/>.
         /// Indicates whether the index is a sparse index or not.
-        /// Sparse indexes do not index documents for which any of the index attributes
-        /// is either not set or is null.
         /// </summary>
         bool? Sparse { get; set; }
 
@@ -38,19 +35,10 @@ namespace ArangoDBNetStandard.IndexApi.Models
 
         /// <summary>
         /// Indicates whether the index is a unique or non-unique index.
-        /// Sparse indexes do not index documents for which any of the index attributes
-        /// is either not set or is null.
         /// </summary>
-        /// <remarks>
-        /// The following index types do not support uniqueness,
-        /// and using the unique attribute with these types may lead to an error:
-        /// <see cref="IndexTypes.Geo"/>, <see cref="IndexTypes.FullText"/>.
-        /// Unique indexes on non-shard keys are not supported in a cluster.
-        /// </remarks>
         bool? Unique { get; set; }
 
         /// <summary>
-        /// Supported by indexes of type <see cref="IndexTypes.Persistent"/>.
         /// Indicates whether index selectivity estimates are maintained for the index.
         /// </summary>
         bool? Estimates { get; set; }
@@ -61,16 +49,13 @@ namespace ArangoDBNetStandard.IndexApi.Models
         double? SelectivityEstimate { get; set; }
 
         /// <summary>
-        /// Supported by array indexes of type <see cref="IndexTypes.Persistent"/>. 
         /// Indicates whether inserting duplicate index values from the same document
         /// into a unique array index will lead to a unique constraint error or not.
         /// </summary>
         bool? Deduplicate { get; set; }
 
         /// <summary>
-        /// Supported by indexes of type <see cref="IndexTypes.Geo"/>.
-        /// If a geo-spatial index on a location is constructed and geoJson is true,
-        /// then the order within the array is longitude followed by latitude.
+        /// Is Geo Json enabled/disabled for the index.
         /// </summary>
         /// <remarks>
         /// This corresponds to the format described in http://geojson.org/geojson-spec.html#positions
@@ -78,7 +63,6 @@ namespace ArangoDBNetStandard.IndexApi.Models
         bool? GeoJson { get; set; }
 
         /// <summary>
-        /// Supported by indexes of type <see cref="IndexTypes.TTL"/>.
         /// The time interval (in seconds) from the point in time stored in the <see cref="Fields"/> property
         /// after which the documents count as expired.
         /// Can be set to 0 to let documents expire as soon as the server time
@@ -88,7 +72,6 @@ namespace ArangoDBNetStandard.IndexApi.Models
         int? ExpireAfter { get; set; }
 
         /// <summary>
-        /// Supported by indexes of type <see cref="IndexTypes.FullText"/>.
         /// Minimum character length of words to index.
         /// </summary>
         int? MinLength { get; set; }
@@ -115,5 +98,33 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// see https://www.arangodb.com/docs/stable/http/indexes-geo.html
         /// </summary>
         int? WorstIndexedLevel { get; set; }
+
+        /// <summary>
+        /// Introduced in v3.10.
+        /// An array of additional index attribute paths in a persistent index.
+        /// These additional attributes cannot be used for index lookups or
+        /// sorts, but they can be used for projections.
+        /// </summary>
+        List<string> StoredValues { get; set; }
+
+        /// <summary>
+        /// Introduced in v3.10.
+        /// If true, an in-memory cache is enabled for 
+        /// index values for persistent indexes.
+        /// </summary>
+        bool? CacheEnabled { get; set; }
+
+        /// <summary>
+        /// Introduced in v3.10.
+        /// A geo index with legacyPolygons set to true
+        /// will use the old, pre-3.10 rules for the parsing
+        /// GeoJSON polygons. This allows you to let old 
+        /// indexes produce the same, potentially wrong 
+        /// results as before an upgrade. A geo index with
+        /// legacyPolygons set to false will use the new, 
+        /// correct and consistent method for parsing of
+        /// GeoJSON polygons.
+        /// </summary>
+        bool? LegacyPolygons { get; set; }
     }
 }
