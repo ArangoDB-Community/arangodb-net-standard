@@ -59,9 +59,9 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetAllViewsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetAllViewsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -74,15 +74,15 @@ namespace ArangoDBNetStandard.ViewApi
         public virtual async Task<ViewResponse> PostCreateViewAsync(ViewDetails body)
         {
             string uri = _apiPath;
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<ViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<ViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -100,9 +100,9 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -120,9 +120,9 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -140,9 +140,9 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetViewPropertiesResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetViewPropertiesResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -156,15 +156,15 @@ namespace ArangoDBNetStandard.ViewApi
         public virtual async Task<ViewResponse> PatchViewPropertiesAsync(string viewNameOrId, ViewDetails body)
         {
             string uri = $"{_apiPath}/{viewNameOrId}/properties";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PatchAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<ViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<ViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -178,15 +178,15 @@ namespace ArangoDBNetStandard.ViewApi
         public virtual async Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body)
         {
             string uri = $"{_apiPath}/{viewName}/properties";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<ViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<ViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -200,15 +200,15 @@ namespace ArangoDBNetStandard.ViewApi
         public virtual async Task<PutRenameViewResponse> PutRenameViewAsync(string viewName, PutRenameViewBody body)
         {
             string uri = $"{_apiPath}/{viewName}/rename";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutRenameViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutRenameViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

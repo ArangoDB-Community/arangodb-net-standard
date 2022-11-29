@@ -15,7 +15,7 @@ namespace ArangoDBNetStandard.Serialization
         /// <typeparam name="T">The type of the object to deserialize to.</typeparam>
         /// <param name="stream">The stream containing the JSON structure to deserialize.</param>
         /// <returns></returns>
-        T DeserializeFromStream<T>(Stream stream);
+        //T DeserializeFromStream<T>(Stream stream);
 
         /// <summary>
         /// Asynchronously deserializes the data structure contained by the specified stream
@@ -35,7 +35,7 @@ namespace ArangoDBNetStandard.Serialization
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
-        byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions);
+        //byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions);
 
         /// <summary>
         /// Asynchronously serializes the specified object to a sequence of bytes,
@@ -57,7 +57,7 @@ namespace ArangoDBNetStandard.Serialization
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
-        string SerializeToString<T>(T item, ApiClientSerializationOptions serializationOptions);
+        //string SerializeToString<T>(T item, ApiClientSerializationOptions serializationOptions);
 
         /// <summary>
         /// Asynchronously serializes the specified object to a JSON string,

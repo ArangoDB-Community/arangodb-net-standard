@@ -118,17 +118,17 @@ namespace ArangoDBNetStandard.CursorApi
         public virtual async Task<PostCursorResponse<T>> PostCursorAsync<T>(
             PostCursorBody postCursorBody, CursorHeaderProperties headerProperties = null)
         {
-            var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(postCursorBody, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             var headerCollection = GetHeaderCollection(headerProperties);
             using (var response = await _client.PostAsync(_cursorApiPath, content, headerCollection).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostCursorResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostCursorResponse<T>>(stream).ConfigureAwait(false);
                 }
 
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -145,10 +145,10 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteCursorResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteCursorResponse>(stream);
                 }
 
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -166,10 +166,10 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutCursorResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutCursorResponse<T>>(stream);
                 }
 
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

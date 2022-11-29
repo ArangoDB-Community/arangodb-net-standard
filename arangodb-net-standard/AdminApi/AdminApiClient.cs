@@ -68,9 +68,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetLogsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetLogsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -93,7 +93,7 @@ namespace ArangoDBNetStandard.AdminApi
                 {
                     return true;
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -115,9 +115,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetServerIdResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetServerIdResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -138,9 +138,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetServerRoleResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetServerRoleResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -161,9 +161,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetServerEngineTypeResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetServerEngineTypeResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -189,9 +189,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetServerVersionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetServerVersionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

@@ -59,9 +59,9 @@ namespace ArangoDBNetStandard.IndexApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetIndexResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetIndexResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -78,9 +78,9 @@ namespace ArangoDBNetStandard.IndexApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteIndexResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteIndexResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -111,9 +111,9 @@ namespace ArangoDBNetStandard.IndexApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetAllCollectionIndexesResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetAllCollectionIndexesResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -139,15 +139,15 @@ namespace ArangoDBNetStandard.IndexApi
             }
 
             uri += '?' + query.ToQueryString();
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PostAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<IndexResponseBase>(stream);
+                    return await DeserializeJsonFromStreamAsync<IndexResponseBase>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

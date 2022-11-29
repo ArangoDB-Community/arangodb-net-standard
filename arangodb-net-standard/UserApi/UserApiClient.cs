@@ -55,15 +55,15 @@ namespace ArangoDBNetStandard.UserApi
         /// <returns></returns>
         public virtual async Task<PostUserResponse> PostUserAsync(PostUserBody body)
         {
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PostAsync(_userApiPath, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostUserResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostUserResponse>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -78,15 +78,15 @@ namespace ArangoDBNetStandard.UserApi
         public virtual async Task<PutUserResponse> PutUserAsync(string username, PutUserBody body)
         {
             string uri = _userApiPath + '/' + username;
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutUserResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutUserResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -101,15 +101,15 @@ namespace ArangoDBNetStandard.UserApi
         public virtual async Task<PatchUserResponse> PatchUserAsync(string username, PatchUserBody body)
         {
             string uri = _userApiPath + '/' + username;
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PatchAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PatchUserResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PatchUserResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -128,9 +128,9 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetUserResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetUserResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -148,9 +148,9 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteUserResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteUserResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -168,9 +168,9 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetUsersResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetUsersResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -189,15 +189,15 @@ namespace ArangoDBNetStandard.UserApi
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName);
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutAccessLevelResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutAccessLevelResponse>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -218,9 +218,9 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetAccessLevelResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetAccessLevelResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -244,9 +244,9 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteAccessLevelResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteAccessLevelResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -271,9 +271,9 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetAccessibleDatabasesResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetAccessibleDatabasesResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -295,15 +295,15 @@ namespace ArangoDBNetStandard.UserApi
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName) + "/" +
                 WebUtility.UrlEncode(collectionName);
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PutAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutAccessLevelResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutAccessLevelResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -327,9 +327,9 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetAccessLevelResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetAccessLevelResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -356,9 +356,9 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteAccessLevelResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteAccessLevelResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

@@ -53,15 +53,15 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <returns></returns>
         public virtual async Task<PostDatabaseResponse> PostDatabaseAsync(PostDatabaseBody request)
         {
-            var content = GetContent(request, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(request, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _client.PostAsync(_databaseApiPath, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostDatabaseResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostDatabaseResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -79,9 +79,9 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteDatabaseResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteDatabaseResponse>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -101,9 +101,9 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetDatabasesResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetDatabasesResponse>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -118,9 +118,9 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetDatabasesResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetDatabasesResponse>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -135,9 +135,9 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCurrentDatabaseInfoResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetCurrentDatabaseInfoResponse>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

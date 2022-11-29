@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,7 +47,8 @@ namespace ArangoDBNetStandard.Serialization
         /// <returns></returns>
         public override async Task<T> DeserializeFromStreamAsync<T>(Stream stream)
         {
-            return await Task.Run(() => { return DeserializeFromStream<T>(stream); });
+            T result = DeserializeFromStream<T>(stream);
+            return await Task.FromResult(result);
         }
 
         /// <summary>
@@ -75,7 +77,8 @@ namespace ArangoDBNetStandard.Serialization
         /// <returns></returns>
         public override async Task<byte[]> SerializeAsync<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
-            return await Task.Run(() => { return Serialize(item, serializationOptions); });
+            var result = Serialize<T>(item,serializationOptions);
+            return await Task.FromResult(result);
         }
 
         /// <summary>
@@ -128,7 +131,8 @@ namespace ArangoDBNetStandard.Serialization
         /// <returns></returns>
         public override async Task<string> SerializeToStringAsync<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
-            return await Task.Run(() => { return SerializeToString(item, serializationOptions); });
+            var result = SerializeToString(item, serializationOptions);
+            return await Task.FromResult(result);
         }
     }
 }

@@ -85,7 +85,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi
             var options = new ApiClientSerializationOptions(true, true);
             foreach (var valueArr in body.ValueArrays)
             {
-                sb.AppendLine(GetContentString(valueArr, options));
+                sb.AppendLine(await GetContentStringAsync(valueArr, options).ConfigureAwait(false));
             }
             return await PostImportDocumentArraysAsync(query, sb.ToString())
                 .ConfigureAwait(false);
@@ -125,9 +125,9 @@ namespace ArangoDBNetStandard.BulkOperationsApi
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<ImportDocumentsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<ImportDocumentsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -170,13 +170,13 @@ namespace ArangoDBNetStandard.BulkOperationsApi
                 //body should be a list of documents seperated by newline char
                 foreach (var doc in body.Documents)
                 {
-                    sb.AppendLine(GetContentString(doc, options));
+                    sb.AppendLine(await GetContentStringAsync(doc, options).ConfigureAwait(false));
                 }
             }
             else
             {
                 //body should be one array of JSON objects
-                sb.Append(GetContentString(body.Documents, options));
+                sb.Append(await GetContentStringAsync(body.Documents, options).ConfigureAwait(false));
             }
             return await PostImportDocumentObjectsAsync(query, sb.ToString())
                 .ConfigureAwait(false);
@@ -223,9 +223,9 @@ namespace ArangoDBNetStandard.BulkOperationsApi
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<ImportDocumentsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<ImportDocumentsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }
