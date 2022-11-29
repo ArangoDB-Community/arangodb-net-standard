@@ -35,7 +35,7 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <summary>
         /// Flags containing specific driver information.
         /// </summary>
-        public List<string> DriverFlags { get; set; }
+        public IEnumerable<string> DriverFlags { get; set; }
 
         /// <summary>
         /// Create <see cref="HttpApiTransport"/> from an existing <see cref="HttpClient"/> instance.
