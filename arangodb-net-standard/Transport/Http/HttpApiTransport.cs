@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.Transport.Http
@@ -275,13 +276,16 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> DeleteAsync(
-            string requestUri, WebHeaderCollection webHeaderCollection = null)
+            string requestUri,
+            WebHeaderCollection webHeaderCollection = null,
+            CancellationToken token = default)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, requestUri);
             ApplyHeaders(webHeaderCollection, request.Headers);
-            var response = await _client.SendAsync(request).ConfigureAwait(false);
+            var response = await _client.SendAsync(request, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -291,9 +295,13 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="content"></param>
         /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> DeleteAsync(
-            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null)
+            string requestUri,
+            byte[] content,
+            WebHeaderCollection webHeaderCollection = null,
+            CancellationToken token = default)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, requestUri)
             {
@@ -302,7 +310,7 @@ namespace ArangoDBNetStandard.Transport.Http
 
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
             ApplyHeaders(webHeaderCollection, request.Content.Headers);
-            var response = await _client.SendAsync(request).ConfigureAwait(false);
+            var response = await _client.SendAsync(request, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -312,14 +320,18 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="content">The content of the request, must not be null.</param>
         /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> PostAsync(
-            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null)
+            string requestUri,
+            byte[] content,
+            WebHeaderCollection webHeaderCollection = null,
+            CancellationToken token = default)
         {
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
             ApplyHeaders(webHeaderCollection, httpContent.Headers);
-            var response = await _client.PostAsync(requestUri, httpContent).ConfigureAwait(false);
+            var response = await _client.PostAsync(requestUri, httpContent, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -329,14 +341,18 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="content">The content of the request, must not be null.</param>
         /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> PutAsync(
-            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null)
+            string requestUri,
+            byte[] content,
+            WebHeaderCollection webHeaderCollection = null,
+            CancellationToken token = default)
         {
             var httpContent = new ByteArrayContent(content);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
             ApplyHeaders(webHeaderCollection, httpContent.Headers);
-            var response = await _client.PutAsync(requestUri, httpContent).ConfigureAwait(false);
+            var response = await _client.PutAsync(requestUri, httpContent, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -345,12 +361,16 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="requestUri">The content of the request, must not be null.</param>
         /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public async Task<IApiClientResponse> GetAsync(string requestUri, WebHeaderCollection webHeaderCollection = null)
+        public async Task<IApiClientResponse> GetAsync(
+            string requestUri,
+            WebHeaderCollection webHeaderCollection = null,
+            CancellationToken token = default)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
             ApplyHeaders(webHeaderCollection, request.Headers);
-            var response = await _client.SendAsync(request).ConfigureAwait(false);
+            var response = await _client.SendAsync(request, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -360,9 +380,13 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="requestUri"></param>
         /// <param name="content">The content of the request, must not be null.</param>
         /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> PatchAsync(
-            string requestUri, byte[] content, WebHeaderCollection webHeaderCollection = null)
+            string requestUri,
+            byte[] content,
+            WebHeaderCollection webHeaderCollection = null,
+            CancellationToken token = default)
         {
             var method = new HttpMethod("PATCH");
             var request = new HttpRequestMessage(method, requestUri)
@@ -372,7 +396,7 @@ namespace ArangoDBNetStandard.Transport.Http
 
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(_contentTypeMap[_contentType]);
             ApplyHeaders(webHeaderCollection, request.Content.Headers);
-            var response = await _client.SendAsync(request).ConfigureAwait(false);
+            var response = await _client.SendAsync(request, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
 
@@ -381,14 +405,16 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public async Task<IApiClientResponse> HeadAsync(
             string requestUri,
-            WebHeaderCollection webHeaderCollection = null)
+            WebHeaderCollection webHeaderCollection = null,
+            CancellationToken token = default)
         {
             var request = new HttpRequestMessage(HttpMethod.Head, requestUri);
             ApplyHeaders(webHeaderCollection, request.Headers);
-            var response = await _client.SendAsync(request);
+            var response = await _client.SendAsync(request, token);
             return new HttpApiClientResponse(response);
         }
 

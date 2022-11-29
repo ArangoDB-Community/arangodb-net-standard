@@ -112,7 +112,7 @@ namespace ArangoDBNetStandard.Serialization
 
             if (serializationOptions.UseCamelCasePropertyNames)
             {
-                jsonSettings.ContractResolver = new CamelCasePropertyNamesExceptDictionaryContractResolver();
+                jsonSettings.ContractResolver = new CamelCasePropertyNamesExceptDictionaryContractResolver(serializationOptions);
             }
 
             string json = JsonConvert.SerializeObject(item, jsonSettings);

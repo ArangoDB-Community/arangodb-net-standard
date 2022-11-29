@@ -2,6 +2,7 @@
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.DatabaseApi
@@ -50,11 +51,12 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// (Only possible from within the _system database)
         /// </summary>
         /// <param name="request">The parameters required by this endpoint.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PostDatabaseResponse> PostDatabaseAsync(PostDatabaseBody request)
+        public virtual async Task<PostDatabaseResponse> PostDatabaseAsync(PostDatabaseBody request, CancellationToken token = default)
         {
-            var content = await GetContentAsync(request, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PostAsync(_databaseApiPath, content).ConfigureAwait(false))
+            var content = GetContent(request, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            using (var response = await _client.PostAsync(_databaseApiPath, content, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -71,10 +73,11 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// DELETE /_api/database/{database-name}
         /// </summary>
         /// <param name="databaseName"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string databaseName)
+        public virtual async Task<DeleteDatabaseResponse> DeleteDatabaseAsync(string databaseName, CancellationToken token = default)
         {
-            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + WebUtility.UrlEncode(databaseName)).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(_databaseApiPath + "/" + WebUtility.UrlEncode(databaseName), null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -89,14 +92,15 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// Retrieves the list of all existing databases.
         /// (Only possible from within the _system database)
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// You should use <see cref="GetUserDatabasesAsync"/> to fetch the list of the databases
         /// available for the current user.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<GetDatabasesResponse> GetDatabasesAsync()
+        public virtual async Task<GetDatabasesResponse> GetDatabasesAsync(CancellationToken token = default)
         {
-            using (var response = await _client.GetAsync(_databaseApiPath).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(_databaseApiPath, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -110,10 +114,11 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <summary>
         /// Retrieves the list of all databases the current user can access.
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetDatabasesResponse> GetUserDatabasesAsync()
+        public virtual async Task<GetDatabasesResponse> GetUserDatabasesAsync(CancellationToken token = default)
         {
-            using (var response = await _client.GetAsync(_databaseApiPath + "/user").ConfigureAwait(false))
+            using (var response = await _client.GetAsync(_databaseApiPath + "/user", null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -127,10 +132,11 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <summary>
         /// Retrieves information about the current database.
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetCurrentDatabaseInfoResponse> GetCurrentDatabaseInfoAsync()
+        public virtual async Task<GetCurrentDatabaseInfoResponse> GetCurrentDatabaseInfoAsync(CancellationToken token = default)
         {
-            using (var response = await _client.GetAsync(_databaseApiPath + "/current").ConfigureAwait(false))
+            using (var response = await _client.GetAsync(_databaseApiPath + "/current",null,token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CollectionApi;
@@ -159,8 +160,9 @@ namespace ArangoDBNetStandardTest.CollectionApi
             mockTransport.Setup(x => x.PostAsync(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
-                It.IsAny<WebHeaderCollection>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                It.IsAny<WebHeaderCollection>(),
+                It.IsAny<CancellationToken>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestUri = uri;
                     return Task.FromResult(mockResponse.Object);
@@ -440,7 +442,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         {
             var body = new PutCollectionPropertyBody
             {
-                JournalSize = 313136,
+                //JournalSize = 313136,
                 WaitForSync = false
             };
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>

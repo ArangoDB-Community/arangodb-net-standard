@@ -17,7 +17,8 @@ namespace ArangoDBNetStandard.Serialization
                 useCamelCasePropertyNames: false,
                 ignoreNullValues: true,
                 useStringEnumConversion: false,
-                ignoreMissingMember: true);
+                ignoreMissingMember: true,
+                camelCasePropertyNamesOfObjectValuesInDictionaries: false);
 
         /// <summary>
         /// Deserializes the data structure contained by the specified stream

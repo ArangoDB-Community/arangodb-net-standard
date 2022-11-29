@@ -20,6 +20,7 @@ namespace ArangoDBNetStandardTest.CursorApi
             await CreateDatabase(dbName);
 
             ArangoDBClient = GetArangoDBClient(dbName);
+            await GetVersionAsync(ArangoDBClient);
         }
     }
 }

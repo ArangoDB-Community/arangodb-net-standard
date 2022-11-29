@@ -24,6 +24,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             string dbName = nameof(GraphApiClientTest);
             await CreateDatabase(dbName);
             ArangoDBClient = GetArangoDBClient(dbName);
+            await GetVersionAsync(ArangoDBClient);
 
             try
             {

@@ -5,6 +5,7 @@ using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.AnalyzerApi.Models;
 using System;
+using System.Threading;
 
 namespace ArangoDBNetStandard.AnalyzerApi
 {
@@ -51,11 +52,12 @@ namespace ArangoDBNetStandard.AnalyzerApi
         /// Fetch the list of available Analyzer definitions.
         /// GET /_api/analyzer
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetAllAnalyzersResponse> GetAllAnalyzersAsync()
+        public virtual async Task<GetAllAnalyzersResponse> GetAllAnalyzersAsync(CancellationToken token = default)
         {
             string uri = _analyzerApiPath;
-            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -71,8 +73,9 @@ namespace ArangoDBNetStandard.AnalyzerApi
         /// POST /_api/analyzer
         /// </summary>
         /// <param name="body">The properties of the new analyzer.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<Analyzer> PostAnalyzerAsync(Analyzer body)
+        public virtual async Task<Analyzer> PostAnalyzerAsync(Analyzer body, CancellationToken token = default)
         {
             if (body == null)
             {
@@ -80,7 +83,7 @@ namespace ArangoDBNetStandard.AnalyzerApi
             }
             var uri = _analyzerApiPath;
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PostAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(uri, content, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -96,15 +99,16 @@ namespace ArangoDBNetStandard.AnalyzerApi
         /// GET /_api/analyzer/{analyzer-name}
         /// </summary>
         /// <param name="analyzerName">The name of the analyzer</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetAnalyzerResponse> GetAnalyzerAsync(string analyzerName)
+        public virtual async Task<GetAnalyzerResponse> GetAnalyzerAsync(string analyzerName, CancellationToken token = default)
         {
             if (string.IsNullOrEmpty(analyzerName))
             {
                 throw new ArgumentException("Analyzer name is required", nameof(analyzerName));
             }
             string uri = _analyzerApiPath + '/' + WebUtility.UrlEncode(analyzerName);
-            using (var response = await _client.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -120,15 +124,16 @@ namespace ArangoDBNetStandard.AnalyzerApi
         /// DELETE /_api/analyzer/{analyzer-name}
         /// </summary>
         /// <param name="analyzerName">The name of the analyzer</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<DeleteAnalyzerResponse> DeleteAnalyzerAsync(string analyzerName)
+        public virtual async Task<DeleteAnalyzerResponse> DeleteAnalyzerAsync(string analyzerName, CancellationToken token = default)
         {
             if (string.IsNullOrEmpty(analyzerName))
             {
                 throw new ArgumentException("Analyzer name is required", nameof(analyzerName));
             }
             string uri = _analyzerApiPath + '/' + WebUtility.UrlEncode(analyzerName);
-            using (var response = await _client.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(uri,null,token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
