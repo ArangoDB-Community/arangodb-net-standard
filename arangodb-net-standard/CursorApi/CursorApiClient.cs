@@ -204,9 +204,9 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<CursorResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<CursorResponse<T>>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

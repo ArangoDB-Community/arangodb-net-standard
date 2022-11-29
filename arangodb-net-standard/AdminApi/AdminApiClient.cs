@@ -220,9 +220,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetLicenseResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetLicenseResponse>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -245,15 +245,15 @@ namespace ArangoDBNetStandard.AdminApi
             {
                 uri += '?' + query.ToQueryString();
             }
-            var content = GetContent(licenseKey, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(licenseKey, new ApiClientSerializationOptions(true, true));
             using (var response = await _client.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutLicenseResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutLicenseResponse>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

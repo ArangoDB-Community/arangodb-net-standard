@@ -55,7 +55,7 @@ namespace ArangoDBNetStandard.DatabaseApi
         /// <returns></returns>
         public virtual async Task<PostDatabaseResponse> PostDatabaseAsync(PostDatabaseBody request, CancellationToken token = default)
         {
-            var content = GetContent(request, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            var content = await GetContentAsync(request, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _client.PostAsync(_databaseApiPath, content, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)

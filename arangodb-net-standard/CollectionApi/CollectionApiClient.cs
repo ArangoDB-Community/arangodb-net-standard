@@ -239,7 +239,7 @@ namespace ArangoDBNetStandard.CollectionApi
         public virtual async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body,
             CancellationToken token = default)
         {
-            var content = GetContentAsync(body, new ApiClientSerializationOptions(true, false)).ConfigureAwait(false);
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, false)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(
                 _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/rename", 
                 content,
@@ -293,7 +293,7 @@ namespace ArangoDBNetStandard.CollectionApi
             PutCollectionPropertyBody body,
             CancellationToken token = default)
         {
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(
                 _collectionApiPath + "/" + collectionName + "/properties", 
                 content,
@@ -449,7 +449,7 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw new ArgumentException($"{nameof(body)} is required", nameof(body));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/responsibleShard";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(uriString, content, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)

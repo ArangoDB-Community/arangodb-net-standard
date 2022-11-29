@@ -528,9 +528,9 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<List<GetQueryRule>>(stream);
+                    return await DeserializeJsonFromStreamAsync<List<GetQueryRule>>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }
