@@ -55,7 +55,7 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="webHeaderCollection">Object containing a dictionary of Header keys and values.</param>
         /// <param name="headers">The header to update.</param>
         /// <param name="driverFlags">Driver flags that are passed to the server.</param>
-        private static void ApplyHeaders(WebHeaderCollection webHeaderCollection, HttpHeaders headers, List<string> driverFlags = null)
+        private static void ApplyHeaders(WebHeaderCollection webHeaderCollection, HttpHeaders headers, IEnumerable<string> driverFlags = null)
         {
             if (webHeaderCollection != null)
             {
