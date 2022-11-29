@@ -82,7 +82,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// 
         [System.Obsolete()]
         public bool IsVolatile { get; set; }
-
+        
         /// <summary>
         /// Write concern for the collection (default: 1). It determines how many copies of 
         /// each shard are required to be in sync on the different DB-Servers. If there are

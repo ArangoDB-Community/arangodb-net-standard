@@ -48,5 +48,10 @@ namespace ArangoDBNetStandard.CollectionApi.Models
 
         [System.Obsolete()]
         public bool DoCompact { get; set; }
+
+        /// <summary>
+        /// The collection level schema for documents.
+        /// </summary>
+        public CollectionSchema Schema { get; set; }
     }
 }

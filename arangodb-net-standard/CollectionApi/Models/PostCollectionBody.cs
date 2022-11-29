@@ -146,6 +146,10 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         public bool? WaitForSync { get; set; }
 
         /// <summary>
+        /// Optional object property that specifies the collection level schema for documents.
+        /// </summary>
+        public CollectionSchema Schema { get; set; }
+
         /// Optional. A list of computed values.
         /// </summary>
         public List<ComputedValue> ComputedValues { get; set; }
