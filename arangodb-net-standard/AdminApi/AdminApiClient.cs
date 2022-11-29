@@ -201,5 +201,60 @@ namespace ArangoDBNetStandard.AdminApi
                 throw await GetApiErrorException(response).ConfigureAwait(false);
             }
         }
+
+        /// <summary>
+        /// Retrieves the server license information.
+        /// GET /_admin/license
+        /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// For further information see 
+        /// https://www.arangodb.com/docs/3.9/administration-license.html
+        /// </remarks>
+        public virtual async Task<GetLicenseResponse> GetLicenseAsync(CancellationToken token = default)
+        {
+            string uri = $"{_adminApiPath}/license";
+            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<GetLicenseResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Sets a new license key.
+        /// PUT /_admin/license
+        /// </summary>
+        /// <param name="licenseKey">The new license key</param>
+        /// <param name="query">Query string parameters</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// For further information see 
+        /// https://www.arangodb.com/docs/3.9/administration-license.html
+        /// </remarks>
+        public virtual async Task<PutLicenseResponse> PutLicenseAsync(string licenseKey, PutLicenseQuery query = null, CancellationToken token = default)
+        {
+            string uri = $"{_adminApiPath}/license";
+            if (query != null)
+            {
+                uri += '?' + query.ToQueryString();
+            }
+            var content = GetContent(licenseKey, new ApiClientSerializationOptions(true, true));
+            using (var response = await _client.PutAsync(uri, content, token: token).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<PutLicenseResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
+        }
     }
 }

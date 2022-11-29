@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release --filter "Feature!=StreamTransaction&RunningMode!=Cluster&Feature!=Analyzer&ServerVersion!=3_8_PLUS"
+            dotnet test -c Release --filter "Feature!=StreamTransaction&RunningMode!=Cluster&Feature!=Analyzer&ServerVersion!=3_8_PLUS&ServerVersion!=3_9_PLUS"
             
   "test-arangodb-3_5":
     working_directory: ~/arangodb-net-standard
@@ -83,7 +83,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release --filter "RunningMode!=Cluster&ServerVersion!=3_8_PLUS"
+            dotnet test -c Release --filter "RunningMode!=Cluster&ServerVersion!=3_8_PLUS&ServerVersion!=3_9_PLUS"
 
   "test-arangodb-3_6":
     working_directory: ~/arangodb-net-standard
@@ -102,7 +102,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release --filter "RunningMode!=Cluster&ServerVersion!=3_8_PLUS"
+            dotnet test -c Release --filter "RunningMode!=Cluster&ServerVersion!=3_8_PLUS&ServerVersion!=3_9_PLUS"
 
   "test-arangodb-3_7":
     working_directory: ~/arangodb-net-standard
@@ -121,7 +121,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release --filter "RunningMode!=Cluster&ServerVersion!=3_8_PLUS"
+            dotnet test -c Release --filter "RunningMode!=Cluster&ServerVersion!=3_8_PLUS&ServerVersion!=3_9_PLUS"
   
   "test-arangodb-3_8":
     working_directory: ~/arangodb-net-standard
@@ -140,7 +140,7 @@ jobs:
       - run:
           name: Test
           command:
-            dotnet test -c Release --filter RunningMode!=Cluster
+            dotnet test -c Release --filter "RunningMode!=Cluster&ServerVersion!=3_9_PLUS"
 
   "test-arangodb-3_9":
     working_directory: ~/arangodb-net-standard
