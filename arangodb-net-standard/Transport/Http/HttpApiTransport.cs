@@ -68,10 +68,10 @@ namespace ArangoDBNetStandard.Transport.Http
             string flags = string.Empty;
             if (driverFlags != null)
             {
-                flags = string.Join(";",driverFlags);
+                flags = string.Join(";", driverFlags);
             }
             var assemblyInfo = Assembly.GetCallingAssembly().GetName();
-            headers.Add(CustomHttpHeaders.DriverInfoHeader, $"{assemblyInfo.Name}/{assemblyInfo.Version} ({flags})");
+            headers.Add(CustomHttpHeaders.DriverInfoHeader, $"{DriverConstants.DRIVER_NAME}/{assemblyInfo.Version} ({flags})");
         }
 
         /// <summary>
