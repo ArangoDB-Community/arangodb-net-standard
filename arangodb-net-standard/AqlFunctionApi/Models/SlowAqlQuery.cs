@@ -4,7 +4,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
 {
     /// <summary>
     /// Response from
-    /// <see cref="AqlFunctionApiClient.GetSlowAqlQueriesAsync(GetSlowAqlQueriesQuery)"/>
+    /// <see cref="AqlFunctionApiClient.GetSlowAqlQueriesAsync"/>
     /// Represents an AQL query that are finished 
     /// and have exceeded the slow query threshold 
     /// in the selected database.

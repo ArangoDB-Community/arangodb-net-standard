@@ -3,7 +3,7 @@
 namespace ArangoDBNetStandard.AdminApi.Models
 {
     /// <summary>
-    /// Parameters for <see cref="IAdminApiClient.GetLogsAsync(GetLogsQuery)"/>
+    /// Parameters for <see cref="IAdminApiClient.GetLogsAsync"/>
     /// </summary>
     public class GetLogsQuery
     {

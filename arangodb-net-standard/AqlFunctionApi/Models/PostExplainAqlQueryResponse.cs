@@ -3,7 +3,7 @@
 namespace ArangoDBNetStandard.AqlFunctionApi.Models
 {
     /// <summary>
-    /// Response from <see cref="AqlFunctionApiClient.PostExplainAqlQueryAsync(PostExplainAqlQueryBody)"/>
+    /// Response from <see cref="AqlFunctionApiClient.PostExplainAqlQueryAsync"/>
     /// See https://www.arangodb.com/docs/stable/http/aql-query.html#explain-an-aql-query
     /// </summary>
     public class PostExplainAqlQueryResponse:ResponseBase

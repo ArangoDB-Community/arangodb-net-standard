@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the global properties of the AQL Query Cache
     /// Response from
-    /// <see cref="AqlFunctionApiClient.GetQueryCacheGlobalPropertiesAsync()"/>
+    /// <see cref="AqlFunctionApiClient.GetQueryCacheGlobalPropertiesAsync"/>
     /// </summary>
     public class QueryCacheGlobalProperties
     {
