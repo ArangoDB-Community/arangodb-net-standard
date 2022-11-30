@@ -31,7 +31,7 @@ namespace ArangoDBNetStandard.Serialization
         {
             // Use a local serializer for writing instead of the passed-in serializer
             JsonSerializer mySerializer;
-            if (_serializationOptions != null && _serializationOptions.CamelCasePropertyNamesOfObjectValuesInDictionaries)
+            if (_serializationOptions != null && _serializationOptions.ApplySerializationOptionsToObjectValuesInDictionaries)
             {
                 mySerializer = new JsonSerializer
                 {
