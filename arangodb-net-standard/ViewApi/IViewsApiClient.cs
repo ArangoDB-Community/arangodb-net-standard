@@ -1,4 +1,5 @@
-﻿using ArangoDBNetStandard.ViewApi.Models;
+﻿using ArangoDBNetStandard.Serialization;
+using ArangoDBNetStandard.ViewApi.Models;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.ViewApi
@@ -21,8 +22,9 @@ namespace ArangoDBNetStandard.ViewApi
         /// POST /_api/view
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="serializationOptions">Custom serialization options to be used.</param>
         /// <returns></returns>
-        Task<ViewResponse> PostCreateViewAsync(ViewDetails body);
+        Task<ViewResponse> PostCreateViewAsync(ViewDetails body, ApiClientSerializationOptions serializationOptions = null);
 
         /// <summary>
         /// Delete / drop a view

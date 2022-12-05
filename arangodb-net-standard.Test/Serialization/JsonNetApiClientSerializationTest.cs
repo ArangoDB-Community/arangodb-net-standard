@@ -172,7 +172,7 @@ namespace ArangoDBNetStandardTest.Serialization
         }
 
         [Fact]
-        public void Serialize_ShouldCamelCaseBindVars_WhenSerializingPostCursorBody()
+        public void Serialize_ShouldCamelCaseBindVars_WhenSerializingPostCursorBodyWithDictionaryOption()
         {
             var body = new PostCursorBody
             {
@@ -223,7 +223,7 @@ namespace ArangoDBNetStandardTest.Serialization
 
 
         [Fact]
-        public void Serialize_ShouldCamelCaseParams_WhenSerializingPostTransactionBody()
+        public void Serialize_ShouldCamelCaseParams_WhenSerializingPostTransactionBodyWithDictionaryOption()
         {
             var body = new PostTransactionBody
             {

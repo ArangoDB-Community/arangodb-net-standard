@@ -70,11 +70,15 @@ namespace ArangoDBNetStandard.ViewApi
         /// POST /_api/view
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="serializationOptions">Custom serialization options to be used.</param>
         /// <returns></returns>
-        public virtual async Task<ViewResponse> PostCreateViewAsync(ViewDetails body)
+        public virtual async Task<ViewResponse> PostCreateViewAsync(ViewDetails body, ApiClientSerializationOptions serializationOptions = null)
         {
             string uri = _apiPath;
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = GetContent(body, 
+                serializationOptions ?? new ApiClientSerializationOptions(
+                    useCamelCasePropertyNames: true, 
+                    ignoreNullValues: true));
             using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
