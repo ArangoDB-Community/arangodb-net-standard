@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard.DocumentApi.Models;
 using ArangoDBNetStandard.Serialization;
@@ -49,8 +50,11 @@ namespace ArangoDBNetStandard.DocumentApi
         /// Method to get the header collection.
         /// </summary>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns><see cref="WebHeaderCollection"/> values.</returns>
-        protected virtual WebHeaderCollection GetHeaderCollection(DocumentHeaderProperties headers)
+        protected virtual WebHeaderCollection GetHeaderCollection(
+            DocumentHeaderProperties headers,
+            CancellationToken token = default)
         {
             var headerCollection = headers == null ? new WebHeaderCollection() : headers.ToWebHeaderCollection();
             return headerCollection;
@@ -66,20 +70,22 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual Task<PostDocumentResponse<T>> PostDocumentAsync<T>(
             string collectionName,
             T document,
             PostDocumentsQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             return PostDocumentAsync<T, T>(
                 collectionName,
                 document,
                 query,
                 serializationOptions,
-                headers);
+                headers, token: token);
         }
 
         /// <summary>
@@ -96,13 +102,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostDocumentResponse<U>> PostDocumentAsync<T, U>(
             string collectionName,
             T document,
             PostDocumentsQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -112,7 +120,7 @@ namespace ArangoDBNetStandard.DocumentApi
 
             var content = GetContent(document, serializationOptions);
             var headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.PostAsync(uriString, content, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(uriString, content, headerCollection, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -134,13 +142,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(
             string collectionName,
             IList<T> documents,
             PostDocumentsQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uriString = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -150,7 +160,7 @@ namespace ArangoDBNetStandard.DocumentApi
 
             var content = GetContent(documents, serializationOptions);
             var headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.PostAsync(uriString, content, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(uriString, content, headerCollection, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -179,13 +189,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
             string collectionName,
             IList<T> documents,
             PutDocumentsQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -195,7 +207,7 @@ namespace ArangoDBNetStandard.DocumentApi
 
             var content = GetContent(documents, serializationOptions);
             var headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.PutAsync(uri, content, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, content, headerCollection, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -226,13 +238,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string documentId,
             T doc,
             PutDocumentQuery opts = null,
             ApiClientSerializationOptions serializationOptions = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
@@ -243,7 +257,7 @@ namespace ArangoDBNetStandard.DocumentApi
 
             var content = GetContent(doc, serializationOptions);
             var headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.PutAsync(uri, content, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, content, headerCollection, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -266,49 +280,67 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="doc"></param>
         /// <param name="opts"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual Task<PutDocumentResponse<T>> PutDocumentAsync<T>(
             string collectionName,
             string documentKey,
             T doc,
             PutDocumentQuery opts = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             return PutDocumentAsync<T>(
                 $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
                 doc,
                 opts,
-                headers: headers);
+                headers: headers, token: token);
         }
 
         /// <summary>
         /// Get an existing document.
         /// </summary>
+        /// <remarks>
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
+        /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<T> GetDocumentAsync<T>(
-            string collectionName, string documentKey, DocumentHeaderProperties headers = null)
+            string collectionName, 
+            string documentKey,
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             return await GetDocumentAsync<T>(
-                $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", headers)
+                $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}", headers, token: token)
                 .ConfigureAwait(false);
         }
 
         /// <summary>
         /// Get an existing document based on its Document ID.
         /// </summary>
+        /// <remarks>
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
+        /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="documentId"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<T> GetDocumentAsync<T>(string documentId, DocumentHeaderProperties headers = null)
+        public virtual async Task<T> GetDocumentAsync<T>(
+            string documentId,
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
             var headerCollection = GetHeaderCollection(headers);
-            var response = await _client.GetAsync(_docApiPath + "/" + documentId, headerCollection).ConfigureAwait(false);
+            var response = await _client.GetAsync(_docApiPath + "/" + documentId, headerCollection, token: token).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
@@ -322,21 +354,27 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <summary>
         /// Get multiple documents.
         /// </summary>
+        /// <remarks>
+        /// This method supports Read from Followers (dirty-reads). Introduced in ArangoDB 3.10.
+        /// To enable it, set the <see cref="ApiHeaderProperties.AllowReadFromFollowers"/> header property to true.
+        /// </remarks>
         /// <typeparam name="T">The type of the documents
         /// deserialized from the response.</typeparam>
         /// <param name="collectionName">Collection name</param>
         /// <param name="selectors">Document keys to fetch documents for</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<List<T>> GetDocumentsAsync<T>(
             string collectionName,
             IList<string> selectors,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = $"{_docApiPath}/{WebUtility.UrlEncode(collectionName)}?onlyget=true";
             var content = GetContent(selectors, new ApiClientSerializationOptions(false, true));
             var headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.PutAsync(uri, content, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, content, headerCollection, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -362,16 +400,18 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string collectionName,
             string documentKey,
             DeleteDocumentQuery query = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             return await DeleteDocumentAsync<object>(
                 $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
-                query, headers).ConfigureAwait(false);
+                query, headers, token: token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -386,13 +426,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteDocumentResponse<object>> DeleteDocumentAsync(
             string documentId,
             DeleteDocumentQuery query = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
-            return await DeleteDocumentAsync<object>(documentId, query, headers).ConfigureAwait(false);
+            return await DeleteDocumentAsync<object>(documentId, query, headers, token: token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -403,16 +445,18 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentKey"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
             string collectionName,
             string documentKey,
             DeleteDocumentQuery query = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             return await DeleteDocumentAsync<T>(
                 $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
-                query, headers).ConfigureAwait(false);
+                query, headers, token: token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -421,11 +465,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="documentId"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteDocumentResponse<T>> DeleteDocumentAsync<T>(
             string documentId,
             DeleteDocumentQuery query = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
@@ -435,7 +481,7 @@ namespace ArangoDBNetStandard.DocumentApi
             }
 
             var headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.DeleteAsync(uri, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(uri, headerCollection, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -462,14 +508,16 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="selectors"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(
             string collectionName,
             IList<string> selectors,
             DeleteDocumentsQuery query = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
-            return await DeleteDocumentsAsync<object>(collectionName, selectors, query, headers).ConfigureAwait(false);
+            return await DeleteDocumentsAsync<object>(collectionName, selectors, query, headers, token: token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -481,12 +529,14 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="selectors"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(
             string collectionName,
             IList<string> selectors,
             DeleteDocumentsQuery query = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -496,7 +546,7 @@ namespace ArangoDBNetStandard.DocumentApi
 
             var content = GetContent(selectors, new ApiClientSerializationOptions(false, false));
             var headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.DeleteAsync(uri, content, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(uri, content, headerCollection, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -539,13 +589,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
             string collectionName,
             IList<T> patches,
             PatchDocumentsQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = _docApiPath + "/" + WebUtility.UrlEncode(collectionName);
             if (query != null)
@@ -555,7 +607,7 @@ namespace ArangoDBNetStandard.DocumentApi
 
             var content = GetContent(patches, serializationOptions);
             var headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.PatchAsync(uri, content, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.PatchAsync(uri, content, headerCollection, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -591,7 +643,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// violated.
         /// PATCH/_api/document/{collection}
         /// </summary>
-        /// <typeparam name="T">Type of the patch object used to partially update documents.</typeparam>
+        /// <typeparam name="T">Type of the patch object used to partially update documents.
         /// <see cref="PatchDocumentsQuery.ReturnNew"/> or <see cref="PatchDocumentsQuery.ReturnOld"/>
         /// are used.</typeparam>
         /// <param name="collectionName"></param>
@@ -600,15 +652,17 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PatchDocumentsResponse<object>> PatchDocumentsAsync<T>(
           string collectionName,
           IList<T> patches,
           PatchDocumentsQuery query = null,
           ApiClientSerializationOptions serializationOptions = null,
-          DocumentHeaderProperties headers = null)
+          DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
-            return await PatchDocumentsAsync<T, object>(collectionName,patches,query,serializationOptions,headers);
+            return await PatchDocumentsAsync<T, object>(collectionName,patches,query,serializationOptions,headers, token: token);
         }
 
         /// <summary>
@@ -629,18 +683,20 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="body"></param>
         /// <param name="query"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
             string collectionName,
             string documentKey,
             T body,
             PatchDocumentQuery query = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string documentHandle = WebUtility.UrlEncode(collectionName) +
                 "/" + WebUtility.UrlEncode(documentKey);
 
-            return await PatchDocumentAsync<T, U>(documentHandle, body, query, headers: headers).ConfigureAwait(false);
+            return await PatchDocumentAsync<T, U>(documentHandle, body, query, headers: headers,token: token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -662,13 +718,15 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PatchDocumentResponse<U>> PatchDocumentAsync<T, U>(
             string documentId,
             T body,
             PatchDocumentQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
             string uriString = _docApiPath + "/" + documentId;
@@ -679,7 +737,7 @@ namespace ArangoDBNetStandard.DocumentApi
 
             var content = GetContent(body, serializationOptions);
             var headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.PatchAsync(uriString, content, headerCollection).ConfigureAwait(false))
+            using (var response = await _client.PatchAsync(uriString, content, headerCollection, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -700,19 +758,21 @@ namespace ArangoDBNetStandard.DocumentApi
         /// there.
         /// PATCH/_api/document/{document-handle}
         /// </summary>
-        /// <typeparam name="T">Type of the patch object used to partially update a document.</typeparam>
+        /// <typeparam name="T">Type of the patch object used to partially update a document.
         /// <see cref="PatchDocumentQuery.ReturnNew"/> or <see cref="PatchDocumentQuery.ReturnOld"/>
         /// are used.</typeparam>
         /// <param name="documentId"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public async Task<PatchDocumentResponse<object>> PatchDocumentAsync<T>(
             string documentId,
             T body,
-            PatchDocumentQuery query = null)
+            PatchDocumentQuery query = null,
+            CancellationToken token = default)
         {
-            return await PatchDocumentAsync<T, object>(documentId, body, query);
+            return await PatchDocumentAsync<T, object>(documentId, body, query, token: token);
         }
 
 
@@ -725,6 +785,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="collectionName"></param>
         /// <param name="documentKey"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// 200: is returned if the document was found. 
         /// 304: is returned if the “If-None-Match” header is given and the document has the same version. 
@@ -736,11 +797,13 @@ namespace ArangoDBNetStandard.DocumentApi
         public virtual async Task<HeadDocumentResponse> HeadDocumentAsync(
             string collectionName,
             string documentKey,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             return await HeadDocumentAsync(
                 $"{WebUtility.UrlEncode(collectionName)}/{WebUtility.UrlEncode(documentKey)}",
-                headers).ConfigureAwait(false);
+                headers,
+                token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -751,6 +814,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// </summary>
         /// <param name="documentId"></param>
         /// <param name="headers">The <see cref="DocumentHeaderProperties"/> values.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <exception cref="System.ArgumentException">Document ID is invalid.</exception>
         /// <remarks>
         /// 200: is returned if the document was found. 
@@ -762,12 +826,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public virtual async Task<HeadDocumentResponse> HeadDocumentAsync(
             string documentId,
-            DocumentHeaderProperties headers = null)
+            DocumentHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
             WebHeaderCollection headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.HeadAsync(uri, headerCollection))
+            using (var response = await _client.HeadAsync(uri, headerCollection,token))
             {
                 return new HeadDocumentResponse
                 {

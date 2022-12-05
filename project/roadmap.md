@@ -117,62 +117,12 @@ A tick indicates an item is implemented and has automated tests in place.
 
 ## Versions 1.1+
 
-### Other API implementations
-
 #### Collections API
 
-- [ ]	`PUT/_api/collection/{collection-name}/unload` Unload collection
-- [ ]	`PUT/_api/collection/{collection-name}/load` Load collection
-- [ ]	`GET/_api/collection/{collection-name}/checksum` Return checksum for the collection
+- [X]	`GET/_api/collection/{collection-name}/checksum` Return checksum for the collection
 - [X]	`GET/_api/collection/{collection-name}/figures` Return statistics for a collection
-- [ ]	`PUT/_api/collection/{collection-name}/loadIndexesIntoMemory` Load Indexes into Memory
-- [ ]	`PUT/_api/collection/{collection-name}/recalculateCount` Recalculate count of a collection
-- [ ]	`PUT/_api/collection/{collection-name}/rotate` Rotate journal of a collection
-
-#### Simple Queries API
-
-- [ ]	TODO
-
-#### Job API
-
-- [ ]	TODO
-
-#### Graph Edges API
-
-- [ ]	`GET/_api/edges/{collection-id}` Read in- or outbound edges
-
-#### Graph Traversal API
-
-- [ ]	`POST/_api/traversal` executes a traversal
-
-### Database Management API implementations
-
-#### Administration API
-
-- [ ]	TODO
-
-#### Cluster API
-
-- [ ]	TODO
-
-#### FOXX API
-
-- [ ]	TODO
-
-#### Indexes API
-
-- [ ]	TODO
-
-#### Replication API
-
-- [ ]	TODO
-
-## Version 2.0
-
-#### New transport implementations
-
-- [ ]	VelocyStream support
-- [ ]	VelocyPack-over-HTTP support
+- [X]	`PUT/_api/collection/{collection-name}/loadIndexesIntoMemory` Load Indexes into Memory
+- [X]	`PUT/_api/collection/{collection-name}/recalculateCount` Recalculate count of a collection
 
 #### Bulk Operations API
 - [X]	`POST /_api/import#document` Bulk Import Document Arrays
@@ -235,3 +185,40 @@ A tick indicates an item is implemented and has automated tests in place.
 - [X]	`GET/_admin/server/role` Return role of a server in a cluster
 - [X]	`GET/_api/engine` Return server database engine type
 - [X]	`GET/_api/version` Return server version
+
+## Version 2.0
+
+#### New transport implementations
+
+- [ ]	VelocyStream support
+- [ ]	VelocyPack-over-HTTP support
+
+#### Simple Queries API
+
+- [ ]	TODO
+
+#### Job API
+
+- [ ]	TODO
+
+#### Graph Edges API
+
+- [ ]	`GET/_api/edges/{collection-id}` Read in- or outbound edges
+
+#### Graph Traversal API
+
+- [ ]	`POST/_api/traversal` executes a traversal
+
+### Database Management API implementations
+
+#### Cluster API
+
+- [ ]	TODO
+
+#### FOXX API
+
+- [ ]	TODO
+
+#### Replication API
+
+- [ ]	TODO

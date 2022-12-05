@@ -1,5 +1,6 @@
 ﻿using ArangoDBNetStandard.Serialization;
-using ArangoDBNetStandard.ViewApi.Models;
+﻿using ArangoDBNetStandard.ViewApi.Models;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.ViewApi
@@ -14,8 +15,10 @@ namespace ArangoDBNetStandard.ViewApi
         /// regardless of their type. 
         /// GET /_api/view
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetAllViewsResponse> GetAllViewsAsync();
+        Task<GetAllViewsResponse> GetAllViewsAsync(
+            CancellationToken token = default);
 
         /// <summary>
         /// Create a new View
@@ -23,32 +26,39 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
         /// <param name="serializationOptions">Custom serialization options to be used.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<ViewResponse> PostCreateViewAsync(ViewDetails body, ApiClientSerializationOptions serializationOptions = null);
+        Task<ViewResponse> PostCreateViewAsync(ViewDetails body, ApiClientSerializationOptions serializationOptions = null, CancellationToken token = default);
 
         /// <summary>
         /// Delete / drop a view
         /// DELETE /_api/view/{view-name}
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view to drop.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<DeleteViewResponse> DeleteViewAsync(string viewNameOrId);
+        Task<DeleteViewResponse> DeleteViewAsync(string viewNameOrId,
+            CancellationToken token = default);
 
         /// <summary>
         /// Get information about a view
         /// GET /_api/view/{view-name}
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view to drop.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetViewResponse> GetViewAsync(string viewNameOrId);
+        Task<GetViewResponse> GetViewAsync(string viewNameOrId,
+            CancellationToken token = default);
 
         /// <summary>
         /// Get the properties of a view
         /// GET /_api/view/{view-name}/properties
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view to drop.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetViewPropertiesResponse> GetViewPropertiesAsync(string viewNameOrId);
+        Task<GetViewPropertiesResponse> GetViewPropertiesAsync(string viewNameOrId,
+            CancellationToken token = default);
 
         /// <summary>
         /// Partially changes properties of a view
@@ -56,8 +66,10 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<ViewResponse> PatchViewPropertiesAsync(string viewNameOrId, ViewDetails body);
+        Task<ViewResponse> PatchViewPropertiesAsync(string viewNameOrId, ViewDetails body,
+            CancellationToken token = default);
 
         /// <summary>
         /// Changes all properties of a view
@@ -65,8 +77,10 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body);
+        Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body,
+            CancellationToken token = default);
 
         /// <summary>
         /// Renames a view
@@ -74,8 +88,10 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>Note: This method is not available in a cluster.</remarks>
-        Task<PutRenameViewResponse> PutRenameViewAsync(string viewName, PutRenameViewBody body);
+        Task<PutRenameViewResponse> PutRenameViewAsync(string viewName, PutRenameViewBody body,
+            CancellationToken token = default);
     }
 }

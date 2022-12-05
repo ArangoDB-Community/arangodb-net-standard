@@ -19,7 +19,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi.Models
         public string Collection { get; set; }
 
         /// <summary>
-        /// Required for <see cref="BulkOperationsApiClient.PostImportDocumentObjectsAsync(ImportDocumentsQuery, ImportDocumentObjectsBody)"/>
+        /// Required for <see cref="BulkOperationsApiClient.PostImportDocumentObjectsAsync"/>
         /// Determines how the body of the request will be interpreted.
         /// Type can have the following values:
         /// 1) documents: When this type is used, each line in 

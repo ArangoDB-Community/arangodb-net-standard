@@ -3,6 +3,7 @@ using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System.Net;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace ArangoDBNetStandard.ViewApi
 {
@@ -50,11 +51,13 @@ namespace ArangoDBNetStandard.ViewApi
         /// regardless of their type. 
         /// GET /_api/view
         /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetAllViewsResponse> GetAllViewsAsync()
+        public virtual async Task<GetAllViewsResponse> GetAllViewsAsync(
+            CancellationToken token = default)
         {
             string uri = _apiPath;
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri,token:token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -69,10 +72,11 @@ namespace ArangoDBNetStandard.ViewApi
         /// Create a new View
         /// POST /_api/view
         /// </summary>
-        /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="body">The body of the request containing required properties.</param>        
         /// <param name="serializationOptions">Custom serialization options to be used.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<ViewResponse> PostCreateViewAsync(ViewDetails body, ApiClientSerializationOptions serializationOptions = null)
+        public virtual async Task<ViewResponse> PostCreateViewAsync(ViewDetails body, ApiClientSerializationOptions serializationOptions = null, CancellationToken token = default)
         {
             string uri = _apiPath;
             var content = GetContent(body, 
@@ -95,11 +99,13 @@ namespace ArangoDBNetStandard.ViewApi
         /// DELETE /_api/view/{view-name}
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view to drop.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<DeleteViewResponse> DeleteViewAsync(string viewNameOrId)
+        public virtual async Task<DeleteViewResponse> DeleteViewAsync(string viewNameOrId,
+            CancellationToken token = default)
         {
             string uri = _apiPath + '/' + viewNameOrId;
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -115,11 +121,13 @@ namespace ArangoDBNetStandard.ViewApi
         /// GET /_api/view/{view-name}
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view to drop.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetViewResponse> GetViewAsync(string viewNameOrId)
+        public virtual async Task<GetViewResponse> GetViewAsync(string viewNameOrId,
+            CancellationToken token = default)
         {
             string uri = _apiPath + '/' + viewNameOrId;
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -135,11 +143,13 @@ namespace ArangoDBNetStandard.ViewApi
         /// GET /_api/view/{view-name}/properties
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view to drop.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetViewPropertiesResponse> GetViewPropertiesAsync(string viewNameOrId)
+        public virtual async Task<GetViewPropertiesResponse> GetViewPropertiesAsync(string viewNameOrId,
+            CancellationToken token = default)
         {
             string uri = $"{_apiPath}/{viewNameOrId}/properties";
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -156,12 +166,14 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<ViewResponse> PatchViewPropertiesAsync(string viewNameOrId, ViewDetails body)
+        public virtual async Task<ViewResponse> PatchViewPropertiesAsync(string viewNameOrId, ViewDetails body,
+            CancellationToken token = default)
         {
             string uri = $"{_apiPath}/{viewNameOrId}/properties";
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PatchAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PatchAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -178,12 +190,14 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body)
+        public virtual async Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body,
+            CancellationToken token = default)
         {
             string uri = $"{_apiPath}/{viewName}/properties";
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -200,12 +214,14 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PutRenameViewResponse> PutRenameViewAsync(string viewName, PutRenameViewBody body)
+        public virtual async Task<PutRenameViewResponse> PutRenameViewAsync(string viewName, PutRenameViewBody body,
+            CancellationToken token = default)
         {
             string uri = $"{_apiPath}/{viewName}/rename";
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {

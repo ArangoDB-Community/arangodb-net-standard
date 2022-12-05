@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Generates query string for 
-    /// <see cref="AqlFunctionApiClient.GetSlowAqlQueriesAsync(GetSlowAqlQueriesQuery)"/>
+    /// <see cref="AqlFunctionApiClient.GetSlowAqlQueriesAsync"/>
     /// </summary>
     public class GetSlowAqlQueriesQuery
     {

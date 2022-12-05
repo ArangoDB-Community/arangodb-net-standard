@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.CursorApi;
@@ -188,7 +189,8 @@ namespace ArangoDBNetStandardTest.CursorApi
             mockTransport.Setup(x => x.PostAsync(
                     It.IsAny<string>(),
                     It.IsAny<byte[]>(),
-                    It.IsAny<WebHeaderCollection>()))
+                    It.IsAny<WebHeaderCollection>(),
+                    It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(mockResponse.Object));
 
             var cursorApi = new CursorApiClient(mockTransport.Object);
@@ -239,8 +241,9 @@ namespace ArangoDBNetStandardTest.CursorApi
             mockTransport.Setup(x => x.PostAsync(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
-                It.IsAny<WebHeaderCollection>()))
-                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection) =>
+                It.IsAny<WebHeaderCollection>(),
+                It.IsAny<CancellationToken>()))
+                .Returns((string uri, byte[] content, WebHeaderCollection webHeaderCollection, CancellationToken token) =>
                 {
                     requestHeader = webHeaderCollection;
                     return Task.FromResult(mockResponse.Object);
@@ -277,12 +280,13 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
-        public async Task PutCursorAsync_ShouldSucceed()
+        [Trait("ServerVersion", "3_8_PLUS")]
+        public async Task PostAdvanceCursorAsync_ShouldSucceed()
         {
             var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
             Assert.True(response.HasMore);
 
-            var nextResponse = await _cursorApi.PutCursorAsync<long>(response.Id);
+            var nextResponse = await _cursorApi.PostAdvanceCursorAsync<long>(response.Id);
             Assert.False(nextResponse.HasMore);
             Assert.Single(nextResponse.Result);
             Assert.Equal(1000, nextResponse.Result.First());
@@ -290,23 +294,25 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
-        public async Task PutCursorAsync_ShouldThrow_WhenCursorIsExhausted()
+        [Trait("ServerVersion", "3_8_PLUS")]
+        public async Task PostAdvanceCursorAsync_ShouldThrow_WhenCursorIsExhausted()
         {
             var response = await _cursorApi.PostCursorAsync<long>("FOR i IN 0..1000 RETURN i");
             Assert.True(response.HasMore);
 
-            var nextResponse = await _cursorApi.PutCursorAsync<long>(response.Id);
+            var nextResponse = await _cursorApi.PostAdvanceCursorAsync<long>(response.Id);
             Assert.False(nextResponse.HasMore);
 
             await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _cursorApi.PutCursorAsync<long>(response.Id));
+                await _cursorApi.PostAdvanceCursorAsync<long>(response.Id));
         }
 
         [Fact]
-        public async Task PutCursorAsync_ShouldThrow_WhenCursorDoesNotExist()
+        [Trait("ServerVersion", "3_8_PLUS")]
+        public async Task PostAdvanceCursorAsync_ShouldThrow_WhenCursorDoesNotExist()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-                await _cursorApi.PutCursorAsync<long>("nada"));
+                await _cursorApi.PostAdvanceCursorAsync<long>("nada"));
 
             Assert.NotNull(ex.ApiError.ErrorMessage);
             Assert.Equal(1600, ex.ApiError.ErrorNum);
@@ -314,13 +320,14 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
-        public async Task PutCursorAsync_ShouldReturnResponseModelWithInterface()
+        [Trait("ServerVersion", "3_8_PLUS")]
+        public async Task PostAdvanceCursorAsync_ShouldReturnResponseModelWithInterface()
         {
-            PostCursorResponse<int> postResponse =
+            CursorResponse<int> postResponse =
                 await _cursorApi.PostCursorAsync<int>("FOR i IN 0..1500 RETURN i");
 
             ICursorResponse<int> putResult =
-                await _cursorApi.PutCursorAsync<int>(postResponse.Id);
+                await _cursorApi.PostAdvanceCursorAsync<int>(postResponse.Id);
 
             Assert.NotNull(putResult);
         }

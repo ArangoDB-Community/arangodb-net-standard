@@ -5,7 +5,7 @@ using System.Text;
 namespace ArangoDBNetStandard.CollectionApi.Models
 {
     /// <summary>
-    /// Generates query for <see cref="ICollectionApiClient.GetChecksumAsync(string, GetChecksumQuery)"/>
+    /// Generates query for <see cref="ICollectionApiClient.GetChecksumAsync"/>
     /// </summary>
     public class GetChecksumQuery
     {

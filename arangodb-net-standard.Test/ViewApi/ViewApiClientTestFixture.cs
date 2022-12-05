@@ -25,6 +25,7 @@ namespace ArangoDBNetStandardTest.ViewApi
             Console.WriteLine("Database " + dbName + " created successfully");
 
             ArangoDBClient = GetArangoDBClient(dbName);
+            await GetVersionAsync(ArangoDBClient);
             try
             {
                 var dbRes = await ArangoDBClient.Database.GetCurrentDatabaseInfoAsync();

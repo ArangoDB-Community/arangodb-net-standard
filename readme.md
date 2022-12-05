@@ -21,6 +21,7 @@ A consistent, comprehensive, minimal driver for the [ArangoDB REST API](https://
       - [Run an AQL query](#run-an-aql-query)
       - [Patch a document](#patch-a-document)
       - [Replace a document](#replace-a-document)
+      - [Example using graphs](#example-using-graphs)
     + [Serialization Options](#serialization-options)
     + [API Errors](#api-errors)
     + [Project Conventions](#project-conventions)
@@ -171,6 +172,59 @@ item.Description = "Some item with some more description";
 await adb.Document.PutDocumentAsync(
     $"MyCollection/{item._key}",
     item);
+```
+
+#### Example using graphs
+
+```csharp
+            //Example using graphs, vertices and edges
+            string graphName = "SchoolGraph";
+            string fromClx = "Adults";
+            string toClx = "Students";
+            string edgeClx = "Parents";
+
+            // Create a new graph
+            await adb.Graph.PostGraphAsync(new PostGraphBody
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { fromClx },
+                        To = new string[] { toClx },
+                        Collection = edgeClx
+                    }
+                }
+            });
+
+            // Create a document in the Adults vertex collection
+            PostDocumentResponse<object> fromResponse = await
+                adb.Document.PostDocumentAsync<object>(
+                fromClx,
+                new { Name = "John Doe" });
+
+            // Create a document in the Students vertex collection
+            PostDocumentResponse<object> toResponse = await
+                adb.Document.PostDocumentAsync<object>(
+                toClx,
+                new { Name = "Jimmy Doe" });
+
+            // Create the edge Parent edge between the Adult (John Doe) and Child (Jimmy Doe)
+            var response = await adb.Graph.PostEdgeAsync(
+                graphName,
+                edgeClx,
+                new
+                { 
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "parent1"
+                },
+                new PostEdgeQuery
+                {
+                    ReturnNew = true,
+                    WaitForSync = true
+                });
 ```
 
 ### Serialization Options
@@ -372,6 +426,8 @@ ArangoDB-net-standard allows for alternative serializer implementations to be us
 By default, all API clients will use the provided `JsonNetApiClientSerialization` which uses the Json.NET library. To use an alternative serialization implementation, pass an instance of `IApiClientSerialization` when instantiating any API client class or the `ArangoDBClient` class.
 
 In many cases we depend on the behaviour of Json.NET to automatically map JSON properties using `camelCase` to C# properties defined using `PascalCase` when deserializing. Any alternative serializer will need to mimic that behaviour in order to deserialize some ArangoDB JSON objects to their C# types.  For example, if using `System.Text.Json`, the option `PropertyNameCaseInsensitive = true` should be used.
+
+If any error occurs during (de)serialization of success/error responses, an exception of type `ArangoDBNetStandard.Serialization.SerializationException` will be thrown. Detailed reasons for the error will be available through the `InnerException` property of this object.
 
 ## Contributing
 

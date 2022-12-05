@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Request body for 
-    /// <see cref="AqlFunctionApiClient.PostParseAqlQueryAsync(PostParseAqlQueryBody) "/>
+    /// <see cref="AqlFunctionApiClient.PostParseAqlQueryAsync"/>
     /// </summary>
     public class PostParseAqlQueryBody
     {
