@@ -186,7 +186,7 @@ namespace ArangoDBNetStandardTest.Serialization
             byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
                 useCamelCasePropertyNames: true, 
                 ignoreNullValues: true,
-                applySerializationOptionsToObjectValuesInDictionaries: true));
+                applySerializationOptionsToDictionaryValues: true));
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -238,7 +238,7 @@ namespace ArangoDBNetStandardTest.Serialization
             byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
                  useCamelCasePropertyNames: true,
                  ignoreNullValues: true,
-                 applySerializationOptionsToObjectValuesInDictionaries: true));
+                 applySerializationOptionsToDictionaryValues: true));
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 

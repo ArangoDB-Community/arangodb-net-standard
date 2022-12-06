@@ -73,16 +73,16 @@ namespace ArangoDBNetStandard.ViewApi
         /// POST /_api/view
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>        
-        /// <param name="serializationOptions">Custom serialization options to be used.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<ViewResponse> PostCreateViewAsync(ViewDetails body, ApiClientSerializationOptions serializationOptions = null, CancellationToken token = default)
+        public virtual async Task<ViewResponse> PostCreateViewAsync(ViewDetails body, CancellationToken token = default)
         {
             string uri = _apiPath;
             var content = GetContent(body, 
-                serializationOptions ?? new ApiClientSerializationOptions(
-                    useCamelCasePropertyNames: true, 
-                    ignoreNullValues: true));
+                new ApiClientSerializationOptions(
+                    useCamelCasePropertyNames: true,
+                    ignoreNullValues: false,
+                    applySerializationOptionsToDictionaryValues: true));
             using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
@@ -172,7 +172,11 @@ namespace ArangoDBNetStandard.ViewApi
             CancellationToken token = default)
         {
             string uri = $"{_apiPath}/{viewNameOrId}/properties";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = GetContent(body,
+                new ApiClientSerializationOptions(
+                    useCamelCasePropertyNames: true,
+                    ignoreNullValues: false,
+                    applySerializationOptionsToDictionaryValues: true));
             using (var response = await _transport.PatchAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
@@ -196,7 +200,11 @@ namespace ArangoDBNetStandard.ViewApi
             CancellationToken token = default)
         {
             string uri = $"{_apiPath}/{viewName}/properties";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = GetContent(body,
+                new ApiClientSerializationOptions(
+                    useCamelCasePropertyNames: true,
+                    ignoreNullValues: false,
+                    applySerializationOptionsToDictionaryValues: true));
             using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)

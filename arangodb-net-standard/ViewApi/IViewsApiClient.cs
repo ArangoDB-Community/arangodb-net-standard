@@ -25,10 +25,9 @@ namespace ArangoDBNetStandard.ViewApi
         /// POST /_api/view
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
-        /// <param name="serializationOptions">Custom serialization options to be used.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<ViewResponse> PostCreateViewAsync(ViewDetails body, ApiClientSerializationOptions serializationOptions = null, CancellationToken token = default);
+        Task<ViewResponse> PostCreateViewAsync(ViewDetails body, CancellationToken token = default);
 
         /// <summary>
         /// Delete / drop a view
