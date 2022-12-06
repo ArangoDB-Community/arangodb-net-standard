@@ -71,7 +71,7 @@ namespace ArangoDBNetStandard.Transport.Http
                 flags = string.Join(";", driverFlags);
             }
             var assemblyInfo = Assembly.GetCallingAssembly().GetName();
-            headers.Add(CustomHttpHeaders.DriverInfoHeader, $"{DriverConstants.DRIVER_NAME}/{assemblyInfo.Version} ({flags})");
+            headers.Add(CustomHttpHeaders.DriverInfoHeader, $"{DriverConstants.DriverName}/{assemblyInfo.Version} ({flags})");
         }
 
         /// <summary>

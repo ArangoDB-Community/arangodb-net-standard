@@ -12,6 +12,6 @@ namespace ArangoDBNetStandard
         /// <summary>
         /// Name of the driver
         /// </summary>
-        public const string DRIVER_NAME = "arangodb-net-standard";
+        public const string DriverName = "arangodb-net-standard";
     }
 }
