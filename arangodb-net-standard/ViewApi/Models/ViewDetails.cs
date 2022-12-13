@@ -107,11 +107,10 @@ namespace ArangoDBNetStandard.ViewApi.Models
         public int? WritebufferSizeMax { get; set; }
 
         /// <summary>
-        /// Expects an object with the attribute keys 
-        /// being names of to be linked collections, 
-        /// and the link properties as attribute values.
+        /// An object list of linked collections, 
+        /// and the link properties.
         /// </summary>
-        public IDictionary<string, LinkProperties> Links { get; set; }
+        public object Links { get; set; }
 
         /// <summary>
         /// Introduced in 3.10. List of indexes for
