@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties;
+using System.Collections.Generic;
 
 namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
@@ -25,7 +26,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
         /// Properties of the analyzer
         /// used to configure the specified type
         /// </summary>
-        public AnalyzerProperties Properties { get; set; }
+        public AnalyzerPropertiesBase Properties { get; set; }
 
         /// <summary>
         /// The set of features to set on 
