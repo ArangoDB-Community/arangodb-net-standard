@@ -10,27 +10,27 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
         /// <summary>
         /// Convert to all lower-case characters
         /// </summary>
-        public static string CaseHandlingLower = "lower";
+        public const string CaseHandlingLower = "lower";
 
         /// <summary>
         /// Convert to all upper-case characters
         /// </summary>
-        public static string CaseHandlingUpper = "upper";
+        public const string CaseHandlingUpper = "upper";
 
         /// <summary>
         /// Do not change character case (default)
         /// </summary>
-        public static string CaseHandlingNone = "none";
+        public const string CaseHandlingNone = "none";
 
         /// <summary>
         /// Return all tokens
         /// </summary>
-        public static string BreakTypeAll = "all";
+        public const string BreakTypeAll = "all";
 
         /// <summary>
         /// Return tokens composed of alphanumeric characters only (default).
         /// </summary>
-        public static string BreakTypeAlpha = "alpha";
+        public const string BreakTypeAlpha = "alpha";
 
         /// <summary>
         /// Return tokens composed of non-whitespace characters only. 
@@ -40,7 +40,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
         /// U+2028 Line Separator, U+202F Narrow No-break Space,
         /// U+205F Medium Mathematical Space, and U+3000 Ideographic Space.
         /// </summary>
-        public static string BreakTypeGraphic = "graphic";
+        public const string BreakTypeGraphic = "graphic";
 
         /// <summary>
         /// Determines how to break up the input text.

@@ -11,19 +11,19 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
         /// Index all GeoJSON geometry types (Point, Polygon etc.)
         /// (default).
         /// </summary>
-        public static string TypeShape = "shape";
+        public const string TypeShape = "shape";
 
         /// <summary>
         /// Compute and only index the centroid of the input 
         /// geometry
         /// </summary>
-        public static string TypeCentroid = "centroid";
+        public const string TypeCentroid = "centroid";
 
         /// <summary>
         /// Only index GeoJSON objects of type Point, ignore all 
         /// other geometry types
         /// </summary>
-        public static string TypePoint = "point";
+        public const string TypePoint = "point";
 
         /// <summary>
         /// Determines the type of indexing to use.

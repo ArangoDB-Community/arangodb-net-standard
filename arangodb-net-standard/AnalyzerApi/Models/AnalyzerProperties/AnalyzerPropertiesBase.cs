@@ -4,7 +4,10 @@ using System.Text;
 
 namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
 {
-    public class AnalyzerPropertiesBase
+    /// <summary>
+    /// Base class for analyzer properties
+    /// </summary>
+    public abstract class AnalyzerPropertiesBase
     {
 
     }

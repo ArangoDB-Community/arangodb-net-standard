@@ -10,17 +10,17 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
         /// <summary>
         /// Convert to all lower-case characters
         /// </summary>
-        public static string CaseHandlingLower = "lower";
+        public const string CaseHandlingLower = "lower";
 
         /// <summary>
         /// Convert to all upper-case characters
         /// </summary>
-        public static string CaseHandlingUpper = "upper";
+        public const string CaseHandlingUpper = "upper";
 
         /// <summary>
         /// Do not change character case (default)
         /// </summary>
-        public static string CaseHandlingNone = "none";
+        public const string CaseHandlingNone = "none";
 
         /// <summary>
         /// A locale in the format language[_COUNTRY] 

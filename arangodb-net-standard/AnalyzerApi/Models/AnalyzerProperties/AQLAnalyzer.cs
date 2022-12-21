@@ -10,17 +10,17 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
         /// <summary>
         /// Convert emitted tokens to strings. (default)
         /// </summary>
-        public static string ReturnTypeString = "string";
+        public const string ReturnTypeString = "string";
 
         /// <summary>
         /// Convert emitted tokens to numbers
         /// </summary>
-        public static string ReturnTypeNumber = "number";
+        public const string ReturnTypeNumber = "number";
 
         /// <summary>
         /// Convert emitted tokens to booleans
         /// </summary>
-        public static string ReturnTypeBool = "bool";
+        public const string ReturnTypeBool = "bool";
 
         /// <summary>
         /// AQL query to be executed

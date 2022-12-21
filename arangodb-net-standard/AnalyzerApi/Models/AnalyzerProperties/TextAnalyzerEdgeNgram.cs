@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
     /// <summary>
     /// 
     /// </summary>
-    public class TextAnalyzerEdgeNgram : AnalyzerPropertiesBase
+    public class TextAnalyzerEdgeNgram 
     {
         /// <summary>
         /// Minimal n-gram length

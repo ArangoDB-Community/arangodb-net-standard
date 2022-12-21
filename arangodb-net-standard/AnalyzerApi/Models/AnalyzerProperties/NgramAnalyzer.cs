@@ -10,12 +10,12 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
         /// <summary>
         /// One byte is considered as one character (default)
         /// </summary>
-        public static string StreamTypeBinary = "binary";
+        public const string StreamTypeBinary = "binary";
 
         /// <summary>
         /// One Unicode codepoint is treated as one character
         /// </summary>
-        public static string StreamTypeUTF8 = "utf8";
+        public const string StreamTypeUTF8 = "utf8";
 
         /// <summary>
         /// Unsigned integer for the minimum n-gram length
