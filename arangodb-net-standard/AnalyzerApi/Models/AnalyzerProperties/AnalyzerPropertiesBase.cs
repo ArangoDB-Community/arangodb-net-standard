@@ -7,7 +7,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
     /// <summary>
     /// Base class for analyzer properties
     /// </summary>
-    public abstract class AnalyzerPropertiesBase
+    public class AnalyzerPropertiesBase
     {
 
     }
