@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
     /// <summary>
     /// Options for fine-tuning geo queries.
     /// </summary>
-    public class GeoJSONAnalyzerOptions
+    public class GeoJSONAnalyzerOptions : AnalyzerPropertiesBase
     {
         /// <summary>
         /// Maximum number of S2 cells (default: 20)

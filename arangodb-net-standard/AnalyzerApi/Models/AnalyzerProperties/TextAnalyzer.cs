@@ -6,7 +6,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
     /// <summary>
     /// Properties for text analyzer
     /// </summary>
-    public class TextAnalyzer
+    public class TextAnalyzer:AnalyzerPropertiesBase
     {
         /// <summary>
         /// Convert to all lower-case characters

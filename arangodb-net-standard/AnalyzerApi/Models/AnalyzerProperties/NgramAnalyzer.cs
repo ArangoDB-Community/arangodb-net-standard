@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
     /// <summary>
     /// Properties for ngram analyzer
     /// </summary>
-    public class NgramAnalyzer
+    public class NgramAnalyzer : AnalyzerPropertiesBase
     {
         /// <summary>
         /// One byte is considered as one character (default)
