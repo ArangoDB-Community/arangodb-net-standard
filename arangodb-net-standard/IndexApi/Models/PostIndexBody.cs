@@ -27,9 +27,10 @@ namespace ArangoDBNetStandard.IndexApi.Models
         public IEnumerable<string> Fields { get; set; }
 
         /// <summary>
-        /// Can be set to true to create the index in the background,
+        /// Optional. Can be set to true to create the index in the background,
         /// which will not write-lock the underlying collection for
         /// as long as if the index is built in the foreground.
+        /// The default value is false.
         /// </summary>
         public bool? InBackground { get; set; }
     }
