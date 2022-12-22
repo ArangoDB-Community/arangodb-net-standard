@@ -11,7 +11,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
     /// <summary>
     /// Request body for <see cref="IIndexApiClient.PostInvertedIndexAsync(PostIndexQuery, PostInvertedIndexBody, System.Threading.CancellationToken)"/>
     /// </summary>
-    public class PostInvertedIndexBody : PostIndexBody
+    public class PostInvertedIndexBody : PostIndexBody, IInvertedIndex
     {
         /// <summary>
         /// Constructor

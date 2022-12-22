@@ -1,59 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 
 namespace ArangoDBNetStandard.IndexApi.Models
 {
     /// <summary>
-    /// Response from <see cref="IIndexApiClient.PostInvertedIndexAsync(PostIndexQuery, PostInvertedIndexBody, System.Threading.CancellationToken)"/>
+    /// Common properties of an inverted index.
     /// </summary>
-    public class InvertedIndexResponse : IInvertedIndex
+    public interface IInvertedIndex
     {
-        /// <summary>
-        /// ID of the index
-        /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// Indicates whether the index is newly created or not
-        /// </summary>
-        public bool? IsNewlyCreated { get; set; }
-
-        /// <summary>
-        /// Indicates a sparse index
-        /// </summary>
-        public bool? Sparse { get; set; }
-
-        /// <summary>
-        /// Indicates a unique index
-        /// </summary>
-        public bool? Unique { get; set; }
-
-        /// <summary>
-        /// Version of the index
-        /// </summary>
-        public string Version { get; set; }
-
-        /// <summary>
-        /// The HTTP status code.
-        /// </summary>
-        public HttpStatusCode Code { get; set; }
-
-        /// <summary>
-        /// Always false.
-        /// </summary>
-        /// <remarks>
-        /// To handle errors, catch <see cref="ApiErrorException"/>
-        /// thrown by API client methods.
-        /// </remarks>
-        public bool? Error { get; set; }
-
         /// <summary>
         /// An list of attribute paths specifying options 
         /// for the fields (with the attribute path 
         /// in the name property)
         /// </summary>
-        public IEnumerable<InvertedIndexField> Fields { get; set; }
+        IEnumerable<InvertedIndexField> Fields { get; set; }
 
         /// <summary>
         /// Optional. This option only applies if you use the
@@ -70,7 +30,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// use an array expansion if <see cref="SearchField"/> is enabled.
         /// Default: false
         /// </summary>
-        public bool? SearchField { get; set; }
+        bool? SearchField { get; set; }
 
         /// <summary>
         /// Optional. Enable this option to always cache the field 
@@ -83,7 +43,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// repeatedly, to emphasize these documents less.
         /// Default: false
         /// </summary>
-        public bool? Cache { get; set; }
+        bool? Cache { get; set; }
 
         /// <summary>
         /// Optional. Can contain an array of paths to additional 
@@ -93,7 +53,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// This allows an index to fully cover more queries
         /// and avoid extra document lookups.
         /// </summary>
-        public IEnumerable<InvertedIndexStoredValue> StoredValues { get; set; }
+        IEnumerable<InvertedIndexStoredValue> StoredValues { get; set; }
 
         /// <summary>
         /// Optional. You can define a primary sort order to enable an AQL
@@ -103,7 +63,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// sorting direction, match with the primarySort definition,
         /// then the SORT operation is optimized away.
         /// </summary>
-        public InvertedIndexSort PrimarySort { get; set; }
+        InvertedIndexSort PrimarySort { get; set; }
 
         /// <summary>
         /// Optional. Enable this option to always cache the primary key 
@@ -111,7 +71,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// that return many documents.
         /// Default: false
         /// </summary>
-        public bool? PrimaryKeyCache { get; set; }
+        bool? PrimaryKeyCache { get; set; }
 
         /// <summary>
         /// Optional. The name of an Analyzer to use by default. 
@@ -119,7 +79,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// fields for which you don’t define Analyzers explicitly.
         /// Default: identity
         /// </summary>
-        public string Analyzer { get; set; }
+        string Analyzer { get; set; }
 
         /// <summary>
         /// Optional. A list of Analyzer features to use. 
@@ -127,7 +87,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// are enabled for the default analyzer. Possible values,
         /// <see cref="AnalyzerApi.Models.AnalyzerFeatures"/>
         /// </summary>
-        public IEnumerable<string> Features { get; set; }
+        IEnumerable<string> Features { get; set; }
 
         /// <summary>
         /// Optional. This option only applies if you use the
@@ -142,7 +102,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// of attributes in combination with complex Analyzers may 
         /// significantly slow down the indexing process.
         /// </summary>
-        public bool? IncludeAllFields { get; set; }
+        bool? IncludeAllFields { get; set; }
 
         /// <summary>
         ///  Optional. This option only applies if you use the inverted 
@@ -156,13 +116,13 @@ namespace ArangoDBNetStandard.IndexApi.Models
         ///  e.g.doc.attr == "valueY", and all elements are searched for 
         ///  a match.
         /// </summary>
-        public bool? TrackListPositions { get; set; }
+        bool? TrackListPositions { get; set; }
 
         /// <summary>
         /// Optional. The number of threads to use for indexing the fields. 
         /// Default: 2
         /// </summary>
-        public int? Parallelism { get; set; }
+        int? Parallelism { get; set; }
 
         /// <summary>
         /// Optional. Wait at least this many commits between removing
@@ -175,7 +135,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// (i.e. few inserts/deletes), a higher value will impact 
         /// performance without any added benefits.
         /// </summary>
-        public int? CleanupIntervalStep { get; set; }
+        int? CleanupIntervalStep { get; set; }
 
         /// <summary>
         /// Optional. Wait at least this many milliseconds between 
@@ -188,7 +148,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// a higher value will impact performance and waste disk
         /// space for each commit call without any added benefits.
         /// </summary>
-        public int? CommitIntervalMsec { get; set; }
+        int? CommitIntervalMsec { get; set; }
 
         /// <summary>
         /// Optional. Wait at least this many milliseconds between
@@ -202,13 +162,13 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// impact performance due to no segment candidates available
         /// for consolidation.
         /// </summary>
-        public int? ConsolidationIntervalMsec { get; set; }
+        int? ConsolidationIntervalMsec { get; set; }
 
         /// <summary>
         /// Optional. Maximum number of writers (segments) cached in 
         /// the pool (default: 64, use 0 to disable)
         /// </summary>
-        public int? WriteBufferIdle { get; set; }
+        int? WriteBufferIdle { get; set; }
 
         /// <summary>
         /// Optional. Maximum number of concurrent active writers 
@@ -216,7 +176,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// (segments) wait till current active writers (segments)
         /// finish (default: 0, use 0 to disable)
         /// </summary>
-        public int? WriteBufferActive { get; set; }
+        int? WriteBufferActive { get; set; }
 
         /// <summary>
         /// Optional. Maximum memory byte size per writer (segment) 
@@ -227,12 +187,12 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// 0 value should be used carefully due to high potential 
         /// memory consumption (default: 33554432, use 0 to disable)
         /// </summary>
-        public int? WriteBufferSizeMax { get; set; }
+        int? WriteBufferSizeMax { get; set; }
 
         /// <summary>
         /// The consolidation policy to apply for selecting 
         /// which segments should be merged.
         /// </summary>
-        public InvertedIndexConsolidationPolicy ConsolidationPolicy { get; set; }
+        InvertedIndexConsolidationPolicy ConsolidationPolicy { get; set; }
     }
 }

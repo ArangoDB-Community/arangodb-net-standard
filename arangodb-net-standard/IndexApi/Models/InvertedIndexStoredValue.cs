@@ -16,8 +16,8 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// <summary>
         /// Optional. Defines how to compress the 
         /// attribute values. Possible values:
-        /// "lz4" (default): use LZ4 fast compression.
-        /// "none": disable compression to trade space for speed.
+        /// <see cref="CompressionTypes.None"/> and
+        /// <see cref="CompressionTypes.LZ4"/>
         /// </summary>
         public string Compression { get; set; }
 

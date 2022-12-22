@@ -7,7 +7,7 @@ namespace ArangoDBNetStandard.AnalyzerApi.Models
     /// <summary>
     /// Possible features for Analyzers
     /// </summary>
-    public class AnalyzerFeatures
+    public static class AnalyzerFeatures
     {
         /// <summary>
         /// Track how often a term occurs. Required for 
