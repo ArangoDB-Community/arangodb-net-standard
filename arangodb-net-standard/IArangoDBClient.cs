@@ -17,7 +17,7 @@ using ArangoDBNetStandard.ViewApi;
 
 namespace ArangoDBNetStandard
 {
-    public interface IArangoDBClient : IDisposable
+    public interface IArangoDBClient
     {
         /// <summary>
         /// AQL user functions management API.

@@ -4,11 +4,11 @@ using System.Net.Http.Headers;
 
 namespace ArangoDBNetStandard.Transport.Http
 {
-    public class HttpApiClientResponse : IApiClientResponse
+    internal class HttpApiClientResponse : IApiClientResponse
     {
         private readonly HttpResponseMessage response;
 
-        public HttpApiClientResponse(HttpResponseMessage response)
+        internal HttpApiClientResponse(HttpResponseMessage response)
         {
             this.response = response;
             Headers = response.Headers;

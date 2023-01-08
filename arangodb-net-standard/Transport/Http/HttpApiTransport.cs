@@ -438,7 +438,6 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         public void Dispose()
         {
-            _client.Dispose();
         }
     }
 }
