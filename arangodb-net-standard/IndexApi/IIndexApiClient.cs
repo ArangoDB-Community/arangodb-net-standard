@@ -9,7 +9,7 @@ namespace ArangoDBNetStandard.IndexApi
     /// <summary>
     /// Defines a client to access the ArangoDB Indexes API.
     /// </summary>
-    internal interface IIndexApiClient
+    public interface IIndexApiClient
     {
         /// <summary>
         /// Fetches data about the specified index.

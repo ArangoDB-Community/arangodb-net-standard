@@ -29,7 +29,7 @@ namespace ArangoDBNetStandardTest.DocumentApi
 
         private static readonly int NOT_FOUND_NUM = 1202;
 
-        private readonly DocumentApiClient _docClient;
+        private readonly IDocumentApiClient _docClient;
         private readonly ArangoDBClient _adb;
         private readonly string _testCollection;
 

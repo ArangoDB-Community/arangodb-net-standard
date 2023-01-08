@@ -15,7 +15,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
 {
     public class CollectionApiClientTest : IClassFixture<CollectionApiClientTestFixture>, IAsyncLifetime
     {
-        private CollectionApiClient _collectionApi;
+        private ICollectionApiClient _collectionApi;
         private ArangoDBClient _adb;
         private readonly string _testCollection;
 

@@ -13,7 +13,7 @@ namespace ArangoDBNetStandardTest.IndexApi
 {
     public class IndexApiClientTest : IClassFixture<IndexApiClientTestFixture>, IAsyncLifetime
     {
-        private IndexApiClient _indexApi;
+        private IIndexApiClient _indexApi;
         private ArangoDBClient _adb;
         private readonly string _testIndexName;
         private readonly string _testIndexId;

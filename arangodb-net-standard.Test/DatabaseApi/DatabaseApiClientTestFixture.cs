@@ -12,17 +12,17 @@ namespace ArangoDBNetStandardTest.DatabaseApi
         /// <summary>
         /// A <see cref="DatabaseApiClient"/> targeting the _system database.
         /// </summary>
-        public DatabaseApiClient DatabaseClientSystem { get; internal set; }
+        public IDatabaseApiClient DatabaseClientSystem { get; internal set; }
 
         /// <summary>
         /// A <see cref="DatabaseApiClient"/> targeting a database that does not exist.
         /// </summary>
-        public DatabaseApiClient DatabaseClientNonExistent { get; internal set; }
+        public IDatabaseApiClient DatabaseClientNonExistent { get; internal set; }
 
         /// <summary>
         /// A <see cref="DatabaseApiClient"/> targeting an existing database other than _system.
         /// </summary>
-        public DatabaseApiClient DatabaseClientOther { get; internal set; }
+        public IDatabaseApiClient DatabaseClientOther { get; internal set; }
 
         public string DeletableDatabase { get; } = nameof(DatabaseApiClientTestFixture) + "_ToBeDeleted";
 

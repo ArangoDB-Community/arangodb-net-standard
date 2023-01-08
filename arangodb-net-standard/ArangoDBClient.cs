@@ -33,77 +33,77 @@ namespace ArangoDBNetStandard
         /// <summary>
         /// AQL user functions management API.
         /// </summary>
-        public AqlFunctionApiClient AqlFunction { get; private set; }
+        public IAqlFunctionApiClient AqlFunction { get; private set; }
 
         /// <summary>
         /// Auth API
         /// </summary>
-        public AuthApiClient Auth { get; private set; }
+        public IAuthApiClient Auth { get; private set; }
 
         /// <summary>
         /// Cursor API
         /// </summary>
-        public CursorApiClient Cursor { get; private set; }
+        public ICursorApiClient Cursor { get; private set; }
 
         /// <summary>
         /// Database API
         /// </summary>
-        public DatabaseApiClient Database { get; private set; }
+        public IDatabaseApiClient Database { get; private set; }
 
         /// <summary>
         /// Document API
         /// </summary>
-        public DocumentApiClient Document { get; private set; }
+        public IDocumentApiClient Document { get; private set; }
 
         /// <summary>
         /// Collection API
         /// </summary>
-        public CollectionApiClient Collection { get; private set; }
+        public ICollectionApiClient Collection { get; private set; }
 
         /// <summary>
         /// Transaction API
         /// </summary>
-        public TransactionApiClient Transaction { get; private set; }
+        public ITransactionApiClient Transaction { get; private set; }
 
         /// <summary>
         /// Graph API
         /// </summary>
-        public GraphApiClient Graph { get; private set; }
+        public IGraphApiClient Graph { get; private set; }
 
         /// <summary>
         /// User management API
         /// </summary>
-        public UserApiClient User { get; private set; }
+        public IUserApiClient User { get; private set; }
 
         /// <summary>
         /// Index management API
         /// </summary>
-        public IndexApiClient Index { get; private set; }
+        public IIndexApiClient Index { get; private set; }
         
         /// <summary>
         /// Bulk Operations API.
         /// </summary>
-        public BulkOperationsApiClient BulkOperations { get; private set; }
+        public IBulkOperationsApiClient BulkOperations { get; private set; }
 
         /// <summary>
         /// View management API.
         /// </summary>          
-        public ViewApiClient View { get; private set; }
+        public IViewApiClient View { get; private set; }
         
         /// <summary>
         /// Analyzer management API.
         /// </summary>
-        public AnalyzerApiClient Analyzer { get; private set; }    
+        public IAnalyzerApiClient Analyzer { get; private set; }    
         
         /// <summary>
         /// Admin management API
         /// </summary>
-        public AdminApiClient Admin { get; private set; }
+        public IAdminApiClient Admin { get; private set; }
 
         /// <summary>
         /// Pregel management API
         /// </summary>
-        public PregelApiClient Pregel { get; private set; }
+        public IPregelApiClient Pregel { get; private set; }
 
         /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing

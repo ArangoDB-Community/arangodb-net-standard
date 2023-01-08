@@ -13,7 +13,7 @@ namespace ArangoDBNetStandardTest.AqlFunctionApi
     /// </summary>
     public class AqlFunctionApiClientTestFixture : ApiClientTestFixtureBase
     {
-        public AqlFunctionApiClient AqlFunctionClient { get; set; }
+        public IAqlFunctionApiClient AqlFunctionClient { get; set; }
         public string TestCollectionName { get; internal set; } = "Pets";
         public string TestAqlQuery { get; internal set; }
 
