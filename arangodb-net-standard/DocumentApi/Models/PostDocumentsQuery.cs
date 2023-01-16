@@ -31,12 +31,14 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         public bool? Silent { get; set; }
 
         /// <summary>
-        /// If a document already exists, whether to overwrite (replace) the document rather than respond with error.
+        /// If a document already exists, whether to overwrite (replace) 
+        /// the document rather than respond with error.
         /// </summary>
         public bool? Overwrite { get; set; }
 
         /// <summary>
-        /// This option supersedes <see cref="Overwrite"/> and offers the several modes.
+        /// This option supersedes <see cref="Overwrite"/> and offers 
+        /// the several modes listed in <see cref="OverwriteModes"/>.
         /// </summary>
         public string OverwriteMode { get; set; }
 
