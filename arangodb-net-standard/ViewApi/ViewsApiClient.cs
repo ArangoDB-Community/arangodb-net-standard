@@ -88,7 +88,7 @@ namespace ArangoDBNetStandard.ViewApi
                     useCamelCasePropertyNames: true,
                     ignoreNullValues: ignoreNullValuesOnSerialization,
                     applySerializationOptionsToDictionaryValues: true));
-            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {

@@ -61,7 +61,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         {
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
 
-            using (var response = await _transport.PostAsync(_apiPath, content).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(_apiPath, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -92,7 +92,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -120,7 +120,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -150,7 +150,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             string uri = "_api/explain";
 
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -180,7 +180,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             string uri = "_api/query";
 
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -227,7 +227,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -262,7 +262,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -305,7 +305,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -329,7 +329,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         {
             string uri = "_api/query-cache";
 
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -354,7 +354,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             CancellationToken token = default)
         {
             string uri = "_api/query-cache/entries";
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -377,7 +377,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             CancellationToken token = default)
         {
             string uri = "_api/query-cache/properties";
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -412,7 +412,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             string uri = "_api/query-cache/properties";
 
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -433,7 +433,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             CancellationToken token = default)
         {
             string uri = "_api/query/properties";
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -467,7 +467,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             string uri = "_api/query/properties";
 
             var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -498,7 +498,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -523,7 +523,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         {
             string uri = "_api/query/rules";
 
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
