@@ -97,7 +97,7 @@ namespace ArangoDBNetStandard.DocumentApi.Models
             }
             if (RefillIndexCaches != null)
             {
-                query.Add("refillIndexCaches=" + RefillIndexCaches.ToString().ToLower());
+                queryParams.Add("refillIndexCaches=" + RefillIndexCaches.ToString().ToLower());
             }
             return string.Join("&", queryParams);
         }
