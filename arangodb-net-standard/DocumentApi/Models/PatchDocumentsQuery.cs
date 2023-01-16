@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace ArangoDBNetStandard.DocumentApi.Models
 {
@@ -57,6 +58,12 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         /// </summary>
         public bool? Silent { get; set; }
 
+        /// <summary>
+        /// Whether to update an existing entry in the in-memory edge 
+        /// cache if an edge document is updated.
+        /// </summary>
+        public bool? RefillIndexCaches { get; set; }
+
         internal string ToQueryString()
         {
             var queryParams = new List<string>();
@@ -87,6 +94,10 @@ namespace ArangoDBNetStandard.DocumentApi.Models
             if (Silent != null)
             {
                 queryParams.Add("silent=" + Silent.ToString().ToLower());
+            }
+            if (RefillIndexCaches != null)
+            {
+                query.Add("refillIndexCaches=" + RefillIndexCaches.ToString().ToLower());
             }
             return string.Join("&", queryParams);
         }
