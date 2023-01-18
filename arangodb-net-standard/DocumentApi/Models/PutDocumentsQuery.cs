@@ -44,6 +44,12 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         public bool? Silent { get; set; }
 
         /// <summary>
+        /// Whether to update an existing entry in the in-memory 
+        /// edge cache if an edge document is replaced.
+        /// </summary>
+        public bool? RefillIndexCaches { get; set; }
+
+        /// <summary>
         /// Get the set of options in a format suited to a URL query string.
         /// </summary>
         /// <returns></returns>
@@ -69,6 +75,10 @@ namespace ArangoDBNetStandard.DocumentApi.Models
             if (Silent != null)
             {
                 query.Add("silent=" + Silent.ToString().ToLower());
+            }
+            if (RefillIndexCaches != null)
+            {
+                query.Add("refillIndexCaches=" + RefillIndexCaches.ToString().ToLower());
             }
             return string.Join("&", query);
         }
