@@ -290,9 +290,36 @@ namespace ArangoDBNetStandard.IndexApi
         /// <param name="body">The properties of the new index.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<IndexResponseBase> PostInvertedIndexAsync(PostIndexQuery query, PostInvertedIndexBody body, CancellationToken token = default)
+        public virtual async Task<InvertedIndexResponse> PostInvertedIndexAsync(PostIndexQuery query, PostInvertedIndexBody body, CancellationToken token = default)
         {
-            return await PostIndexAsync(query, body, token).ConfigureAwait(false);
+            string uri = _indexApiPath;
+
+            if (query == null)
+            {
+                throw new ArgumentException("query is required", nameof(query));
+            }
+
+            if (string.IsNullOrEmpty(query.CollectionName))
+            {
+                throw new ArgumentException("Collection name is required", nameof(query.CollectionName));
+            }
+
+            if (body == null)
+            {
+                throw new ArgumentException("body is required", nameof(body));
+            }
+
+            uri += '?' + query.ToQueryString();
+            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            using (var response = await _client.PostAsync(uri, content, token: token).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return DeserializeJsonFromStream<InvertedIndexResponse>(stream);
+                }
+                throw await GetApiErrorException(response).ConfigureAwait(false);
+            }
         }
     }
 }
