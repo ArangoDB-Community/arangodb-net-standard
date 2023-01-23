@@ -68,15 +68,15 @@ namespace ArangoDBNetStandard.PregelApi
         public virtual async Task<string> PostStartJobAsync(PostStartJobBody body, CancellationToken token = default)
         {
             string uri = _apiPath;
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<string>(stream);
+                    return await DeserializeJsonFromStreamAsync<string>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -99,9 +99,9 @@ namespace ArangoDBNetStandard.PregelApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PregelJobStatus>(stream);
+                    return await DeserializeJsonFromStreamAsync<PregelJobStatus>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -122,9 +122,9 @@ namespace ArangoDBNetStandard.PregelApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<List<PregelJobStatus>>(stream);
+                    return await DeserializeJsonFromStreamAsync<List<PregelJobStatus>>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -150,9 +150,9 @@ namespace ArangoDBNetStandard.PregelApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<string>(stream);
+                    return await DeserializeJsonFromStreamAsync<string>(stream);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }
