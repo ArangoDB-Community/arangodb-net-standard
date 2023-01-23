@@ -24,8 +24,10 @@ namespace ArangoDBNetStandard
         /// <summary>
         /// Set queue time limit.
         /// When executing a request, specify a maximal 
-        /// queue time before the request is canceled 
-        /// and removed from the queue.
+        /// queue time in seconds before the request is 
+        /// canceled and removed from the queue.
+        /// The value 0 is ignored by the server.
+        /// Introduced in ArangoDB 3.9
         /// </summary>
         public decimal? QueueTimeLimit { get; set; }
 

@@ -5,7 +5,7 @@ namespace ArangoDBNetStandard.ViewApi.Models
     /// <summary>
     /// Represents a common response class for Views API operations.
     /// </summary>
-    public class ResponseBase : ApiResponseBase
+    public class ResponseBase 
     {
         /// <summary>
         /// Indicates whether an error occurred

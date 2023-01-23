@@ -3,7 +3,7 @@
     /// <summary>
     /// Response from several View API endpoints
     /// </summary>
-    public class ViewResponse : ViewDetails, IApiResponseBase
+    public class ViewResponse : ViewDetails
     {
         /// <summary>
         /// The globally unique identifier of the View
@@ -14,10 +14,5 @@
         /// The id of the view
         /// </summary>
         public string Id { get; set; }
-
-        /// <summary>
-        /// Header information from the API
-        /// </summary>
-        public ApiResponseHeaders ResponseHeaders { get; set; }
     }
 }
