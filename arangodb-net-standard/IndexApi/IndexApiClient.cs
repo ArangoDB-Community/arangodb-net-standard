@@ -311,7 +311,7 @@ namespace ArangoDBNetStandard.IndexApi
 
             uri += '?' + query.ToQueryString();
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PostAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(uri, content: content,  token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
