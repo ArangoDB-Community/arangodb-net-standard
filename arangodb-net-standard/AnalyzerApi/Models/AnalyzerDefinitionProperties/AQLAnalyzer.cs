@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for AQL analyzer
     /// </summary>
-    public class AQLAnalyzer : AnalyzerPropertiesBase
+    public class AQLAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// Convert emitted tokens to strings. (default)

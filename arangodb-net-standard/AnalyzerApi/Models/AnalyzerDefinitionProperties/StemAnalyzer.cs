@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for Stem analyzer
     /// </summary>
-    public class StemAnalyzer : AnalyzerPropertiesBase
+    public class StemAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// A locale in the format language, e.g. "de" or "en".

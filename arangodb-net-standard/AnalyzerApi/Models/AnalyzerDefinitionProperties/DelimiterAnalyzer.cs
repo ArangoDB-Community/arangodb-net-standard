@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for delimiter analyzer
     /// </summary>
-    public class DelimiterAnalyzer : AnalyzerPropertiesBase
+    public class DelimiterAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// The delimiting character(s)

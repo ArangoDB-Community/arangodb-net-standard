@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for ngram analyzer
     /// </summary>
-    public class NgramAnalyzer : AnalyzerPropertiesBase
+    public class NgramAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// One byte is considered as one character (default)

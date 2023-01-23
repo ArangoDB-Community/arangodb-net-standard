@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for GeoJSON analyzer.
     /// </summary>
-    public class GeoJSONAnalyzer : AnalyzerPropertiesBase
+    public class GeoJSONAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// Index all GeoJSON geometry types (Point, Polygon etc.)

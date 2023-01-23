@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for Collation analyzer
     /// </summary>
-    public class CollationAnalyzer : AnalyzerPropertiesBase
+    public class CollationAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// A locale in the format language, e.g. "de" or "en".

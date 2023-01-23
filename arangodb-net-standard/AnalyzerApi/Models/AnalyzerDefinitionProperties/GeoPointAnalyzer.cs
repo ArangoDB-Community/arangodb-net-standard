@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for GeoPoint analyzer.
     /// </summary>
-    public class GeoPointAnalyzer : AnalyzerPropertiesBase
+    public class GeoPointAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// A list of strings that describes the attribute path 

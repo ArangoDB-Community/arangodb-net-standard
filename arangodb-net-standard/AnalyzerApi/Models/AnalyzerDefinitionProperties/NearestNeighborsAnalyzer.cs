@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for nearest_neighbors analyzer.
     /// </summary>
-    public class NearestNeighborsAnalyzer : AnalyzerPropertiesBase
+    public class NearestNeighborsAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// Required. The on-disk path to the trained fastText 

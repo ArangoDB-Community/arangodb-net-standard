@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for Stopwords analyzer
     /// </summary>
-    public class StopwordsAnalyzer : AnalyzerPropertiesBase
+    public class StopwordsAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// A list of strings that describe the tokens to be discarded. 

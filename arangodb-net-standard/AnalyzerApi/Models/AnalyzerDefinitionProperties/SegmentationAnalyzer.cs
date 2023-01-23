@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for Segmentation analyzer
     /// </summary>
-    public class SegmentationAnalyzer : AnalyzerPropertiesBase
+    public class SegmentationAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// Convert to all lower-case characters

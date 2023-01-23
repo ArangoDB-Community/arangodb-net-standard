@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for Classification  analyzer.
     /// (only available in the Enterprise Edition)
     /// </summary>
-    public class ClassificationAnalyzer : AnalyzerPropertiesBase
+    public class ClassificationAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// Required. The on-disk path to the trained fastText 

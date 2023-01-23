@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for text analyzer
     /// </summary>
-    public class TextAnalyzer:AnalyzerPropertiesBase
+    public class TextAnalyzer:AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// Convert to all lower-case characters

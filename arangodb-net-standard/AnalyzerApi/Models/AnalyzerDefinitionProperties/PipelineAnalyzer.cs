@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for Pipeline analyzer
     /// </summary>
-    public class PipelineAnalyzer : AnalyzerPropertiesBase
+    public class PipelineAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// An array of Analyzer objects to use for the pipeline.

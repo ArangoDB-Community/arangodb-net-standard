@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for Minhash analyzer.
     /// (only available in the Enterprise Edition)
     /// </summary>
-    public class MinhashAnalyzer : AnalyzerPropertiesBase
+    public class MinhashAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// An Analyzer object.

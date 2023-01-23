@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerDefinitionProperties
 {
     /// <summary>
     /// Properties for norm analyzer
     /// </summary>
-    public class NormAnalyzer : AnalyzerPropertiesBase
+    public class NormAnalyzer : AnalyzerDefinitionPropertiesBase
     {
         /// <summary>
         /// Convert to all lower-case characters

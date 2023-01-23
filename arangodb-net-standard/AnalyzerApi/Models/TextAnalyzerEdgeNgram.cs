@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models.AnalyzerProperties
+namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
     /// <summary>
     /// 
     /// </summary>
-    public class TextAnalyzerEdgeNgram 
+    public class TextAnalyzerEdgeNgram
     {
         /// <summary>
         /// Minimal n-gram length
