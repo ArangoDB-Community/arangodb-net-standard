@@ -82,7 +82,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<DeleteDatabaseResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteDatabaseResponse>(stream).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
@@ -105,7 +105,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<GetDatabasesResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetDatabasesResponse>(stream).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
@@ -123,7 +123,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<GetDatabasesResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetDatabasesResponse>(stream).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
@@ -141,7 +141,7 @@ namespace ArangoDBNetStandard.DatabaseApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<GetCurrentDatabaseInfoResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetCurrentDatabaseInfoResponse>(stream).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }

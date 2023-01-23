@@ -64,7 +64,7 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<PostUserResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostUserResponse>(stream).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
@@ -210,7 +210,7 @@ namespace ArangoDBNetStandard.UserApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<PutAccessLevelResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutAccessLevelResponse>(stream).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }

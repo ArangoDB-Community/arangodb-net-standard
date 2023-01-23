@@ -156,7 +156,7 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<DeleteCursorResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteCursorResponse>(stream).ConfigureAwait(false);
                 }
 
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
@@ -180,7 +180,7 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<PutCursorResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutCursorResponse<T>>(stream).ConfigureAwait(false);
                 }
 
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
@@ -204,7 +204,7 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<CursorResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<CursorResponse<T>>(stream).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }

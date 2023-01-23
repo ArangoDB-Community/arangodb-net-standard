@@ -220,7 +220,7 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<GetLicenseResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetLicenseResponse>(stream).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
@@ -251,7 +251,7 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<PutLicenseResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutLicenseResponse>(stream).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
