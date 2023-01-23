@@ -13,35 +13,39 @@ namespace ArangoDBNetStandard.AnalyzerApi
         /// Fetch the list of available Analyzer definitions.
         /// GET /_api/analyzer
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetAllAnalyzersResponse> GetAllAnalyzersAsync(CancellationToken token = default);
+        Task<GetAllAnalyzersResponse> GetAllAnalyzersAsync(ApiHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
         /// Creates a new Analyzer based on the provided definition
         /// POST /_api/analyzer
         /// </summary>
         /// <param name="body">The properties of the new analyzer.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<Analyzer> PostAnalyzerAsync(Analyzer body, CancellationToken token = default);
+        Task<Analyzer> PostAnalyzerAsync(Analyzer body, ApiHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
         /// Fetches the definition of the specified analyzer.
         /// GET /_api/analyzer/{analyzer-name}
         /// </summary>
         /// <param name="analyzerName">The name of the analyzer</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetAnalyzerResponse> GetAnalyzerAsync(string analyzerName, CancellationToken token = default);
+        Task<GetAnalyzerResponse> GetAnalyzerAsync(string analyzerName, ApiHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
         /// Deletes an Analyzer.
         /// DELETE /_api/analyzer/{analyzer-name}
         /// </summary>
         /// <param name="analyzerName">The name of the analyzer</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<DeleteAnalyzerResponse> DeleteAnalyzerAsync(string analyzerName, CancellationToken token = default);
+        Task<DeleteAnalyzerResponse> DeleteAnalyzerAsync(string analyzerName, ApiHeaderProperties headers = null, CancellationToken token = default);
     }
 }
