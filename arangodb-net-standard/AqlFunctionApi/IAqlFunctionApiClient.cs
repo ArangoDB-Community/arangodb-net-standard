@@ -16,9 +16,10 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// POST /_api/aqlfunction
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<PostAqlFunctionResponse> PostAqlFunctionAsync(PostAqlFunctionBody body,
+        Task<PostAqlFunctionResponse> PostAqlFunctionAsync(PostAqlFunctionBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -26,22 +27,24 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// DELETE /_api/aqlfunction/{name}
         /// </summary>
         /// <param name="name">The name of the function or function group (namespace).</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="query">The query parameters of the request.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteAqlFunctionResponse> DeleteAqlFunctionAsync(
             string name,
-            DeleteAqlFunctionQuery query = null,
+            DeleteAqlFunctionQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Get all registered AQL user functions.
         /// </summary>
         /// <param name="query">Query string options for the task.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetAqlFunctionsResponse> GetAqlFunctionsAsync(
-            GetAqlFunctionsQuery query = null,
+            GetAqlFunctionsQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -49,10 +52,11 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// POST /_api/explain
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostExplainAqlQueryResponse> PostExplainAqlQueryAsync(
-            PostExplainAqlQueryBody body,
+            PostExplainAqlQueryBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -60,10 +64,11 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// POST /_api/query
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostParseAqlQueryResponse> PostParseAqlQueryAsync(
-            PostParseAqlQueryBody body,
+            PostParseAqlQueryBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -77,6 +82,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// the specified query in all databases, not just the 
         /// selected one.
         /// </param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Kills a running query in the currently selected database. 
@@ -87,7 +93,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// <returns></returns>
         Task<ResponseBase> DeleteKillRunningAqlQueryAsync(
             string queryId,
-         DeleteKillRunningAqlQueryQuery query = null,
+         DeleteKillRunningAqlQueryQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -101,10 +107,11 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Using the parameter is only allowed in the system database
         /// and with superuser privileges.
         /// </param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<ResponseBase> DeleteClearSlowAqlQueriesAsync(
-           DeleteClearSlowAqlQueriesQuery query = null,
+           DeleteClearSlowAqlQueriesQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -118,6 +125,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Using the parameter is only allowed in the system database
         /// and with superuser privileges.
         /// </param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns an array containing the last AQL queries that are 
@@ -129,40 +137,43 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// </remarks>
         /// <returns></returns>
         Task<List<SlowAqlQuery>> GetSlowAqlQueriesAsync(
-           GetSlowAqlQueriesQuery query = null,
+           GetSlowAqlQueriesQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Clears the query results cache for the current database
         /// DELETE /_api/query-cache
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<ResponseBase> DeleteClearAqlQueryCacheAsync(
+        Task<ResponseBase> DeleteClearAqlQueryCacheAsync(ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Gets a list of the stored results in the AQL query results cache.
         /// GET /_api/query-cache/entries
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns an array containing the AQL query results currently 
         /// stored in the query results cache of the selected database.
         /// </remarks>
         /// <returns></returns>
-        Task<List<CachedAqlQueryResult>> GetCachedAqlQueryResultsAsync(
+        Task<List<CachedAqlQueryResult>> GetCachedAqlQueryResultsAsync(ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Gets the global configuration for the AQL query results cache.
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns the global AQL query results cache configuration.
         /// </remarks>
         /// <returns></returns>
-        Task<QueryCacheGlobalProperties> GetQueryCacheGlobalPropertiesAsync(
+        Task<QueryCacheGlobalProperties> GetQueryCacheGlobalPropertiesAsync(ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -170,6 +181,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// PUT /_api/query-cache/properties
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// After the properties have been changed, the current set of properties 
@@ -178,7 +190,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// </remarks>
         /// <returns></returns>
         Task<QueryCacheGlobalProperties> PutAdjustQueryCacheGlobalPropertiesAsync(
-          PutAdjustQueryCacheGlobalPropertiesBody body,
+          PutAdjustQueryCacheGlobalPropertiesBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
 
@@ -186,9 +198,10 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Gets the current query tracking configuration. 
         /// GET /_api/query/properties
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<QueryTrackingConfiguration> GetQueryTrackingConfigurationAsync(
+        Task<QueryTrackingConfiguration> GetQueryTrackingConfigurationAsync(ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -196,6 +209,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// PUT /_api/query/properties
         /// </summary>
         /// <param name="body">The body of the request containing required configuration properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// After the configuration properties have been changed, 
@@ -203,7 +217,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// </remarks>
         /// <returns></returns>
         Task<QueryTrackingConfiguration> PutChangeQueryTrackingConfigurationAsync(
-          PutChangeQueryTrackingConfigurationBody body,
+          PutChangeQueryTrackingConfigurationBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -211,26 +225,28 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// GET /_api/query/current
         /// </summary>
         /// <param name="query">Query string options for the task.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns the global AQL query results cache configuration.
         /// </remarks>
         /// <returns></returns>
         Task<List<RunningAqlQuery>> GetCurrentlyRunningAqlQueriesAsync(
-            GetCurrentlyRunningAqlQueriesQuery query = null,
+            GetCurrentlyRunningAqlQueriesQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Gets the available optimizer rules for AQL queries
         /// GET /_api/query/rules
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns an array of objects that contain the name of each available 
         /// rule and its respective flags.
         /// </remarks>
         /// <returns></returns>
-        Task<List<GetQueryRule>> GetQueryRulesAsync(
+        Task<List<GetQueryRule>> GetQueryRulesAsync(ApiHeaderProperties headers = null,
             CancellationToken token = default);
     }
 }
