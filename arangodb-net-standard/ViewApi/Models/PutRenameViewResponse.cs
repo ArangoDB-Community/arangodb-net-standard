@@ -3,7 +3,7 @@
 namespace ArangoDBNetStandard.ViewApi.Models
 {
     /// <summary>
-    /// Response from <see cref="IViewApiClient.PutRenameViewAsync(string, PutRenameViewBody)"/>
+    /// Response from <see cref="IViewApiClient.PutRenameViewAsync"/>
     /// </summary>
     public class PutRenameViewResponse : ViewSummary
     {

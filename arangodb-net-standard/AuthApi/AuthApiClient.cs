@@ -69,15 +69,15 @@ namespace ArangoDBNetStandard.AuthApi
             JwtTokenRequestBody body,
             CancellationToken token = default)
         {
-            byte[] content = GetContent(body, new ApiClientSerializationOptions(true, false));
+            byte[] content = await GetContentAsync(body, new ApiClientSerializationOptions(true, false)).ConfigureAwait(false);
             using (var response = await _client.PostAsync("/_open/auth", content,null,token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<JwtTokenResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<JwtTokenResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

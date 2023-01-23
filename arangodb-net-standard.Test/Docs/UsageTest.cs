@@ -106,7 +106,7 @@ namespace ArangoDBNetStandardTest.Docs
             var response = await adb.Cursor.PostCursorAsync<MyClassDocument>(
                 @"FOR doc IN MyCollection 
                   FILTER doc.ItemNumber == 123456 
-                  RETURN doc");
+                  RETURN doc", null);
 
             MyClassDocument item = response.Result.First();
 

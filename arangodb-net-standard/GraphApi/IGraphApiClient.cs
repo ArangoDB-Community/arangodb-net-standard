@@ -54,6 +54,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// GET /_api/gharial/{graph}
         /// </summary>
         /// <param name="graphName"></param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetGraphResponse> GetGraphAsync(string graphName, CancellationToken token = default);
 
@@ -348,6 +349,7 @@ namespace ArangoDBNetStandard.GraphApi
           string vertexKey,
           T body,
           PatchVertexQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null,
           GraphHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
@@ -361,6 +363,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to update.</param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -369,6 +373,7 @@ namespace ArangoDBNetStandard.GraphApi
           string documentId,
           T body,
           PatchVertexQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null,
           GraphHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
@@ -381,6 +386,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey"></param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -390,7 +397,8 @@ namespace ArangoDBNetStandard.GraphApi
           string edgeKey,
           T edge,
           PutEdgeQuery query = null,
-          GraphHeaderProperties headers=null, CancellationToken token = default);
+          ApiClientSerializationOptions serializationOptions = null,
+          GraphHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
         /// Replaces the data of an edge based on its document ID.
@@ -400,6 +408,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to replace.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -408,6 +418,7 @@ namespace ArangoDBNetStandard.GraphApi
           string documentId,
           T edge,
           PutEdgeQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null,
           GraphHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
@@ -439,6 +450,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey">The document key of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -448,6 +461,7 @@ namespace ArangoDBNetStandard.GraphApi
           string edgeKey,
           T edge,
           PatchEdgeQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null,
           GraphHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
@@ -460,6 +474,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -468,6 +484,7 @@ namespace ArangoDBNetStandard.GraphApi
           string documentId,
           T edge,
           PatchEdgeQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null,
           GraphHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
@@ -480,6 +497,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="key"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -489,6 +508,7 @@ namespace ArangoDBNetStandard.GraphApi
           string key,
           T vertex,
           PutVertexQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null,
           GraphHeaderProperties headers = null, CancellationToken token = default);
 
         /// <summary>
@@ -499,6 +519,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to replace.</param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -507,6 +529,7 @@ namespace ArangoDBNetStandard.GraphApi
           string documentId,
           T vertex,
           PutVertexQuery query = null,
+          ApiClientSerializationOptions serializationOptions = null,
           GraphHeaderProperties headers = null, CancellationToken token = default);
     }
 }

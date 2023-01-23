@@ -25,7 +25,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="transactionId">Optional. The stream transaction Id.</param>      
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<PostCursorResponse<T>> PostCursorAsync<T>(
+        Task<CursorResponse<T>> PostCursorAsync<T>(
                 string query,
                 Dictionary<string, object> bindVars = null,
                 PostCursorOptions options = null,
@@ -48,9 +48,20 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="headerProperties">Optional. Additional Header properties.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<PostCursorResponse<T>> PostCursorAsync<T>(
+        Task<CursorResponse<T>> PostCursorAsync<T>(
             PostCursorBody postCursorBody, 
             CursorHeaderProperties headerProperties = null,
+            CancellationToken token = default);
+
+        /// <summary>
+        /// Advances an existing query cursor and gets the next set of results.
+        /// Replaces <see cref="PutCursorAsync{T}(string, CancellationToken)"/>
+        /// </summary>
+        /// <param name="cursorIdentifier">The name / identifier of the existing cursor.</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<CursorResponse<T>> PostAdvanceCursorAsync<T>(
+            string cursorIdentifier,
             CancellationToken token = default);
 
         /// <summary>

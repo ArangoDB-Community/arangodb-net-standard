@@ -50,7 +50,7 @@ namespace ArangoDBNetStandard.PregelApi.Models
         /// General as well as algorithm-specific options.
         /// </summary>
         /// <remarks>
-        /// <see cref="https://www.arangodb.com/docs/stable/http/pregel.html#start-pregel-job-execution"/>
+        /// https://www.arangodb.com/docs/stable/http/pregel.html#start-pregel-job-execution
         /// </remarks>
         public Dictionary<string,object> Params { get; set; }
     }

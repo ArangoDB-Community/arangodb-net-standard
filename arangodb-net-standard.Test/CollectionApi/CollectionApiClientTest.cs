@@ -442,7 +442,7 @@ namespace ArangoDBNetStandardTest.CollectionApi
         {
             var body = new PutCollectionPropertyBody
             {
-                JournalSize = 313136,
+                //JournalSize = 313136,
                 WaitForSync = false
             };
             var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>

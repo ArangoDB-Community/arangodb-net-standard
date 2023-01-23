@@ -1,7 +1,7 @@
 ﻿namespace ArangoDBNetStandard.ViewApi.Models
 {
     /// <summary>
-    /// Body parameters for <see cref="IViewApiClient.PutRenameViewAsync(string, PutRenameViewBody)"/>
+    /// Body parameters for <see cref="IViewApiClient.PutRenameViewAsync"/>
     /// </summary>
     public class PutRenameViewBody
     {

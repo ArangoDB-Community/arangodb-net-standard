@@ -19,6 +19,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// Whether or not the collection will be compacted (default is true).
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        [System.Obsolete()]
         public bool? DoCompact { get; set; }
 
         /// <summary>
@@ -32,6 +33,8 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// For example, 64 might be a sensible value for a collection with 100 000 000 documents.
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        /// 
+        [System.Obsolete()]
         public int? IndexBuckets { get; set; }
 
         /// <summary>
@@ -53,6 +56,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// and not for data that cannot be re-created otherwise. (The default is false)
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        [System.Obsolete()]
         public bool? IsVolatile { get; set; }
 
         /// <summary>
@@ -62,6 +66,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// (The default is a configuration parameter)
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        [System.Obsolete()]
         public long? JournalSize { get; set; }
 
         /// <summary>
@@ -141,6 +146,10 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         public bool? WaitForSync { get; set; }
 
         /// <summary>
+        /// Optional object property that specifies the collection level schema for documents.
+        /// </summary>
+        public CollectionSchema Schema { get; set; }
+
         /// Optional. A list of computed values.
         /// </summary>
         public List<ComputedValue> ComputedValues { get; set; }

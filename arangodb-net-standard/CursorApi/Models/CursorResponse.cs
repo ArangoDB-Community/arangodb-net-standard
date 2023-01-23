@@ -7,7 +7,7 @@ namespace ArangoDBNetStandard.CursorApi.Models
     /// Response from ArangoDB when creating a new cursor.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PostCursorResponse<T> : ICursorResponse<T>
+    public class CursorResponse<T> : ICursorResponse<T>
     {
         /// <summary>
         /// Indicates whether an error occurred

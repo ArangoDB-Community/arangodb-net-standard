@@ -38,5 +38,10 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         public CollectionType Type { get; set; }
 
         public bool WaitForSync { get; set; }
+
+        /// <summary>
+        /// The collection level schema for documents.
+        /// </summary>
+        public CollectionSchema Schema { get; set; }
     }
 }

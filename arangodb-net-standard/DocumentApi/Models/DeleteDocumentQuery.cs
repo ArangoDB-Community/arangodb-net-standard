@@ -27,6 +27,13 @@ namespace ArangoDBNetStandard.DocumentApi.Models
         /// </summary>
         public bool? Silent { get; set; }
 
+        /// <summary>
+        /// Whether to delete an existing entry from the in-memory 
+        /// edge cache and refill it with another edge if an edge
+        /// document is removed.
+        /// </summary>
+        public bool? RefillIndexCaches { get; set; }
+
         internal string ToQueryString()
         {
             var queryParams = new List<string>();
@@ -41,6 +48,10 @@ namespace ArangoDBNetStandard.DocumentApi.Models
             if (Silent != null)
             {
                 queryParams.Add("silent=" + Silent.ToString().ToLower());
+            }
+            if (RefillIndexCaches != null)
+            {
+                queryParams.Add("refillIndexCaches=" + RefillIndexCaches.ToString().ToLower());
             }
             return string.Join("&", queryParams);
         }

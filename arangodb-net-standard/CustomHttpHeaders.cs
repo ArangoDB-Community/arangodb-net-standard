@@ -20,5 +20,10 @@
         /// The header string used for <see cref="ApiHeaderProperties.QueueTimeLimit"/> 
         /// </summary>    
         public const string QueueTimeLimitHeader = "x-arango-max-queue-time-seconds";        
+
+        /// <summary>
+        /// The header string used for Driver Info Header
+        /// </summary>    
+        public const string DriverInfoHeader = "x-arango-driver";
     }
 }
