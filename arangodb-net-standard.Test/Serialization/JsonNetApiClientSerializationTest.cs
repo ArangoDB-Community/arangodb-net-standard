@@ -161,8 +161,7 @@ namespace ArangoDBNetStandardTest.Serialization
 
             byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
                 useCamelCasePropertyNames: true,
-                ignoreNullValues: true,
-                camelCasePropertyNamesOfObjectValuesInDictionaries: false));
+                ignoreNullValues: true));
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -173,28 +172,28 @@ namespace ArangoDBNetStandardTest.Serialization
         }
 
         [Fact]
-        public void Serialize_ShouldCamelCaseBindVars_WhenSerializingPostCursorBody()
+        public void Serialize_ShouldCamelCaseBindVars_WhenSerializingPostCursorBodyWithDictionaryOption()
         {
             var body = new PostCursorBody
             {
                 BindVars = new Dictionary<string, object>
                 {
-                    ["DontCamelCaseKey"] = new { DontCamelCaseMe = true }
+                    ["CamelCaseKey"] = new { CamelCaseMe = true }
                 }
             };
             var serialization = new JsonNetApiClientSerialization();
 
             byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
                 useCamelCasePropertyNames: true, 
-                ignoreNullValues: true, 
-                camelCasePropertyNamesOfObjectValuesInDictionaries: true));
+                ignoreNullValues: true,
+                applySerializationOptionsToDictionaryValues: true));
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
-            Assert.Contains("DontCamelCaseKey", jsonString);
-            Assert.DoesNotContain("dontCamelCaseKey", jsonString);
-            Assert.Contains("dontCamelCaseMe", jsonString);
-            Assert.DoesNotContain("DontCamelCaseMe", jsonString);
+            Assert.Contains("CamelCaseKey", jsonString);
+            Assert.DoesNotContain("camelCaseKey", jsonString);
+            Assert.Contains("camelCaseMe", jsonString);
+            Assert.DoesNotContain("CamelCaseMe", jsonString);
         }
 
         [Fact]
@@ -212,8 +211,7 @@ namespace ArangoDBNetStandardTest.Serialization
 
             byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
                  useCamelCasePropertyNames: true,
-                 ignoreNullValues: true,
-                 camelCasePropertyNamesOfObjectValuesInDictionaries: false));
+                 ignoreNullValues: true));
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -225,13 +223,13 @@ namespace ArangoDBNetStandardTest.Serialization
 
 
         [Fact]
-        public void Serialize_ShouldCamelCaseParams_WhenSerializingPostTransactionBody()
+        public void Serialize_ShouldCamelCaseParams_WhenSerializingPostTransactionBodyWithDictionaryOption()
         {
             var body = new PostTransactionBody
             {
                 Params = new Dictionary<string, object>
                 {
-                    ["DontCamelCaseKey"] = new { DontCamelCaseMe = true }
+                    ["CamelCaseKey"] = new { CamelCaseMe = true }
                 }
             };
 
@@ -240,14 +238,14 @@ namespace ArangoDBNetStandardTest.Serialization
             byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
                  useCamelCasePropertyNames: true,
                  ignoreNullValues: true,
-                 camelCasePropertyNamesOfObjectValuesInDictionaries: true));
+                 applySerializationOptionsToDictionaryValues: true));
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
-            Assert.Contains("DontCamelCaseKey", jsonString);
-            Assert.DoesNotContain("dontCamelCaseKey", jsonString);
-            Assert.Contains("dontCamelCaseMe", jsonString);
-            Assert.DoesNotContain("DontCamelCaseMe", jsonString);
+            Assert.Contains("CamelCaseKey", jsonString);
+            Assert.DoesNotContain("camelCaseKey", jsonString);
+            Assert.Contains("camelCaseMe", jsonString);
+            Assert.DoesNotContain("CamelCaseMe", jsonString);
         }
 
         [Fact]

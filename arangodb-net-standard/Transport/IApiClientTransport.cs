@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,11 @@ namespace ArangoDBNetStandard.Transport
     /// </summary>
     public interface IApiClientTransport : IDisposable
     {
+        /// <summary>
+        /// Flags containing specific driver information.
+        /// </summary>
+        IEnumerable<string> DriverFlags { get; set; }
+
         /// <summary>
         /// Send a POST request.
         /// </summary>

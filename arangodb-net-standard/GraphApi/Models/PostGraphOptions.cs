@@ -1,9 +1,11 @@
-﻿namespace ArangoDBNetStandard.GraphApi.Models
+﻿using System.Collections.Generic;
+
+namespace ArangoDBNetStandard.GraphApi.Models
 {
     /// <summary>
     /// Defines options for creating collections within a graph.
     /// </summary>
-    public class PostGraphOptions
+    public abstract class PostGraphOptions
     {
         /// <summary>
         /// The attribute name that is used to smartly shard the vertices of a graph.
@@ -18,21 +20,12 @@
         public string SmartGraphAttribute { get; set; }
 
         /// <summary>
-        /// The number of shards that is used for every collection within this graph.
-        /// Cannot be modified later.
+        /// (Optional) An array of collection names that will be used 
+        /// to create SatelliteCollections for a 
+        /// Hybrid (Disjoint) SmartGraph (Enterprise Edition only). 
+        /// Each array element must be a string and a valid collection name. 
+        /// The collection type cannot be modified later.
         /// </summary>
-        /// <remarks>
-        /// (cluster only)
-        /// </remarks>
-        public int NumberOfShards { get; set; }
-
-        /// <summary>
-        /// The replication factor used when initially creating collections for this graph
-        /// (Enterprise Edition only).
-        /// </summary>
-        /// <remarks>
-        /// (cluster only)
-        /// </remarks>
-        public int ReplicationFactor { get; set; }
+        public IEnumerable<string> Satellites { get; set; }
     }
 }

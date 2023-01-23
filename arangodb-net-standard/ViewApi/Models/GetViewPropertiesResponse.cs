@@ -3,7 +3,7 @@
 namespace ArangoDBNetStandard.ViewApi.Models
 {
     /// <summary>
-    /// Response from <see cref="IViewApiClient.GetViewPropertiesAsync(string)"/>
+    /// Response from <see cref="IViewApiClient.GetViewPropertiesAsync"/>
     /// </summary>
     public class GetViewPropertiesResponse : ViewResponse
     {

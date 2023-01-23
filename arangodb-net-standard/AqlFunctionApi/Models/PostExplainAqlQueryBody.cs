@@ -4,7 +4,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
 {
     /// <summary>
     /// Request body for 
-    /// <see cref="AqlFunctionApiClient.PostExplainAqlQueryAsync(PostExplainAqlQueryBody)"/>
+    /// <see cref="AqlFunctionApiClient.PostExplainAqlQueryAsync"/>
     /// </summary>
     public class PostExplainAqlQueryBody
     {
