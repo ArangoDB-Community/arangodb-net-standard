@@ -6,7 +6,8 @@ namespace ArangoDBNetStandard.GraphApi.Models
     /// Represents a request body to create a named graph.
     /// </summary>
     /// <remarks>
-    /// The creation of a graph requires the name of the graph and a definition of its edges.
+    /// The creation of a graph requires the name of the graph
+    /// and a definition of its edges.
     /// </remarks>
     public class PostGraphBody
     {
