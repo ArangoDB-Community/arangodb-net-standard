@@ -159,7 +159,9 @@ namespace ArangoDBNetStandardTest.Serialization
             };
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(true, true));
+            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
+                useCamelCasePropertyNames: true,
+                ignoreNullValues: true));
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -167,6 +169,31 @@ namespace ArangoDBNetStandardTest.Serialization
             Assert.Contains("DontCamelCaseKey", jsonString);
             Assert.DoesNotContain("dontCamelCaseMe", jsonString);
             Assert.DoesNotContain("dontCamelCaseKey", jsonString);
+        }
+
+        [Fact]
+        public void Serialize_ShouldCamelCaseBindVars_WhenSerializingPostCursorBodyWithDictionaryOption()
+        {
+            var body = new PostCursorBody
+            {
+                BindVars = new Dictionary<string, object>
+                {
+                    ["CamelCaseKey"] = new { CamelCaseMe = true }
+                }
+            };
+            var serialization = new JsonNetApiClientSerialization();
+
+            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
+                useCamelCasePropertyNames: true, 
+                ignoreNullValues: true,
+                applySerializationOptionsToDictionaryValues: true));
+
+            string jsonString = Encoding.UTF8.GetString(jsonBytes);
+
+            Assert.Contains("CamelCaseKey", jsonString);
+            Assert.DoesNotContain("camelCaseKey", jsonString);
+            Assert.Contains("camelCaseMe", jsonString);
+            Assert.DoesNotContain("CamelCaseMe", jsonString);
         }
 
         [Fact]
@@ -182,7 +209,9 @@ namespace ArangoDBNetStandardTest.Serialization
 
             var serialization = new JsonNetApiClientSerialization();
 
-            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(true, true));
+            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
+                 useCamelCasePropertyNames: true,
+                 ignoreNullValues: true));
 
             string jsonString = Encoding.UTF8.GetString(jsonBytes);
 
@@ -190,6 +219,33 @@ namespace ArangoDBNetStandardTest.Serialization
             Assert.Contains("DontCamelCaseKey", jsonString);
             Assert.DoesNotContain("dontCamelCaseMe", jsonString);
             Assert.DoesNotContain("dontCamelCaseKey", jsonString);
+        }
+
+
+        [Fact]
+        public void Serialize_ShouldCamelCaseParams_WhenSerializingPostTransactionBodyWithDictionaryOption()
+        {
+            var body = new PostTransactionBody
+            {
+                Params = new Dictionary<string, object>
+                {
+                    ["CamelCaseKey"] = new { CamelCaseMe = true }
+                }
+            };
+
+            var serialization = new JsonNetApiClientSerialization();
+
+            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
+                 useCamelCasePropertyNames: true,
+                 ignoreNullValues: true,
+                 applySerializationOptionsToDictionaryValues: true));
+
+            string jsonString = Encoding.UTF8.GetString(jsonBytes);
+
+            Assert.Contains("CamelCaseKey", jsonString);
+            Assert.DoesNotContain("camelCaseKey", jsonString);
+            Assert.Contains("camelCaseMe", jsonString);
+            Assert.DoesNotContain("CamelCaseMe", jsonString);
         }
 
         [Fact]

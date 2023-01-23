@@ -64,7 +64,7 @@ namespace ArangoDBNetStandard.PregelApi
         /// discard any intermediate results. This will immediately 
         /// free all memory taken up by the execution, and will 
         /// make you lose all intermediary data.
-        /// For more information <see cref="https://www.arangodb.com/docs/stable/http/pregel.html#cancel-pregel-job-execution"/>
+        /// For more information see https://www.arangodb.com/docs/stable/http/pregel.html#cancel-pregel-job-execution
         /// </remarks>
         /// <param name="jobId">The ID of the job.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>

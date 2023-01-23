@@ -3,7 +3,7 @@
 namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
     /// <summary>
-    /// Response from <see cref="IAnalyzerApiClient.GetAnalyzerAsync(string)"/>
+    /// Response from <see cref="IAnalyzerApiClient.GetAnalyzerAsync"/>
     /// </summary>
     public class GetAnalyzerResponse : Analyzer
     {

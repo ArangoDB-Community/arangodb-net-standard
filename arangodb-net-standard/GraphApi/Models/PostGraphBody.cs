@@ -6,7 +6,8 @@ namespace ArangoDBNetStandard.GraphApi.Models
     /// Represents a request body to create a named graph.
     /// </summary>
     /// <remarks>
-    /// The creation of a graph requires the name of the graph and a definition of its edges.
+    /// The creation of a graph requires the name of the graph
+    /// and a definition of its edges.
     /// </remarks>
     public class PostGraphBody
     {
@@ -35,7 +36,18 @@ namespace ArangoDBNetStandard.GraphApi.Models
         public bool? IsSmart { get; set; }
 
         /// <summary>
+        /// (Optional) Whether to create a Disjoint SmartGraph instead 
+        /// of a regular SmartGraph (Enterprise Edition only).
+        /// </summary>
+        /// <remarks>
+        /// (cluster only)
+        /// </remarks>
+        public bool? IsDisjoint { get; set; }
+
+        /// <summary>
         /// (Optional) Defines options for creating collections within this graph.
+        /// Must be an instance of <see cref="PostSatelliteGraphOptions"/> or
+        /// <see cref="PostNonSatelliteGraphOptions"/>
         /// </summary>
         public PostGraphOptions Options { get; set; }
     }

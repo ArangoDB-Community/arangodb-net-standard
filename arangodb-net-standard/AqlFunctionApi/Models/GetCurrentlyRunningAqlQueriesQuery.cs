@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Generates query string for 
-    /// <see cref="AqlFunctionApiClient.GetCurrentlyRunningAqlQueriesAsync(GetCurrentlyRunningAqlQueriesQuery)"/>
+    /// <see cref="AqlFunctionApiClient.GetCurrentlyRunningAqlQueriesAsync"/>
     /// </summary>
     public class GetCurrentlyRunningAqlQueriesQuery
     {
@@ -26,5 +26,5 @@
                 return "";
             }
         }
-    }   
+    }
 }

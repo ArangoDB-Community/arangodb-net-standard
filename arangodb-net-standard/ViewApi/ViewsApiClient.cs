@@ -62,10 +62,11 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    var result = DeserializeJsonFromStream<GetAllViewsResponse>(stream);
+                    var result = await DeserializeJsonFromStreamAsync<GetAllViewsResponse>(stream).ConfigureAwait(false);
+                    result.ResponseHeaders = new ApiResponseHeaders(response.Headers);
                     return result;
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -74,22 +75,31 @@ namespace ArangoDBNetStandard.ViewApi
         /// POST /_api/view
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="ignoreNullValuesOnSerialization">
+        /// Indicates whether to ignore null values during serialization.
+        /// This parameter can be used together with <see cref="LinkProperties.IncludeAllFields"/>
+        /// set to false to control if fields with null values are included.
+        /// </param>  
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<ViewResponse> PostCreateViewAsync(ViewDetails body,
-            CancellationToken token = default)
+        public virtual async Task<ViewResponse> PostCreateViewAsync(ViewDetails body, bool ignoreNullValuesOnSerialization=true, CancellationToken token = default)
         {
             string uri = _apiPath;
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(useCamelCasePropertyNames: true,
+                                                                                        ignoreNullValues: ignoreNullValuesOnSerialization,
+                                                                                        applySerializationOptionsToDictionaryValues: true)).ConfigureAwait(false);
+
             using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    var result = DeserializeJsonFromStream<ViewResponse>(stream);
+                    var result = await DeserializeJsonFromStreamAsync<ViewResponse>(stream).ConfigureAwait(false);
+                    result.ResponseHeaders = new ApiResponseHeaders(response.Headers);
                     return result;
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -109,9 +119,9 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -131,9 +141,9 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -153,9 +163,9 @@ namespace ArangoDBNetStandard.ViewApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetViewPropertiesResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetViewPropertiesResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -165,21 +175,29 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="ignoreNullValuesOnSerialization">
+        /// Indicates whether to ignore null values during serialization.
+        /// This parameter can be used together with <see cref="LinkProperties.IncludeAllFields"/>
+        /// set to false to control if fields with null values are included.
+        /// </param>  
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<ViewResponse> PatchViewPropertiesAsync(string viewNameOrId, ViewDetails body,
-            CancellationToken token = default)
+        public virtual async Task<ViewResponse> PatchViewPropertiesAsync(string viewNameOrId, ViewDetails body, 
+            bool ignoreNullValuesOnSerialization = true, CancellationToken token = default)
         {
             string uri = $"{_apiPath}/{viewNameOrId}/properties";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(useCamelCasePropertyNames: true,
+                                                                                        ignoreNullValues: ignoreNullValuesOnSerialization,
+                                                                                        applySerializationOptionsToDictionaryValues: true)).ConfigureAwait(false);
             using (var response = await _transport.PatchAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<ViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<ViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -189,21 +207,29 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="ignoreNullValuesOnSerialization">
+        /// Indicates whether to ignore null values during serialization.
+        /// This parameter can be used together with <see cref="LinkProperties.IncludeAllFields"/>
+        /// set to false to control if fields with null values are included.
+        /// </param>  
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body,
-            CancellationToken token = default)
+        public virtual async Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body, 
+            bool ignoreNullValuesOnSerialization = true, CancellationToken token = default)
         {
             string uri = $"{_apiPath}/{viewName}/properties";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(useCamelCasePropertyNames: true,
+                                                                                        ignoreNullValues: ignoreNullValuesOnSerialization,
+                                                                                        applySerializationOptionsToDictionaryValues: true)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<ViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<ViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -219,15 +245,15 @@ namespace ArangoDBNetStandard.ViewApi
             CancellationToken token = default)
         {
             string uri = $"{_apiPath}/{viewName}/rename";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutRenameViewResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutRenameViewResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

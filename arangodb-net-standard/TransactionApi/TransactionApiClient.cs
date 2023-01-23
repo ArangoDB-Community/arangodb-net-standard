@@ -65,16 +65,16 @@ namespace ArangoDBNetStandard.TransactionApi
             PostTransactionBody body,
             CancellationToken token = default)
         {
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _client.PostAsync(_transactionApiPath, content, token: token).ConfigureAwait(false))
             {
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<PostTransactionResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostTransactionResponse<T>>(stream).ConfigureAwait(false);
                 }
 
-                var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
+                var error = await DeserializeJsonFromStreamAsync<ApiErrorResponse>(stream).ConfigureAwait(false);
                 throw new ApiErrorException(error);
             }
         }
@@ -101,10 +101,10 @@ namespace ArangoDBNetStandard.TransactionApi
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<StreamTransactionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<StreamTransactionResponse>(stream).ConfigureAwait(false);
                 }
 
-                var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
+                var error = await DeserializeJsonFromStreamAsync<ApiErrorResponse>(stream).ConfigureAwait(false);
                 throw new ApiErrorException(error);
             }
         }
@@ -130,7 +130,7 @@ namespace ArangoDBNetStandard.TransactionApi
             ApiHeaderProperties headerProperties = null,
             CancellationToken token = default)
         {
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
             string beginTransactionPath = string.Format(_streamTransactionApiPath, "begin");
             using (var response = await _client.PostAsync(
                 beginTransactionPath,
@@ -141,10 +141,10 @@ namespace ArangoDBNetStandard.TransactionApi
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<StreamTransactionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<StreamTransactionResponse>(stream).ConfigureAwait(false);
                 }
 
-                var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
+                var error = await DeserializeJsonFromStreamAsync<ApiErrorResponse>(stream).ConfigureAwait(false);
                 throw new ApiErrorException(error);
             }
         }
@@ -171,10 +171,10 @@ namespace ArangoDBNetStandard.TransactionApi
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<StreamTransactionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<StreamTransactionResponse>(stream).ConfigureAwait(false);
                 }
 
-                var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
+                var error = await DeserializeJsonFromStreamAsync<ApiErrorResponse>(stream).ConfigureAwait(false);
                 throw new ApiErrorException(error);
             }
         }
@@ -195,10 +195,10 @@ namespace ArangoDBNetStandard.TransactionApi
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<StreamTransactions>(stream);
+                    return await DeserializeJsonFromStreamAsync<StreamTransactions>(stream).ConfigureAwait(false);
                 }
 
-                var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
+                var error = await DeserializeJsonFromStreamAsync<ApiErrorResponse>(stream).ConfigureAwait(false);
                 throw new ApiErrorException(error);
             }
         }
@@ -222,10 +222,10 @@ namespace ArangoDBNetStandard.TransactionApi
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<StreamTransactionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<StreamTransactionResponse>(stream).ConfigureAwait(false);
                 }
 
-                var error = DeserializeJsonFromStream<ApiErrorResponse>(stream);
+                var error =await DeserializeJsonFromStreamAsync<ApiErrorResponse>(stream).ConfigureAwait(false);
                 throw new ApiErrorException(error);
             }
         }

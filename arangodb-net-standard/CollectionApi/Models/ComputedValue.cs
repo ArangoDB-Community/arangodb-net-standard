@@ -22,7 +22,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// <summary>
         /// Required. An AQL RETURN operation with an
         /// expression that computes the desired value. 
-        /// <see cref="https://www.arangodb.com/docs/stable/data-modeling-documents-computed-values.html#computed-value-expressions"/>
+        /// https://www.arangodb.com/docs/stable/data-modeling-documents-computed-values.html#computed-value-expressions
         /// </summary>
         public string Expression { get; set; }
 

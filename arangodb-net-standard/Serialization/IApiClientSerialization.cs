@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard.Serialization
 {
@@ -8,16 +9,16 @@ namespace ArangoDBNetStandard.Serialization
     public interface IApiClientSerialization
     {
         /// <summary>
-        /// Deserializes the data structure contained by the specified stream
+        /// Asynchronously deserializes the data structure contained by the specified stream
         /// into an instance of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of the object to deserialize to.</typeparam>
         /// <param name="stream">The stream containing the JSON structure to deserialize.</param>
         /// <returns></returns>
-        T DeserializeFromStream<T>(Stream stream);
+        Task<T> DeserializeFromStreamAsync<T>(Stream stream);
 
         /// <summary>
-        /// Serializes the specified object to a sequence of bytes,
+        /// Asynchronously serializes the specified object to a sequence of bytes,
         /// following the provided rules for camel case property name and null value handling.
         /// </summary>
         /// <typeparam name="T">The type of the object to serialize.</typeparam>
@@ -25,10 +26,10 @@ namespace ArangoDBNetStandard.Serialization
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
-        byte[] Serialize<T>(T item, ApiClientSerializationOptions serializationOptions);
+        Task<byte[]> SerializeAsync<T>(T item, ApiClientSerializationOptions serializationOptions);
 
         /// <summary>
-        /// Serializes the specified object to a JSON string,
+        /// Asynchronously serializes the specified object to a JSON string,
         /// following the provided rules for camel case property name and null value handling.
         /// </summary>
         /// <typeparam name="T">The type of the object to serialize.</typeparam>
@@ -36,6 +37,6 @@ namespace ArangoDBNetStandard.Serialization
         /// <param name="serializationOptions">The serialization options. When the value is null the
         /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <returns></returns>
-        string SerializeToString<T>(T item, ApiClientSerializationOptions serializationOptions);
+        Task<string> SerializeToStringAsync<T>(T item, ApiClientSerializationOptions serializationOptions);
     }
 }

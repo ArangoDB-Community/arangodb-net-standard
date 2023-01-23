@@ -3,7 +3,7 @@
 namespace ArangoDBNetStandard.AdminApi.Models
 {
     /// <summary>
-    /// Returned by <see cref="IAdminApiClient.GetServerVersionAsync(GetServerVersionQuery)"/>
+    /// Returned by <see cref="IAdminApiClient.GetServerVersionAsync"/>
     /// </summary>
     public class GetServerVersionResponse
     {

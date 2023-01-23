@@ -4,7 +4,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
 {
     /// <summary>
     /// Response from
-    /// <see cref="AqlFunctionApiClient.PostParseAqlQueryAsync(PostParseAqlQueryBody)"/>
+    /// <see cref="AqlFunctionApiClient.PostParseAqlQueryAsync"/>
     /// </summary>
     public class PostParseAqlQueryResponse : ResponseBase
     {

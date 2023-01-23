@@ -34,6 +34,8 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// The maximal size of a journal or datafile in bytes.
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        /// 
+        [System.Obsolete()]
         public long JournalSize { get; set; }
 
         public PostCollectionResponseCollectionKeyOptions KeyOptions { get; set; }
@@ -54,6 +56,8 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// Whether or not the collection is compacted.
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        /// 
+        [System.Obsolete()]
         public bool DoCompact { get; set; }
 
         /// <summary>
@@ -66,6 +70,8 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// The number of buckets into which indexes using a hash table are split.
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        /// 
+        [System.Obsolete()]
         public int IndexBuckets { get; set; }
 
         /// <summary>
@@ -73,8 +79,10 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// If true then the collection data is kept in-memory only and not made persistent.
         /// This option is meaningful for the MMFiles storage engine only.
         /// </summary>
+        /// 
+        [System.Obsolete()]
         public bool IsVolatile { get; set; }
-
+        
         /// <summary>
         /// Write concern for the collection (default: 1). It determines how many copies of 
         /// each shard are required to be in sync on the different DB-Servers. If there are

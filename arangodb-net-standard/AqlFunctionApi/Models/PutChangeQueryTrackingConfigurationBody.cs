@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Parameter to
-    /// <see cref="AqlFunctionApiClient.PutChangeQueryTrackingConfigurationAsync(PutChangeQueryTrackingConfigurationBody)"/>
+    /// <see cref="AqlFunctionApiClient.PutChangeQueryTrackingConfigurationAsync"/>
     /// </summary>
     public class PutChangeQueryTrackingConfigurationBody
     {
