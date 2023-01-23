@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ArangoDBNetStandard.AnalyzerApi.Models
+﻿namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
     /// <summary>
     /// Options for fine-tuning geo queries.

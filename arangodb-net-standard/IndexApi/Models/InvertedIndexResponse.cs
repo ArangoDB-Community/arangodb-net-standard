@@ -1,32 +1,59 @@
-﻿using ArangoDBNetStandard.CollectionApi.Models.Figures;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using System.Numerics;
-using System.Xml.Linq;
+using System.Net;
 
 namespace ArangoDBNetStandard.IndexApi.Models
 {
     /// <summary>
-    /// Request body for <see cref="IIndexApiClient.PostInvertedIndexAsync(PostIndexQuery, PostInvertedIndexBody, System.Threading.CancellationToken)"/>
+    /// Response from <see cref="IIndexApiClient.PostInvertedIndexAsync(PostIndexQuery, PostInvertedIndexBody, System.Threading.CancellationToken)"/>
     /// </summary>
-    public class PostInvertedIndexBody : PostIndexBody, IInvertedIndex
+    public class InvertedIndexResponse : IInvertedIndex
     {
         /// <summary>
-        /// Constructor
+        /// ID of the index
         /// </summary>
-        public PostInvertedIndexBody()
-        {
-            Type = IndexTypes.Inverted;
-        }
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Indicates whether the index is newly created or not
+        /// </summary>
+        public bool? IsNewlyCreated { get; set; }
+
+        /// <summary>
+        /// Indicates a sparse index
+        /// </summary>
+        public bool? Sparse { get; set; }
+
+        /// <summary>
+        /// Indicates a unique index
+        /// </summary>
+        public bool? Unique { get; set; }
+
+        /// <summary>
+        /// Version of the index
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
+        /// The HTTP status code.
+        /// </summary>
+        public HttpStatusCode Code { get; set; }
+
+        /// <summary>
+        /// Always false.
+        /// </summary>
+        /// <remarks>
+        /// To handle errors, catch <see cref="ApiErrorException"/>
+        /// thrown by API client methods.
+        /// </remarks>
+        public bool? Error { get; set; }
 
         /// <summary>
         /// An list of attribute paths specifying options 
         /// for the fields (with the attribute path 
         /// in the name property)
         /// </summary>
-        public new IEnumerable<InvertedIndexField> Fields { get; set; }
+        public IEnumerable<InvertedIndexField> Fields { get; set; }
 
         /// <summary>
         /// Optional. This option only applies if you use the

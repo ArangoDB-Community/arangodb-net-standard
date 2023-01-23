@@ -122,7 +122,7 @@ namespace ArangoDBNetStandard.CursorApi
             CursorHeaderProperties headerProperties = null,
             CancellationToken token = default)
         {
-            var content = GetContent(postCursorBody, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(postCursorBody, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             var headerCollection = GetHeaderCollection(headerProperties);
             using (var response = await _client.PostAsync(_cursorApiPath,
                 content,
@@ -132,10 +132,9 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<CursorResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<CursorResponse<T>>(stream).ConfigureAwait(false);
                 }
-
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -157,10 +156,10 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteCursorResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteCursorResponse>(stream).ConfigureAwait(false);
                 }
 
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -181,10 +180,10 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutCursorResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutCursorResponse<T>>(stream).ConfigureAwait(false);
                 }
 
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -205,9 +204,9 @@ namespace ArangoDBNetStandard.CursorApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<CursorResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<CursorResponse<T>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

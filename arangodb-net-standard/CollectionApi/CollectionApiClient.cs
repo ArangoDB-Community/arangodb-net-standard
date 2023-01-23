@@ -65,15 +65,15 @@ namespace ArangoDBNetStandard.CollectionApi
             {
                 uriString += "?" + options.ToQueryString();
             }
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _transport.PostAsync(uriString, content, null, token).ConfigureAwait(false))
             {
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return DeserializeJsonFromStream<PostCollectionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostCollectionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -94,9 +94,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteCollectionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteCollectionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -121,9 +121,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<TruncateCollectionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<TruncateCollectionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -147,9 +147,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCollectionCountResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetCollectionCountResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             };
         }
 
@@ -173,9 +173,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCollectionsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetCollectionsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -197,10 +197,10 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    var collection = DeserializeJsonFromStream<GetCollectionResponse>(stream);
+                    var collection = await DeserializeJsonFromStreamAsync<GetCollectionResponse>(stream).ConfigureAwait(false);
                     return collection;
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -222,9 +222,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCollectionPropertiesResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetCollectionPropertiesResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -239,20 +239,20 @@ namespace ArangoDBNetStandard.CollectionApi
         public virtual async Task<RenameCollectionResponse> RenameCollectionAsync(string collectionName, RenameCollectionBody body,
             CancellationToken token = default)
         {
-            var content = GetContent(body, new ApiClientSerializationOptions(true, false));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, false)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(
                 _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/rename", 
                 content,
                 null,
                 token).ConfigureAwait(false))
-            {
+           {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    var collection = DeserializeJsonFromStream<RenameCollectionResponse>(stream);
+                    var collection =await DeserializeJsonFromStreamAsync<RenameCollectionResponse>(stream).ConfigureAwait(false);
                     return collection;
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -274,9 +274,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCollectionRevisionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetCollectionRevisionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -293,7 +293,7 @@ namespace ArangoDBNetStandard.CollectionApi
             PutCollectionPropertyBody body,
             CancellationToken token = default)
         {
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(
                 _collectionApiPath + "/" + collectionName + "/properties", 
                 content,
@@ -303,9 +303,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutCollectionPropertyResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutCollectionPropertyResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -327,10 +327,10 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCollectionFiguresResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetCollectionFiguresResponse>(stream).ConfigureAwait(false);
                 }
 
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             };
         }
 
@@ -361,9 +361,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetChecksumResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetChecksumResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -391,9 +391,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutLoadIndexesIntoMemoryResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutLoadIndexesIntoMemoryResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -417,9 +417,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutRecalculateCountResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutRecalculateCountResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -449,15 +449,15 @@ namespace ArangoDBNetStandard.CollectionApi
                 throw new ArgumentException($"{nameof(body)} is required", nameof(body));
             }
             string uriString = _collectionApiPath + "/" + WebUtility.UrlEncode(collectionName) + "/responsibleShard";
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(uriString, content, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutDocumentShardResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutDocumentShardResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -482,9 +482,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCollectionShardsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetCollectionShardsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -512,9 +512,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetCollectionShardsDetailedResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetCollectionShardsDetailedResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -540,9 +540,9 @@ namespace ArangoDBNetStandard.CollectionApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutCompactCollectionDataResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutCompactCollectionDataResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }
