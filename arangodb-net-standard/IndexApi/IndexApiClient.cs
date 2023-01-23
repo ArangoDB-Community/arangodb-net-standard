@@ -310,15 +310,15 @@ namespace ArangoDBNetStandard.IndexApi
             }
 
             uri += '?' + query.ToQueryString();
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _client.PostAsync(uri, content, token: token).ConfigureAwait(false))
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            using (var response = await _client.PostAsync(uri, content: content,  token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<InvertedIndexResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<InvertedIndexResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }
