@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -69,7 +70,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cache"></param>
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
-        /// <param name="transactionId">Optional. The stream transaction Id.</param>      
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>  
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<CursorResponse<T>> PostCursorAsync<T>(
@@ -143,14 +144,15 @@ namespace ArangoDBNetStandard.CursorApi
         /// DELETE /_api/cursor/{cursor-identifier}
         /// </summary>
         /// <param name="cursorId">The id of the cursor to delete.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId,
+        public virtual async Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             using (var response = await _client.DeleteAsync(
                 _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId),
-                null,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),,
                 token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
@@ -168,14 +170,15 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <typeparam name="T">Result type to deserialize to</typeparam>
         /// <param name="cursorId">ID of the existing query cursor.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         [Obsolete("Use PostAdvanceCursorAsync.")]
-        public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId,
+        public virtual async Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
-            using (var response = await _client.PutAsync(uri, new byte[0], null, token).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, new byte[0], webHeaderCollection: headers?.ToWebHeaderCollection(),, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -189,16 +192,18 @@ namespace ArangoDBNetStandard.CursorApi
 
         /// <summary>
         /// Advances an existing query cursor and gets the next set of results.
-        /// Replaces <see cref="PutCursorAsync{T}(string, CancellationToken)"/>
+        /// Replaces <see cref="PutCursorAsync{T}(string,ApiHeaderProperties, CancellationToken)"/>
         /// </summary>
         /// <param name="cursorIdentifier">The name / identifier of the existing cursor.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<CursorResponse<T>> PostAdvanceCursorAsync<T>(string cursorIdentifier, CancellationToken token = default)
+        public virtual async Task<CursorResponse<T>> PostAdvanceCursorAsync<T>(string cursorIdentifier, ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             using (var response = await _client.PostAsync(
                 requestUri: _cursorApiPath + $"/{WebUtility.UrlEncode(cursorIdentifier)}",
                 content: new byte[] { },
+                webHeaderCollection:headers?.ToWebHeaderCollection(),
                 token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
