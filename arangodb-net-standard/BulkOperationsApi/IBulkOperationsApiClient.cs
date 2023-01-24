@@ -16,11 +16,13 @@ namespace ArangoDBNetStandard.BulkOperationsApi
         /// </summary>
         /// <param name="query">Options for the import.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<ImportDocumentsResponse> PostImportDocumentArraysAsync(
             ImportDocumentsQuery query,
             ImportDocumentArraysBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -31,11 +33,13 @@ namespace ArangoDBNetStandard.BulkOperationsApi
         /// </summary>
         /// <param name="query">Options for the import.</param>
         /// <param name="jsonBody">The body of the request containing required value arrays.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<ImportDocumentsResponse> PostImportDocumentArraysAsync(
             ImportDocumentsQuery query,
-            string jsonBody,
+            string jsonBody, 
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
 
@@ -45,11 +49,13 @@ namespace ArangoDBNetStandard.BulkOperationsApi
         /// </summary>
         /// <param name="query">Options for the import.</param>
         /// <param name="body">The body of the request containing required objects.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync<T>(
             ImportDocumentsQuery query,
-            ImportDocumentObjectsBody<T> body,
+            ImportDocumentObjectsBody<T> body, 
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -60,11 +66,13 @@ namespace ArangoDBNetStandard.BulkOperationsApi
         /// </summary>
         /// <param name="query">Options for the import.</param>
         /// <param name="jsonBody">The body of the request containing the required JSON objects.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync(
             ImportDocumentsQuery query,
             string jsonBody,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
     }
 }

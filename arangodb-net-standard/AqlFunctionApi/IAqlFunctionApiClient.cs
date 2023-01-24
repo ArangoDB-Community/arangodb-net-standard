@@ -33,7 +33,8 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// <returns></returns>
         Task<DeleteAqlFunctionResponse> DeleteAqlFunctionAsync(
             string name,
-            DeleteAqlFunctionQuery query = null, ApiHeaderProperties headers = null,
+            DeleteAqlFunctionQuery query = null, 
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>

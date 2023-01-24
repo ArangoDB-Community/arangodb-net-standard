@@ -16,20 +16,22 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="body">Attributes of the new collection</param>
         /// <param name="options">Query string options for the task.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostCollectionResponse> PostCollectionAsync(
            PostCollectionBody body,
-           PostCollectionQuery options = null,
+           PostCollectionQuery options = null, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Deletes a collection.
         /// </summary>
         /// <param name="collectionName"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<DeleteCollectionResponse> DeleteCollectionAsync(string collectionName,
+        Task<DeleteCollectionResponse> DeleteCollectionAsync(string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -61,9 +63,10 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET/_api/collection
         /// </summary>
         /// <param name="query"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery query = null,
+        Task<GetCollectionsResponse> GetCollectionsAsync(GetCollectionsQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -71,9 +74,10 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET/_api/collection/{collection-name}
         /// </summary>
         /// <param name="collectionName"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetCollectionResponse> GetCollectionAsync(string collectionName,
+        Task<GetCollectionResponse> GetCollectionAsync(string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -81,9 +85,10 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET /_api/collection/{collection-name}/properties
         /// </summary>
         /// <param name="collectionName"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName,
+        Task<GetCollectionPropertiesResponse> GetCollectionPropertiesAsync(string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -92,11 +97,12 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName"></param>
         /// <param name="body"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<RenameCollectionResponse> RenameCollectionAsync(
             string collectionName,
-            RenameCollectionBody body,
+            RenameCollectionBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -104,9 +110,10 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET /_api/collection/{collection-name}/revision
         /// </summary>
         /// <param name="collectionName">Name of the collection</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetCollectionRevisionResponse> GetCollectionRevisionAsync(string collectionName,
+        Task<GetCollectionRevisionResponse> GetCollectionRevisionAsync(string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -115,11 +122,12 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName"></param>
         /// <param name="body"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutCollectionPropertyResponse> PutCollectionPropertyAsync(
            string collectionName,
-           PutCollectionPropertyBody body,
+           PutCollectionPropertyBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -127,9 +135,10 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET/_api/collection/{collection-name}/figures
         /// </summary>
         /// <param name="collectionName"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName,
+        Task<GetCollectionFiguresResponse> GetCollectionFiguresAsync(string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -138,10 +147,11 @@ namespace ArangoDBNetStandard.CollectionApi
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
         /// <param name="query">Query options.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetChecksumResponse> GetChecksumAsync(string collectionName,
-            GetChecksumQuery query = null,
+            GetChecksumQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -153,10 +163,11 @@ namespace ArangoDBNetStandard.CollectionApi
         /// PUT /_api/collection/{collection-name}/loadIndexesIntoMemory
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutLoadIndexesIntoMemoryResponse> PutLoadIndexesIntoMemoryAsync(
-           string collectionName,
+           string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -164,10 +175,11 @@ namespace ArangoDBNetStandard.CollectionApi
         /// PUT /_api/collection/{collection-name}/recalculateCount
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutRecalculateCountResponse> PutRecalculateCountAsync(
-           string collectionName,
+           string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -180,11 +192,12 @@ namespace ArangoDBNetStandard.CollectionApi
         /// pairs with at least the collection’s shard 
         /// key attributes set to some values.
         /// </param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutDocumentShardResponse> PutDocumentShardAsync(
            string collectionName,
-           Dictionary<string, object> body,
+           Dictionary<string, object> body, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -193,10 +206,11 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET /_api/collection/{collection-name}/shards
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetCollectionShardsResponse> GetCollectionShardsAsync(
-           string collectionName,
+           string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -208,10 +222,11 @@ namespace ArangoDBNetStandard.CollectionApi
         /// GET /_api/collection/{collection-name}/shards?details=true
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetCollectionShardsDetailedResponse> GetCollectionShardsWithDetailsAsync(
-           string collectionName,
+           string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -221,10 +236,11 @@ namespace ArangoDBNetStandard.CollectionApi
         /// PUT /_api/collection/{collection-name}/compact
         /// </summary>
         /// <param name="collectionName">Name of the collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutCompactCollectionDataResponse> PutCompactCollectionDataAsync(
-           string collectionName,
+           string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default);
     }
 }

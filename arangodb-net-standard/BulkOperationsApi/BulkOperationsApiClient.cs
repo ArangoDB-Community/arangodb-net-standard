@@ -55,11 +55,13 @@ namespace ArangoDBNetStandard.BulkOperationsApi
         /// </summary>
         /// <param name="query">Options for the import.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<ImportDocumentsResponse> PostImportDocumentArraysAsync(
             ImportDocumentsQuery query,
             ImportDocumentArraysBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             if (body == null)
@@ -90,7 +92,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi
             {
                 sb.AppendLine(await GetContentStringAsync(valueArr, options).ConfigureAwait(false));
             }
-            return await PostImportDocumentArraysAsync(query, sb.ToString(),token)
+            return await PostImportDocumentArraysAsync(query, sb.ToString(),headers,token)
                 .ConfigureAwait(false);
         }
 
@@ -100,11 +102,12 @@ namespace ArangoDBNetStandard.BulkOperationsApi
         /// </summary>
         /// <param name="query">Options for the import.</param>
         /// <param name="jsonBody">The body of the request containing required value arrays.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<ImportDocumentsResponse> PostImportDocumentArraysAsync(
             ImportDocumentsQuery query,
-            string jsonBody,
+            string jsonBody, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             if (query == null)
@@ -125,7 +128,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi
             string uriString = _bulkOperationsApiPath;
             uriString += "?" + query.ToQueryString();
             var content = Encoding.UTF8.GetBytes(jsonBody);
-            using (var response = await _transport.PostAsync(uriString, content,null,token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uriString, content,webHeaderCollection: headers?.ToWebHeaderCollection(),token).ConfigureAwait(false))
             {
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
@@ -142,11 +145,12 @@ namespace ArangoDBNetStandard.BulkOperationsApi
         /// </summary>
         /// <param name="query">Options for the import.</param>
         /// <param name="body">The body of the request containing required objects.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync<T>(
             ImportDocumentsQuery query,
-            ImportDocumentObjectsBody<T> body,
+            ImportDocumentObjectsBody<T> body, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             if (query == null)
@@ -185,7 +189,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi
                 //body should be one array of JSON objects
                 sb.Append(await GetContentStringAsync(body.Documents, options).ConfigureAwait(false));
             }
-            return await PostImportDocumentObjectsAsync(query, sb.ToString(),token)
+            return await PostImportDocumentObjectsAsync(query, sb.ToString(),headers, token)
                 .ConfigureAwait(false);
         }
 
@@ -197,11 +201,12 @@ namespace ArangoDBNetStandard.BulkOperationsApi
         /// </summary>
         /// <param name="query">Options for the import.</param>
         /// <param name="jsonBody">The body of the request containing the required JSON objects.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<ImportDocumentsResponse> PostImportDocumentObjectsAsync(
             ImportDocumentsQuery query,
-            string jsonBody,
+            string jsonBody, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             if (query == null)
@@ -227,7 +232,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi
             string uriString = _bulkOperationsApiPath;
             uriString += "?" + query.ToQueryString();
             var content = Encoding.UTF8.GetBytes(jsonBody);
-            using (var response = await _transport.PostAsync(uriString, content,null,token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uriString, content, webHeaderCollection: headers?.ToWebHeaderCollection(), token).ConfigureAwait(false))
             {
                 var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
