@@ -2,7 +2,7 @@
 
 namespace ArangoDBNetStandard.DocumentApi.Models
 {
-    public class DocumentHeaderProperties:ApiHeaderProperties
+    public class DocumentHeaderProperties: ApiHeaderProperties
     {
         public string IfMatch { get; set; }
 
