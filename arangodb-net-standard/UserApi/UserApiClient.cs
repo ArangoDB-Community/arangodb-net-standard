@@ -53,13 +53,16 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <exception cref="ApiErrorException">ArangoDB responded with an error.</exception>
         /// <param name="body">The request body containing the user information.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostUserResponse> PostUserAsync(PostUserBody body,
-            CancellationToken token = default)
+         ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PostAsync(_userApiPath, content, token: token).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(_userApiPath, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -77,14 +80,17 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="body">The user information used for to replace operation.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PutUserResponse> PutUserAsync(string username, PutUserBody body,
-            CancellationToken token = default)
+          ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = _userApiPath + '/' + username;
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PutAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -102,14 +108,17 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="body">The user information used for to replace operation.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PatchUserResponse> PatchUserAsync(string username, PatchUserBody body,
-            CancellationToken token = default)
+            ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = _userApiPath + '/' + username;
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PatchAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _client.PatchAsync(uri, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -126,13 +135,16 @@ namespace ArangoDBNetStandard.UserApi
         /// server access level in order to execute this REST call.
         /// </summary>
         /// <param name="username">The name of the user.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<GetUserResponse> GetUserAsync(string username,
-            CancellationToken token = default)
+           ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = _userApiPath + '/' + username;
-            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -148,13 +160,16 @@ namespace ArangoDBNetStandard.UserApi
         /// You need Administrate for the server access level in order to execute this REST call.
         /// </summary>
         /// <param name="username">The name of the user.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteUserResponse> DeleteUserAsync(string username,
-            CancellationToken token = default)
+          ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username);
-            using (var response = await _client.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -170,13 +185,16 @@ namespace ArangoDBNetStandard.UserApi
         /// You need the Administrate server access level in order to execute this REST call.
         /// Otherwise, you will only get information about yourself.
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<GetUsersResponse> GetUsersAsync(
-            CancellationToken token = default)
+           ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = _userApiPath;
-            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -194,18 +212,21 @@ namespace ArangoDBNetStandard.UserApi
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database.</param>
         /// <param name="body">The body of the request containing the access level.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PutAccessLevelResponse> PutDatabaseAccessLevelAsync(
             string username,
             string dbName,
-            PutAccessLevelBody body,
+            PutAccessLevelBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName);
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PutAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -221,16 +242,19 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database to query.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<GetAccessLevelResponse> GetDatabaseAccessLevelAsync(
             string username,
-            string dbName,
+            string dbName, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName);
-            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -249,16 +273,19 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteAccessLevelResponse> DeleteDatabaseAccessLevelAsync(
             string username,
-            string dbName,
+            string dbName, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName);
-            using (var response = await _client.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -275,11 +302,12 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="query">Optional query parameters for the request.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<GetAccessibleDatabasesResponse> GetAccessibleDatabasesAsync(
             string username,
-            GetAccessibleDatabasesQuery query = null,
+            GetAccessibleDatabasesQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username) + "/database";
@@ -287,7 +315,9 @@ namespace ArangoDBNetStandard.UserApi
             {
                 uri += '?' + query.ToQueryString();
             }
-            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -306,20 +336,23 @@ namespace ArangoDBNetStandard.UserApi
         /// <param name="dbName">The name of the database.</param>
         /// <param name="collectionName">The name of the collection.</param>
         /// <param name="body">The body of the request containing the access level.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PutAccessLevelResponse> PutCollectionAccessLevelAsync(
             string username,
             string dbName,
             string collectionName,
-            PutAccessLevelBody body,
+            PutAccessLevelBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName) + "/" +
                 WebUtility.UrlEncode(collectionName);
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PutAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -336,18 +369,21 @@ namespace ArangoDBNetStandard.UserApi
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database.</param>
         /// <param name="collectionName">The name of the collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<GetAccessLevelResponse> GetCollectionAccessLevelAsync(
             string username,
             string dbName,
-            string collectionName,
+            string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName) + "/" +
                 WebUtility.UrlEncode(collectionName);
-            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -367,18 +403,21 @@ namespace ArangoDBNetStandard.UserApi
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database.</param>
         /// <param name="collectionName">The name of the collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteAccessLevelResponse> DeleteCollectionAccessLevelAsync(
             string username,
             string dbName,
-            string collectionName,
+            string collectionName, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _userApiPath + "/" + WebUtility.UrlEncode(username)
                 + "/database/" + WebUtility.UrlEncode(dbName) + "/" +
                 WebUtility.UrlEncode(collectionName);
-            using (var response = await _client.DeleteAsync(uri,token:token).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(uri, 
+                webHeaderCollection:headers?.ToWebHeaderCollection(),
+                token:token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
