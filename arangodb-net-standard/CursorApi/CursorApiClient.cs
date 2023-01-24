@@ -152,7 +152,7 @@ namespace ArangoDBNetStandard.CursorApi
         {
             using (var response = await _client.DeleteAsync(
                 _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId),
-                webHeaderCollection: headers?.ToWebHeaderCollection(),,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
                 token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
@@ -178,7 +178,7 @@ namespace ArangoDBNetStandard.CursorApi
             CancellationToken token = default)
         {
             string uri = _cursorApiPath + "/" + WebUtility.UrlEncode(cursorId);
-            using (var response = await _client.PutAsync(uri, new byte[0], webHeaderCollection: headers?.ToWebHeaderCollection(),, token).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, new byte[0], webHeaderCollection: headers?.ToWebHeaderCollection(), token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
