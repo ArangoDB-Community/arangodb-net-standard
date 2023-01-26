@@ -1,7 +1,10 @@
 ﻿using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
+using ArangoDBNetStandard.ViewApi.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ArangoDBNetStandard
@@ -31,7 +34,22 @@ namespace ArangoDBNetStandard
             try
             {
                 var error = await _serialization.DeserializeFromStreamAsync<ApiErrorResponse>(stream).ConfigureAwait(false);
-                return new ApiErrorException(error);
+                var ex = new ApiErrorException(error);
+                if (response.Headers != null)
+                {
+                    ex.Headers = new Dictionary<string, string>();
+                    foreach (var rh in response.Headers)
+                    {
+                        var key = rh.Key;
+                        var value = string.Empty;
+                        if (rh.Value != null)
+                        {
+                            value = string.Join(",", rh.Value);
+                        }
+                        ex.Headers.Add(key, value);
+                    }
+                }
+                return ex;
             }
             catch (Exception e)
             {
@@ -90,5 +108,25 @@ namespace ArangoDBNetStandard
             }
         }
 
+        protected async Task<ApiResponse<T>> GetResponseAsync<T>(IApiClientResponse response)
+        {
+            var apiResponse = new ApiResponse<T>() { Headers = new Dictionary<string, string>() };
+            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            apiResponse.Response = await DeserializeJsonFromStreamAsync<T>(stream).ConfigureAwait(false);
+            if (response.Headers != null)
+            {
+                foreach (var rh in response.Headers)
+                {
+                    var key = rh.Key;
+                    var value = string.Empty;
+                    if (rh.Value != null)
+                    {
+                        value = string.Join(",", rh.Value);
+                    }
+                    apiResponse.Headers.Add(key, value);
+                }
+            }
+            return apiResponse;
+        }
     }
 }

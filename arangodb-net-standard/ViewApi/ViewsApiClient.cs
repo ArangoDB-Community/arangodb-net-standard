@@ -54,7 +54,7 @@ namespace ArangoDBNetStandard.ViewApi
         /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetAllViewsResponse> GetAllViewsAsync(
+        public virtual async Task<ApiResponse<GetAllViewsResponse>> GetAllViewsAsync(
             ApiHeaderProperties headers = null, 
             CancellationToken token = default)
         {
@@ -65,8 +65,7 @@ namespace ArangoDBNetStandard.ViewApi
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return await DeserializeJsonFromStreamAsync<GetAllViewsResponse>(stream).ConfigureAwait(false);
+                    return await GetResponseAsync<GetAllViewsResponse>(response).ConfigureAwait(false);
                 }
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
