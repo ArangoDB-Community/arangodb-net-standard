@@ -44,10 +44,10 @@ namespace ArangoDBNetStandardTest.ViewApi
                 });
             var res = await _viewApi.GetAllViewsAsync();
 
-            Assert.Equal(HttpStatusCode.OK, res.Code);
-            Assert.False(res.Error);
-            Assert.NotNull(res.Result);
-            Assert.NotEmpty(res.Result);
+            Assert.Equal(HttpStatusCode.OK, res.Response.Code);
+            Assert.False(res.Response.Error);
+            Assert.NotNull(res.Response.Result);
+            Assert.NotEmpty(res.Response.Result);
         }
 
         [Fact]

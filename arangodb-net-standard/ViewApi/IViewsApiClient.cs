@@ -18,7 +18,7 @@ namespace ArangoDBNetStandard.ViewApi
         /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<GetAllViewsResponse> GetAllViewsAsync(
+        Task<ApiResponse<GetAllViewsResponse>> GetAllViewsAsync(
             ApiHeaderProperties headers = null, 
             CancellationToken token = default);
 
