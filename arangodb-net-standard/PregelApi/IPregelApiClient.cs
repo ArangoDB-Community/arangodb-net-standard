@@ -26,10 +26,12 @@ namespace ArangoDBNetStandard.PregelApi
         /// vary for each algorithm
         /// </remarks>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns>The ID of the newly started job.</returns>
         Task<string> PostStartJobAsync(
             PostStartJobBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -37,22 +39,26 @@ namespace ArangoDBNetStandard.PregelApi
         /// GET /_api/control_pregel/{id}
         /// </summary>
         /// <param name="jobId">The ID of the job.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PregelJobStatus> GetJobStatusAsync(
             string jobId,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Get the overview of currently running Pregel jobs.
         /// GET /_api/control_pregel
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns>
         /// Returns a list of currently running and recently
         /// finished Pregel jobs without retrieving their results. 
         /// </returns>
         Task<List<PregelJobStatus>> GetAllRunningJobsAsync(
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -67,10 +73,12 @@ namespace ArangoDBNetStandard.PregelApi
         /// For more information see https://www.arangodb.com/docs/stable/http/pregel.html#cancel-pregel-job-execution
         /// </remarks>
         /// <param name="jobId">The ID of the job.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<string> DeleteJobAsync(
             string jobId,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
     }
 }
