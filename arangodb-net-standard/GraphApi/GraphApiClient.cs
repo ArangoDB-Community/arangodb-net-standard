@@ -57,11 +57,14 @@ namespace ArangoDBNetStandard.GraphApi
         /// </remarks>
         /// <param name="postGraphBody">The information of the graph to create. Must be an instance of <see cref="PostSatelliteGraphOptions"/> or <see cref="PostNonSatelliteGraphOptions"/>.</param>
         /// <param name="query">Optional query parameters of the request.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostGraphResponse> PostGraphAsync(
             PostGraphBody postGraphBody,
-            PostGraphQuery query = null, CancellationToken token = default)
+            PostGraphQuery query = null,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = _graphApiPath;
 
@@ -72,7 +75,9 @@ namespace ArangoDBNetStandard.GraphApi
 
             var content = await GetContentAsync(postGraphBody, new ApiClientSerializationOptions(true, true));
 
-            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -87,15 +92,20 @@ namespace ArangoDBNetStandard.GraphApi
         /// Lists all graphs stored in this database.
         /// GET /_api/gharial
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Note: The <see cref="GraphResult.Name"/> property is null for <see cref="GraphApiClient.GetGraphsAsync"/>
         /// in ArangoDB 4.5.2 and below, in which case you can use <see cref="GraphResult._key"/> instead.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<GetGraphsResponse> GetGraphsAsync( CancellationToken token = default)
+        public virtual async Task<GetGraphsResponse> GetGraphsAsync(
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(_graphApiPath,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -114,18 +124,23 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteGraphResponse> DeleteGraphAsync(
             string graphName,
-            DeleteGraphQuery query = null, CancellationToken token = default)
+            DeleteGraphQuery query = null,
+            GraphHeaderProperties headers = null,
+             CancellationToken token = default)
         {
             string uriString = _graphApiPath + "/" + WebUtility.UrlEncode(graphName);
             if (query != null)
             {
                 uriString += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.DeleteAsync(uriString, token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uriString,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                 token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -142,11 +157,17 @@ namespace ArangoDBNetStandard.GraphApi
         /// GET /_api/gharial/{graph}
         /// </summary>
         /// <param name="graphName"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetGraphResponse> GetGraphAsync(string graphName, CancellationToken token = default)
+        public virtual async Task<GetGraphResponse> GetGraphAsync(string graphName,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName), token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(
+                _graphApiPath + "/" + WebUtility.UrlEncode(graphName),
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -162,11 +183,17 @@ namespace ArangoDBNetStandard.GraphApi
         /// GET /_api/gharial/{graph}/vertex
         /// </summary>
         /// <param name="graphName">The name of the graph.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetVertexCollectionsResponse> GetVertexCollectionsAsync(string graphName, CancellationToken token = default)
+        public virtual async Task<GetVertexCollectionsResponse> GetVertexCollectionsAsync(string graphName,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex", token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(
+                _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex",
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                 token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -182,11 +209,17 @@ namespace ArangoDBNetStandard.GraphApi
         /// GET /_api/gharial/{graph}/edge
         /// </summary>
         /// <param name="graphName"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<GetEdgeCollectionsResponse> GetEdgeCollectionsAsync(string graphName, CancellationToken token = default)
+        public virtual async Task<GetEdgeCollectionsResponse> GetEdgeCollectionsAsync(string graphName,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
-            using (var response = await _transport.GetAsync(_graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge",  token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(
+                _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge",
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                 token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -209,17 +242,22 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="body">The information of the edge definition.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostEdgeDefinitionResponse> PostEdgeDefinitionAsync(
             string graphName,
-            PostEdgeDefinitionBody body, CancellationToken token = default)
+            PostEdgeDefinitionBody body,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge";
 
-            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -237,17 +275,22 @@ namespace ArangoDBNetStandard.GraphApi
         /// </summary>
         /// <param name="graphName">The name of the graph.</param>
         /// <param name="body">The information of the vertex collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostVertexCollectionResponse> PostVertexCollectionAsync(
             string graphName,
-            PostVertexCollectionBody body, CancellationToken token = default)
+            PostVertexCollectionBody body,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex";
 
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
 
-            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                 token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -288,7 +331,9 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
             var content = await GetContentAsync(vertex, serializationOptions).ConfigureAwait(false);
-            using (var response = await _transport.PostAsync(uri, content,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content,
+                headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -308,12 +353,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName"></param>
         /// <param name="collectionName"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteEdgeDefinitionResponse> DeleteEdgeDefinitionAsync(
             string graphName,
             string collectionName,
-            DeleteEdgeDefinitionQuery query = null, CancellationToken token = default)
+            DeleteEdgeDefinitionQuery query = null,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName);
@@ -321,7 +369,9 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                 token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -342,12 +392,15 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="graphName"></param>
         /// <param name="collectionName"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteVertexCollectionResponse> DeleteVertexCollectionAsync(
             string graphName,
             string collectionName,
-            DeleteVertexCollectionQuery query = null, CancellationToken token = default)
+            DeleteVertexCollectionQuery query = null,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/vertex/" + WebUtility.UrlEncode(collectionName);
@@ -355,7 +408,9 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                 token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -568,7 +623,9 @@ namespace ArangoDBNetStandard.GraphApi
             return GetVertexAsync<T>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + vertexKey,
-                query, token: token);
+                query,
+                headers, 
+                token: token);
         }
 
         /// <summary>
@@ -849,13 +906,16 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PutEdgeDefinitionResponse> PutEdgeDefinitionAsync(
             string graphName,
             string collectionName,
             PutEdgeDefinitionBody body,
-            PutEdgeDefinitionQuery query = null, CancellationToken token = default)
+            PutEdgeDefinitionQuery query = null,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uriString = _graphApiPath + "/" +
                 WebUtility.UrlEncode(graphName) + "/edge/" +
@@ -866,7 +926,9 @@ namespace ArangoDBNetStandard.GraphApi
                 uriString += "?" + query.ToQueryString();
             }
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _transport.PutAsync(uriString, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uriString, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                 token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -1036,6 +1098,5 @@ namespace ArangoDBNetStandard.GraphApi
                 throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
-
     }
 }
