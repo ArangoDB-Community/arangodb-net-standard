@@ -4,12 +4,12 @@ using System.Text;
 
 namespace ArangoDBNetStandard.GraphApi.Models
 {
-    public class TraverseGraphBody
+    internal class TraverseGraphQueryParts
     {
         /// <summary>
         /// List of vertex collections that will be involved in the traversal
         /// </summary>
-        public IEnumerable<string> VertexCollections { get; set; }
+        public List<string> VertexCollections { get; set; }
 
         /// <summary>
         /// The current vertex in a traversal
@@ -67,7 +67,7 @@ namespace ArangoDBNetStandard.GraphApi.Models
         /// Edge collection sets that will be involved in 
         /// the traversal instead of a named graph.
         /// </summary>
-        public IEnumerable<string> EdgeCollections { get; set; }
+        public List<string> EdgeCollections { get; set; }
 
         /// <summary>
         /// A condition, like in a FILTER statement, which will be evaluated 

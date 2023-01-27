@@ -537,11 +537,11 @@ namespace ArangoDBNetStandard.GraphApi
         /// Executes a graph traversal query.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="body">Parameters to use to generate the traversal query.</param>
+        /// <param name="builder">A TraverseGraphQueryBuilder from which to build the query for the traversal.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<T[]> TraverseGraphAsync<T>(
-            TraverseGraphBody body, 
+            TraverseGraphQueryBuilder builder, 
             CancellationToken token = default);
 
         /// <summary>

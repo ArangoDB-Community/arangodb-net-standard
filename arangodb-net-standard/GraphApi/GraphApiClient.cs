@@ -1,4 +1,5 @@
-﻿using ArangoDBNetStandard.GraphApi.Models;
+﻿using ArangoDBNetStandard.CursorApi;
+using ArangoDBNetStandard.GraphApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
 using System;
@@ -27,28 +28,37 @@ namespace ArangoDBNetStandard.GraphApi
         protected readonly string _graphApiPath = "_api/gharial";
 
         /// <summary>
+        /// ICursorApiClient to be used for graph traversals.
+        /// </summary>
+        protected readonly ICursorApiClient _cursorApiClient;
+
+        /// <summary>
         /// Create an instance of <see cref="GraphApiClient"/>
-        /// using the provided transport layer and the default JSON serialization.
+        /// using the provided transport layer and the default JSON serialization
+        /// plus an optional ICursorApiClient for graph traversals.
         /// </summary>
         /// <param name="transport"></param>
-        /// <param name="arangoDBClient">The ArangoDBClient instance relating to this API client.</param>
-        public GraphApiClient(IApiClientTransport transport, ArangoDBClient arangoDBClient)
-            : base(new JsonNetApiClientSerialization(), arangoDBClient)
+        /// <param name="cursorApiClient"></param>
+        public GraphApiClient(IApiClientTransport transport, ICursorApiClient cursorApiClient = null)
+            : base(new JsonNetApiClientSerialization())
         {
             _transport = transport;
+            _cursorApiClient = cursorApiClient ?? new CursorApiClient(transport, new JsonNetApiClientSerialization()); 
         }
 
         /// <summary>
         /// Create an instance of <see cref="GraphApiClient"/>
-        /// using the provided transport and serialization layers.
+        /// using the provided transport and serialization layers 
+        /// plus an optional ICursorApiClient for graph traversals.
         /// </summary>
         /// <param name="transport"></param>
         /// <param name="serializer"></param>
-        /// <param name="arangoDBClient">The ArangoDBClient instance relating to this API client.</param>
-        public GraphApiClient(IApiClientTransport transport, IApiClientSerialization serializer, ArangoDBClient arangoDBClient)
-            : base(serializer, arangoDBClient)
+        /// <param name="cursorApiClient"></param>
+        public GraphApiClient(IApiClientTransport transport, IApiClientSerialization serializer, ICursorApiClient cursorApiClient = null)
+            : base(serializer)
         {
             _transport = transport;
+            _cursorApiClient = cursorApiClient ?? new CursorApiClient(transport, serializer);
         }
 
         /// <summary>
@@ -1045,89 +1055,20 @@ namespace ArangoDBNetStandard.GraphApi
         /// Executes a graph traversal query.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="body">Parameters to use to generate the traversal query.</param>
+        /// <param name="builder">A TraverseGraphQueryBuilder from which to build the query for the traversal.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<T[]> TraverseGraphAsync<T>(
-            TraverseGraphBody body,
+            TraverseGraphQueryBuilder builder,
             CancellationToken token = default)
         {
-            if (body == null)
+            if (builder == null)
             {
-                throw new ArgumentNullException(nameof(body));
+                throw new ArgumentNullException(nameof(builder));
             }
 
-            if (body.CurrentVertex == null)
-            {
-                throw new Exception($"{nameof(body.CurrentVertex)} cannot be null.");
-            }
-
-            //initialize serialization options
-            var so = new ApiClientSerializationOptions(true, true);
-
-            //build the query string
-            var qs = string.Empty;
-
-            if (body.VertexCollections != null && body.VertexCollections.Count() > 0)
-            {
-                qs += $"WITH {string.Join(",", body.VertexCollections)} {Environment.NewLine}";
-            }
-
-            qs += $"FOR {await GetContentStringAsync(body.CurrentVertex, so)} ";
-
-            if (body.CurrentEdge != null)
-            {
-                qs += $", {await GetContentStringAsync(body.CurrentEdge, so)} ";
-            }
-
-            if (body.CurrentPath != null)
-            {
-                qs += $", {await GetContentStringAsync(body.CurrentPath, so)} ";
-            }
-
-            qs += Environment.NewLine;
-
-            if (body.MinDepth != null)
-            {
-                qs += $"IN {body.MinDepth}";
-                if (body.MaxDepth != null)
-                {
-                    qs += $"..{body.MaxDepth}";
-                }
-                qs += Environment.NewLine;
-            }
-
-            qs += $"{(string.IsNullOrWhiteSpace(body.Direction) ? TraversalDirection.Any : body.Direction)} {body.StartVertex ?? string.Empty} {Environment.NewLine}";
-
-            if (string.IsNullOrWhiteSpace(body.GraphName))
-            {
-                //we're working with a set of edge collections, make sure we have them
-                if (body.EdgeCollections == null || body.EdgeCollections.Count() < 1)
-                {
-                    throw new Exception($"{nameof(body.EdgeCollections)} is required if {nameof(body.GraphName)} is not specified");
-                }
-                else
-                {
-                    qs += $"{string.Join(",", body.EdgeCollections)}{Environment.NewLine}";
-                }
-            }
-            else
-            {
-                //we're working with a named graph
-                qs += $"'{body.GraphName}'{Environment.NewLine}";
-            }
-
-            if (!string.IsNullOrWhiteSpace(body.PruneCondition))
-            {
-                qs += $"PRUNE {body.PruneCondition}{Environment.NewLine}";
-            }
-
-            if (body.Options != null)
-            {
-                qs += $"OPTIONS {await GetContentStringAsync(body.Options, so)}";
-            }
-
-            return await TraverseGraphAsync<T>(qs, token);
+            var query = await builder.Build();
+            return await TraverseGraphAsync<T>(query, token);
         }
 
         /// <summary>
@@ -1146,12 +1087,7 @@ namespace ArangoDBNetStandard.GraphApi
                 throw new ArgumentNullException(nameof(queryString));
             }
 
-            if (_arangoDBClient == null)
-            {
-                throw new Exception("arangoDBClient is not initialized.");
-            }
-
-            var cursorRes = await _arangoDBClient.Cursor.PostCursorAsync<T>(
+            var cursorRes = await _cursorApiClient.PostCursorAsync<T>(
                                     postCursorBody: new CursorApi.Models.PostCursorBody()
                                     {
                                         Query = queryString

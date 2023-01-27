@@ -12,7 +12,7 @@ namespace ArangoDBNetStandard.GraphApi.Models
         /// <summary>
         /// An array of all edges on this path
         /// </summary>
-        public IEnumerable<string> Edges { get; set; }
+        public List<string> Edges { get; set; }
 
         /// <summary>
         /// Optionally ensure vertex uniqueness.
@@ -31,7 +31,7 @@ namespace ArangoDBNetStandard.GraphApi.Models
         /// visit (introduced in v3.7.0). If omitted, or an empty 
         /// array is specified, then there are no restrictions. 
         /// </summary>
-        public IEnumerable<string> EdgeCollections { get; set; }
+        public List<string> EdgeCollections { get; set; }
 
         /// <summary>
         /// Optional. Restricts restrict vertex collections the 
@@ -45,7 +45,7 @@ namespace ArangoDBNetStandard.GraphApi.Models
         /// - The starting vertex is always allowed, even if it does not 
         /// belong to one of the collections specified by a restriction.
         /// </remarks>
-        public IEnumerable<string> VertexCollections { get; set; }
+        public List<string> VertexCollections { get; set; }
 
         /// <summary>
         /// Optional. Enterprise Edition only. Parallelizes traversal execution.

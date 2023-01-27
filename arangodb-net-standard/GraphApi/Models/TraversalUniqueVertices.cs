@@ -12,8 +12,8 @@
         /// It is guaranteed that each vertex is visited at
         /// most once during the traversal, no matter how 
         /// many paths lead from the start vertex to this one. 
-        /// If you start with <see cref="TraverseGraphBody.MinDepth"/> > 1 
-        /// a vertex that was found before <see cref="TraverseGraphBody.MinDepth"/> 
+        /// If you start with MinDepth = 1 
+        /// a vertex that was found before MinDepth 
         /// might not be returned at all (it still might be part of a path). 
         /// </summary>
         /// <remarks>
@@ -25,8 +25,7 @@
         ///  would be unpredictable. Using this configuration 
         ///  the result is not deterministic any more. 
         ///  If there are multiple paths from
-        ///  <see cref="TraverseGraphBody.StartVertex"/>
-        ///  to <see cref="TraverseGraphBody.CurrentVertex"/>, 
+        ///  StartVertex to CurrentVertex,
         ///  one of those is picked. In case of a weighted 
         ///  traversal, the path with the lowest weight is picked, 
         ///  but in case of equal weights it is undefined

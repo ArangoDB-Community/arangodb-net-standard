@@ -165,7 +165,7 @@ namespace ArangoDBNetStandard
             Document = new DocumentApiClient(transport, serialization);
             Collection = new CollectionApiClient(transport, serialization);
             Transaction = new TransactionApiClient(transport, serialization);
-            Graph = new GraphApiClient(transport, serialization, this);
+            Graph = new GraphApiClient(transport, serialization, Cursor);
             User = new UserApiClient(transport, serialization);
             Index = new IndexApiClient(transport, serialization);
             BulkOperations = new BulkOperationsApiClient(transport, serialization); 

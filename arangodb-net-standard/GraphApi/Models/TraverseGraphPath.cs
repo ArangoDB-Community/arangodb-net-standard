@@ -7,11 +7,11 @@ namespace ArangoDBNetStandard.GraphApi.Models
         /// <summary>
         /// An array of all vertices on this path
         /// </summary>
-        public IEnumerable<string> Vertices { get; set; }
+        public List<string> Vertices { get; set; }
 
         /// <summary>
         /// An array of all edges on this path
         /// </summary>
-        public IEnumerable<string> Edges { get; set; }
+        public List<string> Edges { get; set; }
     }
 }
