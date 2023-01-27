@@ -1,3 +1,4 @@
+﻿using ArangoDBNetStandard.Serialization;
 ﻿using ArangoDBNetStandard.ViewApi.Models;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,10 +25,14 @@ namespace ArangoDBNetStandard.ViewApi
         /// POST /_api/view
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="ignoreNullValuesOnSerialization">
+        /// Indicates whether to ignore null values during serialization.
+        /// This parameter can be used together with <see cref="LinkProperties.IncludeAllFields"/>
+        /// set to false to control if fields with null values are included.
+        /// </param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<ViewResponse> PostCreateViewAsync(ViewDetails body,
-            CancellationToken token = default);
+        Task<ViewResponse> PostCreateViewAsync(ViewDetails body, bool ignoreNullValuesOnSerialization = true, CancellationToken token = default);
 
         /// <summary>
         /// Delete / drop a view
@@ -65,9 +70,14 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewNameOrId">The name or identifier of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="ignoreNullValuesOnSerialization">
+        /// Indicates whether to ignore null values during serialization.
+        /// This parameter can be used together with <see cref="LinkProperties.IncludeAllFields"/>
+        /// set to false to control if fields with null values are included.
+        /// </param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<ViewResponse> PatchViewPropertiesAsync(string viewNameOrId, ViewDetails body,
+        Task<ViewResponse> PatchViewPropertiesAsync(string viewNameOrId, ViewDetails body, bool ignoreNullValuesOnSerialization = true,
             CancellationToken token = default);
 
         /// <summary>
@@ -76,9 +86,14 @@ namespace ArangoDBNetStandard.ViewApi
         /// </summary>
         /// <param name="viewName">The name of the view.</param>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="ignoreNullValuesOnSerialization">
+        /// Indicates whether to ignore null values during serialization.
+        /// This parameter can be used together with <see cref="LinkProperties.IncludeAllFields"/>
+        /// set to false to control if fields with null values are included.
+        /// </param>  
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body,
+        Task<ViewResponse> PutViewPropertiesAsync(string viewName, ViewDetails body, bool ignoreNullValuesOnSerialization = true,
             CancellationToken token = default);
 
         /// <summary>

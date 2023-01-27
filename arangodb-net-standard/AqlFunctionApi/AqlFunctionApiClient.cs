@@ -1,6 +1,7 @@
 ﻿using ArangoDBNetStandard.AqlFunctionApi.Models;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.Transport;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -58,16 +59,16 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             PostAqlFunctionBody body,
             CancellationToken token = default)
         {
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
 
-            using (var response = await _transport.PostAsync(_apiPath, content).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(_apiPath, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostAqlFunctionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostAqlFunctionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -91,14 +92,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteAqlFunctionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteAqlFunctionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -119,14 +120,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetAqlFunctionsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetAqlFunctionsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -148,15 +149,15 @@ namespace ArangoDBNetStandard.AqlFunctionApi
 
             string uri = "_api/explain";
 
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostExplainAqlQueryResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostExplainAqlQueryResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -178,15 +179,15 @@ namespace ArangoDBNetStandard.AqlFunctionApi
 
             string uri = "_api/query";
 
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PostAsync(uri, content).ConfigureAwait(false))
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostParseAqlQueryResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostParseAqlQueryResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -226,14 +227,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<ResponseBase>(stream);
+                    return await DeserializeJsonFromStreamAsync<ResponseBase>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -261,14 +262,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<ResponseBase>(stream);
+                    return await DeserializeJsonFromStreamAsync<ResponseBase>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -304,14 +305,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<List<SlowAqlQuery>>(stream);
+                    return await DeserializeJsonFromStreamAsync<List<SlowAqlQuery>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -328,14 +329,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         {
             string uri = "_api/query-cache";
 
-            using (var response = await _transport.DeleteAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<ResponseBase>(stream);
+                    return await DeserializeJsonFromStreamAsync<ResponseBase>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -353,14 +354,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             CancellationToken token = default)
         {
             string uri = "_api/query-cache/entries";
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<List<CachedAqlQueryResult>>(stream);
+                    return await DeserializeJsonFromStreamAsync<List<CachedAqlQueryResult>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -376,14 +377,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             CancellationToken token = default)
         {
             string uri = "_api/query-cache/properties";
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<QueryCacheGlobalProperties>(stream);
+                    return await DeserializeJsonFromStreamAsync<QueryCacheGlobalProperties>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -410,15 +411,15 @@ namespace ArangoDBNetStandard.AqlFunctionApi
 
             string uri = "_api/query-cache/properties";
 
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<QueryCacheGlobalProperties>(stream);
+                    return await DeserializeJsonFromStreamAsync<QueryCacheGlobalProperties>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -432,14 +433,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             CancellationToken token = default)
         {
             string uri = "_api/query/properties";
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<QueryTrackingConfiguration>(stream);
+                    return await DeserializeJsonFromStreamAsync<QueryTrackingConfiguration>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -465,15 +466,15 @@ namespace ArangoDBNetStandard.AqlFunctionApi
 
             string uri = "_api/query/properties";
 
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content).ConfigureAwait(false))
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<QueryTrackingConfiguration>(stream);
+                    return await DeserializeJsonFromStreamAsync<QueryTrackingConfiguration>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -497,14 +498,39 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<List<RunningAqlQuery>>(stream);
+                    return await DeserializeJsonFromStreamAsync<List<RunningAqlQuery>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Gets the available optimizer rules for AQL queries
+        /// GET /_api/query/rules
+        /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <remarks>
+        /// Returns an array of objects that contain the name of each available 
+        /// rule and its respective flags.
+        /// </remarks>
+        /// <returns></returns>
+        public virtual async Task<List<GetQueryRule>> GetQueryRulesAsync(CancellationToken token = default)
+        {
+            string uri = "_api/query/rules";
+
+            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return await DeserializeJsonFromStreamAsync<List<GetQueryRule>>(stream).ConfigureAwait(false);
+                }
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

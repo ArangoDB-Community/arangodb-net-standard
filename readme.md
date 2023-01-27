@@ -21,6 +21,7 @@ A consistent, comprehensive, minimal driver for the [ArangoDB REST API](https://
       - [Run an AQL query](#run-an-aql-query)
       - [Patch a document](#patch-a-document)
       - [Replace a document](#replace-a-document)
+      - [Example using graphs](#example-using-graphs)
     + [Serialization Options](#serialization-options)
     + [API Errors](#api-errors)
     + [Project Conventions](#project-conventions)
@@ -171,6 +172,59 @@ item.Description = "Some item with some more description";
 await adb.Document.PutDocumentAsync(
     $"MyCollection/{item._key}",
     item);
+```
+
+#### Example using graphs
+
+```csharp
+            //Example using graphs, vertices and edges
+            string graphName = "SchoolGraph";
+            string fromClx = "Adults";
+            string toClx = "Students";
+            string edgeClx = "Parents";
+
+            // Create a new graph
+            await adb.Graph.PostGraphAsync(new PostGraphBody
+            {
+                Name = graphName,
+                EdgeDefinitions = new List<EdgeDefinition>
+                {
+                    new EdgeDefinition
+                    {
+                        From = new string[] { fromClx },
+                        To = new string[] { toClx },
+                        Collection = edgeClx
+                    }
+                }
+            });
+
+            // Create a document in the Adults vertex collection
+            PostDocumentResponse<object> fromResponse = await
+                adb.Document.PostDocumentAsync<object>(
+                fromClx,
+                new { Name = "John Doe" });
+
+            // Create a document in the Students vertex collection
+            PostDocumentResponse<object> toResponse = await
+                adb.Document.PostDocumentAsync<object>(
+                toClx,
+                new { Name = "Jimmy Doe" });
+
+            // Create the edge Parent edge between the Adult (John Doe) and Child (Jimmy Doe)
+            var response = await adb.Graph.PostEdgeAsync(
+                graphName,
+                edgeClx,
+                new
+                { 
+                    _from = fromResponse._id,
+                    _to = toResponse._id,
+                    myKey = "parent1"
+                },
+                new PostEdgeQuery
+                {
+                    ReturnNew = true,
+                    WaitForSync = true
+                });
 ```
 
 ### Serialization Options

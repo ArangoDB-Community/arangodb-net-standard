@@ -3,7 +3,7 @@
 namespace ArangoDBNetStandard.AdminApi.Models
 {
     /// <summary>
-    /// Returned by <see cref="IAdminApiClient.GetServerVersionAsync(GetServerVersionQuery)"/>
+    /// Returned by <see cref="IAdminApiClient.GetServerVersionAsync"/>
     /// </summary>
     public class GetServerVersionResponse
     {
@@ -20,7 +20,7 @@ namespace ArangoDBNetStandard.AdminApi.Models
         /// <summary>
         /// The version of the server.
         /// </summary>
-        public string Version { get; set; }
+        public string Version { get; set; }              
 
         /// <summary>
         /// Additional details about the DB server. 

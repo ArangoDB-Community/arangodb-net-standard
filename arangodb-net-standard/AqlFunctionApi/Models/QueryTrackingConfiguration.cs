@@ -3,9 +3,9 @@
     /// <summary>
     /// Represents the global properties of the AQL Query Cache
     /// Returned by
-    /// <see cref="AqlFunctionApiClient.GetQueryTrackingConfigurationAsync()"/>
+    /// <see cref="AqlFunctionApiClient.GetQueryTrackingConfigurationAsync"/>
     /// and 
-    /// <see cref="AqlFunctionApiClient.PutChangeQueryTrackingConfigurationAsync(PutChangeQueryTrackingConfigurationBody)"/>
+    /// <see cref="AqlFunctionApiClient.PutChangeQueryTrackingConfigurationAsync"/>
     /// </summary>
     public class QueryTrackingConfiguration : ResponseBase
     {

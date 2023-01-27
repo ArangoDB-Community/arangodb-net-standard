@@ -62,9 +62,9 @@ namespace ArangoDBNetStandard.AnalyzerApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetAllAnalyzersResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetAllAnalyzersResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -82,15 +82,15 @@ namespace ArangoDBNetStandard.AnalyzerApi
                 throw new ArgumentException("body is required", nameof(body));
             }
             var uri = _analyzerApiPath;
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _client.PostAsync(uri, content, null, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<Analyzer>(stream);
+                    return await DeserializeJsonFromStreamAsync<Analyzer>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -113,9 +113,9 @@ namespace ArangoDBNetStandard.AnalyzerApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetAnalyzerResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetAnalyzerResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -138,9 +138,9 @@ namespace ArangoDBNetStandard.AnalyzerApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteAnalyzerResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteAnalyzerResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

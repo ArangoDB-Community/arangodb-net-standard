@@ -5,7 +5,7 @@ using System.Text;
 namespace ArangoDBNetStandard.IndexApi.Models
 {
     /// <summary>
-    /// Response from <see cref="IndexApiClient.GetAllCollectionIndexesAsync(GetAllCollectionIndexesQuery)"/>
+    /// Response from <see cref="IndexApiClient.GetAllCollectionIndexesAsync"/>
     /// </summary>
     public class GetAllCollectionIndexesResponse : ResponseBase
     {

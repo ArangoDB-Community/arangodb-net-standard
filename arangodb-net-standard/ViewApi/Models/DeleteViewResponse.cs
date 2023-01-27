@@ -1,7 +1,7 @@
 ﻿namespace ArangoDBNetStandard.ViewApi.Models
 {
     /// <summary>
-    /// Response from <see cref="IViewApiClient.DeleteViewAsync(string)"/>
+    /// Response from <see cref="IViewApiClient.DeleteViewAsync"/>
     /// </summary>
     public class DeleteViewResponse :ResponseBase
     {

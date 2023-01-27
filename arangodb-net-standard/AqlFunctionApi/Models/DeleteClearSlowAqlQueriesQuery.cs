@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Generates query string for 
-    /// <see cref="AqlFunctionApiClient.DeleteClearSlowAqlQueriesAsync(DeleteClearSlowAqlQueriesQuery)"/>
+    /// <see cref="AqlFunctionApiClient.DeleteClearSlowAqlQueriesAsync"/>
     /// </summary>
     public class DeleteClearSlowAqlQueriesQuery
     {

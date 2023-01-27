@@ -1,4 +1,5 @@
 ﻿using ArangoDBNetStandard;
+using ArangoDBNetStandard.AdminApi.Models;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.DatabaseApi.Models;
 using ArangoDBNetStandard.Transport.Http;
@@ -17,6 +18,10 @@ namespace ArangoDBNetStandardTest
         protected readonly List<string> _users = new List<string>();
 
         private readonly List<HttpApiTransport> _transports = new List<HttpApiTransport>();
+
+        public GetServerVersionResponse ServerVersion { get; internal set; }
+        public int VersionMajor { get; internal set; }
+        public int VersionMinor { get; internal set; }
 
         public string ArangoDbHost => Environment.GetEnvironmentVariable("ARANGO_HOST") ?? "localhost";
 
@@ -76,6 +81,21 @@ namespace ArangoDBNetStandardTest
                         _users?.AddRange(users.Select(u => u.Username));
                     }
                 }
+            }
+        }
+
+        protected async Task GetVersionAsync(ArangoDBClient arangoClient)
+        {
+            ServerVersion = await arangoClient.Admin.GetServerVersionAsync(
+                new GetServerVersionQuery()
+                {
+                    Details = true
+                });
+            if (ServerVersion != null)
+            {
+                var vParts = ServerVersion.Version.Split(".");
+                VersionMajor = int.Parse(vParts[0]);
+                VersionMinor = int.Parse(vParts[1]);
             }
         }
 

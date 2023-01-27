@@ -10,16 +10,18 @@ namespace ArangoDBNetStandard.Serialization
     /// </summary>
     public class CamelCasePropertyNamesExceptDictionaryContractResolver : DefaultContractResolver
     {
-        public CamelCasePropertyNamesExceptDictionaryContractResolver()
+        private ApiClientSerializationOptions _serializationOptions;
+        public CamelCasePropertyNamesExceptDictionaryContractResolver(ApiClientSerializationOptions serializationOptions)
         {
             NamingStrategy = new CamelCaseNamingStrategy();
+            _serializationOptions = serializationOptions;
         }
 
         protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
         {
             JsonDictionaryContract contract = base.CreateDictionaryContract(objectType);
             contract.DictionaryKeyResolver = propertyName => propertyName;
-            contract.ItemConverter = new DictionaryValueConverter();
+            contract.ItemConverter = new DictionaryValueConverter(_serializationOptions);
             return contract;
         }
     }

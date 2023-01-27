@@ -4,7 +4,7 @@ using System.Text;
 namespace ArangoDBNetStandard.AdminApi.Models
 {
     /// <summary>
-    /// Returned by <see cref="IAdminApiClient.GetLogsAsync(GetLogsQuery)"/>
+    /// Returned by <see cref="IAdminApiClient.GetLogsAsync"/>
     /// </summary>
     public class GetLogsResponse
     {

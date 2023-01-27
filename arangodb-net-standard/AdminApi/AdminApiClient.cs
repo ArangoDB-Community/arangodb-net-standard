@@ -70,9 +70,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetLogsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetLogsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -96,7 +96,7 @@ namespace ArangoDBNetStandard.AdminApi
                 {
                     return true;
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -119,9 +119,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetServerIdResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetServerIdResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -143,9 +143,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetServerRoleResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetServerRoleResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -167,9 +167,9 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetServerEngineTypeResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetServerEngineTypeResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -196,9 +196,64 @@ namespace ArangoDBNetStandard.AdminApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetServerVersionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetServerVersionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the server license information.
+        /// GET /_admin/license
+        /// </summary>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// For further information see 
+        /// https://www.arangodb.com/docs/3.9/administration-license.html
+        /// </remarks>
+        public virtual async Task<GetLicenseResponse> GetLicenseAsync(CancellationToken token = default)
+        {
+            string uri = $"{_adminApiPath}/license";
+            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return await DeserializeJsonFromStreamAsync<GetLicenseResponse>(stream).ConfigureAwait(false);
+                }
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Sets a new license key.
+        /// PUT /_admin/license
+        /// </summary>
+        /// <param name="licenseKey">The new license key</param>
+        /// <param name="query">Query string parameters</param>
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// For further information see 
+        /// https://www.arangodb.com/docs/3.9/administration-license.html
+        /// </remarks>
+        public virtual async Task<PutLicenseResponse> PutLicenseAsync(string licenseKey, PutLicenseQuery query = null, CancellationToken token = default)
+        {
+            string uri = $"{_adminApiPath}/license";
+            if (query != null)
+            {
+                uri += '?' + query.ToQueryString();
+            }
+            var content = await GetContentAsync(licenseKey, new ApiClientSerializationOptions(true, true));
+            using (var response = await _client.PutAsync(uri, content, token: token).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return await DeserializeJsonFromStreamAsync<PutLicenseResponse>(stream).ConfigureAwait(false);
+                }
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
     }

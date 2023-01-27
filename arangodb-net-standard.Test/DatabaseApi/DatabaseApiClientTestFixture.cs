@@ -42,7 +42,9 @@ namespace ArangoDBNetStandardTest.DatabaseApi
 
             await CreateDatabase(DeletableDatabase);
 
-            DatabaseClientOther = GetArangoDBClient(dbName).Database;
+            var arangoDBClient = GetArangoDBClient(dbName);
+            DatabaseClientOther = arangoDBClient.Database;
+            await GetVersionAsync(arangoDBClient);
         }
     }
 }

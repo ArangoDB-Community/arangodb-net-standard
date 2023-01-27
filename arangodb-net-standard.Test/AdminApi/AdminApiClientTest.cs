@@ -91,5 +91,17 @@ namespace ArangoDBNetStandardTest.AdminApi
             Assert.NotNull(getResponse.Version);
             Assert.NotNull(getResponse.Server);
         }
+
+        /// <summary>
+        /// Works only on version 3.9 onwards. 
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        [Trait("ServerVersion", "3_9_PLUS")]
+        public async Task GetLicenseAsync_ShouldSucceed()
+        {
+            var getResponse = await _adminApi.GetLicenseAsync();
+            Assert.NotNull(getResponse);
+        }
     }
 }

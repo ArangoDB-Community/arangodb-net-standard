@@ -28,12 +28,12 @@ namespace ArangoDBNetStandard
         /// </summary>
         /// <param name="response">The error response from ArangoDB.</param>
         /// <returns></returns>
-        protected async Task<ApiErrorException> GetApiErrorException(IApiClientResponse response)
+        protected async Task<ApiErrorException> GetApiErrorExceptionAsync(IApiClientResponse response)
         {
             var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
             try
             {
-                var error = _serialization.DeserializeFromStream<ApiErrorResponse>(stream);
+                var error = await _serialization.DeserializeFromStreamAsync<ApiErrorResponse>(stream).ConfigureAwait(false);
                 return new ApiErrorException(error);
             }
             catch (Exception e)
@@ -57,11 +57,11 @@ namespace ArangoDBNetStandard
             }
         }
 
-        protected T DeserializeJsonFromStream<T>(Stream stream)
+        protected async Task<T> DeserializeJsonFromStreamAsync<T>(Stream stream)
         {
             try
             {
-                return _serialization.DeserializeFromStream<T>(stream);
+                return await  _serialization.DeserializeFromStreamAsync<T>(stream).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -69,11 +69,11 @@ namespace ArangoDBNetStandard
             }
         }
 
-        protected byte[] GetContent<T>(T item, ApiClientSerializationOptions serializationOptions)
+        protected async Task<byte[]> GetContentAsync<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
             try
             {
-                return _serialization.Serialize(item, serializationOptions);
+                return await _serialization.SerializeAsync(item, serializationOptions).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -81,11 +81,11 @@ namespace ArangoDBNetStandard
             }
         }
 
-        protected string GetContentString<T>(T item, ApiClientSerializationOptions serializationOptions)
+        protected async Task<string> GetContentStringAsync<T>(T item, ApiClientSerializationOptions serializationOptions)
         {
             try
             {
-                return _serialization.SerializeToString(item, serializationOptions);
+                return await _serialization.SerializeToStringAsync(item, serializationOptions).ConfigureAwait(false);
             }
             catch (Exception e)
             {

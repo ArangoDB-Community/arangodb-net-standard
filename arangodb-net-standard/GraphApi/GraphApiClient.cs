@@ -58,7 +58,7 @@ namespace ArangoDBNetStandard.GraphApi
         /// <remarks>
         /// The creation of a graph requires the name of the graph and a definition of its edges.
         /// </remarks>
-        /// <param name="postGraphBody">The information of the graph to create.</param>
+        /// <param name="postGraphBody">The information of the graph to create. Must be an instance of <see cref="PostSatelliteGraphOptions"/> or <see cref="PostNonSatelliteGraphOptions"/>.</param>
         /// <param name="query">Optional query parameters of the request.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -73,16 +73,16 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(postGraphBody, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(postGraphBody, new ApiClientSerializationOptions(true, true));
 
             using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostGraphResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostGraphResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -103,9 +103,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetGraphsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetGraphsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -133,9 +133,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteGraphResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteGraphResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -154,9 +154,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetGraphResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetGraphResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -174,9 +174,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetVertexCollectionsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetVertexCollectionsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -194,9 +194,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetEdgeCollectionsResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetEdgeCollectionsResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -218,7 +218,7 @@ namespace ArangoDBNetStandard.GraphApi
             string graphName,
             PostEdgeDefinitionBody body, CancellationToken token = default)
         {
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) + "/edge";
 
@@ -227,9 +227,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostEdgeDefinitionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostEdgeDefinitionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -248,16 +248,16 @@ namespace ArangoDBNetStandard.GraphApi
         {
             string uri = _graphApiPath + '/' + WebUtility.UrlEncode(graphName) + "/vertex";
 
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
 
             using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostVertexCollectionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostVertexCollectionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -290,15 +290,16 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(vertex, serializationOptions);
-            using (var response = await _transport.PostAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
+
+            var content = await GetContentAsync(vertex, serializationOptions).ConfigureAwait(false);
+            using (var response = await _transport.PostAsync(uri, content,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostVertexResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostVertexResponse<T>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -329,9 +330,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteEdgeDefinitionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteEdgeDefinitionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -363,9 +364,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteVertexCollectionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteVertexCollectionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -397,7 +398,7 @@ namespace ArangoDBNetStandard.GraphApi
             GraphHeaderProperties headers = null,
             CancellationToken token = default)
         {
-            var content = GetContent(edge, serializationOptions);
+            var content = await GetContentAsync(edge, serializationOptions);
 
             string uri = _graphApiPath + "/" + WebUtility.UrlEncode(graphName) +
                 "/edge/" + WebUtility.UrlEncode(collectionName);
@@ -412,9 +413,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PostEdgeResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PostEdgeResponse<T>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -426,7 +427,6 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="collectionName">The name of the edge collection the edge belongs to.</param>
         /// <param name="edgeKey">The _key attribute of the edge.</param>
         /// <param name="query"></param>
-        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <param name="headers">Headers to use for this operation.</param>        
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -476,9 +476,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetEdgeResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetEdgeResponse<T>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -544,9 +544,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteEdgeResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteEdgeResponse<T>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -607,9 +607,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<GetVertexResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<GetVertexResponse<T>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -672,9 +672,9 @@ namespace ArangoDBNetStandard.GraphApi
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<DeleteVertexResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<DeleteVertexResponse<T>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -691,6 +691,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="vertexKey"></param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -700,7 +702,8 @@ namespace ArangoDBNetStandard.GraphApi
             string vertexKey,
             T body,
             PatchVertexQuery query = null,
-            GraphHeaderProperties headers = null,
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
             return PatchVertexAsync<T, U>(
@@ -708,7 +711,8 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(vertexKey),
                 body,
                 query,
-                headers,
+                serializationOptions,
+                headers, 
                 token: token);
         }
 
@@ -724,6 +728,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to update.</param>
         /// <param name="body"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -732,8 +738,9 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T body,
             PatchVertexQuery query = null,
-          GraphHeaderProperties headers = null,
-          CancellationToken token = default)
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null, 
+            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
 
@@ -745,15 +752,15 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(body, new ApiClientSerializationOptions(false, false));
-            using (var response = await _transport.PatchAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(false, false)).ConfigureAwait(false);
+            using (var response = await _transport.PatchAsync(uri, content,headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PatchVertexResponse<U>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PatchVertexResponse<U>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -767,6 +774,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey"></param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -776,7 +785,8 @@ namespace ArangoDBNetStandard.GraphApi
             string edgeKey,
             T edge,
             PutEdgeQuery query = null,
-            GraphHeaderProperties headers = null,
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
             return PutEdgeAsync<T>(
@@ -784,7 +794,8 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
                 edge,
                 query,
-                headers,
+                serializationOptions,
+                headers, 
                 token: token);
         }
 
@@ -797,6 +808,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to replace.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -805,7 +818,8 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T edge,
             PutEdgeQuery query = null,
-            GraphHeaderProperties headers = null,
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
@@ -818,16 +832,15 @@ namespace ArangoDBNetStandard.GraphApi
                 uri += "?" + query.ToQueryString();
             }
 
-            var content = GetContent(edge, new ApiClientSerializationOptions(false, false));
-
+            var content = await GetContentAsync(edge, new ApiClientSerializationOptions(false, false)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutEdgeResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutEdgeResponse<T>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -856,15 +869,15 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uriString += "?" + query.ToQueryString();
             }
-            var content = GetContent(body, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _transport.PutAsync(uriString, content, token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutEdgeDefinitionResponse>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutEdgeDefinitionResponse>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -880,6 +893,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="edgeKey">The document key of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -889,7 +904,8 @@ namespace ArangoDBNetStandard.GraphApi
             string edgeKey,
             T edge,
             PatchEdgeQuery query = null,
-            GraphHeaderProperties headers = null,
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
             return PatchEdgeAsync<T, U>(
@@ -897,7 +913,8 @@ namespace ArangoDBNetStandard.GraphApi
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(edgeKey),
                 edge,
                 query,
-                headers,
+                serializationOptions,
+                headers, 
                 token: token);
         }
 
@@ -911,6 +928,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the edge to update.</param>
         /// <param name="edge"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -919,7 +938,8 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T edge,
             PatchEdgeQuery query = null,
-            GraphHeaderProperties headers = null,
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null, 
             CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
@@ -931,16 +951,15 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-
-            var content = GetContent(edge, new ApiClientSerializationOptions(true, true));
+            var content = await GetContentAsync(edge, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
             using (var response = await _transport.PatchAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PatchEdgeResponse<U>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PatchEdgeResponse<U>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
@@ -954,6 +973,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="key"></param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -963,15 +984,17 @@ namespace ArangoDBNetStandard.GraphApi
             string key,
             T vertex,
             PutVertexQuery query = null,
-          GraphHeaderProperties headers = null,
-          CancellationToken token = default)
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             return PutVertexAsync<T>(
                 graphName,
                 WebUtility.UrlEncode(collectionName) + "/" + WebUtility.UrlEncode(key),
                 vertex,
                 query,
-                headers,
+                serializationOptions,
+                headers, 
                 token: token);
         }
 
@@ -983,6 +1006,8 @@ namespace ArangoDBNetStandard.GraphApi
         /// <param name="documentId">The document ID of the vertex to replace.</param>
         /// <param name="vertex"></param>
         /// <param name="query"></param>
+        /// <param name="serializationOptions">The serialization options. When the value is null the
+        /// the serialization options should be provided by the serializer, otherwise the given options should be used.</param>
         /// <param name="headers">Headers to use for this operation.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
@@ -991,8 +1016,9 @@ namespace ArangoDBNetStandard.GraphApi
             string documentId,
             T vertex,
             PutVertexQuery query = null,
-          GraphHeaderProperties headers = null,
-          CancellationToken token = default)
+            ApiClientSerializationOptions serializationOptions = null,
+            GraphHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             ValidateDocumentId(documentId);
 
@@ -1003,16 +1029,15 @@ namespace ArangoDBNetStandard.GraphApi
             {
                 uri += "?" + query.ToQueryString();
             }
-            var content = GetContent(vertex, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PutAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
-
+            var content = await GetContentAsync(vertex, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            using (var response = await _transport.PutAsync(uri, content, headers?.ToWebHeaderCollection(),token:token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
                     var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return DeserializeJsonFromStream<PutVertexResponse<T>>(stream);
+                    return await DeserializeJsonFromStreamAsync<PutVertexResponse<T>>(stream).ConfigureAwait(false);
                 }
-                throw await GetApiErrorException(response).ConfigureAwait(false);
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
             }
         }
 
