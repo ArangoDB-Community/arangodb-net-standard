@@ -1073,16 +1073,16 @@ namespace ArangoDBNetStandard.GraphApi
                 qs += $"WITH {string.Join(",", body.VertexCollections)} {Environment.NewLine}";
             }
 
-            qs += $"FOR {GetContentString(body.CurrentVertex, so)} ";
+            qs += $"FOR {await GetContentStringAsync(body.CurrentVertex, so)} ";
 
             if (body.CurrentEdge != null)
             {
-                qs += $", {GetContentString(body.CurrentEdge, so)} ";
+                qs += $", {await GetContentStringAsync(body.CurrentEdge, so)} ";
             }
 
             if (body.CurrentPath != null)
             {
-                qs += $", {GetContentString(body.CurrentPath, so)} ";
+                qs += $", {await GetContentStringAsync(body.CurrentPath, so)} ";
             }
 
             qs += Environment.NewLine;
@@ -1124,7 +1124,7 @@ namespace ArangoDBNetStandard.GraphApi
 
             if (body.Options != null)
             {
-                qs += $"OPTIONS {GetContentString(body.Options, so)}";
+                qs += $"OPTIONS {await GetContentStringAsync(body.Options, so)}";
             }
 
             return await TraverseGraphAsync<T>(qs, token);
