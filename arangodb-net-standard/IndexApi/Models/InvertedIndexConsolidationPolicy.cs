@@ -30,7 +30,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         /// segments in bytes.
         /// Default: 5368709120
         /// </summary>
-        public int? SegmentsBytesMax { get; set; }
+        public long? SegmentsBytesMax { get; set; }
 
         /// <summary>
         /// Optional. The maximum number of segments that are evaluated
