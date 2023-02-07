@@ -22,76 +22,76 @@ namespace ArangoDBNetStandard
         /// <summary>
         /// AQL user functions management API.
         /// </summary>
-        AqlFunctionApiClient AqlFunction { get; }
+        IAqlFunctionApiClient AqlFunction { get; }
 
         /// <summary>
         /// Auth API
         /// </summary>
-        AuthApiClient Auth { get; }
+        IAuthApiClient Auth { get; }
 
         /// <summary>
         /// Cursor API
         /// </summary>
-        CursorApiClient Cursor { get; }
+        ICursorApiClient Cursor { get; }
 
         /// <summary>
         /// Database API
         /// </summary>
-        DatabaseApiClient Database { get; }
+        IDatabaseApiClient Database { get; }
 
         /// <summary>
         /// Document API
         /// </summary>
-        DocumentApiClient Document { get; }
+        IDocumentApiClient Document { get; }
 
         /// <summary>
         /// Collection API
         /// </summary>
-        CollectionApiClient Collection { get; }
+        ICollectionApiClient Collection { get; }
 
         /// <summary>
         /// Transaction API
         /// </summary>
-        TransactionApiClient Transaction { get; }
+        ITransactionApiClient Transaction { get; }
 
         /// <summary>
         /// Graph API
         /// </summary>
-        GraphApiClient Graph { get; }
+        IGraphApiClient Graph { get; }
 
         /// <summary>
         /// User management API
         /// </summary>
-        UserApiClient User { get; }
+        IUserApiClient User { get; }
 
         /// <summary>
         /// Index management API
         /// </summary>
-        IndexApiClient Index { get; }
+        IIndexApiClient Index { get; }
         
         /// <summary>
         /// Bulk Operations API
         /// </summary>
-        BulkOperationsApiClient BulkOperations { get; }                        
+        IBulkOperationsApiClient BulkOperations { get; }                        
                        
         /// <summary>
         /// View management API
         /// </summary>
-        ViewApiClient View { get; }                    
+        IViewApiClient View { get; }                    
 
         /// <summary>
         /// Analyzer managemet API
         /// </summary>
-        AnalyzerApiClient Analyzer { get; }
+        IAnalyzerApiClient Analyzer { get; }
 
         /// <summary>
         /// Admin API
         /// </summary>
-        AdminApiClient Admin { get; }
+        IAdminApiClient Admin { get; }
 
         /// <summary>
         /// Pregel API
         /// </summary>
-        PregelApiClient Pregel { get; }
+        IPregelApiClient Pregel { get; }
     }
 }

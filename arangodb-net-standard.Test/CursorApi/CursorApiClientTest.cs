@@ -17,7 +17,7 @@ namespace ArangoDBNetStandardTest.CursorApi
 {
     public class CursorApiClientTest : IClassFixture<CursorApiClientTestFixture>
     {
-        private CursorApiClient _cursorApi;
+        private ICursorApiClient _cursorApi;
 
         public class MyModel
         {
