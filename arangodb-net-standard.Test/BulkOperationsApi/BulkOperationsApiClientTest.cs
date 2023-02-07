@@ -13,7 +13,7 @@ namespace ArangoDBNetStandardTest.BulkOperationsApi
 {
     public class BulkOperationsApiClientTest : IClassFixture<BulkOperationsApiClientTestFixture>, IAsyncLifetime
     {
-        private BulkOperationsApiClient _boApi;
+        private IBulkOperationsApiClient _boApi;
         private ArangoDBClient _adb;
         private readonly string _testCollection;
         private readonly ImportDocumentArraysBody _testImportDocumentArraysBody;

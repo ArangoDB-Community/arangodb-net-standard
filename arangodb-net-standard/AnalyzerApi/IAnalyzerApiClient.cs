@@ -7,7 +7,7 @@ namespace ArangoDBNetStandard.AnalyzerApi
     /// <summary>
     /// Defines a client to access the ArangoDB Analyzer API.
     /// </summary>
-    internal interface IAnalyzerApiClient
+    public interface IAnalyzerApiClient
     {
         /// <summary>
         /// Fetch the list of available Analyzer definitions.

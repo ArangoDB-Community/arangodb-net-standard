@@ -10,7 +10,7 @@ namespace ArangoDBNetStandardTest.AnalyzerApi
 {
     public class AnalyzerApiClientTest : IClassFixture<AnalyzerApiClientTestFixture>, IAsyncLifetime
     {
-        private AnalyzerApiClient _analyzerApi;
+        private IAnalyzerApiClient _analyzerApi;
         private ArangoDBClient _adb;
 
         public AnalyzerApiClientTest(AnalyzerApiClientTestFixture fixture)

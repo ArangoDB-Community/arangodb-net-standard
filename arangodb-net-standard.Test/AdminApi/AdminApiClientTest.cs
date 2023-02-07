@@ -13,7 +13,7 @@ namespace ArangoDBNetStandardTest.AdminApi
 {
     public class AdminApiClientTest : IClassFixture<AdminApiClientTestFixture>, IAsyncLifetime
     {
-        private AdminApiClient _adminApi;
+        private IAdminApiClient _adminApi;
         private ArangoDBClient _adb;
 
         public AdminApiClientTest(AdminApiClientTestFixture fixture)

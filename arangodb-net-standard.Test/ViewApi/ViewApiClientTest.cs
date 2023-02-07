@@ -13,7 +13,7 @@ namespace ArangoDBNetStandardTest.ViewApi
 {
     public class ViewApiClientTest : IClassFixture<ViewApiClientTestFixture>, IAsyncLifetime
     {
-        private ViewApiClient _viewApi;
+        private IViewApiClient _viewApi;
         private ArangoDBClient _adb;
 
         public ViewApiClientTest(ViewApiClientTestFixture fixture)

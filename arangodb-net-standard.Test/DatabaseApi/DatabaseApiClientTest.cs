@@ -14,7 +14,7 @@ namespace ArangoDBNetStandardTest.DatabaseApi
     public class DatabaseApiClientTest : IClassFixture<DatabaseApiClientTestFixture>
     {
         private readonly DatabaseApiClientTestFixture _fixture;
-        private readonly DatabaseApiClient _systemClient;
+        private readonly IDatabaseApiClient _systemClient;
 
         public DatabaseApiClientTest(DatabaseApiClientTestFixture fixture)
         {
