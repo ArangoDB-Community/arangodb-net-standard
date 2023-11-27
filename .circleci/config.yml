@@ -31,7 +31,7 @@ jobs:
   build:
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
     steps:
       - checkout
       - run:
@@ -50,7 +50,7 @@ jobs:
   "test-arangodb-3_4":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
           ARANGO_HOST: adb3_4_9
       - image: arangodb:3.4.9
@@ -69,7 +69,7 @@ jobs:
   "test-arangodb-3_5":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
           ARANGO_HOST: adb3_5_5
       - image: arangodb:3.5.5
@@ -88,7 +88,7 @@ jobs:
   "test-arangodb-3_6":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
           ARANGO_HOST: adb3_6_8
       - image: arangodb/arangodb:3.6.8
@@ -107,7 +107,7 @@ jobs:
   "test-arangodb-3_7":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
           ARANGO_HOST: adb3_7_17
       - image: arangodb/arangodb:3.7.17
@@ -126,7 +126,7 @@ jobs:
   "test-arangodb-3_8":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
           ARANGO_HOST: adb3_8_6
       - image: arangodb/arangodb:3.8.6
@@ -145,7 +145,7 @@ jobs:
   "test-arangodb-3_9":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
           ARANGO_HOST: adb3_9_1
       - image: arangodb/arangodb:3.9.1
@@ -163,7 +163,7 @@ jobs:
   "test-arangodb-3_10":
     working_directory: ~/arangodb-net-standard
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
           ARANGO_HOST: adb3_10_0
       - image: arangodb/arangodb:3.10.0
