@@ -11,6 +11,7 @@ using ArangoDBNetStandard.DocumentApi;
 using ArangoDBNetStandard.GraphApi;
 using ArangoDBNetStandard.IndexApi;
 using ArangoDBNetStandard.PregelApi;
+using ArangoDBNetStandard.QueryApi;
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.TransactionApi;
 using ArangoDBNetStandard.Transport;
@@ -106,6 +107,11 @@ namespace ArangoDBNetStandard
         public IPregelApiClient Pregel { get; private set; }
 
         /// <summary>
+        /// Query API
+        /// </summary>
+        public QueryApiClient Query { get; private set; }
+
+        /// <summary>
         /// Create an instance of <see cref="ArangoDBClient"/> from an existing
         /// <see cref="HttpClient"/> instance, using the default JSON serialization.
         /// </summary>
@@ -173,6 +179,7 @@ namespace ArangoDBNetStandard
             Analyzer = new AnalyzerApiClient(transport, serialization);            
             Admin = new AdminApiClient(transport, serialization);
             Pregel = new PregelApiClient(transport, serialization);
+            Query = new QueryApiClient(transport, serialization);
         }
     }
 }
