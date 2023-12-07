@@ -9,14 +9,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
     public class PostExplainAqlQueryResponseNode
     {
         public string Type { get; set; }
-        public IList<int> Dependencies { get; set; }
+        public IEnumerable<int> Dependencies { get; set; }
         public int? Id { get; set; }
         public decimal? EstimatedCost { get; set; }
         public int? EstimatedNrItems { get; set; }
         public bool? Random { get; set; }
         public PostExplainAqlQueryResponseIndexHint IndexHint { get; set; }
         public PostExplainAqlQueryResponseVariable OutVariable { get; set; }
-        public IList<string> Projections { get; set; }
+        public IEnumerable<string> Projections { get; set; }
         public string Database { get; set; }
         public string Collection { get; set; }
         public bool? Count { get; set; }
@@ -28,7 +28,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         public PostExplainAqlQueryResponseVariable InVariable { get; set; }
         public bool? NeedsGatherNodeSort { get; set; }
         public bool? IndexCoversProjections { get; set; }
-        public IList<PostExplainAqlQueryResponseIndex> Indexes { get; set; }
+        public IEnumerable<PostExplainAqlQueryResponseIndex> Indexes { get; set; }
         public PostExplainAqlQueryResponseCondition Condition { get; set; }
         public bool? Sorted { get; set; }
         public bool? Ascending { get; set; }

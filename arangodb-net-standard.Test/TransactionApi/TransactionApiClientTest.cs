@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
 using ArangoDBNetStandard.DocumentApi.Models;
@@ -185,7 +186,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
             var result = await _adb.Transaction.GetAllRunningTransactions();
 
             // Check for all the running transactions.
-            Assert.Equal(2, result.Transactions.Count);
+            Assert.Equal(2, result.Transactions.Count());
             Assert.Contains(result.Transactions, x => x.State.Equals(StreamTransactionStatus.Running));
         }
 

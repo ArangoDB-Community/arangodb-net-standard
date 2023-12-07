@@ -10,24 +10,24 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// <summary>
         /// The array of execution nodes of the plan.
         /// </summary>
-        public IList<PostExplainAqlQueryResponseNode> Nodes { get; set; }
+        public IEnumerable<PostExplainAqlQueryResponseNode> Nodes { get; set; }
 
         /// <summary>
         /// An array of rules the optimizer applied.
         /// </summary>
-        public IList<string> Rules { get; set; }
+        public IEnumerable<string> Rules { get; set; }
 
         /// <summary>
         /// An array of collections used in the query
         /// </summary>
-        public IList<PostExplainAqlQueryResponseCollection> Collections { get; set; }
+        public IEnumerable<PostExplainAqlQueryResponseCollection> Collections { get; set; }
 
         /// <summary>
         /// Array of variables used in the query 
         /// (note: this may contain internal 
         /// variables created by the optimizer)
         /// </summary>
-        public IList<PostExplainAqlQueryResponseVariable> Variables { get; set; }
+        public IEnumerable<PostExplainAqlQueryResponseVariable> Variables { get; set; }
 
         /// <summary>
         /// The total estimated cost for the plan. 

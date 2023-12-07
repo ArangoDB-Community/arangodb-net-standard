@@ -6,7 +6,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
     /// Response from <see cref="AqlFunctionApiClient.PostExplainAqlQueryAsync"/>
     /// See https://www.arangodb.com/docs/stable/http/aql-query.html#explain-an-aql-query
     /// </summary>
-    public class PostExplainAqlQueryResponse:ResponseBase
+    public class PostExplainAqlQueryResponse : ResponseBase
     {
         /// <summary>
         /// The query execution plan.
@@ -18,7 +18,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// <see cref="PostExplainAqlQueryBodyOptions.AllPlans"/>
         /// is set to true.
         /// </summary>
-        public IList<PostExplainAqlQueryResponsePlan> Plans { get; set; }
+        public IEnumerable<PostExplainAqlQueryResponsePlan> Plans { get; set; }
 
         /// <summary>
         /// Indicates whether the query results can be 
@@ -31,7 +31,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// An array of warnings that occurred during 
         /// optimization or execution plan creation.
         /// </summary>
-        public IList<string> Warnings { get; set; }
+        public IEnumerable<string> Warnings { get; set; }
 
         /// <summary>
         /// Optimizer statistics.
