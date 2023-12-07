@@ -169,7 +169,7 @@ jobs:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
           ARANGO_HOST: adb3_10_0
-      - image: arangodb/arangodb:3.10
+      - image: arangodb:3.10
         name: adb3_10_0
         environment:
           ARANGO_ROOT_PASSWORD: root
@@ -187,7 +187,7 @@ jobs:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
           ARANGO_HOST: adb3_11_0
-      - image: arangodb/arangodb:3.11
+      - image: arangodb:3.11
         name: adb3_11_0
         environment:
           ARANGO_ROOT_PASSWORD: root
