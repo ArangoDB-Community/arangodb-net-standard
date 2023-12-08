@@ -63,13 +63,18 @@ namespace ArangoDBNetStandard.PregelApi
         /// vary for each algorithm
         /// </remarks>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns>The ID of the newly started job.</returns>
-        public virtual async Task<string> PostStartJobAsync(PostStartJobBody body, CancellationToken token = default)
+        public virtual async Task<string> PostStartJobAsync(PostStartJobBody body,
+            ApiHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = _apiPath;
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true));
-            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content, 
+                webHeaderCollection:headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -85,16 +90,20 @@ namespace ArangoDBNetStandard.PregelApi
         /// GET /_api/control_pregel/{id}
         /// </summary>
         /// <param name="jobId">The ID of the job.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<PregelJobStatus> GetJobStatusAsync(string jobId, CancellationToken token = default)
+        public virtual async Task<PregelJobStatus> GetJobStatusAsync(string jobId,
+            ApiHeaderProperties headers = null, 
+            CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(jobId))
             {
                 throw new ArgumentNullException(nameof(jobId));
             }
             string uri = _apiPath + '/' + jobId;
-            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -109,15 +118,20 @@ namespace ArangoDBNetStandard.PregelApi
         /// Get the overview of currently running Pregel jobs.
         /// GET /_api/control_pregel
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns>
         /// Returns a list of currently running and recently
         /// finished Pregel jobs without retrieving their results. 
         /// </returns>
-        public virtual async Task<List<PregelJobStatus>> GetAllRunningJobsAsync(CancellationToken token = default)
+        public virtual async Task<List<PregelJobStatus>> GetAllRunningJobsAsync(
+            ApiHeaderProperties headers = null, 
+            CancellationToken token = default)
         {
             string uri = _apiPath;
-            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -140,12 +154,17 @@ namespace ArangoDBNetStandard.PregelApi
         /// For more information see https://www.arangodb.com/docs/stable/http/pregel.html#cancel-pregel-job-execution
         /// </remarks>
         /// <param name="jobId">The ID of the job.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<string> DeleteJobAsync(string jobId, CancellationToken token = default)
+        public virtual async Task<string> DeleteJobAsync(string jobId,
+            ApiHeaderProperties headers = null, 
+            CancellationToken token = default)
         {
             string uri = _apiPath + '/' + jobId;
-            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {

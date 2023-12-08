@@ -53,15 +53,16 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// POST /_api/aqlfunction
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostAqlFunctionResponse> PostAqlFunctionAsync(
-            PostAqlFunctionBody body,
+            PostAqlFunctionBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
 
-            using (var response = await _transport.PostAsync(_apiPath, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(_apiPath, content, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -78,11 +79,12 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// </summary>
         /// <param name="name">The name of the function or function group (namespace).</param>
         /// <param name="query">The query parameters of the request.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteAqlFunctionResponse> DeleteAqlFunctionAsync(
             string name,
-            DeleteAqlFunctionQuery query = null,
+            DeleteAqlFunctionQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _apiPath + '/' + WebUtility.UrlEncode(name);
@@ -92,7 +94,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -107,10 +109,11 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Get all registered AQL user functions.
         /// </summary>
         /// <param name="query">Query string options for the task.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<GetAqlFunctionsResponse> GetAqlFunctionsAsync(
-            GetAqlFunctionsQuery query = null,
+            GetAqlFunctionsQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _apiPath;
@@ -120,7 +123,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -136,10 +139,11 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// POST /_api/explain
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostExplainAqlQueryResponse> PostExplainAqlQueryAsync(
-            PostExplainAqlQueryBody body,
+            PostExplainAqlQueryBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             if (body == null)
@@ -150,7 +154,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             string uri = "_api/explain";
 
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -166,10 +170,11 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// POST /_api/query
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<PostParseAqlQueryResponse> PostParseAqlQueryAsync(
-            PostParseAqlQueryBody body,
+            PostParseAqlQueryBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             if (body == null)
@@ -180,7 +185,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             string uri = "_api/query";
 
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _transport.PostAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PostAsync(uri, content, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -202,6 +207,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// the specified query in all databases, not just the 
         /// selected one.
         /// </param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Kills a running query in the currently selected database. 
@@ -212,7 +218,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// <returns></returns>
         public virtual async Task<ResponseBase> DeleteKillRunningAqlQueryAsync(
             string queryId,
-            DeleteKillRunningAqlQueryQuery query = null,
+            DeleteKillRunningAqlQueryQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             if (string.IsNullOrWhiteSpace(queryId))
@@ -227,7 +233,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -249,10 +255,11 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Using the parameter is only allowed in the system database
         /// and with superuser privileges.
         /// </param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<ResponseBase> DeleteClearSlowAqlQueriesAsync(
-            DeleteClearSlowAqlQueriesQuery query = null,
+            DeleteClearSlowAqlQueriesQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = "_api/query/slow";
@@ -262,7 +269,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -284,6 +291,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Using the parameter is only allowed in the system database
         /// and with superuser privileges.
         /// </param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns an array containing the last AQL queries that are 
@@ -295,7 +303,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// </remarks>
         /// <returns></returns>
         public virtual async Task<List<SlowAqlQuery>> GetSlowAqlQueriesAsync(
-            GetSlowAqlQueriesQuery query = null,
+            GetSlowAqlQueriesQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = "_api/query/slow";
@@ -305,7 +313,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -322,14 +330,15 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Clears the query results cache for the current database
         /// DELETE /_api/query-cache
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<ResponseBase> DeleteClearAqlQueryCacheAsync(
+        public virtual async Task<ResponseBase> DeleteClearAqlQueryCacheAsync(ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = "_api/query-cache";
 
-            using (var response = await _transport.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.DeleteAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -344,17 +353,18 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Gets a list of the stored results in the AQL query results cache.
         /// GET /_api/query-cache/entries
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns an array containing the AQL query results currently 
         /// stored in the query results cache of the selected database.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<List<CachedAqlQueryResult>> GetCachedAqlQueryResultsAsync(
+        public virtual async Task<List<CachedAqlQueryResult>> GetCachedAqlQueryResultsAsync(ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = "_api/query-cache/entries";
-            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -368,16 +378,17 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// <summary>
         /// Gets the global configuration for the AQL query results cache.
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns the global AQL query results cache configuration.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<QueryCacheGlobalProperties> GetQueryCacheGlobalPropertiesAsync(
+        public virtual async Task<QueryCacheGlobalProperties> GetQueryCacheGlobalPropertiesAsync(ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = "_api/query-cache/properties";
-            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -393,6 +404,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// PUT /_api/query-cache/properties
         /// </summary>
         /// <param name="body">The body of the request containing required properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// After the properties have been changed, the current set of properties 
@@ -401,7 +413,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// </remarks>
         /// <returns></returns>
         public virtual async Task<QueryCacheGlobalProperties> PutAdjustQueryCacheGlobalPropertiesAsync(
-            PutAdjustQueryCacheGlobalPropertiesBody body,
+            PutAdjustQueryCacheGlobalPropertiesBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             if (body == null)
@@ -412,7 +424,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             string uri = "_api/query-cache/properties";
 
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uri, content, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -427,13 +439,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Gets the current query tracking configuration. 
         /// GET /_api/query/properties
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<QueryTrackingConfiguration> GetQueryTrackingConfigurationAsync(
+        public virtual async Task<QueryTrackingConfiguration> GetQueryTrackingConfigurationAsync(ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = "_api/query/properties";
-            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -453,10 +466,11 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// the current set of properties will be returned.
         /// </remarks>
         /// <param name="body">The body of the request containing required configuration properties.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<QueryTrackingConfiguration> PutChangeQueryTrackingConfigurationAsync(
-            PutChangeQueryTrackingConfigurationBody body,
+            PutChangeQueryTrackingConfigurationBody body, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             if (body == null)
@@ -467,7 +481,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
             string uri = "_api/query/properties";
 
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _transport.PutAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _transport.PutAsync(uri, content, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -482,13 +496,14 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Gets a list of currently running AQL queries.
         /// </summary>
         /// <param name="query">Query string options for the task.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns the global AQL query results cache configuration.
         /// </remarks>
         /// <returns></returns>
         public virtual async Task<List<RunningAqlQuery>> GetCurrentlyRunningAqlQueriesAsync(
-            GetCurrentlyRunningAqlQueriesQuery query = null,
+            GetCurrentlyRunningAqlQueriesQuery query = null, ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = "_api/query/current";
@@ -498,7 +513,7 @@ namespace ArangoDBNetStandard.AqlFunctionApi
                 uri += "?" + query.ToQueryString();
             }
 
-            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -513,17 +528,18 @@ namespace ArangoDBNetStandard.AqlFunctionApi
         /// Gets the available optimizer rules for AQL queries
         /// GET /_api/query/rules
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <remarks>
         /// Returns an array of objects that contain the name of each available 
         /// rule and its respective flags.
         /// </remarks>
         /// <returns></returns>
-        public virtual async Task<List<GetQueryRule>> GetQueryRulesAsync(CancellationToken token = default)
+        public virtual async Task<List<GetQueryRule>> GetQueryRulesAsync(ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = "_api/query/rules";
 
-            using (var response = await _transport.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _transport.GetAsync(uri, webHeaderCollection: headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {

@@ -22,7 +22,7 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="cache"></param>
         /// <param name="memoryLimit"></param>
         /// <param name="ttl"></param>
-        /// <param name="transactionId">Optional. The stream transaction Id.</param>      
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>     
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<CursorResponse<T>> PostCursorAsync<T>(
@@ -55,13 +55,14 @@ namespace ArangoDBNetStandard.CursorApi
 
         /// <summary>
         /// Advances an existing query cursor and gets the next set of results.
-        /// Replaces <see cref="PutCursorAsync{T}(string, CancellationToken)"/>
+        /// Replaces <see cref="PutCursorAsync{T}(string, ApiHeaderProperties, CancellationToken)"/>
         /// </summary>
         /// <param name="cursorIdentifier">The name / identifier of the existing cursor.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<CursorResponse<T>> PostAdvanceCursorAsync<T>(
-            string cursorIdentifier,
+            string cursorIdentifier, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -69,9 +70,10 @@ namespace ArangoDBNetStandard.CursorApi
         /// DELETE /_api/cursor/{cursor-identifier}
         /// </summary>
         /// <param name="cursorId">The id of the cursor to delete.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId,
+        Task<DeleteCursorResponse> DeleteCursorAsync(string cursorId, ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -79,9 +81,10 @@ namespace ArangoDBNetStandard.CursorApi
         /// </summary>
         /// <typeparam name="T">Result type to deserialize to</typeparam>
         /// <param name="cursorId">ID of the existing query cursor.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId,
+        Task<PutCursorResponse<T>> PutCursorAsync<T>(string cursorId, ApiHeaderProperties headers = null,
             CancellationToken token = default);
     }
 }
