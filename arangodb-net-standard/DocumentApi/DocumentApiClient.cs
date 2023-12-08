@@ -146,7 +146,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public virtual async Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(
             string collectionName,
-            IList<T> documents,
+            IEnumerable<T> documents,
             PostDocumentsQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
             DocumentHeaderProperties headers = null,
@@ -193,7 +193,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public virtual async Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
             string collectionName,
-            IList<T> documents,
+            IEnumerable<T> documents,
             PutDocumentsQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
             DocumentHeaderProperties headers = null,
@@ -311,7 +311,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<T> GetDocumentAsync<T>(
-            string collectionName, 
+            string collectionName,
             string documentKey,
             DocumentHeaderProperties headers = null,
             CancellationToken token = default)
@@ -367,7 +367,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public virtual async Task<List<T>> GetDocumentsAsync<T>(
             string collectionName,
-            IList<string> selectors,
+            IEnumerable<string> selectors,
             DocumentHeaderProperties headers = null,
             CancellationToken token = default)
         {
@@ -512,7 +512,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public virtual async Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(
             string collectionName,
-            IList<string> selectors,
+            IEnumerable<string> selectors,
             DeleteDocumentsQuery query = null,
             DocumentHeaderProperties headers = null,
             CancellationToken token = default)
@@ -533,7 +533,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public virtual async Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(
             string collectionName,
-            IList<string> selectors,
+            IEnumerable<string> selectors,
             DeleteDocumentsQuery query = null,
             DocumentHeaderProperties headers = null,
             CancellationToken token = default)
@@ -557,7 +557,7 @@ namespace ArangoDBNetStandard.DocumentApi
                     else
                     {
                         var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                        return await DeserializeJsonFromStreamAsync<DeleteDocumentsResponse<T>>(stream).ConfigureAwait(false); 
+                        return await DeserializeJsonFromStreamAsync<DeleteDocumentsResponse<T>>(stream).ConfigureAwait(false);
                     }
                 }
 
@@ -593,7 +593,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public virtual async Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
             string collectionName,
-            IList<T> patches,
+            IEnumerable<T> patches,
             PatchDocumentsQuery query = null,
             ApiClientSerializationOptions serializationOptions = null,
             DocumentHeaderProperties headers = null,
@@ -656,13 +656,13 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         public virtual async Task<PatchDocumentsResponse<object>> PatchDocumentsAsync<T>(
           string collectionName,
-          IList<T> patches,
+          IEnumerable<T> patches,
           PatchDocumentsQuery query = null,
           ApiClientSerializationOptions serializationOptions = null,
           DocumentHeaderProperties headers = null,
             CancellationToken token = default)
         {
-            return await PatchDocumentsAsync<T, object>(collectionName,patches,query,serializationOptions,headers, token: token);
+            return await PatchDocumentsAsync<T, object>(collectionName, patches, query, serializationOptions, headers, token: token);
         }
 
         /// <summary>
@@ -696,7 +696,7 @@ namespace ArangoDBNetStandard.DocumentApi
             string documentHandle = WebUtility.UrlEncode(collectionName) +
                 "/" + WebUtility.UrlEncode(documentKey);
 
-            return await PatchDocumentAsync<T, U>(documentHandle, body, query, headers: headers,token: token).ConfigureAwait(false);
+            return await PatchDocumentAsync<T, U>(documentHandle, body, query, headers: headers, token: token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -832,7 +832,7 @@ namespace ArangoDBNetStandard.DocumentApi
             ValidateDocumentId(documentId);
             string uri = _docApiPath + "/" + documentId;
             WebHeaderCollection headerCollection = GetHeaderCollection(headers);
-            using (var response = await _client.HeadAsync(uri, headerCollection,token))
+            using (var response = await _client.HeadAsync(uri, headerCollection, token))
             {
                 return new HeadDocumentResponse
                 {

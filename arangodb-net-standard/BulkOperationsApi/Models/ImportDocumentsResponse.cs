@@ -21,14 +21,14 @@ namespace ArangoDBNetStandard.BulkOperationsApi.Models
         /// (will only contain a value greater zero
         /// for types documents or auto).
         /// </summary>
-        public int? Empty { get; set; } 
+        public int? Empty { get; set; }
 
         /// <summary>
         /// The number of updated/replaced documents
         /// (in case onDuplicate was set to either
         /// update or replace).
         /// </summary>
-        public int? Updated { get; set; } 
+        public int? Updated { get; set; }
 
         /// <summary>
         /// The number of failed but ignored
@@ -43,7 +43,7 @@ namespace ArangoDBNetStandard.BulkOperationsApi.Models
         /// information about which documents could not
         /// be inserted.
         /// </summary>
-        public IList<string> Details { get; set; }
+        public IEnumerable<string> Details { get; set; }
 
         /// <summary>
         /// The HTTP status code.

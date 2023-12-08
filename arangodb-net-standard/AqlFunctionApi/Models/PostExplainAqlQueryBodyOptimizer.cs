@@ -18,6 +18,6 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// which matches all optimizer rules.
         /// -all disables all rules.
         /// </summary>
-        public IList<string> Rules { get; set; }
+        public IEnumerable<string> Rules { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace ArangoDBNetStandard.TransactionApi.Models
         /// <summary>
         /// Gets or sets list of all Stream Transactions.
         /// </summary>
-        public IList<Transaction> Transactions { get; set; }
+        public IEnumerable<Transaction> Transactions { get; set; }
     }
 }

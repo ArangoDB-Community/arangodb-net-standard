@@ -56,6 +56,6 @@ namespace ArangoDBNetStandard.AqlFunctionApi.Models
         /// <summary>
         /// An array of collections/Views the query was using
         /// </summary>
-        public IList<string> DataSources { get; set; }
+        public IEnumerable<string> DataSources { get; set; }
     }
 }

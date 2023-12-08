@@ -70,7 +70,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         Task<PostDocumentsResponse<T>> PostDocumentsAsync<T>(
            string collectionName,
-           IList<T> documents,
+           IEnumerable<T> documents,
            PostDocumentsQuery query = null,
            ApiClientSerializationOptions serializationOptions = null,
            DocumentHeaderProperties headers = null,
@@ -90,7 +90,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         Task<PutDocumentsResponse<T>> PutDocumentsAsync<T>(
            string collectionName,
-           IList<T> documents,
+           IEnumerable<T> documents,
            PutDocumentsQuery query = null,
            ApiClientSerializationOptions serializationOptions = null,
            DocumentHeaderProperties headers = null,
@@ -186,7 +186,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         Task<List<T>> GetDocumentsAsync<T>(
             string collectionName,
-            IList<string> selectors,
+            IEnumerable<string> selectors,
             DocumentHeaderProperties headers = null,
             CancellationToken token = default);
 
@@ -281,7 +281,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         Task<DeleteDocumentsResponse<object>> DeleteDocumentsAsync(
           string collectionName,
-          IList<string> selectors,
+          IEnumerable<string> selectors,
           DeleteDocumentsQuery query = null,
           DocumentHeaderProperties headers = null,
             CancellationToken token = default);
@@ -299,7 +299,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         Task<DeleteDocumentsResponse<T>> DeleteDocumentsAsync<T>(
           string collectionName,
-          IList<string> selectors,
+          IEnumerable<string> selectors,
           DeleteDocumentsQuery query = null,
           DocumentHeaderProperties headers = null,
             CancellationToken token = default);
@@ -334,7 +334,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         Task<PatchDocumentsResponse<U>> PatchDocumentsAsync<T, U>(
           string collectionName,
-          IList<T> patches,
+          IEnumerable<T> patches,
           PatchDocumentsQuery query = null,
           ApiClientSerializationOptions serializationOptions = null,
           DocumentHeaderProperties headers = null,
@@ -369,7 +369,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// <returns></returns>
         Task<PatchDocumentsResponse<object>> PatchDocumentsAsync<T>(
           string collectionName,
-          IList<T> patches,
+          IEnumerable<T> patches,
           PatchDocumentsQuery query = null,
           ApiClientSerializationOptions serializationOptions = null,
           DocumentHeaderProperties headers = null,
@@ -497,7 +497,7 @@ namespace ArangoDBNetStandard.DocumentApi
         /// 412: is returned if an “If-Match” header is given and the found document has a different version. The response will also contain the found document’s current revision in the Etag header.
         /// </remarks>
         /// <returns></returns>
-        Task<HeadDocumentResponse> HeadDocumentAsync(string documentId, 
+        Task<HeadDocumentResponse> HeadDocumentAsync(string documentId,
             DocumentHeaderProperties headers = null,
             CancellationToken token = default);
     }
