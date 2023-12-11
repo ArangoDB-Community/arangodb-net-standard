@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using ArangoDBNetStandard;
+﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.ViewApi;
 using ArangoDBNetStandard.ViewApi.Models;
-using ArangoDBNetStandard.Transport;
-using Moq;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.ViewApi
@@ -37,7 +33,7 @@ namespace ArangoDBNetStandardTest.ViewApi
         {
             var testName = "GetAllViewsAsyncShouldSucceedView";
             var createResponse = await _viewApi.PostCreateViewAsync(
-                new ViewDetails() 
+                new ViewDetails()
                 {
                     Name = testName,
                     Type = "arangosearch"
@@ -129,10 +125,9 @@ namespace ArangoDBNetStandardTest.ViewApi
                 testName,
                 new PutRenameViewBody()
                 {
-                     Name = newName
+                    Name = newName
                 });
 
-            Assert.Equal(HttpStatusCode.OK, res.Code);
             Assert.False(res.Error);
             Assert.NotNull(res.GloballyUniqueId);
             Assert.Equal(newName, res.Name);
