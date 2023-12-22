@@ -1,131 +1,84 @@
 ﻿using ArangoDBNetStandard;
 using ArangoDBNetStandard.Transport;
-using ArangoDBNetStandard.Transport.Http;
-using System;
+using Moq;
+using Moq.Protected;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ArangoDBNetStandardTest
 {
-    public class ArangoDBClientTest : IClassFixture<ArangoDBClientTestFixture>
+    public class ArangoDBClientTest
     {
-        private readonly ArangoDBClientTestFixture _fixture;
-
-        private readonly Uri _hostUri;
-
-        public ArangoDBClientTest(ArangoDBClientTestFixture fixture)
+        public ArangoDBClientTest()
         {
-            _fixture = fixture;
-            _hostUri = new Uri($"http://{fixture.ArangoDbHost}:{fixture.ArangoDbPort}/");
         }
 
         [Fact]
-        public async Task Dispose_ShouldDisposeTransport_WhenTransportDisposalIsNotSuppressed()
+        public void Dispose_ShouldDisposeTransport_WhenTransportDisposalIsNotSuppressed()
         {
-            var transport = HttpApiTransport.UsingBasicAuth(
-                _hostUri,
-                _fixture.DatabaseName,
-                _fixture.Username,
-                _fixture.Password);
+            var mockTransport = new Mock<IApiClientTransport>();
 
             var dbClient = new ArangoDBClient(
-                transport,
+                mockTransport.Object,
                 suppressTransportDisposal: false);
 
             // Act
-
             dbClient.Dispose();
 
-            // Assert
-
-            await Assert.ThrowsAsync<ObjectDisposedException>(
-                () => transport.GetAsync($"_db/{_fixture.DatabaseName}/_admin/echo"));
+            // Assert            
+            mockTransport.Verify(client => client.Dispose(), Times.Once);
         }
 
         [Fact]
-        public async Task Dispose_ShouldNotDisposeTransport_WhenTransportDisposalIsSuppressed()
+        public void Dispose_ShouldNotDisposeTransport_WhenTransportDisposalIsSuppressed()
         {
-            var transport = HttpApiTransport.UsingBasicAuth(
-                _hostUri,
-                _fixture.DatabaseName,
-                _fixture.Username,
-                _fixture.Password);
+            var mockTransport = new Mock<IApiClientTransport>();
 
             var dbClient = new ArangoDBClient(
-                transport,
+                mockTransport.Object,
                 suppressTransportDisposal: true);
 
             // Act
-
             dbClient.Dispose();
 
             // Assert
-
-            IApiClientResponse response = await transport.GetAsync($"_admin/echo");
-
-            Assert.True(response.IsSuccessStatusCode);
-
-            transport.Dispose();
+            mockTransport.Verify(transport => transport.Dispose(), Times.Never);
         }
 
         [Fact]
-        public async Task Dispose_ShouldDisposeHttpClient_WhenClientDisposalIsNotSuppressed()
+        public void Dispose_ShouldDisposeHttpClient_WhenClientDisposalIsNotSuppressed()
         {
-            var client = new HttpClient()
-            {
-                BaseAddress = _hostUri
-            };
+            var mockMessageHandler = new Mock<HttpMessageHandler>();
+
+            var httpClient = new HttpClient(mockMessageHandler.Object);
 
             var dbClient = new ArangoDBClient(
-                client,
+                httpClient,
                 suppressClientDisposal: false);
 
             // Act
-
             dbClient.Dispose();
 
-            // Assert
-
-            await Assert.ThrowsAsync<ObjectDisposedException>(
-                () => client.GetAsync($"_db/{_fixture.DatabaseName}/_admin/echo"));
+            // Assert               
+            mockMessageHandler.Protected().Verify("Dispose", Times.Once(), true, true);
         }
 
         [Fact]
-        public async Task Dispose_ShouldNotDisposeHttpClient_WhenClientDisposalIsSuppressed()
+        public void Dispose_ShouldNotDisposeHttpClient_WhenClientDisposalIsSuppressed()
         {
-            var client = new HttpClient()
-            {
-                BaseAddress = _hostUri
-            };
+            var mockMessageHandler = new Mock<HttpMessageHandler>();
 
-            string credentials = Convert.ToBase64String(
-                Encoding.ASCII.GetBytes($"{_fixture.Username}:{_fixture.Password}"));
-
-            client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Basic", credentials);
+            var httpClient = new HttpClient(mockMessageHandler.Object);
 
             var dbClient = new ArangoDBClient(
-                client,
+                httpClient,
                 suppressClientDisposal: true);
 
             // Act
-
             dbClient.Dispose();
 
-            // Assert
-
-            using (HttpResponseMessage response = await client.GetAsync(
-                $"_db/{_fixture.DatabaseName}/_admin/echo"))
-            {
-                Assert.True(
-                    response.IsSuccessStatusCode,
-                    $"Error response. Status code: {response.StatusCode}");
-            }
-
-            client.Dispose();
+            // Assert   
+            mockMessageHandler.Protected().Verify("Dispose", Times.Never(), true, true);
         }
     }
 }
