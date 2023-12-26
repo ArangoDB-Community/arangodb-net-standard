@@ -139,6 +139,67 @@ namespace ArangoDBNetStandard.CursorApi
         }
 
         /// <summary>
+        /// Execute an AQL query and return basic statistics.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="bindVars"></param>
+        /// <param name="options"></param>
+        /// <param name="count"></param>
+        /// <param name="batchSize"></param>
+        /// <param name="cache"></param>
+        /// <param name="memoryLimit"></param>
+        /// <param name="ttl"></param>
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>      
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+
+        public virtual async Task<CursorResponseBase> PostCursorAsync(
+            string query,
+            Dictionary<string, object> bindVars = null,
+            PostCursorOptions options = null,
+            bool? count = null,
+            long? batchSize = null,
+            bool? cache = null,
+            long? memoryLimit = null,
+            int? ttl = null,
+            string transactionId = null,
+            CancellationToken token = default)
+        {
+            var headerProperties = new CursorHeaderProperties();
+            if (!string.IsNullOrWhiteSpace(transactionId))
+            {
+                headerProperties.TransactionId = transactionId;
+            }
+
+            var postCursorBody = new PostCursorBody
+            {
+                Query = query,
+                BindVars = bindVars,
+                Options = options,
+                Count = count,
+                BatchSize = batchSize,
+                Cache = cache,
+                MemoryLimit = memoryLimit,
+                Ttl = ttl
+            };
+
+            var content = await GetContentAsync(postCursorBody, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
+            var headerCollection = GetHeaderCollection(headerProperties);
+            using (var response = await _client.PostAsync(_cursorApiPath,
+                content,
+                headerCollection,
+                token).ConfigureAwait(false))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return await DeserializeJsonFromStreamAsync<CursorResponseBase>(stream).ConfigureAwait(false);
+                }
+                throw await GetApiErrorExceptionAsync(response).ConfigureAwait(false);
+            };
+        }
+
+        /// <summary>
         /// Deletes an existing cursor and frees the resources associated with it.
         /// DELETE /_api/cursor/{cursor-identifier}
         /// </summary>
