@@ -54,6 +54,32 @@ namespace ArangoDBNetStandard.CursorApi
             CancellationToken token = default);
 
         /// <summary>
+        /// Execute an AQL query and return basic statistics.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="bindVars"></param>
+        /// <param name="options"></param>
+        /// <param name="count"></param>
+        /// <param name="batchSize"></param>
+        /// <param name="cache"></param>
+        /// <param name="memoryLimit"></param>
+        /// <param name="ttl"></param>
+        /// <param name="transactionId">Optional. The stream transaction Id.</param>      
+        /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
+        /// <returns></returns>
+        Task<CursorResponseBase> PostCursorAsync(
+            string query,
+            Dictionary<string, object> bindVars = null,
+            PostCursorOptions options = null,
+            bool? count = null,
+            long? batchSize = null,
+            bool? cache = null,
+            long? memoryLimit = null,
+            int? ttl = null,
+            string transactionId = null,
+            CancellationToken token = default);
+
+        /// <summary>
         /// Advances an existing query cursor and gets the next set of results.
         /// Replaces <see cref="PutCursorAsync{T}(string, CancellationToken)"/>
         /// </summary>

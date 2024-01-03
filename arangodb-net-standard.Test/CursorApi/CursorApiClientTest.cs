@@ -18,6 +18,7 @@ namespace ArangoDBNetStandardTest.CursorApi
     public class CursorApiClientTest : IClassFixture<CursorApiClientTestFixture>
     {
         private ICursorApiClient _cursorApi;
+        private readonly string _testCollection;
 
         public class MyModel
         {
@@ -27,6 +28,7 @@ namespace ArangoDBNetStandardTest.CursorApi
         public CursorApiClientTest(CursorApiClientTestFixture fixture)
         {
             _cursorApi = fixture.ArangoDBClient.Cursor;
+            _testCollection = fixture.TestCollection;
         }
 
         [Fact]
@@ -350,6 +352,19 @@ namespace ArangoDBNetStandardTest.CursorApi
             Assert.True(response.HasMore);
 
             var deleteResponse = await _cursorApi.DeleteCursorAsync(response.Id);
+        }
+
+        [Fact]
+        public async Task PostCursorAsync_ShouldSucceed_WhenInsertWithBaseCursorResponse()
+        {
+            string query = "FOR Name IN [\"Jon\",\"Snow\"] INSERT {Name: Name} INTO @@testCollection";
+            var bindVars = new Dictionary<string, object> { ["@testCollection"] = _testCollection };
+
+            CursorResponseBase response = await _cursorApi.PostCursorAsync(query, bindVars);
+
+            Assert.Equal(2, response.Extra.Stats.WritesExecuted);
+            Assert.Equal(HttpStatusCode.Created, response.Code);
+            Assert.False(response.Error);
         }
     }
 }
