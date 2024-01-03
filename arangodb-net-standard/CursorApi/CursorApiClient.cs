@@ -152,7 +152,6 @@ namespace ArangoDBNetStandard.CursorApi
         /// <param name="transactionId">Optional. The stream transaction Id.</param>      
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-
         public virtual async Task<CursorResponseBase> PostCursorAsync(
             string query,
             Dictionary<string, object> bindVars = null,
