@@ -72,10 +72,10 @@ namespace ArangoDBNetStandard.AnalyzerApi
         /// Creates a new Analyzer based on the provided definition
         /// POST /_api/analyzer
         /// </summary>
-        /// <param name="body">The properties of the new analyzer.</param>
+        /// <param name="body">The definition of the new analyzer.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<Analyzer> PostAnalyzerAsync(Analyzer body, CancellationToken token = default)
+        public virtual async Task<Analyzer> PostAnalyzerAsync(AnalyzerDefinition body, CancellationToken token = default)
         {
             if (body == null)
             {

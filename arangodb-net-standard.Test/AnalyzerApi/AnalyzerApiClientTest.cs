@@ -47,14 +47,6 @@ namespace ArangoDBNetStandardTest.AnalyzerApi
                 {
                     Name = "text_sc",
                     Type = "identity",
-                    Properties = new AnalyzerProperties()
-                    {
-                        Accent = false,
-                        Case = "lower",
-                        Locale = "sc",
-                        Stemming = false,
-                        StopWords = new List<string>()
-                    },
                     Features = new List<string>() 
                     { 
                         "frequency", 
@@ -78,15 +70,7 @@ namespace ArangoDBNetStandardTest.AnalyzerApi
                     new Analyzer()
                     {
                         Name = "text_sc",
-                        Type = "collection", //...invalid analyzer type
-                    Properties = new AnalyzerProperties()
-                        {
-                            Accent = false,
-                            Case = "lower",
-                            Locale = "sc",
-                            Stemming = false,
-                            StopWords = new List<string>()
-                        },
+                        Type = "collection", 
                         Features = new List<string>()
                         {
                         "frequency",
@@ -125,14 +109,6 @@ namespace ArangoDBNetStandardTest.AnalyzerApi
                 {
                     Name = name,
                     Type = "identity",
-                    Properties = new AnalyzerProperties()
-                    {
-                        Accent = false,
-                        Case = "lower",
-                        Locale = "mu",
-                        Stemming = false,
-                        StopWords = new List<string>()
-                    },
                     Features = new List<string>()
                     {
                         "frequency",

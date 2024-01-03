@@ -1,5 +1,10 @@
-﻿namespace ArangoDBNetStandard.AnalyzerApi.Models
+﻿using System;
+
+namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class TextAnalyzerEdgeNgram
     {
         /// <summary>
