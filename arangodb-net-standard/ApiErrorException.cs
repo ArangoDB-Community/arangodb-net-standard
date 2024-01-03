@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace ArangoDBNetStandard
@@ -11,6 +12,7 @@ namespace ArangoDBNetStandard
         /// in the response.
         /// </summary>
         public ApiErrorResponse ApiError { get; set; }
+        public Dictionary<string,string> Headers { get; set; }
 
         public ApiErrorException()
         {

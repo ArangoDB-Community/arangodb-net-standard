@@ -18,5 +18,9 @@
         /// The header string used for Driver Info Header
         /// </summary>    
         public const string DriverInfoHeader = "x-arango-driver";
+        /// <summary>
+        /// The header string used for <see cref="ApiHeaderProperties.MaxQueueTimeLimit"/> 
+        /// </summary>    
+        public const string MaxQueueTimeLimitHeader = "x-arango-max-queue-time-seconds";
     }
 }
