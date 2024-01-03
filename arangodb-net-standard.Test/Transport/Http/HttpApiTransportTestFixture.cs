@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 
 namespace ArangoDBNetStandardTest.Transport.Http
 {
-    public class HttpApiTransportTestFixture: ApiClientTestFixtureBase
+    public class HttpApiTransportTestFixture : ApiClientTestFixtureBase
     {
+        public string DatabaseName { get; } = nameof(HttpApiTransportTest);
+
         public string Username { get; } = "xyzabc";
         public string Password { get; } = "abcxyz";
 
@@ -13,7 +15,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
         {
             await base.InitializeAsync();
             await CreateDatabase(
-                nameof(HttpApiTransportTest),
+                DatabaseName,
                 new List<DatabaseUser>
                 {
                     new DatabaseUser

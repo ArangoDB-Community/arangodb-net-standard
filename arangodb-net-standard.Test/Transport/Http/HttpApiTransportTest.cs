@@ -3,35 +3,43 @@ using ArangoDBNetStandard.AuthApi;
 using ArangoDBNetStandard.AuthApi.Models;
 using ArangoDBNetStandard.DatabaseApi;
 using ArangoDBNetStandard.Transport.Http;
+using Moq;
+using Moq.Protected;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace ArangoDBNetStandardTest.Transport.Http
 {
-    public class HttpApiTransportTest: IClassFixture<HttpApiTransportTestFixture>
+    public class HttpApiTransportTest : IClassFixture<HttpApiTransportTestFixture>
     {
-        private HttpApiTransportTestFixture _fixture;
+        private readonly HttpApiTransportTestFixture _fixture;
+
+        private readonly Uri _hostUri;
 
         public HttpApiTransportTest(HttpApiTransportTestFixture fixture)
         {
             _fixture = fixture;
+            _hostUri = new Uri($"http://{fixture.ArangoDbHost}:{fixture.ArangoDbPort}/");
         }
 
         [Fact]
         public async Task UseVpack_ShouldSucceed()
         {
-            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:{_fixture.ArangoDbPort}/";
             using (var transport = HttpApiTransport.UsingBasicAuth(
-                new Uri(arangodbBaseUrl),
-                nameof(HttpApiTransportTest),
-                "root",
-                "root"))
+                _hostUri,
+                _fixture.DatabaseName,
+                _fixture.Username,
+                _fixture.Password))
             {
                 transport.UseVPackContentType();
-                string docUrl = arangodbBaseUrl + "_db/" + nameof(HttpApiTransportTest) + $"/_admin/echo";
-                using (var response = await transport.GetAsync(docUrl))
+                using (var response = await transport.GetAsync("_admin/echo"))
                 {
+                    Assert.True(
+                        response.IsSuccessStatusCode,
+                        $"Error response. Status code: {response.StatusCode}");
+
                     Assert.Equal("application/x-velocypack", response.Content.Headers.ContentType.MediaType);
                 }
             }
@@ -41,9 +49,8 @@ namespace ArangoDBNetStandardTest.Transport.Http
         public async Task SetJwt_ShouldSucceed()
         {
             string jwtToken = null;
-            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:{_fixture.ArangoDbPort}/";
             using (var transport = HttpApiTransport.UsingNoAuth(
-                    new Uri(arangodbBaseUrl),
+                    _hostUri,
                     nameof(HttpApiTransportTest)))
             {
                 var authClient = new AuthApiClient(transport);
@@ -70,9 +77,8 @@ namespace ArangoDBNetStandardTest.Transport.Http
         public async Task UsingJwtAuth_ShouldSucceed()
         {
             string jwtToken = null;
-            string arangodbBaseUrl = $"http://{_fixture.ArangoDbHost}:{_fixture.ArangoDbPort}/";
             using (var transport = HttpApiTransport.UsingNoAuth(
-                    new Uri(arangodbBaseUrl),
+                    _hostUri,
                     nameof(HttpApiTransportTest)))
             {
                 var authClient = new AuthApiClient(transport);
@@ -95,7 +101,7 @@ namespace ArangoDBNetStandardTest.Transport.Http
 
             // Use token in a new transport created via `UsingJwtAuth`.
             using (var transport = HttpApiTransport.UsingJwtAuth(
-                new Uri(arangodbBaseUrl),
+                _hostUri,
                 nameof(HttpApiTransportTest),
                 jwtToken))
             {
@@ -103,6 +109,44 @@ namespace ArangoDBNetStandardTest.Transport.Http
                 var userDatabasesResponse = await databaseApi.GetUserDatabasesAsync();
                 Assert.NotEmpty(userDatabasesResponse.Result);
             }
+        }
+
+        [Fact]
+        public void Dispose_ShouldDisposeHttpClient_WhenDisposalIsNotSuppressed()
+        {
+            var mockMessageHandler = new Mock<HttpMessageHandler>();
+
+            var httpClient = new HttpClient(mockMessageHandler.Object);
+
+            var transport = new HttpApiTransport(
+                httpClient,
+                HttpContentType.Json,
+                suppressClientDisposal: false);
+
+            // Act
+            transport.Dispose();
+
+            // Assert   
+            mockMessageHandler.Protected().Verify("Dispose", Times.Once(), true, true);
+        }
+
+        [Fact]
+        public void Dispose_ShouldNotDisposeHttpClient_WhenDisposalIsSuppressed()
+        {
+            var mockMessageHandler = new Mock<HttpMessageHandler>();
+
+            var httpClient = new HttpClient(mockMessageHandler.Object);
+
+            var transport = new HttpApiTransport(
+                httpClient,
+                HttpContentType.Json,
+                suppressClientDisposal: true);
+
+            // Act
+            transport.Dispose();
+
+            // Assert   
+            mockMessageHandler.Protected().Verify("Dispose", Times.Never(), true, true);
         }
     }
 }

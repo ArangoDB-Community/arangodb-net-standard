@@ -24,6 +24,7 @@ namespace ArangoDBNetStandard.Transport.Http
     {
         private readonly HttpClient _client;
         private HttpContentType _contentType;
+        private readonly bool _suppressClientDisposal;
 
         private static readonly Dictionary<HttpContentType, string> _contentTypeMap =
             new Dictionary<HttpContentType, string>
@@ -43,10 +44,19 @@ namespace ArangoDBNetStandard.Transport.Http
         /// <param name="client">Existing HTTP client instance.</param>
         /// <param name="contentType">Content type to use in requests.
         /// Used to set Content-Type and Accept HTTP headers.</param>
-        public HttpApiTransport(HttpClient client, HttpContentType contentType)
+        /// <param name="suppressClientDisposal">
+        /// True to prevent disposal of the provided <see cref="HttpClient"/> instance
+        /// when <see cref="HttpApiTransport"/> is disposed.
+        /// Default is false, to avoid a breaking change.
+        /// </param>
+        public HttpApiTransport(
+            HttpClient client,
+            HttpContentType contentType,
+            bool suppressClientDisposal = false)
         {
             _client = client;
             _contentType = contentType;
+            _suppressClientDisposal = suppressClientDisposal;
         }
 
         /// <summary>
@@ -299,7 +309,7 @@ namespace ArangoDBNetStandard.Transport.Http
             CancellationToken token = default)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, requestUri);
-            ApplyHeaders(webHeaderCollection, request.Headers,DriverFlags);
+            ApplyHeaders(webHeaderCollection, request.Headers, DriverFlags);
             var response = await _client.SendAsync(request, token).ConfigureAwait(false);
             return new HttpApiClientResponse(response);
         }
@@ -438,6 +448,10 @@ namespace ArangoDBNetStandard.Transport.Http
         /// </summary>
         public void Dispose()
         {
+            if (_suppressClientDisposal)
+            {
+                return;
+            }
             _client.Dispose();
         }
     }

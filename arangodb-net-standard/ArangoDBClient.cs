@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using ArangoDBNetStandard.AdminApi;
+﻿using ArangoDBNetStandard.AdminApi;
 using ArangoDBNetStandard.AnalyzerApi;
 using ArangoDBNetStandard.AqlFunctionApi;
 using ArangoDBNetStandard.AuthApi;
@@ -17,6 +16,7 @@ using ArangoDBNetStandard.Transport;
 using ArangoDBNetStandard.Transport.Http;
 using ArangoDBNetStandard.UserApi;
 using ArangoDBNetStandard.ViewApi;
+using System.Net.Http;
 
 namespace ArangoDBNetStandard
 {
@@ -25,6 +25,8 @@ namespace ArangoDBNetStandard
     /// </summary>
     public class ArangoDBClient : IArangoDBClient
     {
+        protected readonly bool _suppressTransportDisposal;
+
         /// <summary>
         /// The transport client used to communicate with the ArangoDB host.
         /// </summary>
@@ -79,7 +81,7 @@ namespace ArangoDBNetStandard
         /// Index management API
         /// </summary>
         public IIndexApiClient Index { get; private set; }
-        
+
         /// <summary>
         /// Bulk Operations API.
         /// </summary>
@@ -89,12 +91,12 @@ namespace ArangoDBNetStandard
         /// View management API.
         /// </summary>          
         public IViewApiClient View { get; private set; }
-        
+
         /// <summary>
         /// Analyzer management API.
         /// </summary>
-        public IAnalyzerApiClient Analyzer { get; private set; }    
-        
+        public IAnalyzerApiClient Analyzer { get; private set; }
+
         /// <summary>
         /// Admin management API
         /// </summary>
@@ -110,9 +112,18 @@ namespace ArangoDBNetStandard
         /// <see cref="HttpClient"/> instance, using the default JSON serialization.
         /// </summary>
         /// <param name="client"></param>
-        public ArangoDBClient(HttpClient client)
+        /// <param name="suppressClientDisposal">
+        /// True to prevent disposal of the provided <see cref="HttpClient"/> instance
+        /// when <see cref="ArangoDBClient"/> is disposed.
+        /// Default is false, to avoid a breaking change.
+        /// </param>
+        public ArangoDBClient(HttpClient client, bool suppressClientDisposal = false)
         {
-            _transport = new HttpApiTransport(client, HttpContentType.Json);
+            _transport = new HttpApiTransport(
+                client,
+                HttpContentType.Json,
+                suppressClientDisposal);
+            _suppressTransportDisposal = false;
 
             var serialization = new JsonNetApiClientSerialization();
 
@@ -124,9 +135,17 @@ namespace ArangoDBNetStandard
         /// using the provided transport layer and the default JSON serialization.
         /// </summary>
         /// <param name="transport">The ArangoDB transport layer implementation.</param>
-        public ArangoDBClient(IApiClientTransport transport)
+        /// <param name="suppressTransportDisposal">
+        /// True to prevent disposal of the provided <see cref="IApiClientTransport"/> instance
+        /// when <see cref="ArangoDBClient"/> is disposed.
+        /// Default is false, to avoid a breaking change.
+        /// </param>
+        public ArangoDBClient(
+            IApiClientTransport transport,
+            bool suppressTransportDisposal = false)
         {
             _transport = transport;
+            _suppressTransportDisposal = suppressTransportDisposal;
 
             var serialization = new JsonNetApiClientSerialization();
 
@@ -139,9 +158,18 @@ namespace ArangoDBNetStandard
         /// </summary>
         /// <param name="transport">The ArangoDB transport layer implementation.</param>
         /// <param name="serialization">The serialization layer implementation.</param>
-        public ArangoDBClient(IApiClientTransport transport, IApiClientSerialization serialization)
+        /// <param name="suppressTransportDisposal">
+        /// True to prevent disposal of the provided <see cref="IApiClientTransport"/> instance
+        /// when <see cref="ArangoDBClient"/> is disposed.
+        /// Default is false, to avoid a breaking change.
+        /// </param>
+        public ArangoDBClient(
+            IApiClientTransport transport,
+            IApiClientSerialization serialization,
+            bool suppressTransportDisposal = false)
         {
             _transport = transport;
+            _suppressTransportDisposal = suppressTransportDisposal;
 
             InitializeApis(_transport, serialization);
         }
@@ -151,6 +179,10 @@ namespace ArangoDBNetStandard
         /// </summary>
         public void Dispose()
         {
+            if (_suppressTransportDisposal)
+            {
+                return;
+            }
             _transport.Dispose();
         }
 
@@ -168,9 +200,9 @@ namespace ArangoDBNetStandard
             Graph = new GraphApiClient(transport, serialization);
             User = new UserApiClient(transport, serialization);
             Index = new IndexApiClient(transport, serialization);
-            BulkOperations = new BulkOperationsApiClient(transport, serialization); 
+            BulkOperations = new BulkOperationsApiClient(transport, serialization);
             View = new ViewApiClient(transport, serialization);
-            Analyzer = new AnalyzerApiClient(transport, serialization);            
+            Analyzer = new AnalyzerApiClient(transport, serialization);
             Admin = new AdminApiClient(transport, serialization);
             Pregel = new PregelApiClient(transport, serialization);
         }
