@@ -101,7 +101,7 @@ namespace ArangoDBNetStandard.DocumentApi.Models
             }
             if (OverwriteMode != null)
             {
-                query.Add("overwriteMode =" + OverwriteMode.ToLower());
+                query.Add("overwriteMode=" + OverwriteMode.ToLower());
             }
             if (KeepNull != null)
             {
