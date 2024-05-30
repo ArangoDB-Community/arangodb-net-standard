@@ -53,19 +53,20 @@ namespace ArangoDBNetStandard.AdminApi
         /// </summary>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <param name="query">Query string parameters</param>
+        /// <param name="headers">Headers for the request</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#read-global-logs-from-the-server
         /// </remarks>
-        public virtual async Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query = null, CancellationToken token = default)
+        public virtual async Task<GetLogsResponse> GetLogsAsync(GetLogsQuery query = null, ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/log/entries";
             if (query != null)
             {
                 uri += '?' + query.ToQueryString();
             }
-            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, headers?.ToWebHeaderCollection(), token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -80,17 +81,18 @@ namespace ArangoDBNetStandard.AdminApi
         /// Reloads the routing table.
         /// POST /_admin/routing/reload
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#reloads-the-routing-information
         /// </remarks>
-        public virtual async Task<bool> PostReloadRoutingInfoAsync(CancellationToken token = default)
+        public virtual async Task<bool> PostReloadRoutingInfoAsync(ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/routing/reload";
             var body = new byte[] { };
-            using (var response = await _client.PostAsync(uri, body, null, token).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(uri, body, headers?.ToWebHeaderCollection(), token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -105,16 +107,17 @@ namespace ArangoDBNetStandard.AdminApi
         /// The method will fail if the server is not running in cluster mode.
         /// GET /_admin/server/id
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-id-of-a-server-in-a-cluster
         /// </remarks>
-        public virtual async Task<GetServerIdResponse> GetServerIdAsync(CancellationToken token = default)
+        public virtual async Task<GetServerIdResponse> GetServerIdAsync(ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/server/id";
-            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, headers?.ToWebHeaderCollection(), token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -129,16 +132,17 @@ namespace ArangoDBNetStandard.AdminApi
         /// Retrieves the role of the server in a cluster.
         /// GET /_admin/server/role
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see
         /// https://www.arangodb.com/docs/stable/http/administration-and-monitoring.html#return-the-role-of-a-server-in-a-cluster
         /// </remarks>
-        public virtual async Task<GetServerRoleResponse> GetServerRoleAsync(CancellationToken token = default)
+        public virtual async Task<GetServerRoleResponse> GetServerRoleAsync(ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/server/role";
-            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, headers?.ToWebHeaderCollection(), token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -153,16 +157,17 @@ namespace ArangoDBNetStandard.AdminApi
         /// Retrieves the server database engine type.
         /// GET /_api/engine
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-database-engine-type
         /// </remarks>
-        public virtual async Task<GetServerEngineTypeResponse> GetServerEngineTypeAsync(CancellationToken token = default)
+        public virtual async Task<GetServerEngineTypeResponse> GetServerEngineTypeAsync(ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = "_api/engine";
-            using (var response = await _client.GetAsync(uri, null, token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, headers?.ToWebHeaderCollection(), token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -178,20 +183,21 @@ namespace ArangoDBNetStandard.AdminApi
         /// GET /_api/version
         /// </summary>
         /// <param name="query">Query string parameters</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/stable/http/miscellaneous-functions.html#return-server-version
         /// </remarks>
-        public virtual async Task<GetServerVersionResponse> GetServerVersionAsync(GetServerVersionQuery query = null, CancellationToken token = default)
+        public virtual async Task<GetServerVersionResponse> GetServerVersionAsync(GetServerVersionQuery query = null, ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = "_api/version";
             if (query != null)
             {
                 uri += '?' + query.ToQueryString();
             }
-            using (var response = await _client.GetAsync(uri,null,token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, headers?.ToWebHeaderCollection(), token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -206,16 +212,17 @@ namespace ArangoDBNetStandard.AdminApi
         /// Retrieves the server license information.
         /// GET /_admin/license
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/3.9/administration-license.html
         /// </remarks>
-        public virtual async Task<GetLicenseResponse> GetLicenseAsync(CancellationToken token = default)
+        public virtual async Task<GetLicenseResponse> GetLicenseAsync(ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/license";
-            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -232,13 +239,14 @@ namespace ArangoDBNetStandard.AdminApi
         /// </summary>
         /// <param name="licenseKey">The new license key</param>
         /// <param name="query">Query string parameters</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <remarks>
         /// For further information see 
         /// https://www.arangodb.com/docs/3.9/administration-license.html
         /// </remarks>
-        public virtual async Task<PutLicenseResponse> PutLicenseAsync(string licenseKey, PutLicenseQuery query = null, CancellationToken token = default)
+        public virtual async Task<PutLicenseResponse> PutLicenseAsync(string licenseKey, PutLicenseQuery query = null, ApiHeaderProperties headers = null, CancellationToken token = default)
         {
             string uri = $"{_adminApiPath}/license";
             if (query != null)
@@ -246,7 +254,7 @@ namespace ArangoDBNetStandard.AdminApi
                 uri += '?' + query.ToQueryString();
             }
             var content = await GetContentAsync(licenseKey, new ApiClientSerializationOptions(true, true));
-            using (var response = await _client.PutAsync(uri, content, token: token).ConfigureAwait(false))
+            using (var response = await _client.PutAsync(uri, content, headers?.ToWebHeaderCollection(), token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {

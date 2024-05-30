@@ -14,9 +14,11 @@ namespace ArangoDBNetStandard.UserApi
         /// in order to execute this REST call.
         /// </summary>
         /// <param name="body">The request body containing the user information.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PostUserResponse> PostUserAsync(PostUserBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -26,9 +28,11 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="body">The user information used for to replace operation.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutUserResponse> PutUserAsync(string username, PutUserBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -38,9 +42,11 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="body">The user information used for to replace operation.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PatchUserResponse> PatchUserAsync(string username, PatchUserBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -49,9 +55,11 @@ namespace ArangoDBNetStandard.UserApi
         /// server access level in order to execute this REST call.
         /// </summary>
         /// <param name="username">The name of the user.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetUserResponse> GetUserAsync(string username,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -59,9 +67,11 @@ namespace ArangoDBNetStandard.UserApi
         /// You need Administrate for the server access level in order to execute this REST call.
         /// </summary>
         /// <param name="username">The name of the user.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteUserResponse> DeleteUserAsync(string username,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -69,9 +79,11 @@ namespace ArangoDBNetStandard.UserApi
         /// You need the Administrate server access level in order to execute this REST call.
         /// Otherwise, you will only get information about yourself.
         /// </summary>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetUsersResponse> GetUsersAsync(
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -81,12 +93,14 @@ namespace ArangoDBNetStandard.UserApi
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database.</param>
         /// <param name="body">The body of the request containing the access level.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutAccessLevelResponse> PutDatabaseAccessLevelAsync(
             string username,
             string dbName,
             PutAccessLevelBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -94,11 +108,13 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database to query.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetAccessLevelResponse> GetDatabaseAccessLevelAsync(
             string username,
             string dbName,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -109,11 +125,13 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteAccessLevelResponse> DeleteDatabaseAccessLevelAsync(
             string username,
             string dbName,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -122,11 +140,13 @@ namespace ArangoDBNetStandard.UserApi
         /// </summary>
         /// <param name="username">The name of the user.</param>
         /// <param name="query">Optional query parameters for the request.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetAccessibleDatabasesResponse> GetAccessibleDatabasesAsync(
             string username,
             GetAccessibleDatabasesQuery query = null,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -137,6 +157,7 @@ namespace ArangoDBNetStandard.UserApi
         /// <param name="dbName">The name of the database.</param>
         /// <param name="collectionName">The name of the collection.</param>
         /// <param name="body">The body of the request containing the access level.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<PutAccessLevelResponse> PutCollectionAccessLevelAsync(
@@ -144,6 +165,7 @@ namespace ArangoDBNetStandard.UserApi
             string dbName,
             string collectionName,
             PutAccessLevelBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -152,12 +174,14 @@ namespace ArangoDBNetStandard.UserApi
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database.</param>
         /// <param name="collectionName">The name of the collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetAccessLevelResponse> GetCollectionAccessLevelAsync(
             string username,
             string dbName,
             string collectionName,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -169,12 +193,14 @@ namespace ArangoDBNetStandard.UserApi
         /// <param name="username">The name of the user.</param>
         /// <param name="dbName">The name of the database.</param>
         /// <param name="collectionName">The name of the collection.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteAccessLevelResponse> DeleteCollectionAccessLevelAsync(
             string username,
             string dbName,
             string collectionName,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
     }
 }

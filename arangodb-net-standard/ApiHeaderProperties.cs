@@ -19,6 +19,16 @@ namespace ArangoDBNetStandard
         public bool? AllowReadFromFollowers { get; set; }
 
         /// <summary>
+        /// Set max queue time limit.
+        /// When executing a request, specify a maximal 
+        /// queue time in seconds before the request is 
+        /// canceled and removed from the queue.
+        /// The value 0 is ignored by the server.
+        /// Introduced in ArangoDB 3.9
+        /// </summary>
+        public decimal? MaxQueueTimeLimit { get; set; }
+
+        /// <summary>
         /// Any other headers you wish to add based on
         /// the specifications of the API operation.
         /// </summary>
@@ -35,6 +45,11 @@ namespace ArangoDBNetStandard
             if (AllowReadFromFollowers != null)
             {
                 collection.Add(CustomHttpHeaders.ReadFromFollowersHeader, AllowReadFromFollowers.Value.ToString());
+            }
+
+            if (MaxQueueTimeLimit != null)
+            {
+                collection.Add(CustomHttpHeaders.MaxQueueTimeLimitHeader, MaxQueueTimeLimit.Value.ToString());
             }
 
             if (OtherHeaders != null && OtherHeaders.Count > 0)

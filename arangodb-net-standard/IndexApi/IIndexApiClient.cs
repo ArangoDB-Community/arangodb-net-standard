@@ -15,42 +15,50 @@ namespace ArangoDBNetStandard.IndexApi
         /// Fetches data about the specified index.
         /// </summary>
         /// <param name="indexId">The index identifier.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetIndexResponse> GetIndexAsync(string indexId,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Delete an index permanently.
         /// </summary>
         /// <param name="indexId">The index identifier.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<DeleteIndexResponse> DeleteIndexAsync(string indexId,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Fetch the list of indexes for a collection.
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<GetAllCollectionIndexesResponse> GetAllCollectionIndexesAsync(GetAllCollectionIndexesQuery query,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
         /// Generic method to create an index.
         /// It is highly recommended that you use a specialized method like
-        /// <see cref="PostGeoSpatialIndexAsync(PostIndexQuery, PostGeoSpatialIndexBody, CancellationToken)"/>
+        /// <see cref="PostGeoSpatialIndexAsync(PostIndexQuery, PostGeoSpatialIndexBody,ApiHeaderProperties, CancellationToken)"/>
         /// to create indexes. Use this method to create indexes that do not
         /// have a specialized method available.
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>       
         Task<IndexResponseBase> PostIndexAsync(PostIndexQuery query,
             PostIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -74,10 +82,12 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<IndexResponseBase> PostGeoSpatialIndexAsync(PostIndexQuery query,
             PostGeoSpatialIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -101,10 +111,12 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<IndexResponseBase> PostMultiDimensionalIndexAsync(PostIndexQuery query,
             PostMultiDimensionalIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -112,10 +124,12 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<IndexResponseBase> PostPersistentIndexAsync(PostIndexQuery query,
             PostPersistentIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -139,10 +153,12 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<IndexResponseBase> PostTTLIndexAsync(PostIndexQuery query,
             PostTTLIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
 
         /// <summary>
@@ -150,10 +166,12 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         Task<InvertedIndexResponse> PostInvertedIndexAsync(PostIndexQuery query,
             PostInvertedIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default);
     }
 }

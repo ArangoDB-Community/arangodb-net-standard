@@ -52,13 +52,17 @@ namespace ArangoDBNetStandard.IndexApi
         /// Fetches data about the specified index.
         /// </summary>
         /// <param name="indexId">The identifier of the index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<GetIndexResponse> GetIndexAsync(string indexId,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _indexApiPath + '/' + indexId;
-            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -73,13 +77,17 @@ namespace ArangoDBNetStandard.IndexApi
         /// Delete an index permanently.
         /// </summary>
         /// <param name="indexId">The identifier of the index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<DeleteIndexResponse> DeleteIndexAsync(string indexId,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _indexApiPath + "/" + indexId;
-            using (var response = await _client.DeleteAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.DeleteAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -95,10 +103,12 @@ namespace ArangoDBNetStandard.IndexApi
         /// Fetch the list of indexes for a collection.
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentException">Required parameters not provided or invalid.</exception>
         public virtual async Task<GetAllCollectionIndexesResponse> GetAllCollectionIndexesAsync(GetAllCollectionIndexesQuery query,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _indexApiPath;
@@ -114,7 +124,9 @@ namespace ArangoDBNetStandard.IndexApi
             }
 
             uri += '?' + query.ToQueryString();
-            using (var response = await _client.GetAsync(uri, token: token).ConfigureAwait(false))
+            using (var response = await _client.GetAsync(uri,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -128,16 +140,18 @@ namespace ArangoDBNetStandard.IndexApi
         /// <summary>
         /// Generic method to create an index.
         /// It is highly recommended that you use a specialized method like
-        /// <see cref="PostGeoSpatialIndexAsync(PostIndexQuery, PostGeoSpatialIndexBody, CancellationToken)"/>
+        /// <see cref="PostGeoSpatialIndexAsync(PostIndexQuery, PostGeoSpatialIndexBody, ApiHeaderProperties, CancellationToken)"/>
         /// to create indexes. Use this method to create indexes that do not
         /// have a specialized method available.
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>  
         public virtual async Task<IndexResponseBase> PostIndexAsync(PostIndexQuery query, 
             PostIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
             string uri = _indexApiPath;
@@ -159,7 +173,9 @@ namespace ArangoDBNetStandard.IndexApi
 
             uri += '?' + query.ToQueryString();
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PostAsync(uri, content,token:token).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(uri, content,
+                webHeaderCollection: headers?.ToWebHeaderCollection(), 
+                token:token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -186,7 +202,7 @@ namespace ArangoDBNetStandard.IndexApi
             PostFulltextIndexBody body,
             CancellationToken token = default)
         {
-            return await PostIndexAsync(query, body, token).ConfigureAwait(false);
+            return await PostIndexAsync(query: query, body: body, token: token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -194,13 +210,15 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<IndexResponseBase> PostGeoSpatialIndexAsync(PostIndexQuery query,
             PostGeoSpatialIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
-            return await PostIndexAsync(query, body, token).ConfigureAwait(false);
+            return await PostIndexAsync(query, body, headers, token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -219,7 +237,7 @@ namespace ArangoDBNetStandard.IndexApi
             PostHashIndexBody body,
             CancellationToken token = default)
         {
-            return await PostIndexAsync(query, body, token).ConfigureAwait(false);
+            return await PostIndexAsync(query: query, body: body, token: token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -227,13 +245,15 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<IndexResponseBase> PostMultiDimensionalIndexAsync(PostIndexQuery query,
             PostMultiDimensionalIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
-            return await PostIndexAsync(query, body, token).ConfigureAwait(false);
+            return await PostIndexAsync(query, body, headers, token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -241,13 +261,15 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<IndexResponseBase> PostPersistentIndexAsync(PostIndexQuery query,
             PostPersistentIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
-            return await PostIndexAsync(query, body, token).ConfigureAwait(false);
+            return await PostIndexAsync(query, body, headers, token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -266,7 +288,7 @@ namespace ArangoDBNetStandard.IndexApi
             PostSkiplistIndexBody body,
             CancellationToken token = default)
         {
-            return await PostIndexAsync(query, body, token).ConfigureAwait(false);
+            return await PostIndexAsync(query: query, body: body, token: token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -274,13 +296,15 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
         public virtual async Task<IndexResponseBase> PostTTLIndexAsync(PostIndexQuery query,
             PostTTLIndexBody body,
+            ApiHeaderProperties headers = null,
             CancellationToken token = default)
         {
-            return await PostIndexAsync(query, body, token).ConfigureAwait(false);
+            return await PostIndexAsync(query, body, headers, token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -288,9 +312,13 @@ namespace ArangoDBNetStandard.IndexApi
         /// </summary>
         /// <param name="query">Query parameters for the request.</param>
         /// <param name="body">The properties of the new index.</param>
+        /// <param name="headers">Headers for the request</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns></returns>
-        public virtual async Task<InvertedIndexResponse> PostInvertedIndexAsync(PostIndexQuery query, PostInvertedIndexBody body, CancellationToken token = default)
+        public virtual async Task<InvertedIndexResponse> PostInvertedIndexAsync(PostIndexQuery query, 
+            PostInvertedIndexBody body,
+            ApiHeaderProperties headers = null,
+            CancellationToken token = default)
         {
             string uri = _indexApiPath;
 
@@ -311,7 +339,9 @@ namespace ArangoDBNetStandard.IndexApi
 
             uri += '?' + query.ToQueryString();
             var content = await GetContentAsync(body, new ApiClientSerializationOptions(true, true)).ConfigureAwait(false);
-            using (var response = await _client.PostAsync(uri, content: content,  token: token).ConfigureAwait(false))
+            using (var response = await _client.PostAsync(uri, content: content, 
+                webHeaderCollection: headers?.ToWebHeaderCollection(),
+                token: token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
