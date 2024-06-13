@@ -1,3 +1,5 @@
+﻿using System;
+
 ﻿namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
     /// <summary>

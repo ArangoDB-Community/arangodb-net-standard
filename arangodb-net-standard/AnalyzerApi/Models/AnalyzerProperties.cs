@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ArangoDBNetStandard.AnalyzerApi.Models
 {
     /// <summary>
-    /// Properties of an Analyzer.
-    /// See https://www.arangodb.com/docs/stable/analyzers.html#analyzer-properties
+    /// All analyzer properties
     /// </summary>
     public class AnalyzerProperties
     {
