@@ -17,13 +17,13 @@
         /// Increment value for autoincrement key generator.
         /// Not used for other key generator types.
         /// </summary>
-        public long Increment { get; set; }
+        public long? Increment { get; set; }
 
         /// <summary>
         /// Initial offset value for autoincrement key generator.
         /// Not used for other key generator types.
         /// </summary>
-        public long Offset { get; set; }
+        public long? Offset { get; set; }
 
         /// <summary>
         /// Apecifies the type of the key generator.
