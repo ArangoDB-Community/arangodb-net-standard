@@ -1,4 +1,5 @@
-﻿using System.Threading;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using ArangoDBNetStandard.TransactionApi.Models;
 
@@ -87,12 +88,17 @@ namespace ArangoDBNetStandard.TransactionApi
             CancellationToken token = default);
 
         /// <summary>
-        /// POST a transaction to ArangoDB.
+        /// [DEPRECATED] POST a JavaScript Transaction to ArangoDB.
         /// </summary>
+        /// <remarks>
+        /// JavaScript Transactions are deprecated from v3.12.0 onward and will be removed in a future version.
+        /// https://docs.arangodb.com/stable/release-notes/version-3.12/incompatible-changes-in-3-12/#javascript-transactions-deprecated
+        /// </remarks>
         /// <typeparam name="T">Type to use for deserializing the object returned by the transaction function.</typeparam>
         /// <param name="body">Object containing information to submit in the POST transaction request.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns>Response from ArangoDB after processing the request.</returns>
+        [Obsolete("JavaScript Transactions are deprecated in ArangoDB 3.12, use Stream Transactions instead.")]
         Task<PostTransactionResponse<T>> PostTransactionAsync<T>(PostTransactionBody body,
             CancellationToken token = default);
     }
