@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArangoDBNetStandard", "aran
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArangoDBNetStandardTest", "arangodb-net-standard.Test\ArangoDBNetStandardTest.csproj", "{70184444-F45A-4357-84BE-1AA5F6E8344E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{2B60E0F6-C6B4-4172-8E39-3310E33594A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorEnumGenerator", "ErrorEnumGenerator\ErrorEnumGenerator.csproj", "{D9863444-75DE-4C54-A9B0-9F817CE3B119}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,16 @@ Global
 		{70184444-F45A-4357-84BE-1AA5F6E8344E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70184444-F45A-4357-84BE-1AA5F6E8344E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70184444-F45A-4357-84BE-1AA5F6E8344E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9863444-75DE-4C54-A9B0-9F817CE3B119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9863444-75DE-4C54-A9B0-9F817CE3B119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9863444-75DE-4C54-A9B0-9F817CE3B119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9863444-75DE-4C54-A9B0-9F817CE3B119}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9863444-75DE-4C54-A9B0-9F817CE3B119} = {2B60E0F6-C6B4-4172-8E39-3310E33594A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {372F4FE3-7226-4A25-920F-43E06A2DE205}
