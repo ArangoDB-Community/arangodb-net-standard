@@ -58,9 +58,9 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
-          ARANGO_HOST: adb3_4_9
-      - image: arangodb:3.4.9
-        name: adb3_4_9
+          ARANGO_HOST: adb3_4
+      - image: arangodb:3.4
+        name: adb3_4
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
@@ -77,9 +77,9 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
-          ARANGO_HOST: adb3_5_5
-      - image: arangodb:3.5.5
-        name: adb3_5_5
+          ARANGO_HOST: adb3_5
+      - image: arangodb:3.5
+        name: adb3_5
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
@@ -96,9 +96,9 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
-          ARANGO_HOST: adb3_6_8
-      - image: arangodb/arangodb:3.6.8
-        name: adb3_6_8
+          ARANGO_HOST: adb3_6
+      - image: arangodb:3.6
+        name: adb3_6
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
@@ -115,9 +115,9 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
-          ARANGO_HOST: adb3_7_17
-      - image: arangodb/arangodb:3.7.17
-        name: adb3_7_17
+          ARANGO_HOST: adb3_7
+      - image: arangodb:3.7
+        name: adb3_7
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
@@ -134,9 +134,9 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
-          ARANGO_HOST: adb3_8_6
-      - image: arangodb/arangodb:3.8.6
-        name: adb3_8_6
+          ARANGO_HOST: adb3_8
+      - image: arangodb:3.8
+        name: adb3_8
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
@@ -153,9 +153,9 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
-          ARANGO_HOST: adb3_9_1
-      - image: arangodb/arangodb:3.9.1
-        name: adb3_9_1
+          ARANGO_HOST: adb3_9
+      - image: arangodb:3.9
+        name: adb3_9
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
@@ -171,9 +171,9 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
-          ARANGO_HOST: adb3_10_0
+          ARANGO_HOST: adb3_10
       - image: arangodb:3.10
-        name: adb3_10_0
+        name: adb3_10
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
@@ -189,9 +189,9 @@ jobs:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
         environment:
-          ARANGO_HOST: adb3_11_0
+          ARANGO_HOST: adb3_11
       - image: arangodb:3.11
-        name: adb3_11_0
+        name: adb3_11
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
