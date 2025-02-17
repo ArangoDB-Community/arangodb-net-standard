@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ArangoDBNetStandard.TransactionApi.Models
 {
     /// <summary>
     /// Represents information required to make a transaction request to ArangoDB.
     /// </summary>
+    [Obsolete]
     public class PostTransactionBody
     {
         /// <summary>

@@ -61,6 +61,7 @@ namespace ArangoDBNetStandard.TransactionApi
         /// <param name="body">Object containing information to submit in the POST transaction request.</param>
         /// <param name="token">A CancellationToken to observe while waiting for the task to complete or to cancel the task.</param>
         /// <returns>Response from ArangoDB after processing the request.</returns>
+        [Obsolete]
         public virtual async Task<PostTransactionResponse<T>> PostTransactionAsync<T>(
             PostTransactionBody body,
             CancellationToken token = default)
