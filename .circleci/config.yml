@@ -29,6 +29,9 @@ workflows:
       - "test-arangodb-3_11":
           requires:
             - build
+      - "test-arangodb-3_12":
+          requires:
+            - build
 
 jobs:
   build:
@@ -189,6 +192,24 @@ jobs:
           ARANGO_HOST: adb3_11_0
       - image: arangodb:3.11
         name: adb3_11_0
+        environment:
+          ARANGO_ROOT_PASSWORD: root
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/
+      - run:
+          name: Test
+          command: dotnet test -c Release --filter RunningMode!=Cluster
+
+  "test-arangodb-3_12":
+    working_directory: ~/arangodb-net-standard
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
+        environment:
+          ARANGO_HOST: adb3_12
+      - image: arangodb:3.12
+        name: adb3_12
         environment:
           ARANGO_ROOT_PASSWORD: root
     steps:
