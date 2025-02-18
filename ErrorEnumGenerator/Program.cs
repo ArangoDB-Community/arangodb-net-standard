@@ -4,10 +4,12 @@ using System.Text.RegularExpressions;
 if (args.Length == 0)
 {
     Console.WriteLine("Please provide a file path as an argument.");
+    Console.WriteLine("Usage: ErrorEnumGenerator.exe <error_codes_file> [output_folder]");
     Environment.Exit(1);
 }
 
 string filePath = args[0];
+string outputFolder = args.Length > 1 ? args[1] : Directory.GetCurrentDirectory();
 
 if (!File.Exists(filePath))
 {
@@ -61,4 +63,7 @@ foreach (Match match in matches)
 enumBuilder.AppendLine("    }");
 enumBuilder.AppendLine("}");
 
-File.WriteAllText("ArangoDBErrors.cs", enumBuilder.ToString());
+string outputFilePath = Path.Combine(outputFolder, "ArangoDBErrors.cs");
+File.WriteAllText(outputFilePath, enumBuilder.ToString());
+
+Console.WriteLine($"Enum generated successfully at {outputFilePath}.");
