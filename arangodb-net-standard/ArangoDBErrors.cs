@@ -376,6 +376,10 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_ARANGO_INCOMPLETE_READ = 1240,
         /// <summary>
+        /// Will be raised by the storage engine when an operation cannot be performed because the old, deprecated, little endian key encoding format is still used and an operation is tried which is not supported by this format.
+        /// </summary>
+        ERROR_ARANGO_OLD_ROCKSDB_FORMAT = 1241,
+        /// <summary>
         /// Will be raised when encountering an empty server database directory.
         /// </summary>
         ERROR_ARANGO_EMPTY_DATADIR = 1301,
@@ -503,10 +507,6 @@ namespace ArangoDBNetStandard
         /// Will be raised when a specific replicated state was not found.
         /// </summary>
         ERROR_REPLICATION_REPLICATED_STATE_NOT_FOUND = 1427,
-        /// <summary>
-        /// replicated state {id:} of type {type:} is unavailable: Will be raised when a specific replicated state was accessed but is not (yet) available.
-        /// </summary>			
-        ERROR_REPLICATION_REPLICATED_STATE_NOT_AVAILABLE = 1428,
         /// <summary>
         /// Will be raised when an operation is sent to a non-following server.
         /// </summary>
@@ -1320,6 +1320,10 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_QUEUE_TIME_REQUIREMENT_VIOLATED = 21004,
         /// <summary>
+        /// Will be returned if a scheduler thread tries to detach itself but there are already too many detached scheduler threads.
+        /// </summary>
+        ERROR_TOO_MANY_DETACHED_THREADS = 21005,
+        /// <summary>
         /// This maintenance action cannot be stopped once it is started
         /// </summary>
         ERROR_ACTION_OPERATION_UNABORTABLE = 6002,
@@ -1379,6 +1383,10 @@ namespace ArangoDBNetStandard
         /// Plan could not be modified while creating or deleting Analyzers revision
         /// </summary>
         ERROR_CLUSTER_COULD_NOT_MODIFY_ANALYZERS_IN_PLAN = 7021,
+        /// <summary>
+        /// During the execution of an AIR program an error occurred
+        /// </summary>
+        ERROR_AIR_EXECUTION_ERROR = 8001,
         /// <summary>
         /// The license has expired or is invalid.
         /// </summary>
