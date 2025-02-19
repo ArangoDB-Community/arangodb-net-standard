@@ -128,7 +128,7 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_RESOURCE_LIMIT = 32,
         /// <summary>
-        /// will be raised if icu operations failed
+        /// will be raised if ICU operations failed.
         /// </summary>
         ERROR_ARANGO_ICU_ERROR = 33,
         /// <summary>
@@ -151,6 +151,10 @@ namespace ArangoDBNetStandard
         /// Will be raised when a call cannot succeed because the server startup phase is still in progress.
         /// </summary>
         ERROR_STARTING_UP = 38,
+        /// <summary>
+        /// Will be raised when a data structure cannot be deserialized, e.g. because the input is invalid.
+        /// </summary>
+        ERROR_DESERIALIZE = 39,
         /// <summary>
         /// Will be raised when the HTTP request does not fulfill the requirements.
         /// </summary>
@@ -191,6 +195,10 @@ namespace ArangoDBNetStandard
         /// Will be raised when a precondition for an HTTP request is not met.
         /// </summary>
         ERROR_HTTP_PRECONDITION_FAILED = 412,
+        /// <summary>
+        /// Will be raised when too many requests were sent to a rate-limited API.
+        /// </summary>
+        ERROR_HTTP_ENHANCE_YOUR_CALM = 420,
         /// <summary>
         /// Will be raised when an internal server is encountered.
         /// </summary>
@@ -380,6 +388,10 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_ARANGO_OLD_ROCKSDB_FORMAT = 1241,
         /// <summary>
+        /// Will be raised if the VPackSortMigration has detected an index, which is using the old legacy sorting order and would be corrupt if the database is migrated to the new, correct sorting order.
+        /// </summary>
+        ERROR_ARANGO_INDEX_HAS_LEGACY_SORTED_KEYS = 1242,
+        /// <summary>
         /// Will be raised when encountering an empty server database directory.
         /// </summary>
         ERROR_ARANGO_EMPTY_DATADIR = 1301,
@@ -507,6 +519,14 @@ namespace ArangoDBNetStandard
         /// Will be raised when a specific replicated state was not found.
         /// </summary>
         ERROR_REPLICATION_REPLICATED_STATE_NOT_FOUND = 1427,
+        /// <summary>
+        /// Will be raised when a specific replicated state was accessed but is not (yet) available.
+        /// </summary>
+        ERROR_REPLICATION_REPLICATED_STATE_NOT_AVAILABLE = 1428,
+        /// <summary>
+        /// Will be raised when there are not enough replicas of a shard available to fulfill the write-concern for a write operation.
+        /// </summary>
+        ERROR_REPLICATION_WRITE_CONCERN_NOT_FULFILLED = 1429,
         /// <summary>
         /// Will be raised when an operation is sent to a non-following server.
         /// </summary>
@@ -807,6 +827,10 @@ namespace ArangoDBNetStandard
         /// Will be raised when an AQL query contains OPTIONS that cannot be figured out at query compile time.
         /// </summary>
         ERROR_QUERY_COMPILE_TIME_OPTIONS = 1575,
+        /// <summary>
+        /// Will be raised internally when a too complex FILTER/PRUNE condition is encountered during the DNF conversion of the condition.
+        /// </summary>
+        ERROR_QUERY_DNF_COMPLEXITY = 1576,
         /// <summary>
         /// Will be raised when forceIndexHint is specified, and the hint cannot be used to serve the query.
         /// </summary>
@@ -1383,10 +1407,6 @@ namespace ArangoDBNetStandard
         /// Plan could not be modified while creating or deleting Analyzers revision
         /// </summary>
         ERROR_CLUSTER_COULD_NOT_MODIFY_ANALYZERS_IN_PLAN = 7021,
-        /// <summary>
-        /// During the execution of an AIR program an error occurred
-        /// </summary>
-        ERROR_AIR_EXECUTION_ERROR = 8001,
         /// <summary>
         /// The license has expired or is invalid.
         /// </summary>
