@@ -56,10 +56,6 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_FORBIDDEN = 11,
         /// <summary>
-        /// Will be raised when there is a memory shortage.
-        /// </summary>
-        ERROR_OUT_OF_MEMORY_MMAP = 12,
-        /// <summary>
         /// Will be raised when encountering a corrupt csv line.
         /// </summary>
         ERROR_CORRUPTED_CSV = 13,
@@ -156,6 +152,10 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_DESERIALIZE = 39,
         /// <summary>
+        /// Will be raised when a read operation reaches the end of the file.
+        /// </summary>
+        ERROR_END_OF_FILE = 40,
+        /// <summary>
         /// Will be raised when the HTTP request does not fulfill the requirements.
         /// </summary>
         ERROR_HTTP_BAD_PARAMETER = 400,
@@ -180,7 +180,7 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_HTTP_NOT_ACCEPTABLE = 406,
         /// <summary>
-        /// Will be raised when a timeout occured.
+        /// Will be raised when a timeout occurred.
         /// </summary>
         ERROR_HTTP_REQUEST_TIMEOUT = 408,
         /// <summary>
@@ -280,7 +280,7 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_ARANGO_DUPLICATE_NAME = 1207,
         /// <summary>
-        /// Will be raised when an illegal name is detected.
+        /// Will be raised when the name of a database, collection, View, Analyzer, index, graph, or other object is invalid, respectively, when it is against the naming constraints.
         /// </summary>
         ERROR_ARANGO_ILLEGAL_NAME = 1208,
         /// <summary>
@@ -307,10 +307,6 @@ namespace ArangoDBNetStandard
         /// Will be raised when the document cannot fit into any datafile because of it is too large.
         /// </summary>
         ERROR_ARANGO_DOCUMENT_TOO_LARGE = 1216,
-        /// <summary>
-        /// Will be raised when a collection should be unloaded, but has a different status.
-        /// </summary>
-        ERROR_ARANGO_COLLECTION_NOT_UNLOADED = 1217,
         /// <summary>
         /// Will be raised when an invalid collection type is used in a request.
         /// </summary>
@@ -528,6 +524,26 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_REPLICATION_WRITE_CONCERN_NOT_FULFILLED = 1429,
         /// <summary>
+        /// Will be raised when an operation is aborted due to a cascading failure.
+        /// </summary>
+        ERROR_REPLICATION_REPLICATED_LOG_SUBSEQUENT_FAULT = 1430,
+        /// <summary>
+        /// Will be raised when a specific replicated state type was used but is not (yet) available.
+        /// </summary>
+        ERROR_REPLICATION_REPLICATED_STATE_IMPLEMENTATION_NOT_FOUND = 1431,
+        /// <summary>
+        /// Will be raised when an error occurred in the replicated WAL subsystem
+        /// </summary>
+        ERROR_REPLICATION_REPLICATED_WAL_ERROR = 1432,
+        /// <summary>
+        /// Will be raised when a log file has an invalid or missing file header.
+        /// </summary>
+        ERROR_REPLICATION_REPLICATED_WAL_INVALID_FILE = 1433,
+        /// <summary>
+        /// Will be raised when a log file has an invalid size or reading from a log file produced unexpected data.
+        /// </summary>
+        ERROR_REPLICATION_REPLICATED_WAL_CORRUPT = 1434,
+        /// <summary>
         /// Will be raised when an operation is sent to a non-following server.
         /// </summary>
         ERROR_CLUSTER_NOT_FOLLOWER = 1446,
@@ -616,10 +632,6 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_CLUSTER_READING_PLAN_AGENCY = 1472,
         /// <summary>
-        /// Will be raised if a Coordinator cannot truncate all shards of a cluster collection.
-        /// </summary>
-        ERROR_CLUSTER_COULD_NOT_TRUNCATE_COLLECTION = 1473,
-        /// <summary>
         /// Will be raised if the internal communication of the cluster for AQL produces an error.
         /// </summary>
         ERROR_CLUSTER_AQL_COMMUNICATION = 1474,
@@ -632,7 +644,7 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_CLUSTER_BACKEND_UNAVAILABLE = 1478,
         /// <summary>
-        /// Will be raised if a collection/view needed during query execution is out of sync. This currently can happen when using SatelliteCollections, Arangosearch links or inverted indexes.
+        /// Will be raised if a collection/view needed during query execution is out of sync. This currently can happen when using SatelliteCollections, ArangoSearch links or inverted indexes.
         /// </summary>
         ERROR_CLUSTER_AQL_COLLECTION_OUT_OF_SYNC = 1481,
         /// <summary>
@@ -656,7 +668,7 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_CLUSTER_UNKNOWN_DISTRIBUTESHARDSLIKE = 1486,
         /// <summary>
-        /// Will be raised if one tries to create a collection with a replicationFactor greater than the available number of DB-Servers.
+        /// Will be raised if one tries to create a collection with a replicationFactor or writeConcern value greater than the available number of DB-Servers.
         /// </summary>
         ERROR_CLUSTER_INSUFFICIENT_DBSERVERS = 1487,
         /// <summary>
@@ -748,7 +760,7 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_QUERY_TOO_MUCH_NESTING = 1524,
         /// <summary>
-        /// Will be raised when an unknown attribute is used inside an OPTIONS clause.
+        /// Will be raised when an unknown attribute name or an invalid attribute value is used inside an OPTIONS clause.
         /// </summary>
         ERROR_QUERY_INVALID_OPTIONS_ATTRIBUTE = 1539,
         /// <summary>
@@ -783,6 +795,10 @@ namespace ArangoDBNetStandard
         /// Will be raised when a bind parameter has an invalid value or type.
         /// </summary>
         ERROR_QUERY_BIND_PARAMETER_TYPE = 1553,
+        /// <summary>
+        /// APPROX_NEAR function could not apply vector search, either the vector index is missing or the query optimization could not apply vector index.
+        /// </summary>
+        ERROR_QUERY_VECTOR_SEARCH_NOT_APPLIED = 1554,
         /// <summary>
         /// Will be raised when a non-numeric value is used in an arithmetic operation.
         /// </summary>
@@ -859,6 +875,10 @@ namespace ArangoDBNetStandard
         /// Will be raised when a user function throws a runtime exception.
         /// </summary>
         ERROR_QUERY_FUNCTION_RUNTIME_ERROR = 1583,
+        /// <summary>
+        /// Will be raised when a query is not eligible for plan caching and yet, the usePlanCache option was set to true.
+        /// </summary>
+        ERROR_QUERY_NOT_ELIGIBLE_FOR_PLAN_CACHING = 1584,
         /// <summary>
         /// Will be raised when an HTTP API for a query got an invalid JSON object.
         /// </summary>
@@ -944,50 +964,6 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_SERVICE_UPLOAD_FAILED = 1753,
         /// <summary>
-        /// can not init a LDAP connection
-        /// </summary>
-        ERROR_LDAP_CANNOT_INIT = 1800,
-        /// <summary>
-        /// can not set a LDAP option
-        /// </summary>
-        ERROR_LDAP_CANNOT_SET_OPTION = 1801,
-        /// <summary>
-        /// can not bind to a LDAP server
-        /// </summary>
-        ERROR_LDAP_CANNOT_BIND = 1802,
-        /// <summary>
-        /// can not unbind from a LDAP server
-        /// </summary>
-        ERROR_LDAP_CANNOT_UNBIND = 1803,
-        /// <summary>
-        /// can not search the LDAP server
-        /// </summary>
-        ERROR_LDAP_CANNOT_SEARCH = 1804,
-        /// <summary>
-        /// can not star a TLS LDAP session
-        /// </summary>
-        ERROR_LDAP_CANNOT_START_TLS = 1805,
-        /// <summary>
-        /// LDAP didn't found any objects with the specified search query
-        /// </summary>
-        ERROR_LDAP_FOUND_NO_OBJECTS = 1806,
-        /// <summary>
-        /// LDAP found zero ore more than one user
-        /// </summary>
-        ERROR_LDAP_NOT_ONE_USER_FOUND = 1807,
-        /// <summary>
-        /// LDAP found a user, but its not the desired one
-        /// </summary>
-        ERROR_LDAP_USER_NOT_IDENTIFIED = 1808,
-        /// <summary>
-        /// LDAP returned an operations error
-        /// </summary>
-        ERROR_LDAP_OPERATIONS_ERROR = 1809,
-        /// <summary>
-        /// cant distinguish a valid mode for provided LDAP configuration
-        /// </summary>
-        ERROR_LDAP_INVALID_MODE = 1820,
-        /// <summary>
         /// Will be raised when a task is created with an invalid id.
         /// </summary>
         ERROR_TASK_INVALID_ID = 1850,
@@ -1007,10 +983,6 @@ namespace ArangoDBNetStandard
         /// Will be raised when an invalid edge id is passed to the server.
         /// </summary>
         ERROR_GRAPH_INVALID_EDGE = 1906,
-        /// <summary>
-        /// Will be raised when too many iterations are done in a graph traversal.
-        /// </summary>
-        ERROR_GRAPH_TOO_MANY_ITERATIONS = 1909,
         /// <summary>
         /// Will be raised when an invalid filter result is returned in a graph traversal.
         /// </summary>
@@ -1088,6 +1060,10 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_GRAPH_INTERNAL_DATA_CORRUPT = 1941,
         /// <summary>
+        /// The collection must not be dropped while it is used as part of at least one graph definition.
+        /// </summary>
+        ERROR_GRAPH_MUST_NOT_DROP_COLLECTION = 1942,
+        /// <summary>
         /// the orphan list argument is malformed. It has to be an array of strings.
         /// </summary>
         ERROR_GRAPH_CREATE_MALFORMED_ORPHAN_LIST = 1943,
@@ -1106,11 +1082,15 @@ namespace ArangoDBNetStandard
         /// <summary>
         /// the _from or _to collection specified for the edge refers to a vertex collection which is not used in any edge definition of the graph.
         /// </summary>
-        ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED = 1947,
+        ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_PART_OF_THE_GRAPH = 1947,
         /// <summary>
         /// a negative edge weight was found during a weighted graph traversal or shortest path query
         /// </summary>
         ERROR_GRAPH_NEGATIVE_EDGE_WEIGHT = 1948,
+        /// <summary>
+        /// The collection is not used in any edge definition or as an orphan collection.
+        /// </summary>
+        ERROR_GRAPH_COLLECTION_NOT_PART_OF_THE_GRAPH = 1949,
         /// <summary>
         /// Will be raised when an invalid/unknown session id is passed to the server.
         /// </summary>
@@ -1143,26 +1123,6 @@ namespace ArangoDBNetStandard
         /// Internal error during AQL execution
         /// </summary>
         ERROR_INTERNAL_AQL = 2200,
-        /// <summary>
-        /// An AQL block wrote too few output registers
-        /// </summary>
-        ERROR_WROTE_TOO_FEW_OUTPUT_REGISTERS = 2201,
-        /// <summary>
-        /// An AQL block wrote too many output registers
-        /// </summary>
-        ERROR_WROTE_TOO_MANY_OUTPUT_REGISTERS = 2202,
-        /// <summary>
-        /// An AQL block wrote an output register twice
-        /// </summary>
-        ERROR_WROTE_OUTPUT_REGISTER_TWICE = 2203,
-        /// <summary>
-        /// An AQL block wrote in a register that is not its output
-        /// </summary>
-        ERROR_WROTE_IN_WRONG_REGISTER = 2204,
-        /// <summary>
-        /// An AQL block did not copy its input registers
-        /// </summary>
-        ERROR_INPUT_REGISTERS_NOT_COPIED = 2205,
         /// <summary>
         /// The service manifest file is not well-formed JSON.
         /// </summary>
@@ -1347,10 +1307,6 @@ namespace ArangoDBNetStandard
         /// Will be returned if a scheduler thread tries to detach itself but there are already too many detached scheduler threads.
         /// </summary>
         ERROR_TOO_MANY_DETACHED_THREADS = 21005,
-        /// <summary>
-        /// This maintenance action cannot be stopped once it is started
-        /// </summary>
-        ERROR_ACTION_OPERATION_UNABORTABLE = 6002,
         /// <summary>
         /// This maintenance action is still processing
         /// </summary>
