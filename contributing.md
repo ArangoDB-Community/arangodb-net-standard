@@ -44,6 +44,35 @@ dotnet pack --configuration Release .\arangodb-net-standard\ArangoDBNetStandard.
 
 You may also open the Visual Studio solution file and build or run tests from within Visual Studio. The main developers on the project use VS2017 at the moment but VS2019 should work in theory.
 
+### Generating enum for error codes
+
+We provide enum [ArangoDBErrors](./arangodb-net-standard/ArangoDBErrors.cs) that contains ArangoDB error codes and their meanings.
+
+Use tool [ErrorEnumGenerator](./ErrorEnumGenerator/) to update the enum whenever a new version of ArangoDB is released.
+
+Steps:
+
+1. Copy the list of codes from https://docs.arangodb.com/stable/develop/error-codes-and-meanings/ into a file.
+
+   You should get something like below:
+   ```
+   0 - ERROR_NO_ERROR
+   No error has occurred.
+
+   1 - ERROR_FAILED
+   Will be raised when a general error occurred.
+
+   [...]
+   ```
+
+2. Build the `ErrorEnumGenerator` project.
+
+3. Run `ErrorEnumGenerator.exe` to update the enum.
+
+   Example: `ErrorEnumGenerator.exe adb_error_codes.txt C:\repos\arangodb-net-standard\arangodb-net-standard`
+
+4. Restore deleted values and decorate them with `[Obsolete]` if we still support their ArangoDB version.
+
 ## Issues
 
 Use Github issues to report bugs or request enhancements.
