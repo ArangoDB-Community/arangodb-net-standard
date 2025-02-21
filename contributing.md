@@ -71,6 +71,8 @@ Steps:
 
    Example: `ErrorEnumGenerator.exe adb_error_codes.txt C:\repos\arangodb-net-standard\arangodb-net-standard`
 
+4. Restore deleted values and decorate them with `[Obsolete]` if we still support their ArangoDB version.
+
 ## Issues
 
 Use Github issues to report bugs or request enhancements.
