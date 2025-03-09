@@ -10,6 +10,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
+using static ArangoDBNetStandard.ArangoDBErrors;
+
 namespace ArangoDBNetStandardTest.GraphApi
 {
     public class GraphApiClientTest : IClassFixture<GraphApiClientTestFixture>
@@ -81,7 +83,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
-            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, exception.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -107,7 +109,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 await _client.GetGraphAsync("bogus_graph");
             });
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
-            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, exception.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -164,7 +166,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             ApiErrorResponse apiError = ex.ApiError;
 
             Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
-            Assert.Equal(1924, apiError.ErrorNum);
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, apiError.ErrorNum);
         }
 
         [Fact]
@@ -184,7 +186,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 await _client.GetEdgeCollectionsAsync("bogus_graph");
             });
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
-            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, exception.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -309,7 +311,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
-            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, exception.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -361,7 +363,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(apiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, apiError.Code);
-            Assert.Equal(1924, apiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, apiError.ErrorNum);
         }
 
         [Fact]
@@ -411,7 +413,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -436,11 +438,11 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             if (_fixture.VersionMajor >= 3 && _fixture.VersionMinor >= 10)
             {
-                Assert.Equal(1947, ex.ApiError.ErrorNum); //referenced vertex collection is not part of the graph
+                Assert.Equal((int)ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED, ex.ApiError.ErrorNum);
             }
             else
             {
-                Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+                Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
             }
         }
 
@@ -561,7 +563,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
 
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -611,7 +613,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -671,7 +673,7 @@ namespace ArangoDBNetStandardTest.GraphApi
                 await _fixture.ArangoDBClient.Collection.GetCollectionAsync(clxToDelete);
             });
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+            Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -751,7 +753,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
-            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, exception.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -868,7 +870,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
-            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, exception.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -944,7 +946,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+            Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -990,7 +992,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1078,7 +1080,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1101,7 +1103,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+            Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1231,7 +1233,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1254,7 +1256,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+            Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1406,7 +1408,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
-            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, exception.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1453,7 +1455,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
 
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1632,7 +1634,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
-            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, exception.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1754,7 +1756,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
 
             Assert.Equal(HttpStatusCode.NotFound, exception.ApiError.Code);
-            Assert.Equal(1924, exception.ApiError.ErrorNum); // GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, exception.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1849,7 +1851,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1924, ex.ApiError.ErrorNum); // ERROR_GRAPH_NOT_FOUND
+            Assert.Equal((int)ERROR_GRAPH_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
@@ -1869,7 +1871,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal(1203, ex.ApiError.ErrorNum); // ARANGO_DATA_SOURCE_NOT_FOUND
+            Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
         }
 
         [Fact]
