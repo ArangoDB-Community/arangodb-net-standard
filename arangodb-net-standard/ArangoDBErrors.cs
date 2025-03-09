@@ -1195,7 +1195,6 @@ namespace ArangoDBNetStandard
         /// <remarks>
         /// Renamed to <see cref="ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_PART_OF_THE_GRAPH"/> in ArangoDB 3.12, value not changed (1947).
         /// </remarks>
-        [Obsolete]
         ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED = 1947,
         /// <summary>
         /// the _from or _to collection specified for the edge refers to a vertex collection which is not used in any edge definition of the graph.
