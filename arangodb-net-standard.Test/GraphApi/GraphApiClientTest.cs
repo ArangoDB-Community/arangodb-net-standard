@@ -436,13 +436,17 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            if (_fixture.VersionMajor >= 3 && _fixture.VersionMinor >= 10)
+
+            bool isVersion310Or311 = _fixture.VersionMajor == 3 &&
+                (_fixture.VersionMinor == 10 || _fixture.VersionMinor == 11);
+
+            if (isVersion310Or311)
             {
                 Assert.Equal((int)ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED, ex.ApiError.ErrorNum);
             }
             else
             {
-                Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
+                AssertVertexCollectionNotFound(ex.ApiError);
             }
         }
 
@@ -946,7 +950,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
+            AssertVertexCollectionNotFound(ex.ApiError);
         }
 
         [Fact]
@@ -1103,7 +1107,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
+            AssertVertexCollectionNotFound(ex.ApiError);
         }
 
         [Fact]
@@ -1256,7 +1260,7 @@ namespace ArangoDBNetStandardTest.GraphApi
 
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
+            AssertVertexCollectionNotFound(ex.ApiError);
         }
 
         [Fact]
@@ -1871,7 +1875,7 @@ namespace ArangoDBNetStandardTest.GraphApi
             });
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
-            Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, ex.ApiError.ErrorNum);
+            AssertVertexCollectionNotFound(ex.ApiError);
         }
 
         [Fact]
@@ -1898,6 +1902,21 @@ namespace ArangoDBNetStandardTest.GraphApi
             Assert.True(ex.ApiError.Error);
             Assert.Equal(HttpStatusCode.NotFound, ex.ApiError.Code);
             Assert.Equal(1202, ex.ApiError.ErrorNum); // ARANGO_DOCUMENT_NOT_FOUND
+        }
+
+        private void AssertVertexCollectionNotFound(ApiErrorResponse error)
+        {
+            bool isVersion312OrLater = _fixture.VersionMajor > 3 ||
+                (_fixture.VersionMajor == 3 && _fixture.VersionMinor >= 12);
+
+            if (isVersion312OrLater)
+            {
+                Assert.Equal((int)ERROR_GRAPH_COLLECTION_NOT_PART_OF_THE_GRAPH, error.ErrorNum);
+            }
+            else
+            {
+                Assert.Equal((int)ERROR_ARANGO_DATA_SOURCE_NOT_FOUND, error.ErrorNum);
+            }
         }
     }
 }
