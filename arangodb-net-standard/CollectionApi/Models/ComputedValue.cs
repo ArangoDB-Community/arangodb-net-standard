@@ -40,7 +40,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// and "replace". 
         /// The default is ["insert", "update", "replace"]
         /// </summary>
-        public List<string> ComputedOn { get; set; } = new List<string>() { "insert", "update", "replace" };
+        public List<string> ComputeOn { get; set; } = new List<string>() { "insert", "update", "replace" };
 
         /// <summary>
         /// Optional. Indicates whether the target attribute shall 
