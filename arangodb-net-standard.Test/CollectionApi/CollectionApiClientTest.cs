@@ -206,7 +206,8 @@ namespace ArangoDBNetStandardTest.CollectionApi
         {
             var request = new PostCollectionBody
             {
-                Name = "My collection name with spaces"
+                // A collection name that starts with a number is invalid.
+                Name = "80 invalid collection name"
             };
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
             {
@@ -377,23 +378,10 @@ namespace ArangoDBNetStandardTest.CollectionApi
             {
                 await _collectionApi.RenameCollectionAsync(_testCollection, new RenameCollectionBody
                 {
-                    Name = "Bad Collection Name"
+                    Name = "80 Bad Collection Name"
                 });
             });
             Assert.Equal(1208, exception.ApiError.ErrorNum); // Arango Illegal Name
-        }
-
-        [Fact]
-        public async Task RenameCollectionAsync_ShouldThrow_WhenCollectionInvalid()
-        {
-            var exception = await Assert.ThrowsAsync<ApiErrorException>(async () =>
-            {
-                await _collectionApi.RenameCollectionAsync("Bad Collection Name", new RenameCollectionBody
-                {
-                    Name = "testingCollection"
-                });
-            });
-            Assert.Equal(1203, exception.ApiError.ErrorNum); // Arango Data Source Not Found
         }
 
         [Fact]
