@@ -2,7 +2,7 @@
 using ArangoDBNetStandard.Serialization;
 using ArangoDBNetStandard.TransactionApi.Models;
 using ArangoDBNetStandardTest.Serialization.Models;
-using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -184,7 +184,7 @@ namespace ArangoDBNetStandardTest.Serialization
             var serialization = new JsonNetApiClientSerialization();
 
             byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
-                useCamelCasePropertyNames: true, 
+                useCamelCasePropertyNames: true,
                 ignoreNullValues: true,
                 applySerializationOptionsToDictionaryValues: true));
 
@@ -197,6 +197,7 @@ namespace ArangoDBNetStandardTest.Serialization
         }
 
         [Fact]
+        [Obsolete]
         public void Serialize_ShouldNotCamelCaseParams_WhenSerializingPostTransactionBody()
         {
             var body = new PostTransactionBody
@@ -223,6 +224,7 @@ namespace ArangoDBNetStandardTest.Serialization
 
 
         [Fact]
+        [Obsolete]
         public void Serialize_ShouldCamelCaseParams_WhenSerializingPostTransactionBodyWithDictionaryOption()
         {
             var body = new PostTransactionBody
@@ -268,6 +270,7 @@ namespace ArangoDBNetStandardTest.Serialization
         }
 
         [Fact]
+        [Obsolete]
         public void Serialize_ShouldNotIgnoreNull_WhenSerializingPostTransactionBody()
         {
             var body = new PostTransactionBody

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ArangoDBNetStandard;
@@ -250,6 +251,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
         /// Tests that a post JS transaction succeeds.
         /// </summary>
         [Fact]
+        [Obsolete]
         public async Task PostTransaction_ShouldSucceed()
         {
             await _adb.Document.PostDocumentAsync(
@@ -295,6 +297,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
         /// </summary>
         /// <exception cref="ApiErrorException">With ErrorNum 10 missing/invalid action definition for transaction.</exception>
         [Fact]
+        [Obsolete]
         public async Task PostTransaction_ShouldThrow_WhenFunctionDefinitionHasSyntaxErrors()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
@@ -314,6 +317,7 @@ namespace ArangoDBNetStandardTest.TransactionApi
         /// </summary>
         /// <exception cref="ApiErrorException">With ErrorNum 10 missing/invalid collections definition for transaction.</exception>
         [Fact]
+        [Obsolete]
         public async Task PostTransaction_ShouldThrow_WhenWriteCollectionIsNotDeclared()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
