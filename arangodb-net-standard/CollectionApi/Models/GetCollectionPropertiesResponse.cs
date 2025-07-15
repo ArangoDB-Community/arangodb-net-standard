@@ -107,6 +107,7 @@ namespace ArangoDBNetStandard.CollectionApi.Models
         /// </summary>
         public CollectionSchema Schema { get; set; }
         
+        /// <summary>
         /// A list of computed values configured for the 
         /// collection.
         /// </summary>
