@@ -30,7 +30,11 @@ namespace ArangoDBNetStandard.Serialization
             using (var sr = new StreamReader(stream))
             using (var jtr = new JsonTextReader(sr))
             {
-                var js = new JsonSerializer();
+                var settings = new JsonSerializerSettings
+                {
+                    ObjectCreationHandling = ObjectCreationHandling.Replace,
+                };
+                var js = JsonSerializer.Create(settings);
 
                 T result = js.Deserialize<T>(jtr);
 
