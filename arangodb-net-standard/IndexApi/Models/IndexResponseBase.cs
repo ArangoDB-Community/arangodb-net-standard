@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using ArangoDBNetStandard.IndexApi.Converters;
+using Newtonsoft.Json;
 
 namespace ArangoDBNetStandard.IndexApi.Models
 {
@@ -11,7 +13,7 @@ namespace ArangoDBNetStandard.IndexApi.Models
         public string Id { get; set; }
 
         public string Name { get; set; }
-
+        [JsonConverter(typeof(IndexFieldsConverter))]
         public IEnumerable<string> Fields { get; set; }
 
         public bool? Sparse { get; set; }
