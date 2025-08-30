@@ -1,4 +1,6 @@
-﻿namespace ArangoDBNetStandard.CollectionApi.Models
+﻿using System.Collections.Generic;
+
+namespace ArangoDBNetStandard.CollectionApi.Models
 {
     public class PutCollectionPropertyBody
     {
@@ -53,5 +55,10 @@
         /// The collection level schema for documents.
         /// </summary>
         public CollectionSchema Schema { get; set; }
+        
+        /// <summary>
+        /// A list of computed values.
+        /// </summary>
+        public List<ComputedValue> ComputedValues { get; set; }
     }
 }
