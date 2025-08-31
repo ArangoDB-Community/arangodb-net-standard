@@ -142,5 +142,59 @@ namespace ArangoDBNetStandardTest.IndexApi
                 );
             Assert.Equal(400, ex.ApiError.ErrorNum);
         }
+
+        [Fact]
+        public async Task PostInvertedIndexAsync_ShouldSucceed()
+        {
+            var createResponse = await _indexApi.PostInvertedIndexAsync(
+                new PostIndexQuery()
+                {
+                    CollectionName = _testCollection,
+                },
+                new PostInvertedIndexBody()
+                {
+                    Name = "test_inverted_index_" + System.Guid.NewGuid().ToString("N")[..8],
+                    Fields = new InvertedIndexField[]
+                    {
+                        new InvertedIndexField
+                        {
+                            Name = "name",
+                            Analyzer = "text_en"
+                        },
+                        new InvertedIndexField
+                        {
+                            Name = "description",
+                            Analyzer = "text_en"
+                        }
+                    }
+                });
+
+            string indexId = createResponse.Id;
+            Assert.False(createResponse.Error);
+            Assert.NotNull(indexId);
+            Assert.NotNull(createResponse.Fields);
+            Assert.Equal(2, createResponse.Fields.Count());
+            
+            // Verify that fields contain correct names
+            var fieldNames = createResponse.Fields.Select(f => f.Name).ToList();
+            Assert.Contains("name", fieldNames);
+            Assert.Contains("description", fieldNames);
+
+            // Verify getting the created inverted index
+            var getResponse = await _indexApi.GetIndexAsync(indexId);
+            Assert.NotNull(getResponse);
+            Assert.Equal(indexId, getResponse.Id);
+            Assert.Equal("inverted", getResponse.Type);
+            Assert.NotNull(getResponse.Fields);
+            
+            // Verify that IndexFieldsConverter properly handles fields
+            Assert.Contains("name", getResponse.Fields);
+            Assert.Contains("description", getResponse.Fields);
+
+            // Clean up - delete the created index
+            var deleteResponse = await _indexApi.DeleteIndexAsync(indexId);
+            Assert.False(deleteResponse.Error);
+            Assert.Equal(indexId, deleteResponse.Id);
+        }
     }
 }
