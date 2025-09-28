@@ -1,7 +1,11 @@
-﻿namespace ArangoDBNetStandard.CursorApi.Models
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace ArangoDBNetStandard.CursorApi.Models
 {
     /// <summary>
     /// Represents extra options for the AQL query.
+    /// AdditionalOptions can hold arbitrary server options (flattened via JsonExtensionData).
     /// </summary>
     public class PostCursorOptions
     {
@@ -119,5 +123,12 @@
         /// This feature is only available in the Enterprise Edition.
         /// </summary>
         public bool? SkipInaccessibleCollections { get; set; }
+
+        /// <summary>
+        /// Arbitrary additional options not (yet) modeled as strongly typed properties.
+        /// Entries are serialized at the same level as known properties (flattened).
+        /// </summary>
+        [JsonExtensionData]
+        public IDictionary<string, object> AdditionalOptions { get; set; }
     }
 }

@@ -308,6 +308,37 @@ namespace ArangoDBNetStandardTest.Serialization
             Assert.Equal("something", model.NullProperty);
         }
 
+        [Fact]
+        public void Serialize_ShouldIncludeAdditionalOptions_WhenSerializingPostCursorOptions()
+        {
+            var body = new PostCursorBody
+            {
+                Options = new PostCursorOptions
+                {
+                    FullCount = true,
+                    AdditionalOptions = new Dictionary<string, object>
+                    {
+                        ["fullCount"] = false,
+                        ["customFlag"] = false,
+                        ["oneShardAttributeValue"] = "tenant-123"
+                    }
+                }
+            };
+
+            var serialization = new JsonNetApiClientSerialization();
+            byte[] jsonBytes = serialization.Serialize(body, new ApiClientSerializationOptions(
+                useCamelCasePropertyNames: true, ignoreNullValues: true));
+            string jsonString = Encoding.UTF8.GetString(jsonBytes);
+
+            // Ensure custom additional options are present
+            Assert.Contains("\"customFlag\":false", jsonString);
+            Assert.Matches("\"fullCount\":true.*\"fullCount\":false", jsonString);
+            Assert.Contains("\"oneShardAttributeValue\":\"tenant-123\"", jsonString);
+
+            // Ensure the AdditionalOptions property itself is not present
+            Assert.DoesNotContain("\"additionalOptions\"", jsonString);
+        }
+
         private void AssertDefaultOptions(ApiClientSerializationOptions options)
         {
             Assert.False(options.UseCamelCasePropertyNames);
