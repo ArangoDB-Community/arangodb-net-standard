@@ -34,7 +34,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ArongoDB.Extensions.VectorData\ArangoDB.Extensions.VectorData.csproj" />
+	  <ProjectReference Include="..\ArangoDB.Extensions.VectorData\ArangoDB.Extensions.VectorData.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
