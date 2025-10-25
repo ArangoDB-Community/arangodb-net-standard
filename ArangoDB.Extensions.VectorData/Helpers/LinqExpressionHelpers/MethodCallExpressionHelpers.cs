@@ -95,7 +95,7 @@ internal static class MethodCallExpressionHelpers
         return mce switch
         {
             // r => r.Name.Like("test") Extension Method
-            { Method.Name: nameof(AqlFilters.Like), Arguments.Count: 0 }
+            { Method.Name: nameof(AqlFilters.Like), Arguments.Count: 2 }
                 => mce.HandleLikeOperationInFilterCondition(bindVars),
 
             // IEnumerable<string> list = [ "test" ];
