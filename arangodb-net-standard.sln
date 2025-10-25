@@ -11,11 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorEnumGenerator", "ErrorEnumGenerator\ErrorEnumGenerator.csproj", "{D9863444-75DE-4C54-A9B0-9F817CE3B119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArongoDB.KernelMemory", "ArongoDB.KernelMemory\ArongoDB.KernelMemory.csproj", "{FA6C4BB6-4573-4E4C-91A3-D8BC2A753D42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArangoDB.Extensions.VectorData", "ArangoDB.Extensions.VectorData\ArangoDB.Extensions.VectorData.csproj", "{9507A1DE-EEDB-38F8-D7C5-0106C633E2B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArangoDB.Extensions.VectorData", "ArongoDB.Extensions.VectorData\ArangoDB.Extensions.VectorData.csproj", "{27E719CD-ED36-42E6-8FBA-427686F0DFE5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArangoDB.Extensions.VectorData.Tests", "ArongoDB.Extensions.VectorData.Tests\ArangoDB.Extensions.VectorData.Tests.csproj", "{7645A659-C03A-48C4-8972-351C75DA79F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArangoDB.Extensions.VectorData.Tests", "ArangoDB.Extensions.VectorData.Tests\ArangoDB.Extensions.VectorData.Tests.csproj", "{DE5A463D-694E-5C34-702C-57EC3F777060}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,18 +33,14 @@ Global
 		{D9863444-75DE-4C54-A9B0-9F817CE3B119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9863444-75DE-4C54-A9B0-9F817CE3B119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9863444-75DE-4C54-A9B0-9F817CE3B119}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA6C4BB6-4573-4E4C-91A3-D8BC2A753D42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA6C4BB6-4573-4E4C-91A3-D8BC2A753D42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA6C4BB6-4573-4E4C-91A3-D8BC2A753D42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA6C4BB6-4573-4E4C-91A3-D8BC2A753D42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27E719CD-ED36-42E6-8FBA-427686F0DFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27E719CD-ED36-42E6-8FBA-427686F0DFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27E719CD-ED36-42E6-8FBA-427686F0DFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27E719CD-ED36-42E6-8FBA-427686F0DFE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7645A659-C03A-48C4-8972-351C75DA79F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7645A659-C03A-48C4-8972-351C75DA79F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7645A659-C03A-48C4-8972-351C75DA79F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7645A659-C03A-48C4-8972-351C75DA79F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9507A1DE-EEDB-38F8-D7C5-0106C633E2B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9507A1DE-EEDB-38F8-D7C5-0106C633E2B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9507A1DE-EEDB-38F8-D7C5-0106C633E2B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9507A1DE-EEDB-38F8-D7C5-0106C633E2B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE5A463D-694E-5C34-702C-57EC3F777060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE5A463D-694E-5C34-702C-57EC3F777060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE5A463D-694E-5C34-702C-57EC3F777060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE5A463D-694E-5C34-702C-57EC3F777060}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

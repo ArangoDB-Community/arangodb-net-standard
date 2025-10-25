@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ArongoDB.KernelMemory;
+namespace ArangoDB.KernelMemory;
 
-public sealed class ArongoSearchClient : ISearchClient
+public sealed class ArangoSearchClient : ISearchClient
 {
     public Task<MemoryAnswer> AskAsync(string index, string question, ICollection<MemoryFilter> filters = null, double minRelevance = 0, IContext context = null, CancellationToken cancellationToken = default)
     {

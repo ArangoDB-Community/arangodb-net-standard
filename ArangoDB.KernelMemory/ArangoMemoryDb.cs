@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ArongoDB.KernelMemory;
+namespace ArangoDB.KernelMemory;
 
-public sealed class ArongoMemoryDb : IMemoryDb
+public sealed class ArangoMemoryDb : IMemoryDb
 {
     public Task CreateIndexAsync(
         string index,
