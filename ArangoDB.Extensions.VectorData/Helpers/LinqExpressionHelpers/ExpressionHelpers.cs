@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Numerics;
-using System.Text;
 using System.Text.Json;
 
 namespace ArangoDB.Extensions.VectorData.Helpers.LinqExpressionHelpers;
