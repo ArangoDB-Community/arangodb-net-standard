@@ -10,7 +10,6 @@ using Microsoft.Extensions.VectorData;
 
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using System.Xml.Linq;
 
 namespace ArangoDB.Extensions.VectorData;
 
