@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArangoDB.Extensions.VectorD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArangoDB.Extensions.VectorData.Tests", "ArangoDB.Extensions.VectorData.Tests\ArangoDB.Extensions.VectorData.Tests.csproj", "{DE5A463D-694E-5C34-702C-57EC3F777060}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArangoDB.KernelMemory", "ArangoDB.KernelMemory\ArangoDB.KernelMemory.csproj", "{99C83FFB-8848-828E-75C0-66F8A048007E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{DE5A463D-694E-5C34-702C-57EC3F777060}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE5A463D-694E-5C34-702C-57EC3F777060}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE5A463D-694E-5C34-702C-57EC3F777060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C83FFB-8848-828E-75C0-66F8A048007E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C83FFB-8848-828E-75C0-66F8A048007E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C83FFB-8848-828E-75C0-66F8A048007E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C83FFB-8848-828E-75C0-66F8A048007E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
