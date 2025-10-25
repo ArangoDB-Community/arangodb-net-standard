@@ -1,0 +1,128 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<UserSecretsId>733488cf-ebe1-45f3-8f3d-64056225edb6</UserSecretsId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ArangoDBNetStandard" Version="3.1.0" />
+		<PackageReference Include="Bogus" Version="35.6.4" />
+		<PackageReference Include="coverlet.collector" Version="6.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.9" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+		<PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="9.9.1" />
+		<PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.9.1-preview.1.25474.6" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
+		<PackageReference Include="NSubstitute" Version="5.3.0" />
+		<PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.17">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit" Version="4.4.0" />
+		<PackageReference Include="NUnit.Analyzers" Version="4.10.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
+		<PackageReference Include="Shouldly" Version="4.3.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+		<PackageReference Include="Testcontainers.ArangoDb" Version="4.7.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ArongoDB.Extensions.VectorData\ArangoDB.Extensions.VectorData.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="ArangoDBNetStandard" />
+		<Using Include="ArangoDBNetStandard.CollectionApi" />
+		<Using Include="ArangoDBNetStandard.CursorApi" />
+		<Using Include="ArangoDBNetStandard.DocumentApi" />
+		<Using Include="ArangoDB.Extensions.VectorData" />
+		<Using Include="ArangoDB.Extensions.VectorData.Helpers" />
+		<Using Include="Bogus" />
+		<Using Include="Microsoft.Extensions.VectorData" />
+		<Using Include="NSubstitute" />
+		<Using Include="NUnit.Framework" />
+		<Using Include="Shouldly" />
+		<Using Include="System.Diagnostics.CodeAnalysis" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="UnitTests\ArangoCollectionUnitTests.DeleteAsync.cs">
+			<DependentUpon>ArangoCollectionUnitTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UnitTests\ArangoCollectionUnitTests.EnsureCollectionDeletedAsync.cs">
+			<DependentUpon>ArangoCollectionUnitTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UnitTests\ArangoCollectionUnitTests.EnsureCollectionExistsAsync.cs">
+			<DependentUpon>ArangoCollectionUnitTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UnitTests\ArangoCollectionUnitTests.GetAsync.cs">
+			<DependentUpon>ArangoCollectionUnitTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UnitTests\ArangoCollectionUnitTests.GetAsyncWithFilter.cs">
+			<DependentUpon>ArangoCollectionUnitTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UnitTests\ArangoCollectionUnitTests.GetService.cs">
+			<DependentUpon>ArangoCollectionUnitTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UnitTests\ArangoCollectionUnitTests.SearchAsync.cs">
+			<DependentUpon>ArangoCollectionUnitTests.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.CollectionExistsAsync.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.DeleteAsync.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.EnsureCollectionDeletedAsync.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.EnsureCollectionExistsAsync.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.GetAsync.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.GetAsyncWithFilter.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.GetService.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.SearchAsync.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.UpsertAsync.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.GetAsyncWithFilter.EqualityOperator.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.GetAsyncWithFilter.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.GetAsyncWithFilter.EqualsMethods.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.GetAsyncWithFilter.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.GetAsyncWithFilter.LikeMethods.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.GetAsyncWithFilter.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.GetAsyncWithFilter.CollectionContainsMethods.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.GetAsyncWithFilter.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IntegrationTests\ArangoCollectionIntegrationTests.GetAsyncWithFilter.StringContainsMethods.cs">
+			<DependentUpon>ArangoCollectionIntegrationTests.GetAsyncWithFilter.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>
