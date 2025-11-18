@@ -156,6 +156,30 @@ namespace ArangoDBNetStandardTest.CursorApi
         }
 
         [Fact]
+        public async Task PostCursorAsync_ShouldSucceed_WhenUsingNewOptions()
+        {
+            var response = await _cursorApi.PostCursorAsync<MyModel>(
+                "FOR doc IN [{ myProperty: CONCAT('This is a ', @testString) }] LIMIT 1 RETURN doc",
+                new Dictionary<string, object> { ["testString"] = "test" },
+                new PostCursorOptions
+                {
+                    AllowDirtyReads = false,
+                    AllowRetry = true,
+                    Cache = false,
+                    FillBlockCache = true,
+                    MaxDNFConditionMembers = 100,
+                    MaxNodesPerCallstack = 200,
+                    MaxNumberOfPlans = 128,
+                    SpillOverThresholdMemoryUsage = 134217728,
+                    SpillOverThresholdNumRows = 5000000,
+                    UsePlanCache = true
+                });
+
+            Assert.Single(response.Result);
+            Assert.Equal("This is a test", response.Result.First().MyProperty);
+        }
+
+        [Fact]
         public async Task PostCursorAsync_ShouldThrow_WhenAqlIsNotValid()
         {
             var ex = await Assert.ThrowsAsync<ApiErrorException>(async () =>
