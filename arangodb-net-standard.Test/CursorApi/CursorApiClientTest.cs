@@ -148,21 +148,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 new Dictionary<string, object> { ["testString"] = "robbery" },
                 new PostCursorOptions
                 {
-                    MaxRuntime = 10
-                });
-
-            Assert.Single(response.Result);
-            Assert.Equal("This is a robbery", response.Result.First().MyProperty);
-        }
-
-        [Fact]
-        public async Task PostCursorAsync_ShouldSucceed_WhenUsingNewOptions()
-        {
-            var response = await _cursorApi.PostCursorAsync<MyModel>(
-                "FOR doc IN [{ myProperty: CONCAT('This is a ', @testString) }] LIMIT 1 RETURN doc",
-                new Dictionary<string, object> { ["testString"] = "test" },
-                new PostCursorOptions
-                {
+                    MaxRuntime = 10,
                     AllowDirtyReads = false,
                     AllowRetry = true,
                     Cache = false,
@@ -176,7 +162,7 @@ namespace ArangoDBNetStandardTest.CursorApi
                 });
 
             Assert.Single(response.Result);
-            Assert.Equal("This is a test", response.Result.First().MyProperty);
+            Assert.Equal("This is a robbery", response.Result.First().MyProperty);
         }
 
         [Fact]
