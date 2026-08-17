@@ -123,7 +123,7 @@ namespace ArangoDBNetStandard
         /// </summary>
         ERROR_SHUTTING_DOWN = 30,
         /// <summary>
-        /// Will be raised when an Enterprise Edition feature is requested from the Community Edition.
+        /// Will be raised when a feature is requested that is implemented in the non-public enterprise code and thus not available in custom builds.
         /// </summary>
         ERROR_ONLY_ENTERPRISE = 31,
         /// <summary>
@@ -816,6 +816,10 @@ namespace ArangoDBNetStandard
         /// APPROX_NEAR function could not apply vector search, either the vector index is missing or the query optimization could not apply vector index.
         /// </summary>
         ERROR_QUERY_VECTOR_SEARCH_NOT_APPLIED = 1554,
+        /// <summary>
+        /// The vector index is not yet trained. Please wait for the index training to complete before executing vector search queries.
+        /// </summary>
+        ERROR_QUERY_VECTOR_INDEX_NOT_READY = 1555,
         /// <summary>
         /// Will be raised when a non-numeric value is used in an arithmetic operation.
         /// </summary>
