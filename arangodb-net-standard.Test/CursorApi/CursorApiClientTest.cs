@@ -148,7 +148,17 @@ namespace ArangoDBNetStandardTest.CursorApi
                 new Dictionary<string, object> { ["testString"] = "robbery" },
                 new PostCursorOptions
                 {
-                    MaxRuntime = 10
+                    MaxRuntime = 10,
+                    AllowDirtyReads = false,
+                    AllowRetry = true,
+                    Cache = false,
+                    FillBlockCache = true,
+                    MaxDNFConditionMembers = 100,
+                    MaxNodesPerCallstack = 200,
+                    MaxNumberOfPlans = 128,
+                    SpillOverThresholdMemoryUsage = 134217728,
+                    SpillOverThresholdNumRows = 5000000,
+                    UsePlanCache = true
                 });
 
             Assert.Single(response.Result);

@@ -119,5 +119,77 @@
         /// This feature is only available in the Enterprise Edition.
         /// </summary>
         public bool? SkipInaccessibleCollections { get; set; }
+
+        /// <summary>
+        /// Set to true to allow reading from followers in a cluster.
+        /// Available in ArangoDB 3.10.0 onwards.
+        /// </summary>
+        public bool? AllowDirtyReads { get; set; }
+
+        /// <summary>
+        /// Set to true to make it possible to retry fetching the latest batch from a cursor.
+        /// </summary>
+        public bool? AllowRetry { get; set; }
+
+        /// <summary>
+        /// Flag to determine whether the AQL query results cache shall be used.
+        /// If set to false, then any query cache lookup will be skipped for the query.
+        /// If set to true, it will lead to the query cache being checked for the query
+        /// if the query cache mode is either 'on' or 'demand'.
+        /// </summary>
+        public bool? Cache { get; set; }
+
+        /// <summary>
+        /// Whether to fill the in-memory block cache with any data read from storage.
+        /// If set to false, then any data read is not added to the block cache.
+        /// Can be used for queries that read a lot of data that is known to be
+        /// not useful in the cache.
+        /// </summary>
+        public bool? FillBlockCache { get; set; }
+
+        /// <summary>
+        /// Maximum number of OR sub-nodes in the internal representation of an AQL query
+        /// (DNF - disjunctive normal form) for which an index will be used to evaluate 
+        /// a query's filter condition. Above this threshold, the DNF condition will be ignored
+        /// and use a full collection scan instead.
+        /// Available in ArangoDB 3.11.0 onwards.
+        /// </summary>
+        public long? MaxDNFConditionMembers { get; set; }
+
+        /// <summary>
+        /// Maximum number of calls to a recursive function. If the number of recursive calls
+        /// exceeds this threshold, the query is aborted with an error.
+        /// </summary>
+        public long? MaxNodesPerCallstack { get; set; }
+
+        /// <summary>
+        /// Limits the maximum number of query execution plans that are created by the
+        /// AQL query optimizer. Use to control the amount of time spent optimizing a query.
+        /// </summary>
+        public long? MaxNumberOfPlans { get; set; }
+
+        /// <summary>
+        /// The threshold for the memory usage (in bytes) after which AQL operators will
+        /// start to spill data to disk instead of keeping everything in RAM. Only certain
+        /// operations like SORT or COLLECT support spilling to disk.
+        /// Available in ArangoDB 3.10.0 onwards.
+        /// </summary>
+        public long? SpillOverThresholdMemoryUsage { get; set; }
+
+        /// <summary>
+        /// The threshold for the number of rows after which AQL operators will start to
+        /// spill data to disk instead of keeping everything in RAM. Only certain
+        /// operations like SORT or COLLECT support spilling to disk.
+        /// Available in ArangoDB 3.10.0 onwards.
+        /// </summary>
+        public long? SpillOverThresholdNumRows { get; set; }
+
+        /// <summary>
+        /// Whether to use the query plan cache. If set to true, the query plan cache will
+        /// be checked for an existing plan before optimizing the query. If set to false,
+        /// the query will be optimized without checking the plan cache.
+        /// Available in ArangoDB 3.12.4 onwards.
+        /// </summary>
+        public bool? UsePlanCache { get; set; }
     }
 }
