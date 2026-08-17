@@ -121,6 +121,15 @@
         public bool? SkipInaccessibleCollections { get; set; }
 
         /// <summary>
+        /// This query option can be used in complex queries in case the query optimizer cannot
+        /// automatically detect that the query can be limited to only a single DBServer (e.g., in a
+        /// disjoint smart graph case). Set this to the shard key value that should be used to force
+        /// execution on one shard. If set incorrectly (i.e., a wrong shard key value), the query may
+        /// be shipped to the wrong DBServer and return no results (empty result set). Use at your own risk.
+        /// </summary>
+        public string ForceOneShardAttributeValue { get; set; }
+
+        /// <summary>
         /// Set to true to allow reading from followers in a cluster.
         /// Available in ArangoDB 3.10.0 onwards.
         /// </summary>
